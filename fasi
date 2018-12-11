@@ -1,0 +1,74 @@
+///----///----///    FASE CONCETTUALE    ///----///----///
+
+- Analisi dei Requisiti --> Stesura del problema (vedi testo originale)
+    Modifiche ai requisiti:
+    . Aggiunto cartella clinica paziente 
+    . Evidenziare nel testo che la terapia è un concetto astratto
+
+- Descrizione procedimento Inside-Out con schemi parziali (fasi della costruzione) e descrizione testuale delle relazioni e entità
+    . Unione in attributo composto e multivalore dei principi attivi 
+
+///----///----///      FASE LOGICA      ///----///----/// 
+
+- Semplificazione dei concetti
+    . Rimozione della relazione ternaria (vedi schema "causa effetto")
+
+- Analisi delle ridondanze
+    Vedi fogli "cartella clinica"
+
+- Rimozione delle Generalizzazioni (non presente)
+
+- Partizione/merging di entità
+    . Eliminazione dell'attributo composto "patologia" in DIAGNOSI
+    . Partizionamento dei principi attivi in una nuova entità
+    Cose che si potrebbero aggiungere:
+    . Partizionamento entità inteso come separazione degli attributi in base alle operazioni (almeno le principali)
+    . Partizionamento di una relazione (si può fare con MEDICO collegato a PAZIENTE e DIAGNOSI) ???????
+
+- Selezione delle chiavi
+    . Aggiungere un codice come chiave della diagnosi (da giustificare)
+
+- Traduzione da E-R a Relazionale
+
+    ---------------------------------------------------------------------    
+    SCRIVIAMO LA LISTA DELLE TABELLE CON TUTTE LE CHIAVI BELLE DENTRO 
+    SOTTO SCRIVIAMO LA LISTA: "LA RELAZIONE X è GARANTITA DA QUESTA COMBO 
+                               DI CHIAVI (Y,Z)..."
+    ---------------------------------------------------------------------
+
+    - Traduzione di VIENE-RICOVERATO (da scrivere bene perchè è la prima)
+    
+    PAZIENTE (_CF_, NOME,...)
+    RICOVERO (_CODICE-RICOVERO_,...,DIVISIONE-OSPEDALIERA, CF, MOTIVO)
+              . CF chiave esterna not null, 
+              . MOTIVO not null
+    . Specificare che la traduzione cattura la partecipazione (0,N)(1,1)
+      e non (1,N)(1,1), bisogna introdurre un vincolo esterno per garantire
+      (1,N)
+    
+    - Traduzione di EFFETTATO-DURANTE 
+      . lo creiamo aggiungendo una chiave esterna su DIAGNOSI con not null
+
+    - Traduzione di CARTELLA-CLINICA
+      . lo creiamo aggiungendo una chiave esterna su DIAGNOSI con not null
+
+    - Traduzione di SOMMINISTRATO-DURANTE
+      . lo creiamo aggiungendo una chiave esterna su TERAPIA con not null
+
+    - Traduzione di CURATA-DA e di ISTANZA-DI e EFFETTO-COLLATERALE
+      . ISTANZA-DI-TERAPIA (__DIAGNOSI_,_TERAPIA__,...,DIAGNOSI-EC) 
+      DIAGNOSI e TERAPIA e DIAGNOSI-EC sono chiavi esterne.
+      La coppia DIAGNOSI e TERAPIA è chiave. 
+      Si deve inserire UNIQUE per DIAGNOSI e non per la coppia per 
+      garantire (1,1).      
+      Si deve inserire un vincolo esterno per garantire (1,N) su terapia
+      Si deve inserire UNIQUE su DIAGNOSI-EC per garantire 1 tra DIAG e EC
+
+
+      
+      
+            
+
+    
+
+
