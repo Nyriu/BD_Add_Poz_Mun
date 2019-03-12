@@ -4,11 +4,12 @@
 \usepackage[utf8]{inputenc}
 
 
-\usepackage{listings} % SQL
+\usepackage{listings} % for coding like part
 
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
 
+\usepackage{hyperref} % lasciare per ultimo
 
 
 
@@ -33,7 +34,10 @@
 \setcounter{page}{1}
 
 
-% TODO link da indice a sections
+% TODO
+% - abbellire hyperlinks
+% - modifiche su full_er_model_02
+% - CARTELLA-CLINICA in DIAGNOSI-EFFETTUATA o altro
 
 
 \section{Progettazione Concettuale}\label{sec:prog_conc}
@@ -77,12 +81,30 @@ Abbiamo unito le due entità con una relazione chiamata VIENE-RICOVERATO che int
 Abbiamo poi costruito la tripletta FARMACO, SOMMINISTRATO-DURANTE e TERAPIA composta rispettivamente da: un'entità che rappresenta il farmaco con i relativi attributi; una relazione che permette di indicare che farmaco viene usato durante una terapia; ed infine un'entità che raccoglie i dettagli della terapia, ad esempio la dose giornaliera di farmaco da assumere.
 L'entità DIAGNOSI e le rimanenti relazioni, in particolare CAUSA-EFFETTO, verranno analizzate successivamente.
 
-\subsubsection{Le Entità}
+
+\begin{figure} % TODO abbellire
+  \centering
+  \includegraphics[width=\linewidth]{full_er_model_01}
+  \caption{Lo schema Entità-Relazioni completo}
+  % TODO modificare immagine
+  % - Specializzazione con Paziente Fuori Regione
+  % - Diagnosi come entità debole con chiave (Effettuata Durante, Data)
+  % - Rimuovere medico da Terapia
+  \label{figure_ER_01}
+\end{figure}
+
+\subsubsection{Le Entità} % TODO sarebbe meglio creare subsubsubsection o paragrafi per ogni entità?
 \begin{itemize}
-  \item PAZIENTE: TODO definire attributi, chiave e chiavi candidate
-  \item RICOVERO
-  \item FARMACO
+\item PAZIENTE: dai requisiti si capisce chiaramente che bisogna tener traccia di \textit{codice sanitario}, \textit{cognome}, \textit{nome}, \textit{data di nascita}, \textit{luogo di nascita} e \textit{provincia di residenza} del paziente.
+    Abbiamo creato un attributo per ciascuna di queste voci e selezionato il codice fiscale come chiave primaria.
+    È stata una scelta naturale perché dal testo sappiamo che il codice fiscale (d'ora in poi detto anche CF) è univoco, proprietà fondamentale per definire la chiave primaria di un'entità\footnote{Ricordiamo la definizione di chiave primaria univoca e sottoinsieme minimo TODO}.
+    Per salvare gli attributi esclusivi per i pazienti fuori regione riguardanti il nome della ULSS e la regione di appartenenza, è stata creata l'entità PAZIENTE-FUORI-REGIONE, specializzazione dell'entità precedente.
+    Poiché solo una frazione dell'insieme dei pazienti sarà di questo tipo la specializzazione è parziale e senza sovrapposizione(TODO si diceva così?), essendo l'unica.
+  \item RICOVERO: anche in questo caso abbiamo deciso di aggiungere all'entità un attributo per ogni voce del testo, fatta eccezione per \textit{paziente ricoverato}.
+    Infatti non solo sarebbe inutile ma addirittura pericoloso ripetere un'informazione che verrà modellata dalla relazione VIENE-RICOVERATO, di cui parleremo successivamente.
+    Nell'immagine \ref{figure_ER_01} si può osservare l'insieme degli attributi 
   \item TERAPIA
+  \item FARMACO
   \item DIAGNOSI
 \end{itemize}
 
