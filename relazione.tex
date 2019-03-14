@@ -98,19 +98,9 @@ L'entità DIAGNOSI e le rimanenti relazioni, in particolare CAUSA-EFFETTO, verra
 
 \begin{figure} % TODO abbellire
   \centering
-<<<<<<< HEAD
   \includegraphics[width=\linewidth]{schema1}
   \caption{Lo schema Entità-Relazioni completo}
-  % TODO modificare immagine
-  % - Specializzazione con Paziente Fuori Regione
-  % - Diagnosi come entità debole con chiave (Effettuata Durante, Data)
-  % - Rimuovere medico da Terapia
-  \label{schema1}
-=======
-  \includegraphics[width=\linewidth]{schema1.jpg}
-  \caption{Lo schema Entità-Relazioni completo}
   \label{schema_ER_progettazione_modello}
->>>>>>> 5fecc0ed52037d94d9d075b008deeb2523af06e1
 \end{figure}
 
 \subsubsection{Le Entità} % TODO sarebbe meglio creare subsubsubsection o paragrafi per ogni entità?
@@ -122,11 +112,7 @@ L'entità DIAGNOSI e le rimanenti relazioni, in particolare CAUSA-EFFETTO, verra
     Poiché solo una frazione dell'insieme dei pazienti sarà di questo tipo la specializzazione è parziale e senza sovrapposizione(TODO si diceva così?), essendo l'unica.
   \item RICOVERO: anche in questo caso abbiamo deciso di aggiungere all'entità un attributo per ogni voce del testo, fatta eccezione per \textit{paziente ricoverato}.
     Infatti non solo sarebbe inutile ma addirittura pericoloso ripetere un'informazione che verrà modellata dalla relazione VIENE-RICOVERATO, di cui parleremo successivamente.
-<<<<<<< HEAD
-    Nell'immagine \ref{schema1} si può osservare l'insieme degli attributi 
-=======
     Nell'immagine \ref{schema_ER_progettazione_modello} si può osservare l'insieme degli attributi 
->>>>>>> 5fecc0ed52037d94d9d075b008deeb2523af06e1
   \item TERAPIA
   \item FARMACO
   \item DIAGNOSI
@@ -211,25 +197,7 @@ Da un altro requisito sappiamo che una DIAGNOSI può essere in relazione con una
 
 
 \subsubsection{Analisi delle Ridondanze}
-<<<<<<< HEAD
 % TODO aggiungere DIAGNOSI-EFFETTUATE e dimostrare che conviene 
-\begin{table}[h!]
-  \begin{tabular}{lll}
-  Concept & Type & Volume \\
-  Paziente & E & 100000 \\
-  Ricovero & E & 500000 \\
-  Diagnosi & E & 2500000 \\
-  Terapia & E & 30000 \\
-  Istanza di Terapia & E & 2500000 \\
-  Farmaco & E & 10000 \\
-  Viene Ricoverato & R & 500000 \\
-  Effettuata Durante & R & 2500000 \\
-  Diagnosi Effettuate & R & 2500000 \\
-  Curata Da & R & 2500000 \\
-  Istanza Di & R & 2500000 \\
-  Effetto Collaterale & R & 100000 \\
-  Somministrato Durante  & R & 10000 \\
-=======
 
 \begin{table}[]
   \begin{tabular}{|l|l|l|}
@@ -248,7 +216,6 @@ Da un altro requisito sappiamo che una DIAGNOSI può essere in relazione con una
   Istanza Di & R & \multicolumn{1}{r|}{2500000} \\ \hline
   Effetto Collaterale & R & \multicolumn{1}{r|}{100000} \\ \hline
   Somministrato Durante  & R & \multicolumn{1}{r|}{10000} \\ \hline
->>>>>>> 5fecc0ed52037d94d9d075b008deeb2523af06e1
   \end{tabular}
   \end{table}
 \subsection{Traduzione del Modello Logico}
