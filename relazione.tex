@@ -88,17 +88,17 @@ Tramite un portale web dovrà essere possibile accedere a tale base di dati ed a
 % - A relazione conclusa decidere se aggiungere schemi parziali
 % - Descrizione procedimento Inside-Out 
 % . Descrizione testuale delle relazioni e entità
-
-L'attenzione iniziale è stata concentrata sulle entità PAZIENTE e RICOVERO in quanto ritenute fondamentali: si può dire che in assenza di un'entità che rappresenti i pazienti, l'intera base di dati perderebbe significato.
-Infatti per ogni ricovero o diagnosi deve essere possibile risalire al soggetto che è stato ricoverato o a cui è stata effettuato una diagnosi, altrimenti non si potrebbe utilizzare correttamente le informazioni raccolte in passato.
+Inizialmente l'attenzione è stata concentrata sulle entità PAZIENTE e RICOVERO in quanto ritenute fondamentali: si può dire che in assenza di un'entità che rappresenti i pazienti, l'intera base di dati perderebbe significato.
+Infatti per ogni ricovero o diagnosi deve essere possibile risalire al soggetto che è stato ricoverato o a cui è stata effettuato una diagnosi, altrimenti non si potrebbero utilizzare correttamente le informazioni raccolte in passato.
 RICOVERO, invece, segna i momenti in cui il paziente raggiunge e lascia la struttura ospedaliera, inoltre permette di indicare in modo univoco le visite e le cure alle quali è stato sottoposto durante questo periodo.
-Abbiamo unito le due entità con una relazione chiamata VIENE-RICOVERATO che intuitivamente collega una entità PAZIENTE a molte entità RICOVERO.
-Abbiamo poi costruito la tripletta FARMACO, SOMMINISTRATO-DURANTE e TERAPIA composta rispettivamente da: un'entità che rappresenta il farmaco con i relativi attributi; una relazione che permette di indicare che farmaco viene usato durante una terapia; ed infine un'entità che raccoglie i dettagli della terapia, ad esempio la dose giornaliera di farmaco da assumere.
+Le due entità sono in relazione tra di loro attraverso una VIENE-RICOVERATO che intuitivamente collega una entità PAZIENTE a molte entità RICOVERO.
+È stata poi costruita la tripletta FARMACO, SOMMINISTRATO-DURANTE e TERAPIA composta rispettivamente da: un'entità che rappresenta il farmaco con i relativi attributi; una relazione che permette di indicare che farmaco viene usato durante una terapia; infine un'entità che raccoglie i dettagli della terapia, ad esempio la dose giornaliera di farmaco da assumere.
 L'entità DIAGNOSI e le rimanenti relazioni, in particolare CAUSA-EFFETTO, verranno analizzate successivamente.
 
 
 \begin{figure} % TODO abbellire
   \centering
+<<<<<<< HEAD
   \includegraphics[width=\linewidth]{schema1}
   \caption{Lo schema Entità-Relazioni completo}
   % TODO modificare immagine
@@ -106,6 +106,11 @@ L'entità DIAGNOSI e le rimanenti relazioni, in particolare CAUSA-EFFETTO, verra
   % - Diagnosi come entità debole con chiave (Effettuata Durante, Data)
   % - Rimuovere medico da Terapia
   \label{schema1}
+=======
+  \includegraphics[width=\linewidth]{schema1.jpg}
+  \caption{Lo schema Entità-Relazioni completo}
+  \label{schema_ER_progettazione_modello}
+>>>>>>> 5fecc0ed52037d94d9d075b008deeb2523af06e1
 \end{figure}
 
 \subsubsection{Le Entità} % TODO sarebbe meglio creare subsubsubsection o paragrafi per ogni entità?
@@ -117,7 +122,11 @@ L'entità DIAGNOSI e le rimanenti relazioni, in particolare CAUSA-EFFETTO, verra
     Poiché solo una frazione dell'insieme dei pazienti sarà di questo tipo la specializzazione è parziale e senza sovrapposizione(TODO si diceva così?), essendo l'unica.
   \item RICOVERO: anche in questo caso abbiamo deciso di aggiungere all'entità un attributo per ogni voce del testo, fatta eccezione per \textit{paziente ricoverato}.
     Infatti non solo sarebbe inutile ma addirittura pericoloso ripetere un'informazione che verrà modellata dalla relazione VIENE-RICOVERATO, di cui parleremo successivamente.
+<<<<<<< HEAD
     Nell'immagine \ref{schema1} si può osservare l'insieme degli attributi 
+=======
+    Nell'immagine \ref{schema_ER_progettazione_modello} si può osservare l'insieme degli attributi 
+>>>>>>> 5fecc0ed52037d94d9d075b008deeb2523af06e1
   \item TERAPIA
   \item FARMACO
   \item DIAGNOSI
@@ -149,35 +158,60 @@ Da un altro requisito sappiamo che una DIAGNOSI può essere in relazione con una
 
 \clearpage
 \section{Progettazione Logica}
-TODO
-% - Unione in attributo composto e multivalore dei principi attivi 
-\begin{itemize}
-  \item Semplificazione dei concetti
-    \begin{itemize}
-      \item Rimozione della relazione ternaria (vedi schema "causa effetto")
-    \end{itemize}
-  \item Analisi delle ridondanze (vedi fogli "cartella clinica")
-  \item Rimozione delle Generalizzazioni (non presente)
 
-  \item Partizione/merging di entità
-    \begin{itemize}
-      \item Eliminazione dell'attributo composto "patologia" in DIAGNOSI
-      \item Partizionamento dei principi attivi in una nuova entità
-      \item Cose che si potrebbero aggiungere:
-        \begin{itemize}
-          \item Partizionamento entità inteso come separazione degli attributi in base alle operazioni (almeno le principali)
-          \item Partizionamento di una relazione (si può fare con MEDICO collegato a PAZIENTE e DIAGNOSI) ???????
-            (secondo Tri 'fare solo se non abbiamo abbastanza materiale')
-        \end{itemize}
-    \end{itemize}
-  \item Selezione delle chiavi
-    \begin{itemize}
-      \item Aggiungere un codice come chiave della diagnosi (da giustificare)
-    \end{itemize}
-\end{itemize}
-TODO guardare i commenti in file sorgente
+%TODO
+%% - Unione in attributo composto e multivalore dei principi attivi 
+%\begin{itemize}
+%  \item Semplificazione dei concetti
+%    \begin{itemize}
+%      \item Rimozione della relazione ternaria (vedi schema "causa effetto")
+%    \end{itemize}
+%  \item Analisi delle ridondanze (vedi fogli "cartella clinica")
+%  \item Rimozione delle Generalizzazioni (non presente)
+%
+%  \item Partizione/merging di entità
+%    \begin{itemize}
+%      \item Eliminazione dell'attributo composto "patologia" in DIAGNOSI
+%      \item Partizionamento dei principi attivi in una nuova entità
+%      \item Cose che si potrebbero aggiungere:
+%        \begin{itemize}
+%          \item Partizionamento entità inteso come separazione degli attributi in base alle operazioni (almeno le principali)
+%          \item Partizionamento di una relazione (si può fare con MEDICO collegato a PAZIENTE e DIAGNOSI) ???????
+%            (secondo Tri 'fare solo se non abbiamo abbastanza materiale')
+%        \end{itemize}
+%    \end{itemize}
+%  \item Selezione delle chiavi
+%    \begin{itemize}
+%      \item Aggiungere un codice come chiave della diagnosi (da giustificare)
+%    \end{itemize}
+%\end{itemize}
+%TODO guardare i commenti in file sorgente
+
+% TODO aggiungere DIAGNOSI-EFFETTUATE e dimostrare che conviene 
+
+%\begin{figure} % TODO abbellire
+%  \centering
+%  \includegraphics[width=\linewidth]{schema2.jpg}
+%  \caption{Lo schema Entità-Relazioni completo}
+%  \label{schema_ER_progettazione_logica}
+%\end{figure}
+%
+%\begin{figure} % TODO abbellire
+%  % TODO decidere se mettere lo zoom solo su Pazinete, Ricovero, Diagnosi
+%  \centering
+%  \includegraphics[width=\linewidth]{schema3.jpg}
+%  \caption{Lo schema Entità-Relazioni completo}
+%  \label{schema_ER_con_ridondaza}
+%\end{figure}
+
 \subsection{Ristrutturazione del Modello E-R}
+\subsubsection{Semplificazione dei Concetti}
+È necessario semplificare strutture come specializzazioni h
+
+
+
 \subsubsection{Analisi delle Ridondanze}
+<<<<<<< HEAD
 % TODO aggiungere DIAGNOSI-EFFETTUATE e dimostrare che conviene 
 \begin{table}[h!]
   \begin{tabular}{lll}
@@ -195,6 +229,26 @@ TODO guardare i commenti in file sorgente
   Istanza Di & R & 2500000 \\
   Effetto Collaterale & R & 100000 \\
   Somministrato Durante  & R & 10000 \\
+=======
+
+\begin{table}[]
+  \begin{tabular}{|l|l|l|}
+  \hline
+  \textbf{Concept} & \textbf{Type} & \textbf{Volume} \\ \hline
+  Paziente & E & \multicolumn{1}{r|}{100000} \\ \hline
+  Ricovero & E & \multicolumn{1}{r|}{500000} \\ \hline
+  Diagnosi & E & \multicolumn{1}{r|}{2500000} \\ \hline
+  Terapia & E & \multicolumn{1}{r|}{30000} \\ \hline
+  Istanza di Terapia & E & \multicolumn{1}{r|}{2500000} \\ \hline
+  Farmaco & E & \multicolumn{1}{r|}{10000} \\ \hline
+  Viene Ricoverato & R & \multicolumn{1}{r|}{500000} \\ \hline
+  Effettuata Durante & R & \multicolumn{1}{r|}{2500000} \\ \hline
+  Diagnosi Effettuate & R & \multicolumn{1}{r|}{2500000} \\ \hline
+  Curata Da & R & \multicolumn{1}{r|}{2500000} \\ \hline
+  Istanza Di & R & \multicolumn{1}{r|}{2500000} \\ \hline
+  Effetto Collaterale & R & \multicolumn{1}{r|}{100000} \\ \hline
+  Somministrato Durante  & R & \multicolumn{1}{r|}{10000} \\ \hline
+>>>>>>> 5fecc0ed52037d94d9d075b008deeb2523af06e1
   \end{tabular}
   \end{table}
 \subsection{Traduzione del Modello Logico}

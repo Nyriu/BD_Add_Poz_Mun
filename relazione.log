@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2019.3.14)  14 MAR 2019 22:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2019.3.14)  14 MAR 2019 22:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -250,18 +250,12 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 15.
 LaTeX Info: Redefining \pageref on input line 15.
 LaTeX Info: Redefining \nameref on input line 15.
- (c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.out) (c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.out)
 \@outlinefile=\write3
 \openout3 = `relazione.out'.
 
  [1
 
-{c:/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.toc
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 4.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 4.
-)
+{c:/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 \tf@toc=\write4
 \openout4 = `relazione.toc'.
 
@@ -283,50 +277,230 @@ l.85 \clearpage
                 [1
 
 ]
-<./images/schema1.jpg, id=117, 817.0525pt x 745.78625pt>
+<./images/schema1.jpg, id=23, 817.0525pt x 745.78625pt>
 File: ./images/schema1.jpg Graphic file (type jpg)
 <use ./images/schema1.jpg>
 Package pdftex.def Info: ./images/schema1.jpg  used on input line 102.
 (pdftex.def)             Requested size: 345.0pt x 314.9123pt.
+File: ./images/schema1.jpg Graphic file (type jpg)
+<use ./images/schema1.jpg>
+Package pdftex.def Info: ./images/schema1.jpg  used on input line 110.
+(pdftex.def)             Requested size: 345.0pt x 314.9123pt.
+
+
+LaTeX Warning: Float too large for page by 160.54678pt on input line 114.
+
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 115.
+(Font)              <7> on input line 120.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 115.
- [2
+(Font)              <5> on input line 120.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 120.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 120.
 
-] [3 <./images/schema1.jpg>] [4] [5
+LaTeX Warning: Reference `schema1' on page 2 undefined on input line 126.
 
-] [6] [7
 
-] [8
+LaTeX Warning: Reference `schema_ER_progettazione_modello' on page 2 undefined on input line 128.
 
-] [9
 
-]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 268.
- [10
+Overfull \hbox (46.30637pt too wide) in paragraph at lines 123--130
+\OT1/cmr/m/n/10 ser-va-re l'in-sie-me de-gli at-tri-bu-ti >>>>>>> 5fecc0ed52037d94d9d075b008deeb2523af06e1 
+ []
 
-]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 268.
- (c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 268.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 268.
-Package rerunfilecheck Info: File `relazione.out' has not changed.
-(rerunfilecheck)             Checksum: 4BB7431D5C84FF07ECF72D254C907DE7;1330.
- ) 
+[2
+
+] [3 <./images/schema1.jpg>] [4]
+
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `tbp') on input line 234.
+
+
+c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.tex:234: LaTeX Error: Not in outer par mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.234 \begin{table}[]
+                     
+You've lost some text.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.tex:254: LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.254 \subsection
+                 {Traduzione del Modello Logico}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.tex:254: LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.254 \subsection
+                 {Traduzione del Modello Logico}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.tex:254: Missing } inserted.
+<inserted text> 
+                }
+l.254 \subsection{Traduzione del Modello Logico}
+                                                
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.tex:254: Missing } inserted.
+<inserted text> 
+                }
+l.254 \subsection{Traduzione del Modello Logico}
+                                                
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.tex:254: Missing \cr inserted.
+<inserted text> 
+                \cr 
+l.254 \subsection{Traduzione del Modello Logico}
+                                                
+I'm guessing that you meant to end an alignment here.
+
+c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.tex:254: Missing { inserted.
+<inserted text> 
+                {
+l.254 \subsection{Traduzione del Modello Logico}
+                                                
+I've put in what seems to be necessary to fix
+the current column of the current alignment.
+Try to go on, since this might almost work.
+
+
+c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.tex:322: LaTeX Error: \begin{tabular} on input line 217 ended by \end{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.322 \end{document}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 322.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 322.
+(c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 322.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 322.
+
+
+Package rerunfilecheck Warning: File `relazione.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `relazione.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  D788C5694C00B44D147423284E9F3544;362.
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.tex:322: You can't use `\end' in internal vertical mode.
+\enddocument ...cumenthook \deadcycles \z@ \@@end 
+                                                  
+l.322 \end{document}
+                    
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+
+c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.tex:322: LaTeX Error: \begin{tabular} on input line 217 ended by \end{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.322 \end{document}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.tex:322: Missing } inserted.
+<inserted text> 
+                }
+l.322 \end{document}
+                    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.tex:322: Missing $ inserted.
+<inserted text> 
+                $
+l.322 \end{document}
+                    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.tex:322: Missing } inserted.
+<inserted text> 
+                }
+l.322 \end{document}
+                    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Overfull \hbox (22.72256pt too wide) in paragraph at lines 217--323
+[][] 
+ []
+
+(c:/texlive/2018/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2018/09/02 1.7 listings language file
+) (c:/texlive/2018/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2018/09/02 1.7 listings language file
+))
+! Emergency stop.
+<*> ...etto Database/BD_Add_Poz_Mun/relazione.tex"
+                                                  
+*** (job aborted, no legal \end found)
+
+ 
 Here is how much of TeX's memory you used:
- 7300 strings out of 492616
- 106183 string characters out of 6132768
- 213650 words of memory out of 5000000
- 11125 multiletter control sequences out of 15000+600000
+ 7622 strings out of 492616
+ 108531 string characters out of 6132768
+ 404400 words of memory out of 5000000
+ 11466 multiletter control sequences out of 15000+600000
  7626 words of font info for 27 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 28i,8n,32p,859b,403s stack positions out of 5000i,500n,10000p,200000b,80000s
-<c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on "c:/Users/addis/Desktop/Progetto Database/BD_Add_Poz_Mun/relazione.pdf" (12 pages, 190660 bytes).
-PDF statistics:
- 206 PDF objects out of 1000 (max. 8388607)
- 179 compressed objects within 2 object streams
- 33 named destinations out of 1000 (max. 500000)
- 158 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+ 33i,17n,51p,859b,1255s stack positions out of 5000i,500n,10000p,200000b,80000s
+!  ==> Fatal error occurred, no output PDF file produced!
