@@ -228,7 +228,7 @@ Da un altro requisito sappiamo che una DIAGNOSI può essere in relazione con una
   Somministrato Durante  & R & 10000 \\ \hline
   \end{tabular}
   \end{table}
-\begin{table}[h!]
+\begin{table}[!ht]
   \caption{Tabella delle operazioni}
   \label{table:2}
   \centering
@@ -239,7 +239,7 @@ Da un altro requisito sappiamo che una DIAGNOSI può essere in relazione con una
   Stampa Storico Diagnosi & I & 280/giorno \\ \hline
   \end{tabular}
   \end{table}
-\begin{table}[h!]
+\begin{table}[!ht]
   \caption{Tabella dei costi caso con ridondanza}
   \label{table:3}
   \centering
@@ -256,24 +256,21 @@ Da un altro requisito sappiamo che una DIAGNOSI può essere in relazione con una
   Diagnosi & E & 25 & R \\ \hline
   \end{tabular}
   \end{table}
-\begin{table}[h!]
+\begin{table}[!ht]
   \caption{Tabella dei costi caso senza ridondanza}
-  \label{table:3}
+  \label{table:4}
   \centering
   \begin{tabular}{|l|c|c|c|}
-  \hline
-  \textbf{Concept} & \textbf{Type} & \textbf{Access} & \textbf{Type} \\ \hline
-  \multicolumn{4}{|c|}{Inserimento Diagnosi} \\ \hline
-  Diagnosi & E & 1 & W \\ \hline
-  Effettutata Durante & R & 1 & W \\ \hline
-  \multicolumn{4}{|c|}{Stampa Storico Diagnosi} \\ \hline
-  Paziente & E & 1 & R \\ \hline
-  Viene Ricoverato & R & 5 & R \\ \hline
-  Effettutata Durante & R & 25 & W \\ \hline
-  Diagnosi & E & 25 & R \\ \hline
-  \end{tabular}
-  \end{table}
-
+    \hline
+    \textbf{Concept} & \textbf{Type} & \textbf{Access} & \textbf{Type} \\ \hline
+    \multicolumn{4}{|c|}{Inserimento Diagnosi} \\ \hline
+    Diagnosi & E & 1 & W \\ \hline
+    Effettutata Durante & R & 1 & W \\ \hline
+    \multicolumn{4}{|c|}{Stampa Storico Diagnosi} \\ \hline
+    Paziente & E & 1 & R \\ \hline
+    Viene Ricoverato & R & 5 & R \\ \hline
+    Effettutata Durante & R & 25 & W \\ \hline
+    Diagnosi & E & 25 & R \\ \hline
   \end{tabular}
 \end{table}
 
@@ -326,15 +323,16 @@ Da un altro requisito sappiamo che una DIAGNOSI può essere in relazione con una
 \clearpage
 \section{Definizione della Base di Dati in SQL}
 \subsection{Definizione delle Tabelle}
-\subsection{Popolamento della Base di Dati}
 \subsection{Definizione di Query Significative}
 
 
 
 
 \clearpage
-\section{Analisi Dati in R}
 
+\section{Analisi Dati}
+\subsection{Popolamento della Base di Dati}
+\subsection{Analisi Dati in R}
 
 
 
