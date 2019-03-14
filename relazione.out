@@ -1,0 +1,19 @@
+\BOOKMARK [1][-]{section.1}{Progettazione Concettuale}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Raccolta ed Analisi dei Requisiti}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Progettazione del Modello E-R}{section.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.2.1}{Le Entit\340}{subsection.1.2}% 4
+\BOOKMARK [3][-]{subsubsection.1.2.2}{Le Relazioni}{subsection.1.2}% 5
+\BOOKMARK [1][-]{section.2}{Progettazione Logica}{}% 6
+\BOOKMARK [2][-]{subsection.2.1}{Ristrutturazione del Modello E-R}{section.2}% 7
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Analisi delle Ridondanze}{subsection.2.1}% 8
+\BOOKMARK [2][-]{subsection.2.2}{Traduzione del Modello Logico}{section.2}% 9
+\BOOKMARK [1][-]{section.3}{Progettazione Fisica}{}% 10
+\BOOKMARK [2][-]{subsection.3.1}{Nuovi Indici}{section.3}% 11
+\BOOKMARK [1][-]{section.4}{Definizione della Base di Dati in SQL}{}% 12
+\BOOKMARK [2][-]{subsection.4.1}{Definizione delle Tabelle}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.2}{Popolamento della Base di Dati}{section.4}% 14
+\BOOKMARK [2][-]{subsection.4.3}{Definizione di Query Significative}{section.4}% 15
+\BOOKMARK [1][-]{section.5}{Analisi Dati in R}{}% 16
+\BOOKMARK [1][-]{section.6}{Portale Web}{}% 17
+\BOOKMARK [2][-]{subsection.6.1}{Interfaccia Grafica}{section.6}% 18
+\BOOKMARK [2][-]{subsection.6.2}{Comunicare con pgAdmin}{section.6}% 19
