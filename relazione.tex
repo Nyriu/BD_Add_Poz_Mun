@@ -33,11 +33,25 @@
 \cleardoublepage
 \setcounter{page}{1}
 
+% REGOLE DI STILE
+% - scrivere in modo impersonale no "abbiamo deciso di"
+% - 
+
 
 % TODO
 % - abbellire hyperlinks
 % - modifiche su full_er_model_02
+% - rimuovere CARTELLA-CLINICA dallo schema ER della Progettazione ER
 % - CARTELLA-CLINICA in DIAGNOSI-EFFETTUATA o altro
+
+% COSE DA RICORDARE
+% NEI REQUISITI
+% - aggiungere numero di accessi effettuati e numero di Pazienti, Ricovero, ecc
+% - Evidenziare la necessità dell'ospedale di accedere spesso alle diagnosi di un dato paziente
+% NELLA FASE LOGICA
+% - verrà aggiunta relazione tra PAZIENTE DIAGNOSI (es DIAGNOSI EFFETTUATE) per verificare la differenza di prestazioni
+% - l'unica ridondanza è data da DIAGNOSI EFFETTUATE, la ricorsione DIAGNOSI->DIAGNOSI (o ISTANZA DI TERAPIA -> DIAGNOSI) NON è ridondanza (esprime informazioni differenti)
+
 
 
 \section{Progettazione Concettuale}\label{sec:prog_conc}
@@ -53,7 +67,7 @@ Si vuole modellare il seguente insieme di informazioni riguardanti un sistema pe
   \item Di ogni diagnosi effettuata durante il ricovero del paziente, sono memorizzati la patologia diagnosticata, col suo codice ICD10 (classificazione internazionale delle patologie) e l’indicazione della sua gravità (grave: si/no), la data e il nome e cognome del medico che ha effettuato la diagnosi.
   \item Nella base di dati si tiene traccia delle terapie prescritte ai pazienti durante il ricovero.
     Di ogni terapia, si memorizzano il farmaco prescritto, la dose giornaliera, le date di inizio e di fine della prescrizione, la modalità di somministrazione ed il medico che ha prescritto la terapia.
-    % manca parte in cui si dice che la terapia è un concetto astratto
+    % TODO manca parte in cui si dice che la terapia è un concetto astratto
   \item Di ogni farmaco sono memorizzati il nome commerciale (univoco), l’azienda produttrice, il nome e la quantità dei principi attivi contenuti e la dose giornaliera raccomandata.
   \item Si tiene, infine, traccia delle diagnosi che hanno motivato le terapie.
     In particolare, ogni terapia è prescritta al fine di curare una o più patologie diagnosticate.
