@@ -10,10 +10,6 @@
 \graphicspath{ {./images/} }
 
 \usepackage{hyperref} % lasciare per ultimo
-
-
-
-
  
 
 \begin{document}
@@ -82,6 +78,7 @@ Si vuole modellare il seguente insieme di informazioni riguardanti un sistema pe
     Tale legame causa-effetto va registrato nella base di dati.
 \end{itemize}
 Tramite un portale web dovrà essere possibile accedere a tale base di dati ed aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farmaci. 
+% TODO aggiungere numeri/necessità dell'ospedale 
 
 
 
@@ -89,13 +86,11 @@ Tramite un portale web dovrà essere possibile accedere a tale base di dati ed a
 \clearpage
 \subsection{Progettazione del Modello E-R}
 %TODO
-%\begin{itemize}
-%  \item Descrizione procedimento Inside-Out con schemi parziali (fasi della costruzione) e descrizione testuale delle relazioni e entità
-%    \begin{itemize}
-%      \item Unione in attributo composto e multivalore dei principi attivi 
-%    \end{itemize}
-%\end{itemize}
-Inizialmente abbiamo concentrato la nostra attenzione sulle entità PAZIENTE e RICOVERO perché ci sembravano fondamentali: si può dire che in assenza di un'entità che rappresenti i pazienti, l'intera base di dati perderebbe significato.
+% - A relazione conclusa decidere se aggiungere schemi parziali
+% - Descrizione procedimento Inside-Out 
+% . Descrizione testuale delle relazioni e entità
+
+L'attenzione iniziale è stata concentrata sulle entità PAZIENTE e RICOVERO in quanto ritenute fondamentali: si può dire che in assenza di un'entità che rappresenti i pazienti, l'intera base di dati perderebbe significato.
 Infatti per ogni ricovero o diagnosi deve essere possibile risalire al soggetto che è stato ricoverato o a cui è stata effettuato una diagnosi, altrimenti non si potrebbe utilizzare correttamente le informazioni raccolte in passato.
 RICOVERO, invece, segna i momenti in cui il paziente raggiunge e lascia la struttura ospedaliera, inoltre permette di indicare in modo univoco le visite e le cure alle quali è stato sottoposto durante questo periodo.
 Abbiamo unito le due entità con una relazione chiamata VIENE-RICOVERATO che intuitivamente collega una entità PAZIENTE a molte entità RICOVERO.
@@ -156,6 +151,7 @@ Da un altro requisito sappiamo che una DIAGNOSI può essere in relazione con una
 \clearpage
 \section{Progettazione Logica}
 TODO
+% - Unione in attributo composto e multivalore dei principi attivi 
 \begin{itemize}
   \item Semplificazione dei concetti
     \begin{itemize}
@@ -182,6 +178,26 @@ TODO
 \end{itemize}
 TODO guardare i commenti in file sorgente
 \subsection{Ristrutturazione del Modello E-R}
+\subsubsection{Analisi delle Ridondanze}
+% TODO aggiungere DIAGNOSI-EFFETTUATE e dimostrare che conviene 
+\begin{table}[]
+  \begin{tabular}{lll}
+  Concept & Type & Volume \\
+  Paziente & E & 100000 \\
+  Ricovero & E & 500000 \\
+  Diagnosi & E & 2500000 \\
+  Terapia & E & 30000 \\
+  Istanza di Terapia & E & 2500000 \\
+  Farmaco & E & 10000 \\
+  Viene Ricoverato & R & 500000 \\
+  Effettuata Durante & R & 2500000 \\
+  Diagnosi Effettuate & R & 2500000 \\
+  Curata Da & R & 2500000 \\
+  Istanza Di & R & 2500000 \\
+  Effetto Collaterale & R & 100000 \\
+  Somministrato Durante  & R & 10000 \\
+  \end{tabular}
+  \end{table}
 \subsection{Traduzione del Modello Logico}
 
 %% sotto un copia-incolla da vecchio file %%
@@ -224,7 +240,7 @@ TODO guardare i commenti in file sorgente
 \clearpage
 \section{Progettazione Fisica}
 \subsection{Nuovi Indici}
-
+% Indice possibile è provincia 
 
 
 
