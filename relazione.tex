@@ -179,7 +179,25 @@ TODO
 TODO guardare i commenti in file sorgente
 \subsection{Ristrutturazione del Modello E-R}
 \subsubsection{Analisi delle Ridondanze}
-% TODO aggiungere cw-DURANTE e dimostrare che conviene 
+% TODO aggiungere DIAGNOSI-EFFETTUATE e dimostrare che conviene 
+\begin{table}[]
+  \begin{tabular}{lll}
+  Concept & Type & Volume \\
+  Paziente & E & 100000 \\
+  Ricovero & E & 500000 \\
+  Diagnosi & E & 2500000 \\
+  Terapia & E & 30000 \\
+  Istanza di Terapia & E & 2500000 \\
+  Farmaco & E & 10000 \\
+  Viene Ricoverato & R & 500000 \\
+  Effettuata Durante & R & 2500000 \\
+  Diagnosi Effettuate & R & 2500000 \\
+  Curata Da & R & 2500000 \\
+  Istanza Di & R & 2500000 \\
+  Effetto Collaterale & R & 100000 \\
+  Somministrato Durante  & R & 10000 \\
+  \end{tabular}
+  \end{table}
 \subsection{Traduzione del Modello Logico}
 
 %% sotto un copia-incolla da vecchio file %%
