@@ -2,7 +2,7 @@
 
 - Analisi dei Requisiti --> Stesura del problema (vedi testo originale)
     Modifiche ai requisiti:
-    . Aggiunto cartella clinica paziente 
+    . Aggiunto cartella clinica paziente !!!NO una relazione fa comodo per l'analisi delle ridondanze, ma cartella clinica è troppo complessa
     . Evidenziare nel testo che la terapia è un concetto astratto
 
 - Descrizione procedimento Inside-Out con schemi parziali (fasi della costruzione) e descrizione testuale delle relazioni e entità
