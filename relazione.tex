@@ -70,23 +70,28 @@ dato ospedale.
         nome della divisione ospedaliera (Cardiologia, Reumatologia, Ortopedia,
         \dots ), il paziente ricoverato, le date di inizio e fine del ricovero 
         e il motivo principale del ricovero.
+
   \item Di ogni paziente, il sistema deve memorizzare il codice sanitario 
         (univoco), il cognome, il nome, la data di nascita, il luogo di nascita 
         e la provincia di residenza. Per i pazienti residenti fuori regione, 
         vengono memorizzati anche il nome della ULSS e la regione di appartenenza.
+
   \item Di ogni diagnosi effettuata durante il ricovero del paziente, sono 
         memorizzati la patologia diagnosticata, col suo codice ICD10 
         (classificazione internazionale delle patologie) e l’indicazione della
         sua gravità (grave: si/no), la data e il nome e cognome del medico che 
         ha effettuato la diagnosi.
+
   \item Nella base di dati si tiene traccia delle terapie prescritte ai pazienti
         durante il ricovero. Di ogni terapia, si memorizzano il farmaco prescritto,
         la dose giornaliera, le date di inizio e di fine della prescrizione, la 
         modalità di somministrazione ed il medico che ha prescritto la terapia.
 % TODO manca parte in cui si dice che la terapia è un concetto astratto
+
   \item Di ogni farmaco sono memorizzati il nome commerciale (univoco), l’azienda
         produttrice, il nome e la quantità dei principi attivi contenuti e la 
         dose giornaliera raccomandata.
+
   \item Si tiene, infine, traccia delle diagnosi che hanno motivato le terapie.
         In particolare, ogni terapia è prescritta al fine di curare una o più 
         patologie diagnosticate. Può capitare anche che una nuova patologia 
@@ -125,37 +130,66 @@ un'entità che raccoglie i dettagli della terapia, ad esempio la dose giornalier
 di farmaco da assumere.  L'entità DIAGNOSI e le rimanenti relazioni, in
 particolare CAUSA-EFFETTO, verranno analizzate successivamente.
 
-
-\begin{figure} % TODO abbellire
-  \centering
-  \includegraphics[width=\linewidth]{schema1}
-  \caption{Lo schema Entità-Relazioni completo}
-  \label{schema_ER_progettazione_modello}
-\end{figure}
-
 \subsubsection{Le Entità} % TODO sarebbe meglio creare subsubsubsection o paragrafi per ogni entità?
-\begin{itemize}
-  \item PAZIENTE: dai requisiti si capisce chiaramente che bisogna tener traccia
-    di \textit{codice sanitario}, \textit{cognome}, \textit{nome}, \textit{data di
-    nascita}, \textit{luogo di nascita} e \textit{provincia di residenza} del
-    paziente.  Abbiamo creato un attributo per ciascuna di queste voci e
-    selezionato il codice fiscale come chiave primaria.  È stata una scelta
-    naturale perché dal testo sappiamo che il codice fiscale (d'ora in poi detto
-    anche CF) è univoco, proprietà fondamentale per definire la chiave primaria di
-    un'entità\footnote{Ricordiamo la definizione di chiave primaria univoca e
-    sottoinsieme minimo TODO}.  Per salvare gli attributi esclusivi per i pazienti
-    fuori regione riguardanti il nome della ULSS e la regione di appartenenza, è
-    stata creata l'entità PAZIENTE-FUORI-REGIONE, specializzazione dell'entità
-    precedente.  Poiché solo una frazione dell'insieme dei pazienti sarà di questo
-    tipo la specializzazione è parziale e senza sovrapposizione(TODO si diceva
-    così?), essendo l'unica.
-  \item RICOVERO: anche in questo caso abbiamo deciso di aggiungere all'entità un attributo per ogni voce del testo, fatta eccezione per \textit{paziente ricoverato}.
-    Infatti non solo sarebbe inutile ma addirittura pericoloso ripetere un'informazione che verrà modellata dalla relazione VIENE-RICOVERATO, di cui parleremo successivamente.
-    Nell'immagine \ref{schema_ER_progettazione_modello} si può osservare l'insieme degli attributi 
-  \item TERAPIA
-  \item FARMACO
-  \item DIAGNOSI
-\end{itemize}
+    \begin{itemize}
+        \item PAZIENTE: dai requisiti è possibile individuare le seguenti voci
+              significative: \textit{codice sanitario}, \textit{cognome},
+              \textit{nome}, \textit{data di nascita}, \textit{luogo di nascita} e
+              \textit{provincia di residenza} del paziente.
+              Per ognuna di esse è stato creato un attibuto. Il codice fiscale
+              (d'ora in poi detto anche CF) è stato selezionato come chiave
+              primaria in quanto,
+              come definito nei requisiti, univoco\footnote{Proprietà fondamentale
+              di un attributo per la definizione di esso come chiave primaria.}.
+              %Ricordiamo la definizione di chiave primaria univoca e sottoinsieme minimo TODO
+              Per salvare gli attributi esclusivi per i pazienti fuori regione
+              riguardanti il nome della ULSS e la regione di appartenenza, è stata
+              creata l'entità PAZIENTE-FUORI-REGIONE, specializzazione dell'entità
+              precedente.  Poiché solo una frazione dell'insieme dei pazienti sarà
+              di questo tipo la specializzazione è parziale.
+      
+        \item RICOVERO: dai requisiti è possibile individuare le seguenti voci 
+              significative: \textit{codice ricovero, divisione ospedaliera, 
+              paziente ricoverato, data inizio, data fine} del ricovero. Per 
+              ognuna di esse è stato creato un attributo, fatta eccezione per 
+              \textit{paziente ricoverato}. Quest'ultima informazione verrà
+              memorizzata attraverso la relazione VIENE-RICOVERATO, descritta 
+              in seguito. Il \textit{codice ricovero} è stato selezionato come
+              chiave primaria dell'entità in quanto univoco.
+              
+        \item DIAGNOSI: dai requisiti è possibile individuare le seguenti voci 
+              significative: \textit{patologia diagnosticata, codice patologia,
+              gravità patologia, data, medico}. Per ognuna di esse è stato 
+              creato un attributo. In particolare \textit{patologia} è un 
+              attributo composto che si suddivide in \textit{codice} e 
+              \textit{gravità}. Si assume che la data comprenda anche l'ora in 
+              cui è stata effettuata la diagnosi. DIAGNOSI è un'entità debole 
+              in quanto la chiave primaria è definita attraverso l'attributo
+              \textit{data} e la relazione EFFETTUATA-DURANTE. La chiave è
+              stata stabilita sfruttando l'assunzione precedente rigurado la 
+              data in modo tale che per ogni ricovero non sia possibile 
+              associare più diagnosi effettuate nello stesso istante. 
+
+        \item FARMACO: dai requisiti è possibile individuare le seguenti voci
+              significative: \textit{nome commerciale, azienda produttrice, 
+              nome principi attivi, quantità principi attivi, dose giornaliera
+              raccomandata}. Per ognuna di esse è stato creato un attributo. In
+              particolare \textit{nome principi attivi e quantità principi 
+              attivi} sono attributi multivalore e la chiave primaria è 
+              rappresentata da \textit{nome commerciale} in quanto univoco.
+
+        \item TERAPIA: dai requisiti è possibile individuare le seguenti voci
+              significative: \textit{farmaco prescritto, dose giornaliera, 
+              modalità di somministrazione, medico prescrivente}. Sono stati
+              definiti gli attributi \textit{dose giornaliera} e 
+              \textit{modalità somministrazione} mentre l'informazione relativa
+              alle altre voci verrà considerata in altre entità e relazioni.
+              La terapia è intesa come metodo per la sommistristrazione di un
+              farmaco al fine di curare una patologia, di conseguenza, la 
+              chiave primaria è composta dagli attributi di terapia e dalla
+              relazione SOMMINISTRATO-DURANTE che rende l'entità un'entità
+              debole.
+    \end{itemize}
 
 \subsubsection{Le Relazioni}
 \begin{itemize}
@@ -173,7 +207,12 @@ requisito sappiamo che una DIAGNOSI può essere in relazione con una TERAPIA in
 quanto la terapia viene prescritta solo se esiste una diagnosi che la motivi.
 
 
-
+\begin{figure} % TODO abbellire
+    \centering
+    \includegraphics[width=\linewidth]{schema1}
+    \caption{Lo schema Entità-Relazioni completo}
+    \label{schema_ER_progettazione_modello}
+  \end{figure}
 
 
 %\begin{figure}[h] % TODO abbellire
