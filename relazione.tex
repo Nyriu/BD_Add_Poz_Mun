@@ -183,6 +183,8 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
               definiti gli attributi \textit{dose giornaliera} e 
               \textit{modalità somministrazione} mentre l'informazione relativa
               alle altre voci verrà considerata in altre entità e relazioni.
+              In particolare le date di inzio e fine della terapia verranno
+              gestite nella relazione MOTIVA-TERAPIA.
               La terapia è intesa come metodo per la sommistristrazione di un
               farmaco al fine di curare una patologia, di conseguenza, la 
               chiave primaria è composta dagli attributi di terapia e dalla
@@ -203,10 +205,23 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
               e TERAPIA. La partecipazione di FARMACO è parziale mentre quella di
               TERAPIA è totale.
         
-        \item MOTIVA-TERAPIA: una relazione ternaria in cui partecipano le entità
-              TERAPIA e DIAGNOSI in un meccanismo di causa-effetto. In particolare
-              la diagnosi partecipa 
+        \item MOTIVA-TERAPIA:   
         
+
+        
+        
+        
+        
+              una relazione ternaria in cui partecipano le entità
+              TERAPIA e DIAGNOSI in un meccanismo di causa-effetto. In particolare
+              dall'analisi dei requisiti emerge che ad ogni diagnosi può essere 
+              associata nessuna o, al più, una terapia mentre la terapia viene 
+              prescritta al fine di curare più patologie relative a diagnosi 
+              distinte. Di conseguenza la partecipazione di DIAGNOSI è parziale 
+              e quella di TERAPIA totale considerando 
+              
+              % VINCOLI ESTERNI  
+              % RICAPITOLANDO FLUSSO
 
               Abbiamo prestato particolare attenzione a CAUSA-EFFETTO.
               Questa relazione potrebbe sembrare eccessiva essendo sia ternaria che ricorsiva,
