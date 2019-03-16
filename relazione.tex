@@ -44,7 +44,7 @@
 
 % TODO -- SCHEMI 
 % - primo schema: pazinete fuori regione, attributi composti multivalore, no cartella clinica 
-% - secondo schema: togli ternaria, toglie specializzazione, togli attributi composti, multivalore 
+% - secondo schema: rimuove patologia, terapia deve avere la sua chiave
 % - terzo schema: per prestazioni aggiungiamo diagnosi effettuate 
 
 % COSE DA RICORDARE
@@ -52,6 +52,7 @@
 % - aggiungere numero di accessi effettuati e numero di Pazienti, Ricovero, ecc
 % - Evidenziare la necessità dell'ospedale di accedere spesso alle diagnosi di un dato paziente
 % NELLA FASE LOGICA
+% il nostro modello logico quello relazionale
 % - verrà aggiunta relazione tra PAZIENTE DIAGNOSI (es DIAGNOSI EFFETTUATE) per verificare la differenza di prestazioni
 % - l'unica ridondanza è data da DIAGNOSI EFFETTUATE, la ricorsione DIAGNOSI->DIAGNOSI (o ISTANZA DI TERAPIA -> DIAGNOSI) NON è ridondanza (esprime informazioni differenti)
 
@@ -106,12 +107,23 @@ aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farma
 % - A relazione conclusa decidere se aggiungere schemi parziali
 % - Descrizione procedimento Inside-Out 
 % . Descrizione testuale delle relazioni e entità
-Inizialmente l'attenzione è stata concentrata sulle entità PAZIENTE e RICOVERO in quanto ritenute fondamentali: si può dire che in assenza di un'entità che rappresenti i pazienti, l'intera base di dati perderebbe significato.
-Infatti per ogni ricovero o diagnosi deve essere possibile risalire al soggetto che è stato ricoverato o a cui è stata effettuato una diagnosi, altrimenti non si potrebbero utilizzare correttamente le informazioni raccolte in passato.
-RICOVERO, invece, segna i momenti in cui il paziente raggiunge e lascia la struttura ospedaliera, inoltre permette di indicare in modo univoco le visite e le cure alle quali è stato sottoposto durante questo periodo.
-Le due entità sono in relazione tra di loro attraverso una VIENE-RICOVERATO che intuitivamente collega una entità PAZIENTE a molte entità RICOVERO.
-È stata poi costruita la tripletta FARMACO, SOMMINISTRATO-DURANTE e TERAPIA composta rispettivamente da: un'entità che rappresenta il farmaco con i relativi attributi; una relazione che permette di indicare che farmaco viene usato durante una terapia; infine un'entità che raccoglie i dettagli della terapia, ad esempio la dose giornaliera di farmaco da assumere.
-L'entità DIAGNOSI e le rimanenti relazioni, in particolare CAUSA-EFFETTO, verranno analizzate successivamente.
+Inizialmente l'attenzione è stata concentrata sulle entità PAZIENTE e RICOVERO
+in quanto ritenute fondamentali: si può dire che in assenza di un'entità che
+rappresenti i pazienti, l'intera base di dati perderebbe significato.  Infatti
+per ogni ricovero o diagnosi deve essere possibile risalire al soggetto che è
+stato ricoverato o a cui è stata effettuato una diagnosi, altrimenti non si
+potrebbero utilizzare correttamente le informazioni raccolte in passato.
+RICOVERO, invece, segna i momenti in cui il paziente raggiunge e lascia la
+struttura ospedaliera, inoltre permette di indicare in modo univoco le visite e
+le cure alle quali è stato sottoposto durante questo periodo.  Le due entità
+sono in relazione tra di loro attraverso una VIENE-RICOVERATO che intuitivamente
+collega una entità PAZIENTE a molte entità RICOVERO.  È stata poi costruita la
+tripletta FARMACO, SOMMINISTRATO-DURANTE e TERAPIA composta rispettivamente da:
+un'entità che rappresenta il farmaco con i relativi attributi; una relazione che
+permette di indicare che farmaco viene usato durante una terapia; infine
+un'entità che raccoglie i dettagli della terapia, ad esempio la dose giornaliera
+di farmaco da assumere.  L'entità DIAGNOSI e le rimanenti relazioni, in
+particolare CAUSA-EFFETTO, verranno analizzate successivamente.
 
 
 \begin{figure} % TODO abbellire
@@ -123,11 +135,20 @@ L'entità DIAGNOSI e le rimanenti relazioni, in particolare CAUSA-EFFETTO, verra
 
 \subsubsection{Le Entità} % TODO sarebbe meglio creare subsubsubsection o paragrafi per ogni entità?
 \begin{itemize}
-\item PAZIENTE: dai requisiti si capisce chiaramente che bisogna tener traccia di \textit{codice sanitario}, \textit{cognome}, \textit{nome}, \textit{data di nascita}, \textit{luogo di nascita} e \textit{provincia di residenza} del paziente.
-    Abbiamo creato un attributo per ciascuna di queste voci e selezionato il codice fiscale come chiave primaria.
-    È stata una scelta naturale perché dal testo sappiamo che il codice fiscale (d'ora in poi detto anche CF) è univoco, proprietà fondamentale per definire la chiave primaria di un'entità\footnote{Ricordiamo la definizione di chiave primaria univoca e sottoinsieme minimo TODO}.
-    Per salvare gli attributi esclusivi per i pazienti fuori regione riguardanti il nome della ULSS e la regione di appartenenza, è stata creata l'entità PAZIENTE-FUORI-REGIONE, specializzazione dell'entità precedente.
-    Poiché solo una frazione dell'insieme dei pazienti sarà di questo tipo la specializzazione è parziale e senza sovrapposizione(TODO si diceva così?), essendo l'unica.
+  \item PAZIENTE: dai requisiti si capisce chiaramente che bisogna tener traccia
+    di \textit{codice sanitario}, \textit{cognome}, \textit{nome}, \textit{data di
+    nascita}, \textit{luogo di nascita} e \textit{provincia di residenza} del
+    paziente.  Abbiamo creato un attributo per ciascuna di queste voci e
+    selezionato il codice fiscale come chiave primaria.  È stata una scelta
+    naturale perché dal testo sappiamo che il codice fiscale (d'ora in poi detto
+    anche CF) è univoco, proprietà fondamentale per definire la chiave primaria di
+    un'entità\footnote{Ricordiamo la definizione di chiave primaria univoca e
+    sottoinsieme minimo TODO}.  Per salvare gli attributi esclusivi per i pazienti
+    fuori regione riguardanti il nome della ULSS e la regione di appartenenza, è
+    stata creata l'entità PAZIENTE-FUORI-REGIONE, specializzazione dell'entità
+    precedente.  Poiché solo una frazione dell'insieme dei pazienti sarà di questo
+    tipo la specializzazione è parziale e senza sovrapposizione(TODO si diceva
+    così?), essendo l'unica.
   \item RICOVERO: anche in questo caso abbiamo deciso di aggiungere all'entità un attributo per ogni voce del testo, fatta eccezione per \textit{paziente ricoverato}.
     Infatti non solo sarebbe inutile ma addirittura pericoloso ripetere un'informazione che verrà modellata dalla relazione VIENE-RICOVERATO, di cui parleremo successivamente.
     Nell'immagine \ref{schema_ER_progettazione_modello} si può osservare l'insieme degli attributi 
@@ -144,8 +165,12 @@ L'entità DIAGNOSI e le rimanenti relazioni, in particolare CAUSA-EFFETTO, verra
   \item CARTELLA-CLINICA
 \end{itemize}
 Abbiamo prestato particolare attenzione a CAUSA-EFFETTO.
-Questa relazione potrebbe sembrare eccessiva essendo sia ternaria che ricorsiva, in realtà modella molto bene un requisito fondamentale: \textit{``Può capitare anche che una nuova patologia (registrata come nuova diagnosi) sia causata, come effetto collaterale, da una terapia precedentemente prescritta.''}
-Da un altro requisito sappiamo che una DIAGNOSI può essere in relazione con una TERAPIA in quanto la terapia viene prescritta solo se esiste una diagnosi che la motivi.
+Questa relazione potrebbe sembrare eccessiva essendo sia ternaria che ricorsiva,
+in realtà modella molto bene un requisito fondamentale: \textit{``Può capitare
+anche che una nuova patologia (registrata come nuova diagnosi) sia causata, come
+effetto collaterale, da una terapia precedentemente prescritta.''} Da un altro
+requisito sappiamo che una DIAGNOSI può essere in relazione con una TERAPIA in
+quanto la terapia viene prescritta solo se esiste una diagnosi che la motivi.
 
 
 
@@ -193,12 +218,6 @@ Da un altro requisito sappiamo che una DIAGNOSI può essere in relazione con una
 
 % TODO aggiungere DIAGNOSI-EFFETTUATE e dimostrare che conviene 
 
-%\begin{figure} % TODO abbellire
-%  \centering
-%  \includegraphics[width=\linewidth]{schema2.jpg}
-%  \caption{Lo schema Entità-Relazioni completo}
-%  \label{schema_ER_ristrutturato}
-%\end{figure}
 %
 %\begin{figure} % TODO abbellire
 %  % TODO decidere se mettere lo zoom solo su Pazinete, Ricovero, Diagnosi
@@ -216,15 +235,41 @@ Da un altro requisito sappiamo che una DIAGNOSI può essere in relazione con una
 % ottimizzazione analisi ridondanze
 % schema con ridondanza
 % elenco tabelle
-
 % vincoli d'integrità
-È necessario semplificare strutture come specializzazioni o generalizzazioni, attributi composti o multivalore in questo modo renderemo più facile la traduzione del kk
 
+È utile semplificare strutture come specializzazioni, attributi composti e attributi multivalore perché renderà più facile la traduzione del modello Entità-Relazioni in quello Relazionale.
+Ricordando che quest'ultimo non permette di rappresentare generalizzazioni sarà necessario rimuovere tutte le specializzazioni dal nostro schema E-R.
+Si può notare che la specializzazione PAZIENTE-FUORI-REGIONE può essere facilmente rappresentata aggiungendo due attributi all'entità PAZIENTE.
+I nuovi attributi \textit{ULSS} e \textit{Regione di Appartenenza} in PAZIENTE saranno facoltativi poiché la specializzazione era parziale.
+La rimozione delle generalizzazioni non è sempre così immediata: se PAZIENTE-FUORI-REGIONE avesse avuto una relazione in più rispetto al genitore si sarebbero dovute valutare varie opzioni.
+Per esempio la creazione di una nuova relazione a simboleggiare il legame tra genitore e figlio, lasciando invariati gli attributi, oppure la duplicazione nel figlio di tutti gli attributi e di tutte le relazioni del genitore.
+
+Anche nel caso degli attributi composti la semplificazione è immediata, infatti nello schema l'unico attributo composto è \textit{Patologia} in DIAGNOSI.
+Può essere semplificato trasformandolo in due nuovi attributi \textit{Codice Patologia} e \textit{Gravità Patologia} che contengono esattamente la stessa informazione.
+
+Bisognerà prestare più attenzione agli attributi multivalore: in FARMACO sono presenti \textit{Nome Principi Attivi} e \textit{Quantità Principi Attivi} entrambi obbligatori e multivalore.
+La semplificazione migliore è creare una nuova entità chiamata PRINCIPIO-ATTIVO è metterla in relazione con FARMACO attraverso CONTIENE.
+In questo modo un principio attivo, nella base di dati, verrebbe rappresentato soltanto una volta
+
+
+
+
+
+
+
+
+
+\begin{figure}[!ht] % TODO abbellire
+  \centering
+  \includegraphics[width=\linewidth]{schema2.jpg}
+  \caption{Lo schema Entità-Relazioni completo}
+  \label{schema_ER_ristrutturato}
+\end{figure}
 
 
 \subsection{Analisi delle Ridondanze}
 % TODO aggiungere DIAGNOSI-EFFETTUATE e dimostrare che conviene 
-\begin{table}[h!]
+\begin{table}[!ht]
   \caption{Tabella dei volumi}
   \label{table:1}
   \centering
