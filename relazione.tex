@@ -9,24 +9,30 @@
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
 
+\usepackage{float} %#$@&*!
+
 \usepackage{hyperref} % lasciare per ultimo
  
+% huge indentation of paragraph only for demonstration purposes. 
+%\setlength{\parindent}{5em} 
+% some paragraph skip to better distinguish  lines of different paragraphs  
+\setlength{\parskip}{.8em} 
 
 \begin{document}
 \begin{titlepage}
-    \begin{center}
-        \Huge{Progetto Basi di Dati}\\
-        [20mm]
-        \Large{Paolo Addis}\\
-        \Large{Samuele Poz}\\
-        \Large{Tristano Munini}\\
-        [20mm]
-        \Large{RENDERE CARINO}
-    \end{center}
+	\begin{center}
+		\Huge{Progetto Basi di Dati}\\
+		[20mm]
+		\Large{Paolo Addis}\\
+		\Large{Samuele Poz}\\
+		\Large{Tristano Munini}\\
+		[20mm]
+		\Large{RENDERE CARINO}
+	\end{center}
 \end{titlepage}
 
 \tableofcontents
-\thispagestyle{empty}
+\thispagestyle{empty} 
 \cleardoublepage
 \setcounter{page}{1}
 
@@ -44,17 +50,16 @@
 
 % TODO -- SCHEMI 
 % - primo schema: pazinete fuori regione, attributi composti multivalore, no cartella clinica 
-% - secondo schema: rimuove patologia, terapia deve avere la sua chiave
-% - terzo schema: per prestazioni aggiungiamo diagnosi effettuate 
+% - secondo schema: togli ternaria, toglie specializzazione, togli attributi composti, multivalore 
+% - terzo schema: per prestazioni aggiungiamo EFFETTUATA A 
 
 % COSE DA RICORDARE
 % NEI REQUISITI
 % - aggiungere numero di accessi effettuati e numero di Pazienti, Ricovero, ecc
 % - Evidenziare la necessità dell'ospedale di accedere spesso alle diagnosi di un dato paziente
 % NELLA FASE LOGICA
-% il nostro modello logico quello relazionale
-% - verrà aggiunta relazione tra PAZIENTE DIAGNOSI (es DIAGNOSI EFFETTUATE) per verificare la differenza di prestazioni
-% - l'unica ridondanza è data da DIAGNOSI EFFETTUATE, la ricorsione DIAGNOSI->DIAGNOSI (o ISTANZA DI TERAPIA -> DIAGNOSI) NON è ridondanza (esprime informazioni differenti)
+% - verrà aggiunta relazione tra PAZIENTE DIAGNOSI (es EFFETTUATA A) per verificare la differenza di prestazioni
+% - l'unica ridondanza è data da EFFETTUATA A, la ricorsione DIAGNOSI->DIAGNOSI (o ISTANZA DI TERAPIA -> DIAGNOSI) NON è ridondanza (esprime informazioni differenti)
 
 
 
@@ -62,8 +67,8 @@
 
 \subsection{Raccolta ed Analisi dei Requisiti}
 
-Si vuole modellare il seguente insieme di informazioni riguardanti un sistema 
-per la gestione delle diagnosi e delle terapie dei pazienti ricoverati in un 
+Si vuole modellare il seguente insieme di informazioni riguardanti un sistema
+per la gestione delle diagnosi e delle terapie dei pazienti ricoverati in un
 dato ospedale.
 \begin{itemize}
   \item Di ogni ricovero, il sistema deve memorizzare il codice univoco, il 
@@ -98,8 +103,8 @@ dato ospedale.
         da una terapia precedentemente prescritta. Tale legame causa-effetto va
         registrato nella base di dati.
 \end{itemize}
-Tramite un portale web dovrà essere possibile accedere a tale base di dati ed 
-aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farmaci. 
+Tramite un portale web dovrà essere possibile accedere a tale base di dati ed
+aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farmaci.
 % TODO aggiungere numeri/necessità dell'ospedale 
 
 
@@ -268,24 +273,38 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
 % elenco tabelle
 % vincoli d'integrità
 
-È utile semplificare strutture come specializzazioni, attributi composti e attributi multivalore perché renderà più facile la traduzione del modello Entità-Relazioni in quello Relazionale.
+È utile semplificare strutture come specializzazioni, attributi composti e
+attributi multivalore perché renderà più facile la traduzione del modello
+Entità-Relazioni in quello Relazionale.
 
-Ricordando che quest'ultimo non permette di rappresentare generalizzazioni sarà necessario rimuovere tutte le specializzazioni dal nostro schema E-R.
-Si può notare che la specializzazione PAZIENTE-FUORI-REGIONE può essere facilmente rappresentata aggiungendo due attributi all'entità PAZIENTE.
-I nuovi attributi, \textit{ULSS} e \textit{Regione di Appartenenza}, in PAZIENTE saranno facoltativi poiché la specializzazione è parziale.
-La rimozione delle generalizzazioni non è sempre così immediata: se PAZIENTE-FUORI-REGIONE avesse avuto una relazione in più rispetto al genitore si sarebbero dovute valutare varie opzioni.
-Per esempio la creazione di una nuova relazione per simboleggiare il legame tra genitore e figlio, lasciando invariati gli attributi.
-Oppure la duplicazione nel figlio di tutti gli attributi e di tutte le relazioni del genitore.  
+Ricordando che quest'ultimo non permette di rappresentare generalizzazioni sarà
+necessario rimuovere tutte le specializzazioni dal nostro schema E-R.  Si può
+notare che la specializzazione PAZIENTE-FUORI-REGIONE può essere facilmente
+rappresentata aggiungendo due attributi all'entità PAZIENTE.  I nuovi
+attributi, \textit{ULSS} e \textit{Regione di Appartenenza}, in PAZIENTE
+saranno facoltativi poiché la specializzazione è parziale.  La rimozione delle
+generalizzazioni non è sempre così immediata: se PAZIENTE-FUORI-REGIONE avesse
+avuto una relazione in più rispetto al genitore si sarebbero dovute valutare
+varie opzioni.  Per esempio la creazione di una nuova relazione per
+simboleggiare il legame tra genitore e figlio, lasciando invariati gli
+attributi.  Oppure la duplicazione nel figlio di tutti gli attributi e di tutte
+le relazioni del genitore.  
 
-Anche nel caso degli attributi composti la semplificazione è immediata, infatti nello schema l'unico attributo composto è \textit{Patologia} in DIAGNOSI.
-Può essere trasformato in due nuovi attributi \textit{Codice Patologia} e \textit{Gravità Patologia} che contengono esattamente la stessa informazione.
+Anche nel caso degli attributi composti la semplificazione è immediata, infatti
+nello schema l'unico attributo composto è \textit{Patologia} in DIAGNOSI.  Può
+essere trasformato in due nuovi attributi \textit{Codice Patologia} e
+\textit{Gravità Patologia} che contengono esattamente la stessa informazione.
 
-Bisogna prestare più attenzione agli attributi multivalore: in FARMACO sono presenti \textit{Nome Principi Attivi} e \textit{Quantità Principi Attivi} entrambi obbligatori e multivalore.
-L'unica semplificazione attuabile è creare una nuova entità chiamata PRINCIPIO-ATTIVO è metterla in relazione Molti-A-Molti con FARMACO attraverso la nuova relazione CONTIENE.
-PRINCIPIO-ATTIVO avrà un solo attributo, scelto anche come chiave primaria, chiamato \textit{Nome}, mentre alla relazione CONTIENE verrà aggiunto l'attributo \textit{Quantità}.
-In questo modo saranno modellate esattamente le stesse informazioni precedentemente modellate dagli attributi multivalore.
-Rimozione t
-Scelta della chiavi primarie
+Bisogna prestare più attenzione agli attributi multivalore: in FARMACO sono
+presenti \textit{Nome Principi Attivi} e \textit{Quantità Principi Attivi}
+entrambi obbligatori e multivalore.  L'unica semplificazione attuabile è creare
+una nuova entità chiamata PRINCIPIO-ATTIVO è metterla in relazione
+Molti-A-Molti con FARMACO attraverso la nuova relazione CONTIENE.
+PRINCIPIO-ATTIVO avrà un solo attributo, scelto anche come chiave primaria,
+chiamato \textit{Nome}, mentre alla relazione CONTIENE verrà aggiunto
+l'attributo \textit{Quantità}.  In questo modo saranno modellate esattamente le
+stesse informazioni precedentemente modellate dagli attributi multivalore.
+Rimozione t Scelta della chiavi primarie
 
 
 
@@ -303,76 +322,123 @@ Scelta della chiavi primarie
 
 
 \subsection{Analisi delle Ridondanze}
-% TODO aggiungere DIAGNOSI-EFFETTUATE e dimostrare che conviene 
-\begin{table}[!ht]
-  \caption{Tabella dei volumi}
-  \label{table:1}
-  \centering
-  \begin{tabular}{|l|c|r|}
-  \hline
-  \textbf{Concept} & \textbf{Type} & \textbf{Volume} \\ \hline
-  Paziente & E & 100000 \\ \hline
-  Ricovero & E & 500000 \\ \hline
-  Diagnosi & E & 2500000 \\ \hline
-  Terapia & E & 30000 \\ \hline
-  Istanza di Terapia & E & 2500000 \\ \hline
-  Farmaco & E & 10000 \\ \hline
-  Viene Ricoverato & R & 500000 \\ \hline
-  Effettuata Durante & R & 2500000 \\ \hline
-  Diagnosi Effettuate & R & 2500000 \\ \hline
-  Curata Da & R & 2500000 \\ \hline
-  Istanza Di & R & 2500000 \\ \hline
-  Effetto Collaterale & R & 100000 \\ \hline
-  Somministrato Durante  & R & 10000 \\ \hline
-  \end{tabular}
-  \end{table}
-\begin{table}[!ht]
-  \caption{Tabella delle operazioni}
-  \label{table:2}
-  \centering
-  \begin{tabular}{|l|c|r|}
-  \hline
-  \textbf{Operation} & \textbf{Type} & \textbf{Frequency} \\ \hline
-  Inserimento Diagnosi & I & 1400/giorno \\ \hline
-  Stampa Storico Diagnosi & I & 280/giorno \\ \hline
-  \end{tabular}
-  \end{table}
-\begin{table}[!ht]
-  \caption{Tabella dei costi caso con ridondanza}
-  \label{table:3}
-  \centering
-  \begin{tabular}{|l|c|c|c|}
-  \hline
-  \textbf{Concept} & \textbf{Type} & \textbf{Access} & \textbf{Type} \\ \hline
-  \multicolumn{4}{|c|}{Inserimento Diagnosi} \\ \hline
-  Diagnosi & E & 1 & W \\ \hline
-  Effettutata Durante & R & 1 & W \\ \hline
-  Diagnosi Effettuate & R & 1 & W \\ \hline
-  \multicolumn{4}{|c|}{Stampa Storico Diagnosi} \\ \hline
-  Paziente & E & 1 & R \\ \hline
-  Diagnosi Effettuate & R & 25 & R \\ \hline
-  Diagnosi & E & 25 & R \\ \hline
-  \end{tabular}
-  \end{table}
-\begin{table}[!ht]
-  \caption{Tabella dei costi caso senza ridondanza}
-  \label{table:4}
-  \centering
-  \begin{tabular}{|l|c|c|c|}
-    \hline
-    \textbf{Concept} & \textbf{Type} & \textbf{Access} & \textbf{Type} \\ \hline
-    \multicolumn{4}{|c|}{Inserimento Diagnosi} \\ \hline
-    Diagnosi & E & 1 & W \\ \hline
-    Effettutata Durante & R & 1 & W \\ \hline
-    \multicolumn{4}{|c|}{Stampa Storico Diagnosi} \\ \hline
-    Paziente & E & 1 & R \\ \hline
-    Viene Ricoverato & R & 5 & R \\ \hline
-    Effettutata Durante & R & 25 & W \\ \hline
-    Diagnosi & E & 25 & R \\ \hline
-  \end{tabular}
+Consideriamo il ciclo PAZIENTE, RICOVERO, DIAGNOSI dato dalle relazioni VIENE RICOVERATO, EFFETTUATA DURANTE, EFFETTUATA A.
+
+% TODO SCHEMA le 3 entità + le 3 relazioni, senza attributi
+
+Procediamo a valutare se è conveniente mantenere la relazione EFFETTUATA A tra PAZIENTE e DIAGNOSI in funzione della frequenza delle operazioni di inserimento nuove diagnosi e stampa dello storico diagnosi di un paziente.
+
+% TODO REQUISITO specificare le operazioni richieste e i volumi
+
+Riportiamo i volumi stimati durante la fase dei requisiti in \autoref{tab:volumi-ciclo} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-ciclo}.
+
+% TODO REQUISITO spostare table:volumi nei requisiti
+\begin{table}[H]
+	\label{tab:volumi}
+	\centering
+	\begin{tabular}{|l|c|r|}
+		\hline
+		\textbf{Concept}      & \textbf{Type} & \textbf{Volume} \\ \hline
+		Paziente              & E             & 100000          \\ \hline
+		Ricovero              & E             & 300000          \\ \hline
+		Diagnosi              & E             & 1200000         \\ \hline
+		Terapia               & E             & 30000           \\ \hline
+		Istanza di Terapia    & E             & 1200000         \\ \hline
+		Farmaco               & E             & 10000           \\ \hline
+		Viene Ricoverato      & R             & 300000          \\ \hline
+		Effettuata Durante    & R             & 1200000         \\ \hline
+		Effettuta A           & R             & 1200000         \\ \hline
+		Curata Da             & R             & 1200000         \\ \hline
+		Istanza Di            & R             & 1200000         \\ \hline
+		Effetto Collaterale   & R             & 50000          \\ \hline
+		Somministrato Durante & R             & 10000           \\ \hline
+	\end{tabular}
+	\caption{Tabella dei volumi}
 \end{table}
 
+\begin{table}[H]
+	\label{tab:volumi-ciclo}
+	\centering
+	\begin{tabular}{|l|c|r|}
+		\hline
+		\textbf{Concept}   & \textbf{Type} & \textbf{Volume} \\ \hline
+		Paziente           & E             & 100000          \\ \hline
+		Ricovero           & E             & 300000          \\ \hline
+		Diagnosi           & E             & 1200000         \\ \hline
+		Viene Ricoverato   & R             & 300000          \\ \hline
+		Effettuata Durante & R             & 1200000         \\ \hline
+		Effettuata A       & R             & 1200000         \\ \hline
+	\end{tabular}
+	\caption{Tabella dei volumi ridotta}
+\end{table}
+
+\begin{table}[H]
+	\label{tab:operazioni-ciclo}
+	\centering
+	\begin{tabular}{|l|c|r|}
+		\hline
+		\textbf{Operation}      & \textbf{Type} & \textbf{Frequency} \\ \hline
+		Inserimento Diagnosi    & I             & 700/giorno        \\ \hline
+		Stampa Storico Diagnosi & I             & 1400/giorno         \\ \hline
+	\end{tabular}
+	\caption{Tabella delle operazioni ridotta}
+\end{table}
+
+Nel caso con ridondanza per l'operazione di inserimento di una nuova diagnosi sono necessari 1 accesso in scrittura per l'entità DIAGNOSI e 1 accesso in scrittura per entrambe le relazioni EFFETTUATA DURANTE e EFFETTUATA A.
+Per l'operazione di stampa delle diagnosi di un paziente sono necessari 12 accessi in lettura per la relazione EFFETTUATA A e 12 accessi in lettura per l'entità DIAGNOSI.
+
+Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso con ridondanza:
+\begin{equation}
+  3W \times 700 + 24R \times 1400 \approx	37800R
+\end{equation}
+
+\begin{table}[H]
+	\label{table:3}
+	\centering
+	\begin{tabular}{|l|c|c|c|}
+		\hline
+		\textbf{Concept}    & \textbf{Type} & \textbf{Access} & \textbf{Type} \\ \hline
+		\multicolumn{4}{|c|}{Inserimento Diagnosi}                            \\ \hline
+		Diagnosi            & E             & 1               & W             \\ \hline
+		Effettutata Durante & R             & 1               & W             \\ \hline
+		Effettuata A        & R             & 1               & W             \\ \hline
+		\multicolumn{4}{|c|}{Stampa Storico Diagnosi}                         \\ \hline
+		Effettuata A        & R             & 12              & R             \\ \hline
+		Diagnosi            & E             & 12              & R             \\ \hline
+	\end{tabular}
+	\caption{Tabella dei costi, caso con ridondanza}
+\end{table}
+
+Nel caso senza ridondanza per l'operazione di inserimento di una nuova diagnosi sono necessari 1 accesso in scrittura per l'entità DIAGNOSI e 1 accesso in scrittura per la relazione EFFETTUATA DURANTE.
+Per l'operazione di stampa delle diagnosi di un paziente sono necessari 3 accessi in lettura per la relazione VIENE RICOVERATO, 12 accessi in lettura per la relazione EFFETTUATA DURANTE e 12 accessi in lettura per l'entità DIAGNOSI.
+
+Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso senza ridondanza:
+\begin{equation}
+  2W \times 700 + 27R \times 1400 \approx	40600R
+\end{equation}
+
+\begin{table}[H]
+	\label{table:4}
+	\centering
+	\begin{tabular}{|l|c|c|c|}
+		\hline
+		\textbf{Concept}    & \textbf{Type} & \textbf{Access} & \textbf{Type} \\ \hline
+		\multicolumn{4}{|c|}{Inserimento Diagnosi}                            \\ \hline
+		Diagnosi            & E             & 1               & W             \\ \hline
+		Effettutata Durante & R             & 1               & W             \\ \hline
+		\multicolumn{4}{|c|}{Stampa Storico Diagnosi}                         \\ \hline
+		Viene Ricoverato    & R             & 3               & R             \\ \hline
+		Effettutata Durante & R             & 12              & R             \\ \hline
+		Diagnosi            & E             & 12              & R             \\ \hline
+  \end{tabular}
+  \caption{Tabella dei costi, caso senza ridondanza}
+\end{table}
+
+Concludiamo che è conveniente mantenere la ridondanza visto il costo minore delle operazioni giornaliere.
+
 \subsection{Traduzione da ER a Relazionale}
+
+
 
 %% sotto un copia-incolla da vecchio file %%
 
