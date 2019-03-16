@@ -128,18 +128,21 @@ L'entità DIAGNOSI e le rimanenti relazioni, in particolare CAUSA-EFFETTO, verra
 
 \subsubsection{Le Entità} % TODO sarebbe meglio creare subsubsubsection o paragrafi per ogni entità?
     \begin{itemize}
-        \item PAZIENTE: dai requisiti è possibile selezionare le seguenti voci significative: \textit{codice sanitario}, \textit{cognome}, \textit{nome}, \textit{data di nascita}, \textit{luogo di nascita} e \textit{provincia di residenza} del paziente.
+        \item PAZIENTE: dai requisiti è possibile individuare le seguenti voci significative: \textit{codice sanitario}, \textit{cognome}, \textit{nome}, \textit{data di nascita}, \textit{luogo di nascita} e \textit{provincia di residenza} del paziente.
           Per ognuna di esse è stato creato un attibuto. Il codice fiscale (d'ora in poi detto anche CF) è stato selezionato come chiave primaria in quanto,
           come definito nei requisiti, univoco\footnote{Proprietà fondamentale di un attributo per la definizione di esso come chiave primaria.}.%Ricordiamo la definizione di chiave primaria univoca e sottoinsieme minimo TODO
           Per salvare gli attributi esclusivi per i pazienti fuori regione riguardanti il nome della ULSS e la regione di appartenenza, è stata creata l'entità PAZIENTE-FUORI-REGIONE, specializzazione dell'entità precedente.
           Poiché solo una frazione dell'insieme dei pazienti sarà di questo tipo la specializzazione è parziale.
-          % TODO bisogna dirlo che è disgiunta?
       
-        \item RICOVERO: anche in questo caso abbiamo deciso di aggiungere all'entità un attributo per ogni voce del testo, fatta eccezione per \textit{paziente ricoverato}.
-          Infatti non solo sarebbe inutile ma addirittura pericoloso ripetere un'informazione che verrà modellata dalla relazione VIENE-RICOVERATO, di cui parleremo successivamente.
-          Nell'immagine \ref{schema_ER_progettazione_modello} si può osservare l'insieme degli attributi 
+        \item RICOVERO: dai requisiti è possibile individuare le seguenti voci 
+              significative: \textit{codice ricovero, divisione ospedaliera, 
+              paziente ricoverato, data inizio, data fine} del ricovero. Per 
+              ognuna di esse è stato creato un attributo, fatta eccezione per 
+              \textit{paziente ricoverato}. Quest'ultima informazione verrà
+              memorizzata attraverso la relazione VIENE-RICOVERATO, descritta 
+              in seguito.
         
-        \item TERAPIA
+        \item TERAPIA: 
         
         \item FARMACO
         
