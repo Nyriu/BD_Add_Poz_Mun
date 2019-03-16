@@ -118,14 +118,6 @@ Le due entità sono in relazione tra di loro attraverso una VIENE-RICOVERATO che
 È stata poi costruita la tripletta FARMACO, SOMMINISTRATO-DURANTE e TERAPIA composta rispettivamente da: un'entità che rappresenta il farmaco con i relativi attributi; una relazione che permette di indicare che farmaco viene usato durante una terapia; infine un'entità che raccoglie i dettagli della terapia, ad esempio la dose giornaliera di farmaco da assumere.
 L'entità DIAGNOSI e le rimanenti relazioni, in particolare CAUSA-EFFETTO, verranno analizzate successivamente.
 
-
-\begin{figure} % TODO abbellire
-  \centering
-  \includegraphics[width=\linewidth]{schema1}
-  \caption{Lo schema Entità-Relazioni completo}
-  \label{schema_ER_progettazione_modello}
-\end{figure}
-
 \subsubsection{Le Entità} % TODO sarebbe meglio creare subsubsubsection o paragrafi per ogni entità?
     \begin{itemize}
         \item PAZIENTE: dai requisiti è possibile individuare le seguenti voci significative: \textit{codice sanitario}, \textit{cognome}, \textit{nome}, \textit{data di nascita}, \textit{luogo di nascita} e \textit{provincia di residenza} del paziente.
@@ -140,13 +132,41 @@ L'entità DIAGNOSI e le rimanenti relazioni, in particolare CAUSA-EFFETTO, verra
               ognuna di esse è stato creato un attributo, fatta eccezione per 
               \textit{paziente ricoverato}. Quest'ultima informazione verrà
               memorizzata attraverso la relazione VIENE-RICOVERATO, descritta 
-              in seguito.
-        
-        \item TERAPIA: 
-        
-        \item FARMACO
-        
-        \item DIAGNOSI
+              in seguito. Il \textit{codice ricovero} è stato selezionato come
+              chiave primaria dell'entità in quanto univoco.
+              
+        \item DIAGNOSI: dai requisiti è possibile individuare le seguenti voci 
+              significative: \textit{patologia diagnosticata, codice patologia,
+              gravità patologia, data, medico}. Per ognuna di esse è stato 
+              creato un attributo. In particolare \textit{patologia} è un 
+              attributo composto che si suddivide in \textit{codice} e 
+              \textit{gravità}. Si assume che la data comprenda anche l'ora in 
+              cui è stata effettuata la diagnosi. DIAGNOSI è un'entità debole 
+              in quanto la chiave primaria è definita attraverso l'attributo
+              \textit{data} e la relazione EFFETTUATA-DURANTE. La chiave è
+              stata stabilita sfruttando l'assunzione precedente rigurado la 
+              data in modo tale che per ogni ricovero non sia possibile 
+              associare più diagnosi effettuate nello stesso istante. 
+
+        \item FARMACO: dai requisiti è possibile individuare le seguenti voci
+              significative: \textit{nome commerciale, azienda produttrice, 
+              nome principi attivi, quantità principi attivi, dose giornaliera
+              raccomandata}. Per ognuna di esse è stato creato un attributo. In
+              particolare \textit{nome principi attivi e quantità principi 
+              attivi} sono attributi multivalore e la chiave primaria è 
+              rappresentata da \textit{nome commerciale} in quanto univoco.
+
+        \item TERAPIA: dai requisiti è possibile individuare le seguenti voci
+              significative: \textit{farmaco prescritto, dose giornaliera, 
+              modalità di somministrazione, medico prescrivente}. Sono stati
+              definiti gli attributi \textit{dose giornaliera} e 
+              \textit{modalità somministrazione} mentre l'informazione relativa
+              alle altre voci verrà considerata in altre entità e relazioni.
+              La terapia è intesa come metodo per la sommistristrazione di un
+              farmaco al fine di curare una patologia, di conseguenza, la 
+              chiave primaria è composta dagli attributi di terapia e dalla
+              relazione SOMMINISTRATO-DURANTE che rende l'entità un'entità
+              debole.
     \end{itemize}
 
 \subsubsection{Le Relazioni}
@@ -159,9 +179,15 @@ L'entità DIAGNOSI e le rimanenti relazioni, in particolare CAUSA-EFFETTO, verra
 Abbiamo prestato particolare attenzione a CAUSA-EFFETTO.
 Questa relazione potrebbe sembrare eccessiva essendo sia ternaria che ricorsiva, in realtà modella molto bene un requisito fondamentale: \textit{``Può capitare anche che una nuova patologia (registrata come nuova diagnosi) sia causata, come effetto collaterale, da una terapia precedentemente prescritta.''}
 Da un altro requisito sappiamo che una DIAGNOSI può essere in relazione con una TERAPIA in quanto la terapia viene prescritta solo se esiste una diagnosi che la motivi.
+% TODO null nel grafico 
 
 
-
+\begin{figure} % TODO abbellire
+    \centering
+    \includegraphics[width=\linewidth]{schema1}
+    \caption{Lo schema Entità-Relazioni completo}
+    \label{schema_ER_progettazione_modello}
+  \end{figure}
 
 
 %\begin{figure}[h] % TODO abbellire
