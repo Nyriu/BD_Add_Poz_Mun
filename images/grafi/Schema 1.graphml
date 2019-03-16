@@ -282,7 +282,7 @@ Fine
     <node id="n22">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="30.0" width="23.0" x="196.16666666666652" y="342.0"/>
+          <y:Geometry height="30.0" width="23.0" x="281.0" y="249.0"/>
           <y:Fill color="#FFFFFF" transparent="false"/>
           <y:BorderStyle hasColor="false" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="39.34375" x="-8.171875" xml:space="preserve" y="7.298828125">Motivo<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.5" nodeRatioX="0.0" nodeRatioY="0.5" offsetX="0.0" offsetY="-4.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -768,10 +768,10 @@ Regione
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e20" source="n1" target="n22">
+    <edge id="e20" source="n0" target="n22">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="25.333333333333485" ty="0.0"/>
+          <y:Path sx="-24.5" sy="1.0" tx="0.0" ty="-15.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="transparent_circle"/>
           <y:BendStyle smoothed="false"/>
@@ -931,7 +931,6 @@ Regione
       </data>
     </edge>
     <edge id="e36" source="n40" target="n30">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="9.66666666666697" ty="-28.0"/>
@@ -942,7 +941,6 @@ Regione
       </data>
     </edge>
     <edge id="e37" source="n40" target="n29">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -953,7 +951,6 @@ Regione
       </data>
     </edge>
     <edge id="e38" source="n40" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -964,7 +961,6 @@ Regione
       </data>
     </edge>
     <edge id="e39" source="n40" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="-30.0" tx="0.0" ty="41.0"/>
@@ -975,7 +971,6 @@ Regione
       </data>
     </edge>
     <edge id="e40" source="n8" target="n7">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="-8.0"/>
@@ -986,7 +981,6 @@ Regione
       </data>
     </edge>
     <edge id="e41" source="n4" target="n41">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="18.833333333333485" ty="18.0"/>
@@ -997,7 +991,6 @@ Regione
       </data>
     </edge>
     <edge id="e42" source="n42" target="n43">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="9.0" ty="-14.984999999999957">
