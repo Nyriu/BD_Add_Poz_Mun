@@ -86,7 +86,6 @@ dato ospedale.
         durante il ricovero. Di ogni terapia, si memorizzano il farmaco prescritto,
         la dose giornaliera, le date di inizio e di fine della prescrizione, la 
         modalità di somministrazione ed il medico che ha prescritto la terapia.
-% TODO manca parte in cui si dice che la terapia è un concetto astratto
 
   \item Di ogni farmaco sono memorizzati il nome commerciale (univoco), l’azienda
         produttrice, il nome e la quantità dei principi attivi contenuti e la 
@@ -116,7 +115,7 @@ Inizialmente l'attenzione è stata concentrata sulle entità PAZIENTE e RICOVERO
 in quanto ritenute fondamentali: si può dire che in assenza di un'entità che
 rappresenti i pazienti, l'intera base di dati perderebbe significato.  Infatti
 per ogni ricovero o diagnosi deve essere possibile risalire al soggetto che è
-stato ricoverato o a cui è stata effettuato una diagnosi, altrimenti non si
+stato ricoverato o a cui è stata effettuata una diagnosi, altrimenti non si
 potrebbero utilizzare correttamente le informazioni raccolte in passato.
 RICOVERO, invece, segna i momenti in cui il paziente raggiunge e lascia la
 struttura ospedaliera, inoltre permette di indicare in modo univoco le visite e
@@ -150,8 +149,8 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
       
         \item RICOVERO: dai requisiti è possibile individuare le seguenti voci 
               significative: \textit{codice ricovero, divisione ospedaliera, 
-              paziente ricoverato, data inizio, data fine} del ricovero. Per 
-              ognuna di esse è stato creato un attributo, fatta eccezione per 
+              paziente ricoverato, data inizio, data fine, motivo} del ricovero. 
+              Per ognuna di esse è stato creato un attributo, fatta eccezione per 
               \textit{paziente ricoverato}. Quest'ultima informazione verrà
               memorizzata attraverso la relazione VIENE-RICOVERATO, descritta 
               in seguito. Il \textit{codice ricovero} è stato selezionato come
@@ -192,19 +191,31 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
     \end{itemize}
 
 \subsubsection{Le Relazioni}
-\begin{itemize}
-  \item VIENE-RICOVERATO
-  \item SOMMINISTRATO-DURANTE
-  \item EFFETTUATA-DURANTE
-  \item CARTELLA-CLINICA
-\end{itemize}
-Abbiamo prestato particolare attenzione a CAUSA-EFFETTO.
-Questa relazione potrebbe sembrare eccessiva essendo sia ternaria che ricorsiva,
-in realtà modella molto bene un requisito fondamentale: \textit{``Può capitare
-anche che una nuova patologia (registrata come nuova diagnosi) sia causata, come
-effetto collaterale, da una terapia precedentemente prescritta.''} Da un altro
-requisito sappiamo che una DIAGNOSI può essere in relazione con una TERAPIA in
-quanto la terapia viene prescritta solo se esiste una diagnosi che la motivi.
+    \begin{itemize}
+        \item VIENE-RICOVERATO: un tipo di relazione Uno-A-Molti tra PAZIENTE e
+              RICOVERO. Entrambe le partecipazioni sono totali.
+        
+        \item EFFETTUATA-DURANTE: un tipo di relazione Uno-A-Molti tra DIAGNOSI 
+              e RICOVERO. La partecipazione di RICOVERO è parziale mentre quella
+              di DIAGNOSI è totale.
+
+        \item SOMMINISTRATO-DURANTE: un tipo di relazione Uno-A-Molti tra FARMACO
+              e TERAPIA. La partecipazione di FARMACO è parziale mentre quella di
+              TERAPIA è totale.
+        
+        \item MOTIVA-TERAPIA: una relazione ternaria in cui partecipano le entità
+              TERAPIA e DIAGNOSI in un meccanismo di causa-effetto. In particolare
+              la diagnosi partecipa 
+        
+
+              Abbiamo prestato particolare attenzione a CAUSA-EFFETTO.
+              Questa relazione potrebbe sembrare eccessiva essendo sia ternaria che ricorsiva,
+              in realtà modella molto bene un requisito fondamentale: \textit{``Può capitare
+              anche che una nuova patologia (registrata come nuova diagnosi) sia causata, come
+              effetto collaterale, da una terapia precedentemente prescritta.''} Da un altro
+              requisito sappiamo che una DIAGNOSI può essere in relazione con una TERAPIA in
+              quanto la terapia viene prescritta solo se esiste una diagnosi che la motivi.
+    \end{itemize}
 
 
 \begin{figure} % TODO abbellire
