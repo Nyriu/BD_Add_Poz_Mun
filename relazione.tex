@@ -210,32 +210,20 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
               e TERAPIA. La partecipazione di FARMACO è parziale mentre quella di
               TERAPIA è totale.
         
-        \item MOTIVA-TERAPIA:   
-        
-
-        
-        
-        
-        
-              una relazione ternaria in cui partecipano le entità
-              TERAPIA e DIAGNOSI in un meccanismo di causa-effetto. In particolare
-              dall'analisi dei requisiti emerge che ad ogni diagnosi può essere 
-              associata nessuna o, al più, una terapia mentre la terapia viene 
-              prescritta al fine di curare più patologie relative a diagnosi 
-              distinte. Di conseguenza la partecipazione di DIAGNOSI è parziale 
-              e quella di TERAPIA totale considerando 
-              
-              % VINCOLI ESTERNI  
-              % RICAPITOLANDO FLUSSO
-
-              Abbiamo prestato particolare attenzione a CAUSA-EFFETTO.
-              Questa relazione potrebbe sembrare eccessiva essendo sia ternaria che ricorsiva,
-              in realtà modella molto bene un requisito fondamentale: \textit{``Può capitare
-              anche che una nuova patologia (registrata come nuova diagnosi) sia causata, come
-              effetto collaterale, da una terapia precedentemente prescritta.''} Da un altro
-              requisito sappiamo che una DIAGNOSI può essere in relazione con una TERAPIA in
-              quanto la terapia viene prescritta solo se esiste una diagnosi che la motivi.
-    \end{itemize}
+        \item MOTIVA-TERAPIA: una relazione ternaria in cui partecipano le entità
+              TERAPIA e DIAGNOSI in un meccanismo di causa-effetto. Nel flusso di
+              causa, DIAGNOSI e TERAPIA sono in relazione Uno-a-Molti con 
+              partecipazione parziale di DIAGNOSI e totale di TERAPIA. Nel flusso
+              di effetto collaterale, le due entità sono in relazione Uno-a-Molti
+              ed entrambe le partecipazioni sono parziali.
+      \end{itemize}                  
+                 
+Nella costruzione della relazione MOTIVA-TERAPIA si è fatta particolare attenzione
+all'ultimo punto dell'analisi dei requisiti in cui si specifica che una terapia può 
+essere associata a due tipi di diagnosi: quelle che motivano la prescrizione della
+terapia e quelle che registrano una nuova patologia presentatasi come effetto 
+collaterale dovuto alla terapia stessa. 
+% TODO continua..  
 
 
 \begin{figure} % TODO abbellire
