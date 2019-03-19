@@ -57,10 +57,6 @@
 % NEI REQUISITI
 % - aggiungere numero di accessi effettuati e numero di Pazienti, Ricovero, ecc
 % - Evidenziare la necessità dell'ospedale di accedere spesso alle diagnosi di un dato paziente
-% NELLA FASE LOGICA
-% - verrà aggiunta relazione tra PAZIENTE DIAGNOSI (es EFFETTUATA A) per verificare la differenza di prestazioni
-% - l'unica ridondanza è data da EFFETTUATA A, la ricorsione DIAGNOSI->DIAGNOSI (o ISTANZA DI TERAPIA -> DIAGNOSI) NON è ridondanza (esprime informazioni differenti)
-
 
 
 \section{Progettazione Concettuale}\label{sec:prog_conc}
@@ -254,9 +250,13 @@ ora, risulta essere una relazione Uno-A-Molti: nel testo è specificato che ad
 ogni diagnosi possa essere associata al più una terapia; mentre TERAPIA è stata
 definita appositamente per poter esser associata a più DIAGNOSI.
 
-Ora è necessario modellare la situazione in cui una terapia prescritta è causa di una nuova patologia.
-L'informazione che si vuole mantenere non dipende esclusivamente dall'entità TERAPIA, dipendendo anche dal periodo di applicazione, quindi non è sufficiente creare una nuova relazione tra TERAPIA e DIAGNOSI.
-La soluzione migliore è quella di trasformare MOTIVA-TERAPIA in una relazione ternaria: con DIAGNOSI che partecipa da una parte come patologia in cura e dall'altra come rilevazione di una nuova patologia
+Ora è necessario modellare la situazione in cui una terapia prescritta è causa
+di una nuova patologia.  L'informazione che si vuole mantenere non dipende
+esclusivamente dall'entità TERAPIA, dipendendo anche dal periodo di
+applicazione, quindi non è sufficiente creare una nuova relazione tra TERAPIA e
+DIAGNOSI.  La soluzione migliore è quella di trasformare MOTIVA-TERAPIA in una
+relazione ternaria: con DIAGNOSI che partecipa da una parte come patologia in
+cura e dall'altra come rilevazione di una nuova patologia
 
 
 
@@ -308,8 +308,7 @@ La soluzione migliore è quella di trasformare MOTIVA-TERAPIA in una relazione t
 % END OLD
 
 
-
-\begin{figure} % TODO abbellire
+\begin{figure}[H] % TODO abbellire
     \centering
     \includegraphics[width=\linewidth]{schema1}
     \caption{Lo schema Entità-Relazioni completo}
@@ -384,22 +383,42 @@ Rimozione t Scelta della chiavi primarie
 
 
 
-\begin{figure}[!ht] % TODO abbellire
+\begin{figure}[H] % TODO abbellire
   \centering
   \includegraphics[width=\linewidth]{schema2.jpg}
   \caption{Lo schema Entità-Relazioni completo}
   \label{schema_ER_ristrutturato}
 \end{figure}
 
+% TODO NELLA FASE LOGICA
+% - verrà aggiunta relazione tra PAZIENTE DIAGNOSI (es EFFETTUATA A) per verificare la differenza di prestazioni
+% - l'unica ridondanza è data da EFFETTUATA A, la ricorsione DIAGNOSI->DIAGNOSI (o ISTANZA DI TERAPIA -> DIAGNOSI) NON è ridondanza (esprime informazioni differenti)
 
-\subsection{Analisi delle Ridondanze}
-Consideriamo il ciclo PAZIENTE, RICOVERO, DIAGNOSI dato dalle relazioni VIENE RICOVERATO, EFFETTUATA DURANTE, EFFETTUATA A.
 
-% TODO SCHEMA le 3 entità + le 3 relazioni, senza attributi
+\clearpage
+\subsubsection{Analisi delle Ridondanze}
 
+Lo schema Entità-Relazioni  \autoref{schema_ER_ristrutturato} % TODO quanità di giorni che ricoverato
+
+
+Visto il requisito di stampa delle diagnosi effettuate da un singolo paziente, ai fini di ottimizzazione consideriamo l'inserimento della relazione:
+\begin{itemize}
+\item EFFETTUATA A: una relazione Uno-A-Molti tra PAZIENTE 
+          e DIAGNOSI. La partecipazione di PAZIENTE è parziale mentre quella
+          di DIAGNOSI è totale. 
+\end{itemize}
+
+Viene creato quindi il ciclo in \autoref{fig:ciclo-ridondanza} PAZIENTE, RICOVERO, DIAGNOSI dato dalle relazioni VIENE RICOVERATO, EFFETTUATA DURANTE, EFFETTUATA A.
+
+\begin{figure}[H] % TODO abbellire
+      \centering
+      \includegraphics[width=\linewidth]{schema3.jpg}
+      \caption{Ciclo con ridondanza}
+      \label{fig:ciclo-ridondanza}
+    \end{figure}
 Procediamo a valutare se è conveniente mantenere la relazione EFFETTUATA A tra PAZIENTE e DIAGNOSI in funzione della frequenza delle operazioni di inserimento nuove diagnosi e stampa dello storico diagnosi di un paziente.
 
-% TODO REQUISITO specificare le operazioni richieste e i volumi
+% TODO REQUISITO specificare nei requisiti le operazioni richieste e i volumi
 
 Riportiamo i volumi stimati durante la fase dei requisiti in \autoref{tab:volumi-ciclo} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-ciclo}.
 
