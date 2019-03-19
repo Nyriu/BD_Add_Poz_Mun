@@ -224,29 +224,51 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
 
 % TODO Immagine diagnosi, terapia SENZA attributi e motiva terapia con attributi 
 % Senza ricorsione e con ricorsione
+Nella costruzione della relazione MOTIVA-TERAPIA si è fatta particolare
+attenzione all'ultimo punto dell'analisi dei requisiti in cui si specifica che
+una terapia può essere associata ad una diagnosi in due modi differenti: quello
+che la definisce come cura per una patologia e quello che la definisce come
+causa di una nuova patologia.  Va sottolineato che in entrambi i casi, nella
+base di dati, la patologia è salvata attraverso DIAGNOSI.
 
-Il modo in cui è stata definita l'entità TERAPIA ci permette di modellare il
-requisito \textit{ogni terapia può curare più patologie}.  Risulta chiaro,
-quindi, che un'informazione come data di inizio, o data di fine, o medico
-prescrivente, non può essere memorizzata in TERAPIA perché, altrimenti, non
-sarebbe possibile applicare questa stessa terapia in uno spazio temporale
-differente, pena la perdita delle informazioni predicenti.  D'altra parte non è
-nemmeno accettabile includere nella chiave primaria le informazioni relative
-alle date ed al medico perché così facendo si differenzierebbero le entità,
-andando contro il requisito che si vole modellare.  Da qui la necessità di
-omettere attributi data inizio, data fine e medico prescrivente in TERAPIA,
-assegnandoli alla relazione MOTIVA-TERAPIA.  Intuitivamente questi attributi
-riguardano contemporaneamente la DIAGNOSI, quindi la patologia che si vuole
-curare, e la TERAPIA applicata, quindi il modo in cui si vuole affrontare la
-patologia, definendone il periodo in cui la terapia viene applicata e chi ha
-definito questo periodo.  Nei requisiti è specificato che per alcune patologie
-manchino le cure, per questo motivo la partecipazione a MOTIVA-TERAPIA di
-DIAGNOSI è parziale.  Invece è sensato pensare che se una terapia esiste possa
-curare almeno una patologia, la partecipazione di TERAPIA quindi è totale.  Nel
-complesso MOTIVA-TERAPIA, per ora, risulta essere una relazione Uno-A-Molti:
-nel testo è specificato che ad ogni diagnosi possa essere associata al più una
-terapia; mentre TERAPIA è stata definita appositamente per poter esser
-associata a più DIAGNOSI.
+In un primo momento è stato modellato il sottoschema illustrato in figura TODO.
+Il modo in cui è stata definita l'entità TERAPIA permetterà di modellare il
+requisito \textit{ogni terapia può curare più patologie}.  Un'informazione come
+data di inizio, o data di fine, o medico prescrivente, non può essere
+memorizzata in TERAPIA perché, altrimenti, non sarebbe possibile applicare
+questa stessa terapia in uno spazio temporale differente, pena la perdita delle
+informazioni precedenti. D'altra parte non è nemmeno accettabile includere
+nella chiave primaria le informazioni relative alle date ed al medico, perché
+così facendo si differenzierebbero le entità, andando contro il requisito che
+si vole modellare.  Da qui la necessità di omettere attributi data inizio, data
+fine e medico prescrivente in TERAPIA, assegnandoli alla relazione
+MOTIVA-TERAPIA.  Intuitivamente questi attributi riguardano contemporaneamente
+la DIAGNOSI, quindi la patologia che si vuole curare, e la TERAPIA applicata,
+quindi il modo in cui si vuole affrontare la patologia, definendone il periodo
+in cui la terapia viene applicata e chi ha definito questo periodo.  Nei
+requisiti è specificato che per alcune patologie manchino le cure, per questo
+motivo la partecipazione a MOTIVA-TERAPIA di DIAGNOSI è parziale.  Invece è
+sensato pensare che se una terapia esiste possa curare almeno una patologia, la
+partecipazione di TERAPIA quindi è totale.  Nel complesso MOTIVA-TERAPIA, per
+ora, risulta essere una relazione Uno-A-Molti: nel testo è specificato che ad
+ogni diagnosi possa essere associata al più una terapia; mentre TERAPIA è stata
+definita appositamente per poter esser associata a più DIAGNOSI.
+
+Ora è necessario modellare la situazione in cui una terapia prescritta è causa di una nuova patologia.
+L'informazione che si vuole mantenere non dipende esclusivamente dall'entità TERAPIA, dipendendo anche dal periodo di applicazione, quindi non è sufficiente creare una nuova relazione tra TERAPIA e DIAGNOSI.
+La soluzione migliore è quella di trasformare MOTIVA-TERAPIA in una relazione ternaria: con DIAGNOSI che partecipa da una parte come patologia in cura e dall'altra come rilevazione di una nuova patologia
+
+
+
+
+
+%\begin{figure} % TODO abbellire
+%    \centering
+%    \includegraphics[width=\linewidth]{piccolo1}
+%    \caption{Sottoschema della prima modellazione di MOTIVA-TERAPIA}
+%    \label{schema_piccolo1}
+%\end{figure}
+
 
 
 
@@ -258,68 +280,32 @@ associata a più DIAGNOSI.
 %collaterale dovuto alla terapia stessa. 
 %Per creare il modello il più attinente possibile ai requisiti si è pensato di  
 
-Ricordando che la terapia descrive soltanto il metodo da applicare per curare 
-una patologia e non le date di inizio e fine ed del medico prescrivente. Le 
-informazioni rigurdo la durata della terapia (dunque la data di inizio e quella
-di fine) e il medico prescrivente sono relative alla coppia DIAGNOSI,TERAPIA.
-Per questo motivo non può essere che l'entità TERAPIA, in quanto rappresentate 
-di un modello astratto, abbia tali attributi. Per assurdo se così fosse 
-applicando un astessa terapia a due diagnosi distinte bisognerebbe aggiungere 
-alla chiave primaria le date contraddicendo la definizione data.
-
-
-% MOTIVA TERAPIA NON COME CI PIACE 
-
-
-La progettazione di tale relazione è stata suddivisa in due fasi:
-
-La prima, illustrata in \textit{figura 1}, riguarda la relazione che intercorre tra
-diagnosi e terapia come cura. 
-
-La seconda registra il legame di causa-effetto tra la terapia applicata e la nuova 
-patologia diagnosticata.
-
-
-Osservando la \textit{figura 1} si può notare che la relazione illustrata tiene 
-traccia delle diagnosi che hanno motivato le terapie. 
-
-Ad esempio: Nel caso in cui la patologia diagnosticata sia una infezione batterica
-            alle vie aeree, la terapia prescritta potrebbe essere "farmaco antibiotico, 
-            da assumere 2 volte al giorno per via orale".
-
-
-In particolare la terapia
-è prescritta al fine di curare almeno una o più patologia diagnosticate 
-
-
-
-
-
-
-
-
-Il legame di causa descritto nel testo può essere modellato attraverso relazione...
-
+%Ricordando che la terapia descrive soltanto il metodo da applicare per curare 
+%una patologia e non le date di inizio e fine ed del medico prescrivente. Le 
+%informazioni rigurdo la durata della terapia (dunque la data di inizio e quella
+%di fine) e il medico prescrivente sono relative alla coppia DIAGNOSI,TERAPIA.
+%Per questo motivo non può essere che l'entità TERAPIA, in quanto rappresentate 
+%di un modello astratto, abbia tali attributi. Per assurdo se così fosse 
+%applicando un astessa terapia a due diagnosi distinte bisognerebbe aggiungere 
+%alla chiave primaria le date contraddicendo la definizione data.
+%
+%% MOTIVA TERAPIA NON COME CI PIACE 
+%
+%La progettazione di tale relazione è stata suddivisa in due fasi:
+%La prima, illustrata in \textit{figura 1}, riguarda la relazione che intercorre tra
+%diagnosi e terapia come cura. 
+%La seconda registra il legame di causa-effetto tra la terapia applicata e la nuova 
+%patologia diagnosticata.
+%Osservando la \textit{figura 1} si può notare che la relazione illustrata tiene 
+%traccia delle diagnosi che hanno motivato le terapie. 
+%Ad esempio: Nel caso in cui la patologia diagnosticata sia una infezione batterica
+%            alle vie aeree, la terapia prescritta potrebbe essere "farmaco antibiotico, 
+%            da assumere 2 volte al giorno per via orale".
+%
+%In particolare la terapia
+%è prescritta al fine di curare almeno una o più patologia diagnosticate 
+%Il legame di causa descritto nel testo può essere modellato attraverso relazione...
 % END OLD
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -328,7 +314,7 @@ Il legame di causa descritto nel testo può essere modellato attraverso relazion
     \includegraphics[width=\linewidth]{schema1}
     \caption{Lo schema Entità-Relazioni completo}
     \label{schema_ER_progettazione_modello}
-  \end{figure}
+\end{figure}
 
 
 %\begin{figure}[h] % TODO abbellire
