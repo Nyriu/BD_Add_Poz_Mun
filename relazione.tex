@@ -135,95 +135,148 @@ di farmaco da assumere.  L'entità DIAGNOSI e le rimanenti relazioni, in
 particolare CAUSA-EFFETTO, verranno analizzate successivamente.
 
 \subsubsection{Le Entità} % TODO sarebbe meglio creare subsubsubsection o paragrafi per ogni entità?
-    \begin{itemize}
-        \item PAZIENTE: dai requisiti è possibile individuare le seguenti voci
-              significative: \textit{codice sanitario}, \textit{cognome},
-              \textit{nome}, \textit{data di nascita}, \textit{luogo di nascita} e
-              \textit{provincia di residenza} del paziente.
-              Per ognuna di esse è stato creato un attibuto. Il codice fiscale
-              (d'ora in poi detto anche CF) è stato selezionato come chiave
-              primaria in quanto,
-              come definito nei requisiti, univoco\footnote{Proprietà fondamentale
-              di un attributo per la definizione di esso come chiave primaria.}.
-              %Ricordiamo la definizione di chiave primaria univoca e sottoinsieme minimo TODO
-              Per salvare gli attributi esclusivi per i pazienti fuori regione
-              riguardanti il nome della ULSS e la regione di appartenenza, è stata
-              creata l'entità PAZIENTE-FUORI-REGIONE, specializzazione dell'entità
-              precedente.  Poiché solo una frazione dell'insieme dei pazienti sarà
-              di questo tipo la specializzazione è parziale.
-      
-        \item RICOVERO: dai requisiti è possibile individuare le seguenti voci 
-              significative: \textit{codice ricovero, divisione ospedaliera, 
-              paziente ricoverato, data inizio, data fine, motivo} del ricovero. 
-              Per ognuna di esse è stato creato un attributo, fatta eccezione per 
-              \textit{paziente ricoverato}. Quest'ultima informazione verrà
-              memorizzata attraverso la relazione VIENE-RICOVERATO, descritta 
-              in seguito. Il \textit{codice ricovero} è stato selezionato come
-              chiave primaria dell'entità in quanto univoco.
-              
-        \item DIAGNOSI: dai requisiti è possibile individuare le seguenti voci 
-              significative: \textit{patologia diagnosticata, codice patologia,
-              gravità patologia, data, medico}. Per ognuna di esse è stato 
-              creato un attributo. In particolare \textit{patologia} è un 
-              attributo composto che si suddivide in \textit{codice} e 
-              \textit{gravità}. Si assume che la data comprenda anche l'ora in 
-              cui è stata effettuata la diagnosi. DIAGNOSI è un'entità debole 
-              in quanto la chiave primaria è definita attraverso l'attributo
-              \textit{data} e la relazione EFFETTUATA-DURANTE. La chiave è
-              stata stabilita sfruttando l'assunzione precedente rigurado la 
-              data in modo tale che per ogni ricovero non sia possibile 
-              associare più diagnosi effettuate nello stesso istante. 
+\begin{itemize}
+    \item PAZIENTE: dai requisiti è possibile individuare le seguenti voci
+          significative: \textit{codice sanitario}, \textit{cognome},
+          \textit{nome}, \textit{data di nascita}, \textit{luogo di nascita} e
+          \textit{provincia di residenza} del paziente.
+          Per ognuna di esse è stato creato un attibuto. Il codice fiscale
+          (d'ora in poi detto anche CF) è stato selezionato come chiave
+          primaria in quanto,
+          come definito nei requisiti, univoco\footnote{Proprietà fondamentale
+          di un attributo per la definizione di esso come chiave primaria.}.
+          %Ricordiamo la definizione di chiave primaria univoca e sottoinsieme minimo TODO
+          Per salvare gli attributi esclusivi per i pazienti fuori regione
+          riguardanti il nome della ULSS e la regione di appartenenza, è stata
+          creata l'entità PAZIENTE-FUORI-REGIONE, specializzazione dell'entità
+          precedente.  Poiché solo una frazione dell'insieme dei pazienti sarà
+          di questo tipo la specializzazione è parziale.
+  
+    \item RICOVERO: dai requisiti è possibile individuare le seguenti voci 
+          significative: \textit{codice ricovero, divisione ospedaliera, 
+          paziente ricoverato, data inizio, data fine, motivo} del ricovero. 
+          Per ognuna di esse è stato creato un attributo, fatta eccezione per 
+          \textit{paziente ricoverato}. Quest'ultima informazione verrà
+          memorizzata attraverso la relazione VIENE-RICOVERATO, descritta 
+          in seguito. Il \textit{codice ricovero} è stato selezionato come
+          chiave primaria dell'entità in quanto univoco.
+          
+    \item DIAGNOSI: dai requisiti è possibile individuare le seguenti voci 
+          significative: \textit{patologia diagnosticata, codice patologia,
+          gravità patologia, data, medico}. Per ognuna di esse è stato 
+          creato un attributo. In particolare \textit{patologia} è un 
+          attributo composto che si suddivide in \textit{codice} e 
+          \textit{gravità}. Si assume che la data comprenda anche l'ora in 
+          cui è stata effettuata la diagnosi. DIAGNOSI è un'entità debole 
+          in quanto la chiave primaria è definita attraverso l'attributo
+          \textit{data} e la relazione EFFETTUATA-DURANTE. La chiave è
+          stata stabilita sfruttando l'assunzione precedente rigurado la 
+          data in modo tale che per ogni ricovero non sia possibile 
+          associare più diagnosi effettuate nello stesso istante.
 
-        \item FARMACO: dai requisiti è possibile individuare le seguenti voci
-              significative: \textit{nome commerciale, azienda produttrice, 
-              nome principi attivi, quantità principi attivi, dose giornaliera
-              raccomandata}. Per ognuna di esse è stato creato un attributo. In
-              particolare \textit{nome principi attivi e quantità principi 
-              attivi} sono attributi multivalore e la chiave primaria è 
-              rappresentata da \textit{nome commerciale} in quanto univoco.
-
-        \item TERAPIA: dai requisiti è possibile individuare le seguenti voci
-              significative: \textit{farmaco prescritto, dose giornaliera, 
-              modalità di somministrazione, medico prescrivente}. Sono stati
-              definiti gli attributi \textit{dose giornaliera} e 
-              \textit{modalità somministrazione} mentre l'informazione relativa
-              alle altre voci verrà considerata in altre entità e relazioni.
-              In particolare le date di inzio e fine della terapia verranno
-              gestite nella relazione MOTIVA-TERAPIA.
-              La terapia è intesa come metodo per la sommistristrazione di un
-              farmaco al fine di curare una patologia, di conseguenza, la 
-              chiave primaria è composta dagli attributi di terapia e dalla
-              relazione SOMMINISTRATO-DURANTE che rende l'entità un'entità
-              debole.
-    \end{itemize}
+    \item FARMACO: dai requisiti è possibile individuare le seguenti voci
+          significative: \textit{nome commerciale, azienda produttrice, 
+          nome principi attivi, quantità principi attivi, dose giornaliera
+          raccomandata}. Per ognuna di esse è stato creato un attributo. In
+          particolare \textit{nome principi attivi e quantità principi 
+          attivi} sono attributi multivalore e la chiave primaria è 
+          rappresentata da \textit{nome commerciale} in quanto univoco.
+          
+    \item TERAPIA: dai requisiti è possibile individuare le seguenti voci
+          significative: \textit{farmaco prescritto, dose giornaliera, 
+          modalità di somministrazione, medico prescrivente}. Sono stati
+          definiti gli attributi \textit{dose giornaliera} e 
+          \textit{modalità somministrazione} mentre l'informazione relativa
+          alle altre voci verrà considerata in altre entità e relazioni.
+          In particolare le date di inzio e fine della terapia verranno
+          gestite nella relazione MOTIVA-TERAPIA.
+          La terapia è intesa come metodo per la sommistristrazione di un
+          farmaco al fine di curare una patologia, di conseguenza, la 
+          chiave primaria è composta dagli attributi di terapia e dalla
+          relazione SOMMINISTRATO-DURANTE che rende l'entità un'entità
+          debole.
+\end{itemize}
 
 \subsubsection{Le Relazioni}
-    \begin{itemize}
-        \item VIENE-RICOVERATO: un tipo di relazione Uno-A-Molti tra PAZIENTE e
-              RICOVERO. Entrambe le partecipazioni sono totali.
-        
-        \item EFFETTUATA-DURANTE: un tipo di relazione Uno-A-Molti tra DIAGNOSI 
-              e RICOVERO. La partecipazione di RICOVERO è parziale mentre quella
-              di DIAGNOSI è totale.
+\begin{itemize}
+    \item VIENE-RICOVERATO: un tipo di relazione Uno-A-Molti tra PAZIENTE e
+          RICOVERO. Entrambe le partecipazioni sono totali.
+    
+    \item EFFETTUATA-DURANTE: un tipo di relazione Uno-A-Molti tra DIAGNOSI 
+          e RICOVERO. La partecipazione di RICOVERO è parziale mentre quella
+          di DIAGNOSI è totale.
 
-        \item SOMMINISTRATO-DURANTE: un tipo di relazione Uno-A-Molti tra FARMACO
-              e TERAPIA. La partecipazione di FARMACO è parziale mentre quella di
-              TERAPIA è totale.
-        
-        \item MOTIVA-TERAPIA: una relazione ternaria in cui partecipano le entità
-              TERAPIA e DIAGNOSI in un meccanismo di causa-effetto. Nel flusso di
-              causa, DIAGNOSI e TERAPIA sono in relazione Uno-a-Molti con 
-              partecipazione parziale di DIAGNOSI e totale di TERAPIA. Nel flusso
-              di effetto collaterale, le due entità sono in relazione Uno-a-Molti
-              ed entrambe le partecipazioni sono parziali.
-      \end{itemize}                  
+    \item SOMMINISTRATO-DURANTE: un tipo di relazione Uno-A-Molti tra FARMACO
+          e TERAPIA. La partecipazione di FARMACO è parziale mentre quella di
+          TERAPIA è totale.
+    
+    \item MOTIVA-TERAPIA: una relazione ternaria in cui partecipano le entità
+          TERAPIA e DIAGNOSI in un meccanismo di causa-effetto. 
+\end{itemize}                  
                  
+
+% TODO Immagine diagnosi, terapia SENZA attributi e motiva terapia con attributi 
+% Senza ricorsione e con ricorsione
+
+
+
+
+% MOTIVA TERAPIA NON COME CI PIACE 
 Nella costruzione della relazione MOTIVA-TERAPIA si è fatta particolare attenzione
 all'ultimo punto dell'analisi dei requisiti in cui si specifica che una terapia può 
 essere associata a due tipi di diagnosi: quelle che motivano la prescrizione della
 terapia e quelle che registrano una nuova patologia presentatasi come effetto 
 collaterale dovuto alla terapia stessa. 
-% TODO continua..  
+
+La progettazione di tale relazione è stata suddivisa in due fasi:
+
+La prima, illustrata in \textit{figura 1}, riguarda la relazione che intercorre tra
+diagnosi e terapia come cura. 
+
+La seconda registra il legame di causa-effetto tra la terapia applicata e la nuova 
+patologia diagnosicata.
+
+
+Osservando la \textit{figura 1} si può notare che la relazione illustrata tiene 
+traccia delle diagnosi che hanno motivato le terapie. 
+
+Ad esempio: Nel caso in cui la patologia diagnosticata sia una infezione batterica
+            alle vie aeree, la terapia prescritta potrebbe essere "farmaco antibiotico, 
+            da assumere 2 volte al giorno per via orale".
+
+
+In particolare la terapia
+è prescritta al fine di curare almeno una o più patologia diagnosticate 
+
+
+
+
+
+
+
+
+Il legame di causa descritto nel testo può essere modellato attraverso relazione...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \begin{figure} % TODO abbellire
