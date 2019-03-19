@@ -184,17 +184,20 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
           
     \item TERAPIA: dai requisiti è possibile individuare le seguenti voci
           significative: \textit{farmaco prescritto, dose giornaliera, 
-          modalità di somministrazione, medico prescrivente}. Sono stati
-          definiti gli attributi \textit{dose giornaliera} e 
+          modalità di somministrazione, medico prescrivente}. 
+          Sono stati definiti gli attributi \textit{dose giornaliera} e 
           \textit{modalità somministrazione} mentre l'informazione relativa
           alle altre voci verrà considerata in altre entità e relazioni.
-          In particolare le date di inzio e fine della terapia verranno
-          gestite nella relazione MOTIVA-TERAPIA.
-          La terapia è intesa come metodo per la sommistristrazione di un
-          farmaco al fine di curare una patologia, di conseguenza, la 
+          In particolare il medico prescrivente, le date di inzio e fine 
+          della terapia verranno gestite nella relazione MOTIVA-TERAPIA,
+          in quanto la terapia è intesa come metodo per la sommistristrazione 
+          di un farmaco al fine di curare una patologia. La 
           chiave primaria è composta dagli attributi di terapia e dalla
           relazione SOMMINISTRATO-DURANTE che rende l'entità un'entità
-          debole.
+          debole e consente di mantenere i dati relativi al farmaco prescritto.
+
+
+
 \end{itemize}
 
 \subsubsection{Le Relazioni}
@@ -211,22 +214,57 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
           TERAPIA è totale.
     
     \item MOTIVA-TERAPIA: una relazione ternaria in cui partecipano le entità
-          TERAPIA e DIAGNOSI in un meccanismo di causa-effetto. 
+          TERAPIA e DIAGNOSI in una meccanica di causa-effetto. Possiede i
+          seguenti attributi \textit{medico prescrivente, data inizio, data  fine}. 
+          L'entità DIAGNOSI partecipa con cardinalità (0,1) mentre TERAPIA 
+          partecipa con cardinalità (1,N).
 \end{itemize}                  
                  
 
 % TODO Immagine diagnosi, terapia SENZA attributi e motiva terapia con attributi 
 % Senza ricorsione e con ricorsione
 
-
-
-
-% MOTIVA TERAPIA NON COME CI PIACE 
 Nella costruzione della relazione MOTIVA-TERAPIA si è fatta particolare attenzione
 all'ultimo punto dell'analisi dei requisiti in cui si specifica che una terapia può 
 essere associata a due tipi di diagnosi: quelle che motivano la prescrizione della
 terapia e quelle che registrano una nuova patologia presentatasi come effetto 
 collaterale dovuto alla terapia stessa. 
+Per creare il modello il più attinente possibile ai requisiti si è pensato di  
+
+Ricordando che la terapia descrive soltanto il metodo da applicare per curare 
+una patologia e non le date di inizio e fine ed del medico prescrivente. Le 
+informazioni rigurdo la durata della terapia (dunque la data di inizio e quella
+di fine) e il medico prescrivente sono relative alla coppia DIAGNOSI,TERAPIA.
+Per questo motivo non può essere che l'entità TERAPIA, in quanto rappresentate 
+di un modello astratto, abbia tali attributi. Per assurdo se così fosse 
+applicando un astessa terapia a due diagnosi distinte bisognerebbe aggiungere 
+alla chiave primaria le date contraddicendo la definizione data.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% MOTIVA TERAPIA NON COME CI PIACE 
+
 
 La progettazione di tale relazione è stata suddivisa in due fasi:
 
@@ -234,7 +272,7 @@ La prima, illustrata in \textit{figura 1}, riguarda la relazione che intercorre 
 diagnosi e terapia come cura. 
 
 La seconda registra il legame di causa-effetto tra la terapia applicata e la nuova 
-patologia diagnosicata.
+patologia diagnosticata.
 
 
 Osservando la \textit{figura 1} si può notare che la relazione illustrata tiene 
