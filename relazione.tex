@@ -221,12 +221,38 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
 % TODO Immagine diagnosi, terapia SENZA attributi e motiva terapia con attributi 
 % Senza ricorsione e con ricorsione
 
-Nella costruzione della relazione MOTIVA-TERAPIA si è fatta particolare attenzione
-all'ultimo punto dell'analisi dei requisiti in cui si specifica che una terapia può 
-essere associata a due tipi di diagnosi: quelle che motivano la prescrizione della
-terapia e quelle che registrano una nuova patologia presentatasi come effetto 
-collaterale dovuto alla terapia stessa. 
-Per creare il modello il più attinente possibile ai requisiti si è pensato di  
+Il modo in cui è stata definita l'entità TERAPIA ci permette di modellare il
+requisito \textit{ogni terapia può curare più patologie}.  Risulta chiaro,
+quindi, che un'informazione come data di inizio, o data di fine, o medico
+prescrivente, non può essere memorizzata in TERAPIA perché, altrimenti, non
+sarebbe possibile applicare questa stessa terapia in uno spazio temporale
+differente, pena la perdita delle informazioni predicenti.  D'altra parte non è
+nemmeno accettabile includere nella chiave primaria le informazioni relative
+alle date ed al medico perché così facendo si differenzierebbero le entità,
+andando contro il requisito che si vole modellare.  Da qui la necessità di
+omettere attributi data inizio, data fine e medico prescrivente in TERAPIA,
+assegnandoli alla relazione MOTIVA-TERAPIA.  Intuitivamente questi attributi
+riguardano contemporaneamente la DIAGNOSI, quindi la patologia che si vuole
+curare, e la TERAPIA applicata, quindi il modo in cui si vuole affrontare la
+patologia, definendone il periodo in cui la terapia viene applicata e chi ha
+definito questo periodo.  Nei requisiti è specificato che per alcune patologie
+manchino le cure, per questo motivo la partecipazione a MOTIVA-TERAPIA di
+DIAGNOSI è parziale.  Invece è sensato pensare che se una terapia esiste possa
+curare almeno una patologia, la partecipazione di TERAPIA quindi è totale.  Nel
+complesso MOTIVA-TERAPIA, per ora, risulta essere una relazione Uno-A-Molti:
+nel testo è specificato che ad ogni diagnosi possa essere associata al più una
+terapia; mentre TERAPIA è stata definita appositamente per poter esser
+associata a più DIAGNOSI.
+
+
+
+% OLD
+%Nella costruzione della relazione MOTIVA-TERAPIA si è fatta particolare attenzione
+%all'ultimo punto dell'analisi dei requisiti in cui si specifica che una terapia può 
+%essere associata a due tipi di diagnosi: quelle che motivano la prescrizione della
+%terapia e quelle che registrano una nuova patologia presentatasi come effetto 
+%collaterale dovuto alla terapia stessa. 
+%Per creare il modello il più attinente possibile ai requisiti si è pensato di  
 
 Ricordando che la terapia descrive soltanto il metodo da applicare per curare 
 una patologia e non le date di inizio e fine ed del medico prescrivente. Le 
@@ -236,28 +262,6 @@ Per questo motivo non può essere che l'entità TERAPIA, in quanto rappresentate
 di un modello astratto, abbia tali attributi. Per assurdo se così fosse 
 applicando un astessa terapia a due diagnosi distinte bisognerebbe aggiungere 
 alla chiave primaria le date contraddicendo la definizione data.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 % MOTIVA TERAPIA NON COME CI PIACE 
@@ -292,6 +296,7 @@ In particolare la terapia
 
 Il legame di causa descritto nel testo può essere modellato attraverso relazione...
 
+% END OLD
 
 
 
