@@ -32,7 +32,7 @@
 \end{titlepage}
 
 \tableofcontents
-\thispagestyle{empty} 
+\thispagestyle{empty}
 \cleardoublepage
 \setcounter{page}{1}
 
@@ -67,38 +67,38 @@ Si vuole modellare il seguente insieme di informazioni riguardanti un sistema
 per la gestione delle diagnosi e delle terapie dei pazienti ricoverati in un
 dato ospedale.
 \begin{itemize}
-  \item Di ogni ricovero, il sistema deve memorizzare il codice univoco, il 
-        nome della divisione ospedaliera (Cardiologia, Reumatologia, Ortopedia,
-        \dots ), il paziente ricoverato, le date di inizio e fine del ricovero 
-        e il motivo principale del ricovero.
+	\item Di ogni ricovero, il sistema deve memorizzare il codice univoco, il
+	      nome della divisione ospedaliera (Cardiologia, Reumatologia, Ortopedia,
+	      \dots ), il paziente ricoverato, le date di inizio e fine del ricovero
+	      e il motivo principale del ricovero.
 
-  \item Di ogni paziente, il sistema deve memorizzare il codice sanitario 
-        (univoco), il cognome, il nome, la data di nascita, il luogo di nascita 
-        e la provincia di residenza. Per i pazienti residenti fuori regione, 
-        vengono memorizzati anche il nome della ULSS e la regione di appartenenza.
-        % TODO aggiungere il requisito per l'attributo derivato.
+	\item Di ogni paziente, il sistema deve memorizzare il codice sanitario
+	      (univoco), il cognome, il nome, la data di nascita, il luogo di nascita
+	      e la provincia di residenza. Per i pazienti residenti fuori regione,
+	      vengono memorizzati anche il nome della ULSS e la regione di appartenenza.
+	      % TODO aggiungere il requisito per l'attributo derivato.
 
-  \item Di ogni diagnosi effettuata durante il ricovero del paziente, sono 
-        memorizzati la patologia diagnosticata, col suo codice ICD10 
-        (classificazione internazionale delle patologie) e l’indicazione della
-        sua gravità (grave: si/no), la data e il nome e cognome del medico che 
-        ha effettuato la diagnosi.
+	\item Di ogni diagnosi effettuata durante il ricovero del paziente, sono
+	      memorizzati la patologia diagnosticata, col suo codice ICD10
+	      (classificazione internazionale delle patologie) e l’indicazione della
+	      sua gravità (grave: si/no), la data e il nome e cognome del medico che
+	      ha effettuato la diagnosi.
 
-  \item Nella base di dati si tiene traccia delle terapie prescritte ai pazienti
-        durante il ricovero. Di ogni terapia, si memorizzano il farmaco prescritto,
-        la dose giornaliera, le date di inizio e di fine della prescrizione, la 
-        modalità di somministrazione ed il medico che ha prescritto la terapia.
+	\item Nella base di dati si tiene traccia delle terapie prescritte ai pazienti
+	      durante il ricovero. Di ogni terapia, si memorizzano il farmaco prescritto,
+	      la dose giornaliera, le date di inizio e di fine della prescrizione, la
+	      modalità di somministrazione ed il medico che ha prescritto la terapia.
 
-  \item Di ogni farmaco sono memorizzati il nome commerciale (univoco), l’azienda
-        produttrice, il nome e la quantità dei principi attivi contenuti e la 
-        dose giornaliera raccomandata.
+	\item Di ogni farmaco sono memorizzati il nome commerciale (univoco), l’azienda
+	      produttrice, il nome e la quantità dei principi attivi contenuti e la
+	      dose giornaliera raccomandata.
 
-  \item Si tiene, infine, traccia delle diagnosi che hanno motivato le terapie.
-        In particolare, ogni terapia è prescritta al fine di curare una o più 
-        patologie diagnosticate. Può capitare anche che una nuova patologia 
-        (registrata come nuova diagnosi) sia causata, come effetto collaterale, 
-        da una terapia precedentemente prescritta. Tale legame causa-effetto va
-        registrato nella base di dati.
+	\item Si tiene, infine, traccia delle diagnosi che hanno motivato le terapie.
+	      In particolare, ogni terapia è prescritta al fine di curare una o più
+	      patologie diagnosticate. Può capitare anche che una nuova patologia
+	      (registrata come nuova diagnosi) sia causata, come effetto collaterale,
+	      da una terapia precedentemente prescritta. Tale legame causa-effetto va
+	      registrato nella base di dati.
 \end{itemize}
 Tramite un portale web dovrà essere possibile accedere a tale base di dati ed
 aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farmaci.
@@ -131,65 +131,65 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
 
 \subsubsection{Le Entità} % TODO sarebbe meglio creare subsubsubsection o paragrafi per ogni entità?
 \begin{itemize}
-    \item PAZIENTE: dai requisiti è possibile individuare le seguenti voci
-          significative: \textit{codice sanitario}, \textit{cognome},
-          \textit{nome}, \textit{data di nascita}, \textit{luogo di nascita} e
-          \textit{provincia di residenza} del paziente.
-          Per ognuna di esse è stato creato un attibuto. Il codice fiscale
-          (d'ora in poi detto anche CF) è stato selezionato come chiave
-          primaria in quanto,
-          come definito nei requisiti, univoco\footnote{Proprietà fondamentale
-          di un attributo per la definizione di esso come chiave primaria.}.
-          %Ricordiamo la definizione di chiave primaria univoca e sottoinsieme minimo TODO
-          Per salvare gli attributi esclusivi per i pazienti fuori regione
-          riguardanti il nome della ULSS e la regione di appartenenza, è stata
-          creata l'entità PAZIENTE-FUORI-REGIONE, specializzazione dell'entità
-          precedente.  Poiché solo una frazione dell'insieme dei pazienti sarà
-          di questo tipo la specializzazione è parziale.
+	\item PAZIENTE: dai requisiti è possibile individuare le seguenti voci
+	      significative: \textit{codice sanitario}, \textit{cognome},
+	      \textit{nome}, \textit{data di nascita}, \textit{luogo di nascita} e
+	      \textit{provincia di residenza} del paziente.
+	      Per ognuna di esse è stato creato un attibuto. Il codice fiscale
+	      (d'ora in poi detto anche CF) è stato selezionato come chiave
+	      primaria in quanto,
+	      come definito nei requisiti, univoco\footnote{Proprietà fondamentale
+		      di un attributo per la definizione di esso come chiave primaria.}.
+	      %Ricordiamo la definizione di chiave primaria univoca e sottoinsieme minimo TODO
+	      Per salvare gli attributi esclusivi per i pazienti fuori regione
+	      riguardanti il nome della ULSS e la regione di appartenenza, è stata
+	      creata l'entità PAZIENTE-FUORI-REGIONE, specializzazione dell'entità
+	      precedente.  Poiché solo una frazione dell'insieme dei pazienti sarà
+	      di questo tipo la specializzazione è parziale.
 
-    \item RICOVERO: dai requisiti è possibile individuare le seguenti voci 
-          significative: \textit{codice ricovero, divisione ospedaliera, 
-          paziente ricoverato, data inizio, data fine, motivo} del ricovero. 
-          Per ognuna di esse è stato creato un attributo, fatta eccezione per 
-          \textit{paziente ricoverato}. Quest'ultima informazione verrà
-          memorizzata attraverso la relazione VIENE-RICOVERATO, descritta 
-          in seguito. Il \textit{codice ricovero} è stato selezionato come
-          chiave primaria dell'entità in quanto univoco.
-          
-    \item DIAGNOSI: dai requisiti è possibile individuare le seguenti voci 
-          significative: \textit{patologia diagnosticata, codice patologia,
-          gravità patologia, data, medico}. Per ognuna di esse è stato 
-          creato un attributo. In particolare \textit{patologia} è un 
-          attributo composto che si suddivide in \textit{codice} e 
-          \textit{gravità}. Si assume che la data comprenda anche l'ora in 
-          cui è stata effettuata la diagnosi. DIAGNOSI è un'entità debole 
-          in quanto la chiave primaria è definita attraverso l'attributo
-          \textit{data} e la relazione EFFETTUATA-DURANTE. La chiave è
-          stata stabilita sfruttando l'assunzione precedente rigurado la 
-          data in modo tale che per ogni ricovero non sia possibile 
-          associare più diagnosi effettuate nello stesso istante.
+	\item RICOVERO: dai requisiti è possibile individuare le seguenti voci
+	      significative: \textit{codice ricovero, divisione ospedaliera,
+		      paziente ricoverato, data inizio, data fine, motivo} del ricovero.
+	      Per ognuna di esse è stato creato un attributo, fatta eccezione per
+	      \textit{paziente ricoverato}. Quest'ultima informazione verrà
+	      memorizzata attraverso la relazione VIENE-RICOVERATO, descritta
+	      in seguito. Il \textit{codice ricovero} è stato selezionato come
+	      chiave primaria dell'entità in quanto univoco.
 
-    \item FARMACO: dai requisiti è possibile individuare le seguenti voci
-          significative: \textit{nome commerciale, azienda produttrice, 
-          nome principi attivi, quantità principi attivi, dose giornaliera
-          raccomandata}. Per ognuna di esse è stato creato un attributo. In
-          particolare \textit{nome principi attivi e quantità principi 
-          attivi} sono attributi multivalore e la chiave primaria è 
-          rappresentata da \textit{nome commerciale} in quanto univoco.
-          
-    \item TERAPIA: dai requisiti è possibile individuare le seguenti voci
-          significative: \textit{farmaco prescritto, dose giornaliera, 
-          modalità di somministrazione, medico prescrivente}. 
-          Sono stati definiti gli attributi \textit{dose giornaliera} e 
-          \textit{modalità somministrazione} mentre l'informazione relativa
-          alle altre voci verrà considerata in altre entità e relazioni.
-          In particolare il medico prescrivente, le date di inzio e fine 
-          della terapia verranno gestite nella relazione MOTIVA-TERAPIA,
-          in quanto la terapia è intesa come metodo per la sommistristrazione 
-          di un farmaco al fine di curare una patologia. La 
-          chiave primaria è composta dagli attributi di terapia e dalla
-          relazione SOMMINISTRATO-DURANTE che rende l'entità un'entità
-          debole e consente di mantenere i dati relativi al farmaco prescritto.
+	\item DIAGNOSI: dai requisiti è possibile individuare le seguenti voci
+	      significative: \textit{patologia diagnosticata, codice patologia,
+		      gravità patologia, data, medico}. Per ognuna di esse è stato
+	      creato un attributo. In particolare \textit{patologia} è un
+	      attributo composto che si suddivide in \textit{codice} e
+	      \textit{gravità}. Si assume che la data comprenda anche l'ora in
+	      cui è stata effettuata la diagnosi. DIAGNOSI è un'entità debole
+	      in quanto la chiave primaria è definita attraverso l'attributo
+	      \textit{data} e la relazione EFFETTUATA-DURANTE. La chiave è
+	      stata stabilita sfruttando l'assunzione precedente rigurado la
+	      data in modo tale che per ogni ricovero non sia possibile
+	      associare più diagnosi effettuate nello stesso istante.
+
+	\item FARMACO: dai requisiti è possibile individuare le seguenti voci
+	      significative: \textit{nome commerciale, azienda produttrice,
+		      nome principi attivi, quantità principi attivi, dose giornaliera
+		      raccomandata}. Per ognuna di esse è stato creato un attributo. In
+	      particolare \textit{nome principi attivi e quantità principi
+		      attivi} sono attributi multivalore e la chiave primaria è
+	      rappresentata da \textit{nome commerciale} in quanto univoco.
+
+	\item TERAPIA: dai requisiti è possibile individuare le seguenti voci
+	      significative: \textit{farmaco prescritto, dose giornaliera,
+		      modalità di somministrazione, medico prescrivente}.
+	      Sono stati definiti gli attributi \textit{dose giornaliera} e
+	      \textit{modalità somministrazione} mentre l'informazione relativa
+	      alle altre voci verrà considerata in altre entità e relazioni.
+	      In particolare il medico prescrivente, le date di inzio e fine
+	      della terapia verranno gestite nella relazione MOTIVA-TERAPIA,
+	      in quanto la terapia è intesa come metodo per la sommistristrazione
+	      di un farmaco al fine di curare una patologia. La
+	      chiave primaria è composta dagli attributi di terapia e dalla
+	      relazione SOMMINISTRATO-DURANTE che rende l'entità un'entità
+	      debole e consente di mantenere i dati relativi al farmaco prescritto.
 
 
 
@@ -197,25 +197,25 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
 
 \subsubsection{Le Relazioni}
 \begin{itemize}
-    \item VIENE-RICOVERATO: un tipo di relazione Uno-A-Molti tra PAZIENTE e
-          RICOVERO. Entrambe le partecipazioni sono totali.
-    
-    \item EFFETTUATA-DURANTE: un tipo di relazione Uno-A-Molti tra DIAGNOSI 
-          e RICOVERO. La partecipazione di RICOVERO è parziale mentre quella
-          di DIAGNOSI è totale.
+	\item VIENE-RICOVERATO: un tipo di relazione Uno-A-Molti tra PAZIENTE e
+	      RICOVERO. Entrambe le partecipazioni sono totali.
 
-    \item SOMMINISTRATO-DURANTE: un tipo di relazione Uno-A-Molti tra FARMACO
-          e TERAPIA. La partecipazione di FARMACO è parziale mentre quella di
-          TERAPIA è totale.
-    
-    \item MOTIVA-TERAPIA: una relazione ternaria in cui partecipano le entità
-          TERAPIA e DIAGNOSI in una meccanica di causa-effetto. Possiede i
-          seguenti attributi \textit{medico prescrivente, data inizio, data  fine}. 
-          L'entità DIAGNOSI partecipa con cardinalità (0,1) mentre TERAPIA 
-          partecipa con cardinalità (1,N).
-\end{itemize}      
-            
-                 
+	\item EFFETTUATA-DURANTE: un tipo di relazione Uno-A-Molti tra DIAGNOSI
+	      e RICOVERO. La partecipazione di RICOVERO è parziale mentre quella
+	      di DIAGNOSI è totale.
+
+	\item SOMMINISTRATO-DURANTE: un tipo di relazione Uno-A-Molti tra FARMACO
+	      e TERAPIA. La partecipazione di FARMACO è parziale mentre quella di
+	      TERAPIA è totale.
+
+	\item MOTIVA-TERAPIA: una relazione ternaria in cui partecipano le entità
+	      TERAPIA e DIAGNOSI in una meccanica di causa-effetto. Possiede i
+	      seguenti attributi \textit{medico prescrivente, data inizio, data  fine}.
+	      L'entità DIAGNOSI partecipa con cardinalità (0,1) mentre TERAPIA
+	      partecipa con cardinalità (1,N).
+\end{itemize}
+
+
 
 % TODO Immagine diagnosi, terapia SENZA attributi e motiva terapia con attributi 
 % Senza ricorsione e con ricorsione
@@ -308,10 +308,10 @@ cura e dall'altra come rilevazione di una nuova patologia
 
 
 \begin{figure}[H] % TODO abbellire
-    \centering
-    \includegraphics[width=\linewidth]{schema1}
-    \caption{Lo schema Entità-Relazioni completo}
-    \label{schema_ER_progettazione_modello}
+	\centering
+	\includegraphics[width=\linewidth]{schema1}
+	\caption{Lo schema Entità-Relazioni completo}
+	\label{schema_ER_progettazione_modello}
 \end{figure}
 
 
@@ -357,7 +357,7 @@ avuto una relazione in più rispetto al genitore si sarebbero dovute valutare
 varie opzioni.  Per esempio la creazione di una nuova relazione per
 simboleggiare il legame tra genitore e figlio, lasciando invariati gli
 attributi.  Oppure la duplicazione nel figlio di tutti gli attributi e di tutte
-le relazioni del genitore.  
+le relazioni del genitore.
 
 Anche nel caso degli attributi composti la semplificazione è immediata, infatti
 nello schema l'unico attributo composto è \textit{Patologia} in DIAGNOSI.  Può
@@ -383,10 +383,10 @@ Rimozione t Scelta della chiavi primarie
 
 
 \begin{figure}[H] % TODO abbellire
-  \centering
-  \includegraphics[width=\linewidth]{schema2.jpg}
-  \caption{Lo schema Entità-Relazioni completo}
-  \label{schema_ER_ristrutturato}
+	\centering
+	\includegraphics[width=\linewidth]{schema2.jpg}
+	\caption{Lo schema Entità-Relazioni completo}
+	\label{schema_ER_ristrutturato}
 \end{figure}
 
 % TODO NELLA FASE LOGICA
@@ -397,29 +397,113 @@ Rimozione t Scelta della chiavi primarie
 \clearpage
 \subsubsection{Analisi delle Ridondanze}
 
-Lo schema Entità-Relazioni  \autoref{schema_ER_ristrutturato} % TODO quanità di giorni che ricoverato
+Ai fini di ottimizzare le prestazioni, studiamo se risulta conveniente mantenere l'attributo derivato \textit{Totale Giorni Ricoveri} dell'entità PAZIENTE.
 
+%\begin{figure}[H] % TODO abbellire
+%     \centering
+%    \includegraphics[width=\linewidth]{% TODO SCHEMA paziente+(totale giorni ricoveri)--vienericoverato--ricovero
+%   }
+%  \caption{Attributo derivato Totale Giorni Ricoveri}
+% \label{fig:attributo-ridondante}
+%\end{figure}
+Riportiamo i volumi stimati in \autoref{tab:volumi-attributo-ridondante} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-attributo-ridondante}.
 
-Visto il requisito di stampa delle diagnosi effettuate da un singolo paziente, ai fini di ottimizzazione consideriamo l'inserimento della relazione:
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|l|c|r|}
+		\hline
+		\textbf{Concept} & \textbf{Type} & \textbf{Volume} \\ \hline
+		Paziente         & E             & 100000          \\ \hline
+		Ricovero         & E             & 300000          \\ \hline
+		Viene Ricoverato & R             & 300000          \\ \hline
+	\end{tabular}
+	\caption{Tabella dei volumi ridotta}
+	\label{tab:volumi-attributo-ridondante}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|l|c|r|}
+		\hline
+		\textbf{Operation}                  & \textbf{Type} & \textbf{Frequency} \\ \hline
+		Registrazione Ricovero              & I             & 175/giorno         \\ \hline
+		Controllo totale giorni di ricoveri & I             & 175/giorno         \\ \hline %TODO fix questo numero
+	\end{tabular}
+	\caption{Tabella delle operazioni ridotta}
+	\label{tab:operazioni-attributo-ridondante}
+\end{table}
+
+In presenza dell'attributo derivato, per l'operazione di registrazione di un nuovo ricovero è necessario 1 accesso in scrittura per l'entità RICOVERO, 1 accesso in scrittura per la relazione VIENE-RICOVERATO, 1 accesso in lettura e 1 accesso in scrittura per l'entità PAZIENTE per leggere e aggiornare l'attributo \textit{Totale Giorni Ricoveri}.
+Per l'operazione di verifica del totale dei giorni di ricoveri è sufficiente 1 accesso in lettura all'entità PAZIENTE.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|l|c|c|c|}
+		\hline
+		\textbf{Concept} & \textbf{Type} & \textbf{Access} & \textbf{Type} \\ \hline
+		\multicolumn{4}{|c|}{Registrazione Ricovero}                       \\ \hline
+		Ricovero         & E             & 1               & W             \\ \hline
+		Viene Ricoverato & R             & 1               & W             \\ \hline
+		Paziente         & E             & 1               & R             \\ \hline
+		Paziente         & E             & 1               & W             \\ \hline
+		\multicolumn{4}{|c|}{Controllo totale giorni di ricoveri}          \\ \hline
+		Paziente         & E             & 1               & R             \\ \hline
+	\end{tabular}
+	\caption{Tabella dei costi, caso con ridondanza}
+	\label{tab:costi-attributo-ridondante}
+\end{table}
+
+Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso con ridondanza:
+\begin{equation}
+	(3W + 1R) \times 175 + 1R \times 175 \approx 1400R
+\end{equation}
+
+Rimuovendo l'attributo, per l'operazione di registrazione di un nuovo ricovero è sufficiente 1 accesso in scrittura per l'entità RICOVERO e 1 accesso in scrittura per la relazione VIENE-RICOVERATO.
+Per l'operazione di verifica del totale dei giorni di ricoveri, considerando la tabella dei volumi, sono necessari in media 3 accessi in lettura per la relazione VIENE-RICOVERATO e 3 accessi in lettura per l'entità RICOVERO.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|l|c|c|c|}
+		\hline
+		\textbf{Concept} & \textbf{Type} & \textbf{Access} & \textbf{Type} \\ \hline
+		\multicolumn{4}{|c|}{Inserimento Diagnosi}                         \\ \hline
+		Viene Ricoverato & R             & 1               & W             \\ \hline
+		Ricovero         & R             & 1               & W             \\ \hline
+		\multicolumn{4}{|c|}{Stampa Storico Diagnosi}                      \\ \hline
+		Viene Ricoverato & R             & 3               & R             \\ \hline
+		Ricovero         & E             & 3               & R             \\ \hline
+	\end{tabular}
+	\caption{Tabella dei costi, caso senza ridondanza}
+	\label{tab:costi-no-attributo-ridondante}
+\end{table}
+
+Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso senza ridondanza:
+\begin{equation}
+	2W \times 175 + 6R \times 175 \approx 1750R
+\end{equation}
+
+Risulta conveniente mantenere l'attributo \textit{Totale Giorni Ricoveri}.
+
+Lo schema Entità-Relazioni in \autoref{schema_ER_ristrutturato} non presenta ulteriori ridondanze, infatti, il ciclo DIAGNOSI TERAPIA-PRESCRITTA DIAGNOSI non è ridondante. Tuttavia visto il requisito di stampa delle diagnosi effettuate da un singolo paziente consideriamo l'inserimento della relazione:
 \begin{itemize}
-\item EFFETTUATA A: una relazione Uno-A-Molti tra PAZIENTE 
-          e DIAGNOSI. La partecipazione di PAZIENTE è parziale mentre quella
-          di DIAGNOSI è totale. 
+	\item EFFETTUATA A: una relazione Uno-A-Molti tra PAZIENTE
+	      e DIAGNOSI. La partecipazione di PAZIENTE è parziale mentre quella
+	      di DIAGNOSI è totale.
 \end{itemize}
 
 Viene creato quindi il ciclo in \autoref{fig:ciclo-ridondanza} PAZIENTE, RICOVERO, DIAGNOSI dato dalle relazioni VIENE RICOVERATO, EFFETTUATA DURANTE, EFFETTUATA A.
 
 \begin{figure}[H] % TODO abbellire
-      \centering
-      \includegraphics[width=\linewidth]{schema3.jpg}
-      \caption{Ciclo con ridondanza}
-      \label{fig:ciclo-ridondanza}
-    \end{figure}
+	\centering
+	\includegraphics[width=\linewidth]{schema3.jpg}
+	\caption{Ciclo con ridondanza}
+	\label{fig:ciclo-ridondanza}
+\end{figure}
 Procediamo a valutare se è conveniente mantenere la relazione EFFETTUATA A tra PAZIENTE e DIAGNOSI in funzione della frequenza delle operazioni di inserimento nuove diagnosi e stampa dello storico diagnosi di un paziente.
 
 % TODO REQUISITO specificare nei requisiti le operazioni richieste e i volumi
 
-Riportiamo i volumi stimati durante la fase dei requisiti in \autoref{tab:volumi-ciclo} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-ciclo}.
+Riportiamo i volumi stimati in \autoref{tab:volumi-ciclo} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-ciclo}.
 
 % TODO REQUISITO spostare table:volumi nei requisiti
 \begin{table}[H]
@@ -439,7 +523,7 @@ Riportiamo i volumi stimati durante la fase dei requisiti in \autoref{tab:volumi
 		Effettuta A           & R             & 1200000         \\ \hline
 		Curata Da             & R             & 1200000         \\ \hline
 		Istanza Di            & R             & 1200000         \\ \hline
-            Effetto Collaterale   & R             & 50000           \\ \hline
+		Effetto Collaterale   & R             & 50000           \\ \hline
 		Somministrato Durante & R             & 10000           \\ \hline
 	\end{tabular}
 	\caption{Tabella dei volumi}
@@ -478,7 +562,7 @@ Per l'operazione di stampa delle diagnosi di un paziente sono necessari 12 acces
 
 Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso con ridondanza:
 \begin{equation}
-  3W \times 700 + 24R \times 1400 \approx	37800R
+	3W \times 700 + 24R \times 1400 \approx	37800R
 \end{equation}
 
 \begin{table}[H]
@@ -503,7 +587,7 @@ Per l'operazione di stampa delle diagnosi di un paziente sono necessari 3 access
 
 Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso senza ridondanza:
 \begin{equation}
-  2W \times 700 + 27R \times 1400 \approx	40600R
+	2W \times 700 + 27R \times 1400 \approx	40600R
 \end{equation}
 
 \begin{table}[H]
@@ -519,8 +603,8 @@ Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calco
 		Viene Ricoverato    & R             & 3               & R             \\ \hline
 		Effettutata Durante & R             & 12              & R             \\ \hline
 		Diagnosi            & E             & 12              & R             \\ \hline
-  \end{tabular}
-  \caption{Tabella dei costi, caso senza ridondanza}
+	\end{tabular}
+	\caption{Tabella dei costi, caso senza ridondanza}
 \end{table}
 
 Concludiamo che è conveniente mantenere la ridondanza visto il costo minore delle operazioni giornaliere.
