@@ -32,7 +32,7 @@
 \end{titlepage}
 
 \tableofcontents
-\thispagestyle{empty} 
+\thispagestyle{empty}
 \cleardoublepage
 \setcounter{page}{1}
 
@@ -380,7 +380,7 @@ avuto una relazione in più rispetto al genitore si sarebbero dovute valutare
 varie opzioni.  Per esempio la creazione di una nuova relazione per
 simboleggiare il legame tra genitore e figlio, lasciando invariati gli
 attributi.  Oppure la duplicazione nel figlio di tutti gli attributi e di tutte
-le relazioni del genitore.  
+le relazioni del genitore.
 
 Anche nel caso degli attributi composti la semplificazione è immediata, infatti
 nello schema l'unico attributo composto è \textit{Patologia} in DIAGNOSI.  Può
@@ -406,10 +406,10 @@ Rimozione t Scelta della chiavi primarie
 
 
 \begin{figure}[H] % TODO abbellire
-  \centering
-  \includegraphics[width=\linewidth]{schema2.jpg}
-  \caption{Lo schema Entità-Relazioni completo}
-  \label{schema_ER_ristrutturato}
+	\centering
+	\includegraphics[width=\linewidth]{schema2.jpg}
+	\caption{Lo schema Entità-Relazioni completo}
+	\label{schema_ER_ristrutturato}
 \end{figure}
 
 % TODO NELLA FASE LOGICA
@@ -420,33 +420,116 @@ Rimozione t Scelta della chiavi primarie
 \clearpage
 \subsubsection{Analisi delle Ridondanze}
 
-Lo schema Entità-Relazioni  \autoref{schema_ER_ristrutturato} % TODO quanità di giorni che ricoverato
+Ai fini di ottimizzare le prestazioni, studiamo se risulta conveniente mantenere l'attributo derivato \textit{Totale Giorni Ricoveri} dell'entità PAZIENTE.
 
+%\begin{figure}[H] % TODO abbellire
+%     \centering
+%    \includegraphics[width=\linewidth]{% TODO SCHEMA paziente+(totale giorni ricoveri)--vienericoverato--ricovero
+%   }
+%  \caption{Attributo derivato Totale Giorni Ricoveri}
+% \label{fig:attributo-ridondante}
+%\end{figure}
+Riportiamo i volumi stimati in \autoref{tab:volumi-attributo-ridondante} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-attributo-ridondante}.
 
-Visto il requisito di stampa delle diagnosi effettuate da un singolo paziente, ai fini di ottimizzazione consideriamo l'inserimento della relazione:
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|l|c|r|}
+		\hline
+		\textbf{Concept} & \textbf{Type} & \textbf{Volume} \\ \hline
+		Paziente         & E             & 100000          \\ \hline
+		Ricovero         & E             & 300000          \\ \hline
+		Viene Ricoverato & R             & 300000          \\ \hline
+	\end{tabular}
+	\caption{Tabella dei volumi ridotta}
+	\label{tab:volumi-attributo-ridondante}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|l|c|r|}
+		\hline
+		\textbf{Operation}                  & \textbf{Type} & \textbf{Frequency} \\ \hline
+		Registrazione Ricovero              & I             & 175/giorno         \\ \hline
+		Controllo totale giorni di ricoveri & I             & 175/giorno         \\ \hline %TODO fix questo numero
+	\end{tabular}
+	\caption{Tabella delle operazioni ridotta}
+	\label{tab:operazioni-attributo-ridondante}
+\end{table}
+
+In presenza dell'attributo derivato, per l'operazione di registrazione di un nuovo ricovero è necessario 1 accesso in scrittura per l'entità RICOVERO, 1 accesso in scrittura per la relazione VIENE-RICOVERATO, 1 accesso in lettura e 1 accesso in scrittura per l'entità PAZIENTE per leggere e aggiornare l'attributo \textit{Totale Giorni Ricoveri}.
+Per l'operazione di verifica del totale dei giorni di ricoveri è sufficiente 1 accesso in lettura all'entità PAZIENTE.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|l|c|c|c|}
+		\hline
+		\textbf{Concept} & \textbf{Type} & \textbf{Access} & \textbf{Type} \\ \hline
+		\multicolumn{4}{|c|}{Registrazione Ricovero}                       \\ \hline
+		Ricovero         & E             & 1               & W             \\ \hline
+		Viene Ricoverato & R             & 1               & W             \\ \hline
+		Paziente         & E             & 1               & R             \\ \hline
+		Paziente         & E             & 1               & W             \\ \hline
+		\multicolumn{4}{|c|}{Controllo totale giorni di ricoveri}          \\ \hline
+		Paziente         & E             & 1               & R             \\ \hline
+	\end{tabular}
+	\caption{Tabella dei costi, caso con ridondanza}
+	\label{tab:costi-attributo-ridondante}
+\end{table}
+
+Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso con ridondanza:
+\begin{equation}
+	(3W + 1R) \times 175 + 1R \times 175 \approx 1400R
+\end{equation}
+
+Rimuovendo l'attributo, per l'operazione di registrazione di un nuovo ricovero è sufficiente 1 accesso in scrittura per l'entità RICOVERO e 1 accesso in scrittura per la relazione VIENE-RICOVERATO.
+Per l'operazione di verifica del totale dei giorni di ricoveri, considerando la tabella dei volumi, sono necessari in media 3 accessi in lettura per la relazione VIENE-RICOVERATO e 3 accessi in lettura per l'entità RICOVERO.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|l|c|c|c|}
+		\hline
+		\textbf{Concept} & \textbf{Type} & \textbf{Access} & \textbf{Type} \\ \hline
+		\multicolumn{4}{|c|}{Inserimento Diagnosi}                         \\ \hline
+		Viene Ricoverato & R             & 1               & W             \\ \hline
+		Ricovero         & R             & 1               & W             \\ \hline
+		\multicolumn{4}{|c|}{Stampa Storico Diagnosi}                      \\ \hline
+		Viene Ricoverato & R             & 3               & R             \\ \hline
+		Ricovero         & E             & 3               & R             \\ \hline
+	\end{tabular}
+	\caption{Tabella dei costi, caso senza ridondanza}
+	\label{tab:costi-no-attributo-ridondante}
+\end{table}
+
+Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso senza ridondanza:
+\begin{equation}
+	2W \times 175 + 6R \times 175 \approx 1750R
+\end{equation}
+
+Risulta conveniente mantenere l'attributo \textit{Totale Giorni Ricoveri}.
+
+Lo schema Entità-Relazioni in \autoref{schema_ER_ristrutturato} non presenta ulteriori ridondanze, infatti, il ciclo DIAGNOSI TERAPIA-PRESCRITTA DIAGNOSI non è ridondante. Tuttavia visto il requisito di stampa delle diagnosi effettuate da un singolo paziente consideriamo l'inserimento della relazione:
 \begin{itemize}
-\item EFFETTUATA A: una relazione Uno-A-Molti tra PAZIENTE 
-          e DIAGNOSI. La partecipazione di PAZIENTE è parziale mentre quella
-          di DIAGNOSI è totale. 
+	\item EFFETTUATA A: una relazione Uno-A-Molti tra PAZIENTE
+	      e DIAGNOSI. La partecipazione di PAZIENTE è parziale mentre quella
+	      di DIAGNOSI è totale.
 \end{itemize}
 
 Viene creato quindi il ciclo in \autoref{fig:ciclo-ridondanza} PAZIENTE, RICOVERO, DIAGNOSI dato dalle relazioni VIENE RICOVERATO, EFFETTUATA DURANTE, EFFETTUATA A.
 
 \begin{figure}[H] % TODO abbellire
-      \centering
-      \includegraphics[width=\linewidth]{schema3.jpg}
-      \caption{Ciclo con ridondanza}
-      \label{fig:ciclo-ridondanza}
-    \end{figure}
+	\centering
+	\includegraphics[width=\linewidth]{schema3.jpg}
+	\caption{Ciclo con ridondanza}
+	\label{fig:ciclo-ridondanza}
+\end{figure}
 Procediamo a valutare se è conveniente mantenere la relazione EFFETTUATA A tra PAZIENTE e DIAGNOSI in funzione della frequenza delle operazioni di inserimento nuove diagnosi e stampa dello storico diagnosi di un paziente.
 
 % TODO REQUISITO specificare nei requisiti le operazioni richieste e i volumi
 
-Riportiamo i volumi stimati durante la fase dei requisiti in \autoref{tab:volumi-ciclo} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-ciclo}.
+Riportiamo i volumi stimati in \autoref{tab:volumi-ciclo} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-ciclo}.
 
-% TODO REQUISITO spostare table:volumi nei requisiti
+% TODO REQUISITO spostare table:volumi nei requisiti, no non si può non tutti esistono nei requisiti
 \begin{table}[H]
-	\label{tab:volumi}
 	\centering
 	\begin{tabular}{|l|c|r|}
 		\hline
@@ -462,14 +545,14 @@ Riportiamo i volumi stimati durante la fase dei requisiti in \autoref{tab:volumi
 		Effettuta A           & R             & 1200000         \\ \hline
 		Curata Da             & R             & 1200000         \\ \hline
 		Istanza Di            & R             & 1200000         \\ \hline
-            Effetto Collaterale   & R             & 50000           \\ \hline
+		Effetto Collaterale   & R             & 50000           \\ \hline
 		Somministrato Durante & R             & 10000           \\ \hline
 	\end{tabular}
-	\caption{Tabella dei volumi}
+      \caption{Tabella dei volumi}
+      \label{tab:volumi}
 \end{table}
 
 \begin{table}[H]
-	\label{tab:volumi-ciclo}
 	\centering
 	\begin{tabular}{|l|c|r|}
 		\hline
@@ -481,7 +564,8 @@ Riportiamo i volumi stimati durante la fase dei requisiti in \autoref{tab:volumi
 		Effettuata Durante & R             & 1200000         \\ \hline
 		Effettuata A       & R             & 1200000         \\ \hline
 	\end{tabular}
-	\caption{Tabella dei volumi ridotta}
+      \caption{Tabella dei volumi ridotta}
+      \label{tab:volumi-ciclo}
 \end{table}
 
 \begin{table}[H]
@@ -501,7 +585,7 @@ Per l'operazione di stampa delle diagnosi di un paziente sono necessari 12 acces
 
 Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso con ridondanza:
 \begin{equation}
-  3W \times 700 + 24R \times 1400 \approx	37800R
+	3W \times 700 + 24R \times 1400 \approx	37800R
 \end{equation}
 
 \begin{table}[H]
@@ -526,7 +610,7 @@ Per l'operazione di stampa delle diagnosi di un paziente sono necessari 3 access
 
 Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso senza ridondanza:
 \begin{equation}
-  2W \times 700 + 27R \times 1400 \approx	40600R
+	2W \times 700 + 27R \times 1400 \approx	40600R
 \end{equation}
 
 \begin{table}[H]
@@ -542,8 +626,8 @@ Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calco
 		Viene Ricoverato    & R             & 3               & R             \\ \hline
 		Effettutata Durante & R             & 12              & R             \\ \hline
 		Diagnosi            & E             & 12              & R             \\ \hline
-  \end{tabular}
-  \caption{Tabella dei costi, caso senza ridondanza}
+	\end{tabular}
+	\caption{Tabella dei costi, caso senza ridondanza}
 \end{table}
 
 Concludiamo che è conveniente mantenere la ridondanza visto il costo minore delle operazioni giornaliere.
