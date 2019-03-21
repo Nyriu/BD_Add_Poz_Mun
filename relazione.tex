@@ -76,6 +76,7 @@ dato ospedale.
         (univoco), il cognome, il nome, la data di nascita, il luogo di nascita 
         e la provincia di residenza. Per i pazienti residenti fuori regione, 
         vengono memorizzati anche il nome della ULSS e la regione di appartenenza.
+        % TODO aggiungere il requisito per l'attributo derivato.
 
   \item Di ogni diagnosi effettuata durante il ricovero del paziente, sono 
         memorizzati la patologia diagnosticata, col suo codice ICD10 
@@ -145,7 +146,7 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
           creata l'entità PAZIENTE-FUORI-REGIONE, specializzazione dell'entità
           precedente.  Poiché solo una frazione dell'insieme dei pazienti sarà
           di questo tipo la specializzazione è parziale.
-  
+
     \item RICOVERO: dai requisiti è possibile individuare le seguenti voci 
           significative: \textit{codice ricovero, divisione ospedaliera, 
           paziente ricoverato, data inizio, data fine, motivo} del ricovero. 
