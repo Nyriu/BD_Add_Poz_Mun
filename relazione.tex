@@ -226,7 +226,7 @@ che la definisce come cura per una patologia e quello che la definisce come
 causa di una nuova patologia.  Va sottolineato che in entrambi i casi, nella
 base di dati, la patologia è salvata attraverso DIAGNOSI.
 
-In un primo momento è stato modellato il sottoschema illustrato in figura TODO.
+In un primo momento è stato modellato il sottoschema illustrato in Figura \ref{schema_piccolo1}.
 Il modo in cui è stata definita l'entità TERAPIA permetterà di modellare il
 requisito \textit{ogni terapia può curare più patologie}.  Un'informazione come
 data di inizio, o data di fine, o medico prescrivente, non può essere
@@ -249,24 +249,36 @@ ora, risulta essere una relazione Uno-A-Molti: nel testo è specificato che ad
 ogni diagnosi possa essere associata al più una terapia; mentre TERAPIA è stata
 definita appositamente per poter esser associata a più DIAGNOSI.
 
+\begin{figure}[!ht] % TODO abbellire
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{piccolo1}
+  \caption{Prima modellazione}
+  \label{schema_piccolo1}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{piccolo2}
+  \caption{Relazione completa}
+  \label{schema_piccolo2}
+\end{minipage}
+\end{figure}
+
 Ora è necessario modellare la situazione in cui una terapia prescritta è causa
 di una nuova patologia.  L'informazione che si vuole mantenere non dipende
-esclusivamente dall'entità TERAPIA, dipendendo anche dal periodo di
-applicazione, quindi non è sufficiente creare una nuova relazione tra TERAPIA e
-DIAGNOSI.  La soluzione migliore è quella di trasformare MOTIVA-TERAPIA in una
-relazione ternaria: con DIAGNOSI che partecipa da una parte come patologia in
-cura e dall'altra come rilevazione di una nuova patologia
+esclusivamente dall'entità TERAPIA, dipende anche dal periodo di applicazione, quindi non è sufficiente creare una nuova relazione tra TERAPIA e DIAGNOSI.
+La soluzione migliore è quella di trasformare MOTIVA-TERAPIA in una relazione ternaria: con DIAGNOSI che partecipa da una parte come patologia in cura e dall'altra come rilevazione di una nuova patologia.
+Per comodità, il risultato di tale trasformazione è riportato in Figura \ref{schema_piccolo2}.
+Ricordando che non tutte le applicazioni di una terapia causano un effetto collaterale e che ne possono causare al massimo uno, la partecipazione di DIAGNOSI come effetto collaterale è parziale con cardinalità 1.
 
-
-
-
-
-%\begin{figure} % TODO abbellire
-%    \centering
-%    \includegraphics[width=\linewidth]{piccolo1}
-%    \caption{Sottoschema della prima modellazione di MOTIVA-TERAPIA}
-%    \label{schema_piccolo1}
-%\end{figure}
+A questo punto è necessario introdurre dei vincoli d'integrità:
+\begin{itemize}
+  \item in ogni tripletta di MOTIVA-TERAPIA non può comparire due volte la stessa DIAGNOSI;
+  \item la DIAGNOSI che partecipa come effetto collaterale deve avere una data successiva alla data della prima diagnosi.
+\end{itemize}
+%TODO ho dimenticato qualcosa??
+Nella fase logica verrà mostrato che questa relazione può essere trasformata, senza perdita d'informazione, e con l'aggiunta di una nuova entità, in relazioni binarie.
 
 
 
