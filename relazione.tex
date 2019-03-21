@@ -76,7 +76,8 @@ dato ospedale.
         (univoco), il cognome, il nome, la data di nascita, il luogo di nascita 
         e la provincia di residenza. Per i pazienti residenti fuori regione, 
         vengono memorizzati anche il nome della ULSS e la regione di appartenenza.
-        % TODO aggiungere il requisito per l'attributo derivato.
+        Inoltre, per ogni paziente, è necessario memorizzare il totale delle
+        durate dei ricoveri.
 
   \item Di ogni diagnosi effettuata durante il ricovero del paziente, sono 
         memorizzati la patologia diagnosticata, col suo codice ICD10 
@@ -129,6 +130,86 @@ un'entità che raccoglie i dettagli della terapia, ad esempio la dose giornalier
 di farmaco da assumere.  L'entità DIAGNOSI e le rimanenti relazioni, in
 particolare CAUSA-EFFETTO, verranno analizzate successivamente.
 
+
+
+
+
+
+
+
+
+
+Progettazione:
+
+Il primo passo della costruzione dello schema E-R è stato l'individuazione
+delle entità. Seguendo l'analisi dei requisiti, la prima entità modellata è 
+stata RICOVERO che memorizza tutte le informazioni relative a un ricovero e
+possiede come attributi: \textit{Codice Ricovero}, \textit{Divisione 
+Ospedaliera}, \textit{Paziente Ricoverato}, \textit{Data Inizio}, \textit{Data
+Fine}, \textit{motivo}. In particolare, l'attributo \textit{Codice Ricovero} 
+è stato scelto come chiave primaria a causa della sua proprietà di unicità. 
+Successivamente è stata modellata l'entità PAZIENTE che è ritenuta fondamentale 
+in quanto senza di essa la base di dati perderebbe di significato. Per questa 
+entità sono stati creati i seguenti attributi: \textit{Codice Sanitario}, 
+\textit{Cognome}, \textit{Nome}, \textit{Data di Nascita}, \textit{Luogo di 
+Nascita} e \textit{Provincia di residenza} del paziente. E' richiesto inoltre 
+di memorizzare informazioni aggiuntive per i pazienti fuori regione. Per far 
+ciò è stata creata una specializzazione PAZIENTE-FUORI-REGIONE di PAZIENTE 
+i cui attributi sono: \textit{Regione di Appartenenza} e \textit{ULSS}.
+
+1) Paziente
+2) Ricovero
+3) Viene ricoverato
+4) Diagnosi
+5) Effettuata durante 
+6) Terapia 
+6.1) Medico
+7) Farmaco 
+8) Somministra 
+9) Motiva Terapia 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsubsection{Le Entità} % TODO sarebbe meglio creare subsubsubsection o paragrafi per ogni entità?
 \begin{itemize}
     \item PAZIENTE: dai requisiti è possibile individuare le seguenti voci
@@ -146,6 +227,7 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
           creata l'entità PAZIENTE-FUORI-REGIONE, specializzazione dell'entità
           precedente.  Poiché solo una frazione dell'insieme dei pazienti sarà
           di questo tipo la specializzazione è parziale.
+          % TODO aggiungere attributo derivato
 
     \item RICOVERO: dai requisiti è possibile individuare le seguenti voci 
           significative: \textit{codice ricovero, divisione ospedaliera, 
@@ -188,8 +270,8 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
           in quanto la terapia è intesa come metodo per la sommistristrazione 
           di un farmaco al fine di curare una patologia. La 
           chiave primaria è composta dagli attributi di terapia e dalla
-          relazione SOMMINISTRATO-DURANTE che rende l'entità un'entità
-          debole e consente di mantenere i dati relativi al farmaco prescritto.
+          relazione SOMMINISTRA che rende l'entità un'entità debole e consente 
+          di mantenere i dati relativi al farmaco prescritto.
 
 
 
@@ -204,8 +286,8 @@ particolare CAUSA-EFFETTO, verranno analizzate successivamente.
           e RICOVERO. La partecipazione di RICOVERO è parziale mentre quella
           di DIAGNOSI è totale.
 
-    \item SOMMINISTRATO-DURANTE: un tipo di relazione Uno-A-Molti tra FARMACO
-          e TERAPIA. La partecipazione di FARMACO è parziale mentre quella di
+    \item SOMMINISTRA: un tipo di relazione Uno-A-Molti tra FARMACO e TERAPIA.
+          La partecipazione di FARMACO è parziale mentre quella di
           TERAPIA è totale.
     
     \item MOTIVA-TERAPIA: una relazione ternaria in cui partecipano le entità
@@ -249,13 +331,14 @@ ora, risulta essere una relazione Uno-A-Molti: nel testo è specificato che ad
 ogni diagnosi possa essere associata al più una terapia; mentre TERAPIA è stata
 definita appositamente per poter esser associata a più DIAGNOSI.
 
-Ora è necessario modellare la situazione in cui una terapia prescritta è causa
-di una nuova patologia.  L'informazione che si vuole mantenere non dipende
-esclusivamente dall'entità TERAPIA, dipendendo anche dal periodo di
-applicazione, quindi non è sufficiente creare una nuova relazione tra TERAPIA e
-DIAGNOSI.  La soluzione migliore è quella di trasformare MOTIVA-TERAPIA in una
-relazione ternaria: con DIAGNOSI che partecipa da una parte come patologia in
-cura e dall'altra come rilevazione di una nuova patologia
+In un secondo momento è stato necessario modellare la situazione in cui una 
+terapia prescritta è causa di una nuova patologia.  L'informazione che si vuole
+mantenere non dipende esclusivamente dall'entità TERAPIA, dipendendo anche dal 
+periodo di applicazione, quindi non è sufficiente creare una nuova relazione 
+tra TERAPIA e DIAGNOSI.  La soluzione migliore è quella di trasformare 
+MOTIVA-TERAPIA in una relazione ternaria: con DIAGNOSI che partecipa da una 
+parte come patologia in cura e dall'altra come rilevazione di una nuova 
+patologia.
 
 
 
