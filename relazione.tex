@@ -115,11 +115,12 @@ Successivamente è stata modellata l'entità PAZIENTE che è ritenuta fondamenta
 Per questa entità sono stati creati i seguenti attributi: \textit{Codice Sanitario}, \textit{Cognome}, \textit{Nome}, \textit{Data di Nascita}, \textit{Luogo di Nascita} e \textit{Provincia di residenza} del paziente.
 Inoltre, è richiesto di memorizzare informazioni aggiuntive per i pazienti fuori regione. Per far ciò è stata creata una specializzazione PAZIENTE-FUORI-REGIONE di PAZIENTE i cui attributi sono: \textit{Regione di Appartenenza} e \textit{ULSS}. 
 Nei requisiti sul paziente è richiesto, inoltre, di tener traccia del tempo totale trascorso all'interno dell'ospedale durante i ricoveri. Quest'informazione è modellata attraverso \textit{Totale Giorni Ricoveri}, un attributo derivato su paziente che somma tutte le durate dei ricoveri che afferiscono al paziente. Questa relazione di afferenza tra RICOVERO e PAZIENTE viene modellata attraverso la relazione VIENE-RICOVERATO.
-L'informazione memorizzata nell'attributo \textit{Paziente Ricoverato} di RICOVERO viene salvata anche attraverso la nuova relazione di conseguenza per evitare ridondanze è possibile rimuovere l'attributo.
+L'informazione memorizzata nell'attributo \textit{Paziente Ricoverato} di RICOVERO viene salvata anche attraverso la nuova relazione, di conseguenza per evitare ridondanze è possibile rimuovere l'attributo.
+Le informazioni secondo 
 
-1) Paziente
-2) Ricovero
-3) Viene ricoverato
+1) Paziente x
+2) Ricovero x
+3) Viene ricoverato x
 4) Diagnosi
 5) Effettuata durante 
 6) Terapia 
