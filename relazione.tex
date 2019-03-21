@@ -43,7 +43,6 @@
 
 % TODO
 % - abbellire hyperlinks
-% - modifiche su full_er_model_02
 % - rimuovere CARTELLA-CLINICA dallo schema ER della Progettazione ER
 % - CARTELLA-CLINICA in DIAGNOSI-EFFETTUATA o altro
 
@@ -108,58 +107,19 @@ aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farma
 
 \clearpage
 \subsection{Progettazione del Modello E-R}
-%TODO
-% - A relazione conclusa decidere se aggiungere schemi parziali
-% - Descrizione procedimento Inside-Out 
-% . Descrizione testuale delle relazioni e entità
-Inizialmente l'attenzione è stata concentrata sulle entità PAZIENTE e RICOVERO
-in quanto ritenute fondamentali: si può dire che in assenza di un'entità che
-rappresenti i pazienti, l'intera base di dati perderebbe significato.  Infatti
-per ogni ricovero o diagnosi deve essere possibile risalire al soggetto che è
-stato ricoverato o a cui è stata effettuata una diagnosi, altrimenti non si
-potrebbero utilizzare correttamente le informazioni raccolte in passato.
-RICOVERO, invece, segna i momenti in cui il paziente raggiunge e lascia la
-struttura ospedaliera, inoltre permette di indicare in modo univoco le visite e
-le cure alle quali è stato sottoposto durante questo periodo.  Le due entità
-sono in relazione tra di loro attraverso una VIENE-RICOVERATO che intuitivamente
-collega una entità PAZIENTE a molte entità RICOVERO.  È stata poi costruita la
-tripletta FARMACO, SOMMINISTRATO-DURANTE e TERAPIA composta rispettivamente da:
-un'entità che rappresenta il farmaco con i relativi attributi; una relazione che
-permette di indicare che farmaco viene usato durante una terapia; infine
-un'entità che raccoglie i dettagli della terapia, ad esempio la dose giornaliera
-di farmaco da assumere.  L'entità DIAGNOSI e le rimanenti relazioni, in
-particolare CAUSA-EFFETTO, verranno analizzate successivamente.
 
+Seguendo l'analisi dei requisiti, la prima entità modellata è stata RICOVERO che memorizza tutte le informazioni relative a un ricovero e possiede come attributi: \textit{Codice Ricovero}, \textit{Divisione Ospedaliera}, \textit{Paziente Ricoverato}, \textit{Data Inizio}, \textit{Data Fine}, \textit{Motivo}. 
+In particolare, l'attributo \textit{Codice Ricovero} è stato scelto come chiave primaria a causa della sua proprietà di unicità. 
+Successivamente è stata modellata l'entità PAZIENTE che è ritenuta fondamentale in quanto senza di essa la base di dati perderebbe di significato. 
+Per questa entità sono stati creati i seguenti attributi: \textit{Codice Sanitario}, \textit{Cognome}, \textit{Nome}, \textit{Data di Nascita}, \textit{Luogo di Nascita} e \textit{Provincia di residenza} del paziente.
+Inoltre, è richiesto di memorizzare informazioni aggiuntive per i pazienti fuori regione. Per far ciò è stata creata una specializzazione PAZIENTE-FUORI-REGIONE di PAZIENTE i cui attributi sono: \textit{Regione di Appartenenza} e \textit{ULSS}. 
+Nei requisiti sul paziente è richiesto, inoltre, di tener traccia del tempo totale trascorso all'interno dell'ospedale durante i ricoveri. Quest'informazione è modellata attraverso \textit{Totale Giorni Ricoveri}, un attributo derivato su paziente che somma tutte le durate dei ricoveri che afferiscono al paziente. Questa relazione di afferenza tra RICOVERO e PAZIENTE viene modellata attraverso la relazione VIENE-RICOVERATO.
+L'informazione memorizzata nell'attributo \textit{Paziente Ricoverato} di RICOVERO viene salvata anche attraverso la nuova relazione, di conseguenza per evitare ridondanze è possibile rimuovere l'attributo.
+Le informazioni secondo 
 
-
-
-
-
-
-
-
-
-Progettazione:
-
-Il primo passo della costruzione dello schema E-R è stato l'individuazione
-delle entità. Seguendo l'analisi dei requisiti, la prima entità modellata è
-stata RICOVERO che memorizza tutte le informazioni relative a un ricovero e
-possiede come attributi: \textit{Codice Ricovero}, \textit{Divisione
-	Ospedaliera}, \textit{Paziente Ricoverato}, \textit{Data Inizio}, \textit{Data
-	Fine}, \textit{motivo}. In particolare, l'attributo \textit{Codice Ricovero}
-è stato scelto come chiave primaria a causa della sua proprietà di unicità.
-Successivamente è stata modellata l'entità PAZIENTE che è ritenuta fondamentale
-in quanto senza di essa la base di dati perderebbe di significato. Per questa
-entità sono stati creati i seguenti attributi: \textit{Codice Sanitario},
-\textit{Cognome}, \textit{Nome}, \textit{Data di Nascita}, \textit{Luogo di
-	Nascita} e \textit{Provincia di residenza} del paziente. E' richiesto inoltre
-di memorizzare informazioni aggiuntive per i pazienti fuori regione. Per far
-ciò è stata creata una specializzazione PAZIENTE-FUORI-REGIONE di PAZIENTE
-i cui attributi sono: \textit{Regione di Appartenenza} e \textit{ULSS}.
-
-1) Paziente
-2) Ricovero
-3) Viene ricoverato
+1) Paziente x
+2) Ricovero x
+3) Viene ricoverato x
 4) Diagnosi
 5) Effettuata durante
 6) Terapia
@@ -168,7 +128,84 @@ i cui attributi sono: \textit{Regione di Appartenenza} e \textit{ULSS}.
 8) Somministra
 9) Motiva Terapia
 
+Nella costruzione della relazione MOTIVA-TERAPIA si è fatta particolare
+attenzione all'ultimo punto dell'analisi dei requisiti in cui si specifica che
+una terapia può essere associata ad una diagnosi in due modi differenti: quello
+che la definisce come cura per una patologia e quello che la definisce come
+causa di una nuova patologia.  Va sottolineato che in entrambi i casi, nella
+base di dati, la patologia è salvata attraverso DIAGNOSI.
 
+In un primo momento è stato modellato il sottoschema illustrato in Figura
+\ref{schema_piccolo1}.  Il modo in cui è stata definita l'entità TERAPIA
+permetterà di modellare il requisito \textit{ogni terapia può curare più
+patologie}.  Un'informazione come data di inizio, o data di fine, o medico
+prescrivente, non può essere memorizzata in TERAPIA perché, altrimenti, non
+sarebbe possibile applicare questa stessa terapia in uno spazio temporale
+differente, pena la perdita delle informazioni precedenti. D'altra parte non è
+nemmeno accettabile includere nella chiave primaria le informazioni relative
+alle date ed al medico, perché così facendo si differenzierebbero le entità,
+andando contro il requisito che si vole modellare.  Da qui la necessità di
+omettere attributi data inizio, data fine e medico prescrivente in TERAPIA,
+assegnandoli alla relazione MOTIVA-TERAPIA.  Intuitivamente questi attributi
+riguardano contemporaneamente la DIAGNOSI, quindi la patologia che si vuole
+curare, e la TERAPIA applicata, quindi il modo in cui si vuole affrontare la
+patologia, definendone il periodo in cui la terapia viene applicata e chi ha
+definito questo periodo.  Nei requisiti è specificato che per alcune patologie
+manchino le cure, per questo motivo la partecipazione a MOTIVA-TERAPIA di
+DIAGNOSI è parziale.  Invece è sensato pensare che se una terapia esiste possa
+curare almeno una patologia, la partecipazione di TERAPIA quindi è totale.  Nel
+complesso MOTIVA-TERAPIA, per ora, risulta essere una relazione Uno-A-Molti:
+nel testo è specificato che ad ogni diagnosi possa essere associata al più una
+terapia; mentre TERAPIA è stata definita appositamente per poter esser
+associata a più DIAGNOSI.
+
+\begin{figure}[!ht] % TODO abbellire
+  \centering 
+  \begin{minipage}{.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{piccolo1}
+    \caption{Prima modellazione}
+    \label{schema_piccolo1}
+  \end{minipage}%
+  \begin{minipage}{.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{piccolo2}
+    \caption{Relazione completa}
+    \label{schema_piccolo2}
+  \end{minipage}
+\end{figure}
+
+Ora è necessario modellare la situazione in cui una terapia prescritta è causa
+di una nuova patologia.  L'informazione che si vuole mantenere non dipende
+esclusivamente dall'entità TERAPIA, dipende anche dal periodo di applicazione,
+quindi non è sufficiente creare una nuova relazione tra TERAPIA e DIAGNOSI.  La
+soluzione migliore è quella di trasformare MOTIVA-TERAPIA in una relazione
+ternaria: con DIAGNOSI che partecipa da una parte come patologia in cura e
+dall'altra come rilevazione di una nuova patologia.  Per comodità, il risultato
+di tale trasformazione è riportato in Figura \ref{schema_piccolo2}.  Ricordando
+che non tutte le applicazioni di una terapia causano un effetto collaterale e
+che ne possono causare al massimo uno, la partecipazione di DIAGNOSI come
+effetto collaterale è parziale con cardinalità 1.
+
+A questo punto è necessario introdurre dei vincoli d'integrità:
+\begin{itemize}
+  \item in ogni tripletta di MOTIVA-TERAPIA non può comparire due volte la
+    stessa DIAGNOSI;
+  \item la DIAGNOSI che partecipa come effetto collaterale deve avere una data
+    successiva alla data della prima diagnosi.
+\end{itemize}
+%TODO ho dimenticato qualcosa??
+Nella fase logica verrà mostrato che questa relazione può essere trasformata,
+senza perdita d'informazione, e con l'aggiunta di una nuova entità, in
+relazioni binarie.
+
+
+\begin{figure}[H] % TODO abbellire
+    \centering
+    \includegraphics[width=\linewidth]{schema1}
+    \caption{Lo schema Entità-Relazioni completo}
+    \label{schema_ER_progettazione_modello}
+\end{figure}
 
 
 
@@ -299,86 +336,6 @@ i cui attributi sono: \textit{Regione di Appartenenza} e \textit{ULSS}.
 
 
 
-% TODO Immagine diagnosi, terapia SENZA attributi e motiva terapia con attributi 
-% Senza ricorsione e con ricorsione
-Nella costruzione della relazione MOTIVA-TERAPIA si è fatta particolare
-attenzione all'ultimo punto dell'analisi dei requisiti in cui si specifica che
-una terapia può essere associata ad una diagnosi in due modi differenti: quello
-che la definisce come cura per una patologia e quello che la definisce come
-causa di una nuova patologia.  Va sottolineato che in entrambi i casi, nella
-base di dati, la patologia è salvata attraverso DIAGNOSI.
-
-In un primo momento è stato modellato il sottoschema illustrato in Figura
-\ref{schema_piccolo1}.  Il modo in cui è stata definita l'entità TERAPIA
-permetterà di modellare il requisito \textit{ogni terapia può curare più
-	patologie}.  Un'informazione come data di inizio, o data di fine, o medico
-prescrivente, non può essere memorizzata in TERAPIA perché, altrimenti, non
-sarebbe possibile applicare questa stessa terapia in uno spazio temporale
-differente, pena la perdita delle informazioni precedenti. D'altra parte non è
-nemmeno accettabile includere nella chiave primaria le informazioni relative
-alle date ed al medico, perché così facendo si differenzierebbero le entità,
-andando contro il requisito che si vole modellare.  Da qui la necessità di
-omettere attributi data inizio, data fine e medico prescrivente in TERAPIA,
-assegnandoli alla relazione MOTIVA-TERAPIA.  Intuitivamente questi attributi
-riguardano contemporaneamente la DIAGNOSI, quindi la patologia che si vuole
-curare, e la TERAPIA applicata, quindi il modo in cui si vuole affrontare la
-patologia, definendone il periodo in cui la terapia viene applicata e chi ha
-definito questo periodo.  Nei requisiti è specificato che per alcune patologie
-manchino le cure, per questo motivo la partecipazione a MOTIVA-TERAPIA di
-DIAGNOSI è parziale.  Invece è sensato pensare che se una terapia esiste possa
-curare almeno una patologia, la partecipazione di TERAPIA quindi è totale.  Nel
-complesso MOTIVA-TERAPIA, per ora, risulta essere una relazione Uno-A-Molti:
-nel testo è specificato che ad ogni diagnosi possa essere associata al più una
-terapia; mentre TERAPIA è stata definita appositamente per poter esser
-associata a più DIAGNOSI.
-
-\begin{figure}[!ht] % TODO abbellire
-	\centering
-	\begin{minipage}{.5\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{piccolo1}
-		\caption{Prima modellazione}
-		\label{schema_piccolo1}
-	\end{minipage}%
-	\begin{minipage}{.5\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{piccolo2}
-		\caption{Relazione completa}
-		\label{schema_piccolo2}
-	\end{minipage}
-\end{figure}
-
-Ora è necessario modellare la situazione in cui una terapia prescritta è causa
-di una nuova patologia.  L'informazione che si vuole mantenere non dipende
-esclusivamente dall'entità TERAPIA, dipende anche dal periodo di applicazione,
-quindi non è sufficiente creare una nuova relazione tra TERAPIA e DIAGNOSI.  La
-soluzione migliore è quella di trasformare MOTIVA-TERAPIA in una relazione
-ternaria: con DIAGNOSI che partecipa da una parte come patologia in cura e
-dall'altra come rilevazione di una nuova patologia.  Per comodità, il risultato
-di tale trasformazione è riportato in Figura \ref{schema_piccolo2}.  Ricordando
-che non tutte le applicazioni di una terapia causano un effetto collaterale e
-che ne possono causare al massimo uno, la partecipazione di DIAGNOSI come
-effetto collaterale è parziale con cardinalità 1.
-
-A questo punto è necessario introdurre dei vincoli d'integrità:
-\begin{itemize}
-	\item in ogni tripletta di MOTIVA-TERAPIA non può comparire due volte la
-	      stessa DIAGNOSI;
-	\item la DIAGNOSI che partecipa come effetto collaterale deve avere una data
-	      successiva alla data della prima diagnosi.
-\end{itemize}
-%TODO ho dimenticato qualcosa??
-Nella fase logica verrà mostrato che questa relazione può essere trasformata,
-senza perdita d'informazione, e con l'aggiunta di una nuova entità, in
-relazioni binarie.
-
-
-\begin{figure}[H] % TODO abbellire
-	\centering
-	\includegraphics[width=\linewidth]{schema1}
-	\caption{Lo schema Entità-Relazioni completo}
-	\label{schema_ER_progettazione_modello}
-\end{figure}
 
 
 %\begin{figure}[h] % TODO abbellire
@@ -408,39 +365,38 @@ relazioni binarie.
 % elenco tabelle
 % vincoli d'integrità
 
-È utile semplificare strutture come specializzazioni, attributi composti e
-attributi multivalore perché renderà più facile la traduzione del modello
-Entità-Relazioni in quello Relazionale.
+È utile semplificare strutture come specializzazioni, attributi composti e attributi multivalore perché renderà più facile la traduzione del modello Entità-Relazioni in quello Relazionale.
 
-Ricordando che quest'ultimo non permette di rappresentare generalizzazioni sarà
-necessario rimuovere tutte le specializzazioni dal nostro schema E-R.  Si può
-notare che la specializzazione PAZIENTE-FUORI-REGIONE può essere facilmente
-rappresentata aggiungendo due attributi all'entità PAZIENTE.  I nuovi
-attributi, \textit{ULSS} e \textit{Regione di Appartenenza}, in PAZIENTE
-saranno facoltativi poiché la specializzazione è parziale.  La rimozione delle
-generalizzazioni non è sempre così immediata: se PAZIENTE-FUORI-REGIONE avesse
-avuto una relazione in più rispetto al genitore si sarebbero dovute valutare
-varie opzioni.  Per esempio la creazione di una nuova relazione per
-simboleggiare il legame tra genitore e figlio, lasciando invariati gli
-attributi.  Oppure la duplicazione nel figlio di tutti gli attributi e di tutte
-le relazioni del genitore.
+Ricordando che quest'ultimo non permette di rappresentare generalizzazioni sarà necessario rimuovere tutte le specializzazioni dal nostro schema E-R.
+Si può notare che la specializzazione PAZIENTE-FUORI-REGIONE può essere facilmente rappresentata aggiungendo due attributi all'entità PAZIENTE.
+I nuovi attributi, \textit{ULSS} e \textit{Regione di Appartenenza}, in PAZIENTE saranno facoltativi poiché la specializzazione è parziale.
+La rimozione delle generalizzazioni non è sempre così immediata: se PAZIENTE-FUORI-REGIONE avesse avuto una relazione in più rispetto al genitore si sarebbero dovute valutare varie opzioni.
+Per esempio la creazione di una nuova relazione per simboleggiare il legame tra genitore e figlio, lasciando invariati gli attributi.
+Oppure la duplicazione nel figlio di tutti gli attributi e di tutte le relazioni del genitore.
 
-Anche nel caso degli attributi composti la semplificazione è immediata, infatti
-nello schema l'unico attributo composto è \textit{Patologia} in DIAGNOSI.  Può
-essere trasformato in due nuovi attributi \textit{Codice Patologia} e
-\textit{Gravità Patologia} che contengono esattamente la stessa informazione.
+Anche nel caso degli attributi composti la semplificazione è immediata, infatti nello schema l'unico attributo composto è \textit{Patologia} in DIAGNOSI.
+Può essere trasformato in due nuovi attributi \textit{Codice Patologia} e \textit{Gravità Patologia} che contengono esattamente la stessa informazione.
 
-Bisogna prestare più attenzione agli attributi multivalore: in FARMACO sono
-presenti \textit{Nome Principi Attivi} e \textit{Quantità Principi Attivi}
-entrambi obbligatori e multivalore.  L'unica semplificazione attuabile è creare
-una nuova entità chiamata PRINCIPIO-ATTIVO è metterla in relazione
-Molti-A-Molti con FARMACO attraverso la nuova relazione CONTIENE.
-PRINCIPIO-ATTIVO avrà un solo attributo, scelto anche come chiave primaria,
-chiamato \textit{Nome}, mentre alla relazione CONTIENE verrà aggiunto
-l'attributo \textit{Quantità}.  In questo modo saranno modellate esattamente le
-stesse informazioni precedentemente modellate dagli attributi multivalore.
-Rimozione t Scelta della chiavi primarie
+Bisogna prestare più attenzione agli attributi multivalore:
+in FARMACO sono presenti \textit{Nome Principi Attivi} e \textit{Quantità Principi Attivi} entrambi obbligatori e multivalore.
+L'unica semplificazione attuabile è creare una nuova entità chiamata PRINCIPIO-ATTIVO è metterla in relazione Molti-A-Molti con FARMACO attraverso la nuova relazione CONTIENE.
+PRINCIPIO-ATTIVO avrà un solo attributo, scelto anche come chiave primaria, chiamato \textit{Nome}, mentre alla relazione CONTIENE verrà aggiunto l'attributo \textit{Quantità}.
+In questo modo saranno modellate esattamente le stesse informazioni precedentemente modellate dagli attributi multivalore.
 
+Ora si può trasformare la relazione ternaria MOTIVA-TERAPIA
+
+\begin{figure}[!ht] % TODO abbellire
+  \centering
+  \includegraphics[width=.4\linewidth]{piccolo2}
+\end{figure}
+\begin{figure}[!ht] % TODO abbellire
+  \centering
+  \includegraphics[width=.4\linewidth]{piccolo3}
+  \caption{La relazione MOTIVA-TERAPIA trasformata}
+  \label{piccolo3}
+\end{figure}
+
+Semplificazione delle chiavi
 
 
 
@@ -450,7 +406,7 @@ Rimozione t Scelta della chiavi primarie
 
 \begin{figure}[H] % TODO abbellire
 	\centering
-	\includegraphics[width=\linewidth]{schema2.jpg}
+	\includegraphics[width=\linewidth]{schema2}
 	\caption{Lo schema Entità-Relazioni completo}
 	\label{schema_ER_ristrutturato}
 \end{figure}
@@ -562,7 +518,7 @@ Viene creato quindi il ciclo in \autoref{fig:ciclo-ridondanza} PAZIENTE, RICOVER
 
 \begin{figure}[H] % TODO abbellire
 	\centering
-	\includegraphics[width=\linewidth]{schema3.jpg}
+	\includegraphics[width=\linewidth]{schema3}
 	\caption{Ciclo con ridondanza}
 	\label{fig:ciclo-ridondanza}
 \end{figure}
