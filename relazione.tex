@@ -43,7 +43,6 @@
 
 % TODO
 % - abbellire hyperlinks
-% - modifiche su full_er_model_02
 % - rimuovere CARTELLA-CLINICA dallo schema ER della Progettazione ER
 % - CARTELLA-CLINICA in DIAGNOSI-EFFETTUATA o altro
 
@@ -326,39 +325,38 @@ relazioni binarie.
 % elenco tabelle
 % vincoli d'integrità
 
-È utile semplificare strutture come specializzazioni, attributi composti e
-attributi multivalore perché renderà più facile la traduzione del modello
-Entità-Relazioni in quello Relazionale.
+È utile semplificare strutture come specializzazioni, attributi composti e attributi multivalore perché renderà più facile la traduzione del modello Entità-Relazioni in quello Relazionale.
 
-Ricordando che quest'ultimo non permette di rappresentare generalizzazioni sarà
-necessario rimuovere tutte le specializzazioni dal nostro schema E-R.  Si può
-notare che la specializzazione PAZIENTE-FUORI-REGIONE può essere facilmente
-rappresentata aggiungendo due attributi all'entità PAZIENTE.  I nuovi
-attributi, \textit{ULSS} e \textit{Regione di Appartenenza}, in PAZIENTE
-saranno facoltativi poiché la specializzazione è parziale.  La rimozione delle
-generalizzazioni non è sempre così immediata: se PAZIENTE-FUORI-REGIONE avesse
-avuto una relazione in più rispetto al genitore si sarebbero dovute valutare
-varie opzioni.  Per esempio la creazione di una nuova relazione per
-simboleggiare il legame tra genitore e figlio, lasciando invariati gli
-attributi.  Oppure la duplicazione nel figlio di tutti gli attributi e di tutte
-le relazioni del genitore.  
+Ricordando che quest'ultimo non permette di rappresentare generalizzazioni sarà necessario rimuovere tutte le specializzazioni dal nostro schema E-R.
+Si può notare che la specializzazione PAZIENTE-FUORI-REGIONE può essere facilmente rappresentata aggiungendo due attributi all'entità PAZIENTE.
+I nuovi attributi, \textit{ULSS} e \textit{Regione di Appartenenza}, in PAZIENTE saranno facoltativi poiché la specializzazione è parziale.
+La rimozione delle generalizzazioni non è sempre così immediata: se PAZIENTE-FUORI-REGIONE avesse avuto una relazione in più rispetto al genitore si sarebbero dovute valutare varie opzioni.
+Per esempio la creazione di una nuova relazione per simboleggiare il legame tra genitore e figlio, lasciando invariati gli attributi.
+Oppure la duplicazione nel figlio di tutti gli attributi e di tutte le relazioni del genitore.
 
-Anche nel caso degli attributi composti la semplificazione è immediata, infatti
-nello schema l'unico attributo composto è \textit{Patologia} in DIAGNOSI.  Può
-essere trasformato in due nuovi attributi \textit{Codice Patologia} e
-\textit{Gravità Patologia} che contengono esattamente la stessa informazione.
+Anche nel caso degli attributi composti la semplificazione è immediata, infatti nello schema l'unico attributo composto è \textit{Patologia} in DIAGNOSI.
+Può essere trasformato in due nuovi attributi \textit{Codice Patologia} e \textit{Gravità Patologia} che contengono esattamente la stessa informazione.
 
-Bisogna prestare più attenzione agli attributi multivalore: in FARMACO sono
-presenti \textit{Nome Principi Attivi} e \textit{Quantità Principi Attivi}
-entrambi obbligatori e multivalore.  L'unica semplificazione attuabile è creare
-una nuova entità chiamata PRINCIPIO-ATTIVO è metterla in relazione
-Molti-A-Molti con FARMACO attraverso la nuova relazione CONTIENE.
-PRINCIPIO-ATTIVO avrà un solo attributo, scelto anche come chiave primaria,
-chiamato \textit{Nome}, mentre alla relazione CONTIENE verrà aggiunto
-l'attributo \textit{Quantità}.  In questo modo saranno modellate esattamente le
-stesse informazioni precedentemente modellate dagli attributi multivalore.
-Rimozione t Scelta della chiavi primarie
+Bisogna prestare più attenzione agli attributi multivalore:
+in FARMACO sono presenti \textit{Nome Principi Attivi} e \textit{Quantità Principi Attivi} entrambi obbligatori e multivalore.
+L'unica semplificazione attuabile è creare una nuova entità chiamata PRINCIPIO-ATTIVO è metterla in relazione Molti-A-Molti con FARMACO attraverso la nuova relazione CONTIENE.
+PRINCIPIO-ATTIVO avrà un solo attributo, scelto anche come chiave primaria, chiamato \textit{Nome}, mentre alla relazione CONTIENE verrà aggiunto l'attributo \textit{Quantità}.
+In questo modo saranno modellate esattamente le stesse informazioni precedentemente modellate dagli attributi multivalore.
 
+Ora si può trasformare la relazione ternaria MOTIVA-TERAPIA
+
+\begin{figure}[!ht] % TODO abbellire
+  \centering
+  \includegraphics[width=.4\linewidth]{piccolo2}
+\end{figure}
+\begin{figure}[!ht] % TODO abbellire
+  \centering
+  \includegraphics[width=.4\linewidth]{piccolo3}
+  \caption{La relazione MOTIVA-TERAPIA trasformata}
+  \label{piccolo3}
+\end{figure}
+
+Semplificazione delle chiavi
 
 
 
@@ -368,7 +366,7 @@ Rimozione t Scelta della chiavi primarie
 
 \begin{figure}[H] % TODO abbellire
   \centering
-  \includegraphics[width=\linewidth]{schema2.jpg}
+  \includegraphics[width=\linewidth]{schema2}
   \caption{Lo schema Entità-Relazioni completo}
   \label{schema_ER_ristrutturato}
 \end{figure}
@@ -395,7 +393,7 @@ Viene creato quindi il ciclo in \autoref{fig:ciclo-ridondanza} PAZIENTE, RICOVER
 
 \begin{figure}[H] % TODO abbellire
       \centering
-      \includegraphics[width=\linewidth]{schema3.jpg}
+      \includegraphics[width=\linewidth]{schema3}
       \caption{Ciclo con ridondanza}
       \label{fig:ciclo-ridondanza}
     \end{figure}
