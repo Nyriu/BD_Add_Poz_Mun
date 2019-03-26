@@ -11,8 +11,11 @@
 
 \usepackage{float} %#$@&*!
 
+\usepackage{caption}
 \usepackage{hyperref} % lasciare per ultimo
- 
+\hypersetup{colorlinks=true, pdfstartview=FitV, linkcolor=blue, citecolor=black, plainpages=false, urlcolor=blue}
+\usepackage[all]{hypcap}
+
 % huge indentation of paragraph only for demonstration purposes. 
 %\setlength{\parindent}{5em} 
 % some paragraph skip to better distinguish  lines of different paragraphs  
@@ -374,7 +377,7 @@ La rimozione delle generalizzazioni non è sempre così immediata: se PAZIENTE-F
 Per esempio la creazione di una nuova relazione per simboleggiare il legame tra genitore e figlio, lasciando invariati gli attributi.
 Oppure la duplicazione nel figlio di tutti gli attributi e di tutte le relazioni del genitore.
 
-Anche nel caso degli attributi composti la semplificazione è immediata, infatti nello schema l'unico attributo composto è \textit{Patologia} in DIAGNOSI.
+Anche nel caso degli attributi composti la semplificazione è intuitiva, infatti nello schema l'unico attributo composto è \textit{Patologia} in DIAGNOSI.
 Può essere trasformato in due nuovi attributi \textit{Codice Patologia} e \textit{Gravità Patologia} che contengono esattamente la stessa informazione.
 
 Bisogna prestare più attenzione agli attributi multivalore:
@@ -383,21 +386,55 @@ L'unica semplificazione attuabile è creare una nuova entità chiamata PRINCIPIO
 PRINCIPIO-ATTIVO avrà un solo attributo, scelto anche come chiave primaria, chiamato \textit{Nome}, mentre alla relazione CONTIENE verrà aggiunto l'attributo \textit{Quantità}.
 In questo modo saranno modellate esattamente le stesse informazioni precedentemente modellate dagli attributi multivalore.
 
-Ora si può trasformare la relazione ternaria MOTIVA-TERAPIA
-
-\begin{figure}[!ht] % TODO abbellire
-  \centering
-  \includegraphics[width=.4\linewidth]{piccolo2}
-\end{figure}
 \begin{figure}[!ht] % TODO abbellire
   \centering
   \includegraphics[width=.4\linewidth]{piccolo3}
-  \caption{La relazione MOTIVA-TERAPIA trasformata}
-  \label{piccolo3}
+  \caption{Il risultato della trasformazione di MOTIVA-TERAPIA}
+  \label{schema_piccolo3}
 \end{figure}
+
+Un'ulteriore trasformazione da effettuare riguarda la relazione ternaria.
+Infatti MOTIVA-TERAPIA, come è stato accennato in precedenza%TODO verificare accennamento
+, può essere espressa tramite relazioni binarie.
+In Figura \ref{schema_piccolo3} si può vedere il risultato di tale trasformazione.
+Si nota subito la nuova entità TERAPIA-PRESCRITTA, creata proprio per rappresentare una particolare applicazione di una terapia al fine di curare una patologia di una specifica diagnosi.
+La nuova entità, quindi, è caratterizzata da:
+\textit{Data Inizio} che indica il giorno in cui il paziente dovrà iniziare la terapia;
+\textit{Data Fine} che indica il giorno in cui il paziente terminerà la terapia;
+\textit{Medico Prescrivente} che indica il medico che ha prescritto la terapia e deciso il periodo di applicazione.
+Osservando che la relazione MOTIVA-TERAPIA non può esistere senza la partecipazione simultanea di DIAGNOSI (come \textit{Viene Curata da}) e di TERAPIA si è deciso di rendere TERAPIA-PRESCRITTA un'entità debole.
+La chiave primaria è composta dalle nuove relazioni binare VIENE-CURATA-DA e VIENE-PRESCRITTA, per entrambe la partecipazione di TERAPIA-PRESCRITTA è totale, mentre la cardinalità è al massimo uno.%TODO cardinalità 1 suona male
+DIAGNOSI e TERAPIA interagiscono con le nuove relazioni, rispettivamente, nello stesso modo con cui interagivano con la relazione ternaria.
+Per quanto riguarda \textit{È Effetto Collaterale} si può dire che rappresenti perfettamente la possibilità che una terapia prescritta possa causare una nuova patologia.
+Notare che le partecipazioni sono appunto parziali.
+Ovviamente anche il vincolo d'integrità precedentemente definito, dovrà essere modificato:
+\begin{itemize}
+  \item TERAPIA-PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con la DIAGNOSI con cui definisce la sua chiave primaria;
+  \item TERAPIA-PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con una DIAGNOSI che ha una data successiva alla data della DIAGNOSI con cui definisce la sua chiave primaria;
+\end{itemize}
+A questo punto, osservando nuovamente i sottoschemi in Figura \ref{schema_piccolo2} ed in Figura \ref{schema_piccolo3}, è chiaro che modellino ogni possibile situazione:
+\begin{itemize}
+  \item una DIAGNOSI a cui non è ancora stata assegnata una terapia;
+  \item la prescrizione di una specifica terapia;
+  \item la scoperta di una nuova patologia, attraverso una nuova diagnosi, causata dall'applicazione di una terapia;
+  \item la possibilità che una TERAPIA possa curare più patologie (in DIAGNOSI differenti).
+%TODO ci sono tutte?
+\end{itemize}
+
+
+
+
+
 
 Semplificazione delle chiavi
 
+
+
+
+
+
+
+\clearpage
 
 
 
@@ -526,7 +563,7 @@ Procediamo a valutare se è conveniente mantenere la relazione EFFETTUATA A tra 
 
 % TODO REQUISITO specificare nei requisiti le operazioni richieste e i volumi
 
-Riportiamo i volumi stimati in \autoref{tab:volumi-ciclo} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-ciclo}.
+Riportiamo i volumi stimati in \autoref{tab:volumi-ciclo} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-ciclo}
 
 % TODO REQUISITO spostare table:volumi nei requisiti, no non si può non tutti esistono nei requisiti
 \begin{table}[H]
@@ -569,7 +606,6 @@ Riportiamo i volumi stimati in \autoref{tab:volumi-ciclo} e la frequenza delle o
 \end{table}
 
 \begin{table}[H]
-	\label{tab:operazioni-ciclo}
 	\centering
 	\begin{tabular}{|l|c|r|}
 		\hline
@@ -578,6 +614,7 @@ Riportiamo i volumi stimati in \autoref{tab:volumi-ciclo} e la frequenza delle o
 		Stampa Storico Diagnosi & I             & 1400/giorno        \\ \hline
 	\end{tabular}
 	\caption{Tabella delle operazioni ridotta}
+	\label{tab:operazioni-ciclo}
 \end{table}
 
 Nel caso con ridondanza per l'operazione di inserimento di una nuova diagnosi sono necessari 1 accesso in scrittura per l'entità DIAGNOSI e 1 accesso in scrittura per entrambe le relazioni EFFETTUATA DURANTE e EFFETTUATA A.
