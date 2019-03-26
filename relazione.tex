@@ -13,8 +13,7 @@
 
 \usepackage{caption}
 \usepackage{hyperref} % lasciare per ultimo
-\hypersetup{colorlinks=true, pdfstartview=FitV, linkcolor=blue, citecolor=black, plainpages=false, urlcolor=blue}
-\usepackage[all]{hypcap}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=black, plainpages=false, urlcolor=blue}
 
 % huge indentation of paragraph only for demonstration purposes. 
 %\setlength{\parindent}{5em} 
@@ -138,8 +137,8 @@ che la definisce come cura per una patologia e quello che la definisce come
 causa di una nuova patologia.  Va sottolineato che in entrambi i casi, nella
 base di dati, la patologia è salvata attraverso DIAGNOSI.
 
-In un primo momento è stato modellato il sottoschema illustrato in Figura
-\ref{schema_piccolo1}.  Il modo in cui è stata definita l'entità TERAPIA
+In un primo momento è stato modellato il sottoschema illustrato in
+\autoref{fig:piccolo1}.  Il modo in cui è stata definita l'entità TERAPIA
 permetterà di modellare il requisito \textit{ogni terapia può curare più
 patologie}.  Un'informazione come data di inizio, o data di fine, o medico
 prescrivente, non può essere memorizzata in TERAPIA perché, altrimenti, non
@@ -168,13 +167,13 @@ associata a più DIAGNOSI.
     \centering
     \includegraphics[width=\linewidth]{piccolo1}
     \caption{Prima modellazione}
-    \label{schema_piccolo1}
+    \label{fig:piccolo1}
   \end{minipage}%
   \begin{minipage}{.5\textwidth}
     \centering
     \includegraphics[width=\linewidth]{piccolo2}
     \caption{Relazione completa}
-    \label{schema_piccolo2}
+    \label{fig:piccolo2}
   \end{minipage}
 \end{figure}
 
@@ -185,7 +184,7 @@ quindi non è sufficiente creare una nuova relazione tra TERAPIA e DIAGNOSI.  La
 soluzione migliore è quella di trasformare MOTIVA-TERAPIA in una relazione
 ternaria: con DIAGNOSI che partecipa da una parte come patologia in cura e
 dall'altra come rilevazione di una nuova patologia.  Per comodità, il risultato
-di tale trasformazione è riportato in Figura \ref{schema_piccolo2}.  Ricordando
+di tale trasformazione è riportato in Figura \autoref{fig:piccolo2}.  Ricordando
 che non tutte le applicazioni di una terapia causano un effetto collaterale e
 che ne possono causare al massimo uno, la partecipazione di DIAGNOSI come
 effetto collaterale è parziale con cardinalità 1.
@@ -207,7 +206,7 @@ relazioni binarie.
     \centering
     \includegraphics[width=\linewidth]{schema1}
     \caption{Lo schema Entità-Relazioni completo}
-    \label{schema_ER_progettazione_modello}
+    \label{fig:ER_progettazione_modello}
 \end{figure}
 
 
@@ -390,13 +389,13 @@ In questo modo saranno modellate esattamente le stesse informazioni precedenteme
   \centering
   \includegraphics[width=.4\linewidth]{piccolo3}
   \caption{Il risultato della trasformazione di MOTIVA-TERAPIA}
-  \label{schema_piccolo3}
+  \label{fig:piccolo3}
 \end{figure}
 
 Un'ulteriore trasformazione da effettuare riguarda la relazione ternaria.
 Infatti MOTIVA-TERAPIA, come è stato accennato in precedenza%TODO verificare accennamento
 , può essere espressa tramite relazioni binarie.
-In Figura \ref{schema_piccolo3} si può vedere il risultato di tale trasformazione.
+In Figura \autoref{fig:piccolo3} si può vedere il risultato di tale trasformazione.
 Si nota subito la nuova entità TERAPIA-PRESCRITTA, creata proprio per rappresentare una particolare applicazione di una terapia al fine di curare una patologia di una specifica diagnosi.
 La nuova entità, quindi, è caratterizzata da:
 \textit{Data Inizio} che indica il giorno in cui il paziente dovrà iniziare la terapia;
@@ -412,7 +411,7 @@ Ovviamente anche il vincolo d'integrità precedentemente definito, dovrà essere
   \item TERAPIA-PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con la DIAGNOSI con cui definisce la sua chiave primaria;
   \item TERAPIA-PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con una DIAGNOSI che ha una data successiva alla data della DIAGNOSI con cui definisce la sua chiave primaria;
 \end{itemize}
-A questo punto, osservando nuovamente i sottoschemi in Figura \ref{schema_piccolo2} ed in Figura \ref{schema_piccolo3}, è chiaro che modellino ogni possibile situazione:
+A questo punto, osservando nuovamente i sottoschemi in Figura \autoref{fig:piccolo2} ed in Figura \autoref{fig:piccolo3}, è chiaro che modellino ogni possibile situazione:
 \begin{itemize}
   \item una DIAGNOSI a cui non è ancora stata assegnata una terapia;
   \item la prescrizione di una specifica terapia;
@@ -445,7 +444,7 @@ Semplificazione delle chiavi
 	\centering
 	\includegraphics[width=\linewidth]{schema2}
 	\caption{Lo schema Entità-Relazioni completo}
-	\label{schema_ER_ristrutturato}
+  \label{fig:ER_ristrutturato}
 \end{figure}
 
 % TODO NELLA FASE LOGICA
@@ -544,7 +543,7 @@ Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calco
 
 Risulta conveniente mantenere l'attributo \textit{Totale Giorni Ricoveri}.
 
-Lo schema Entità-Relazioni in \autoref{schema_ER_ristrutturato} non presenta ulteriori ridondanze, infatti, il ciclo DIAGNOSI TERAPIA-PRESCRITTA DIAGNOSI non è ridondante. Tuttavia visto il requisito di stampa delle diagnosi effettuate da un singolo paziente consideriamo l'inserimento della relazione:
+Lo schema Entità-Relazioni in \autoref{fig:ER_ristrutturato} non presenta ulteriori ridondanze, infatti, il ciclo DIAGNOSI TERAPIA-PRESCRITTA DIAGNOSI non è ridondante. Tuttavia visto il requisito di stampa delle diagnosi effettuate da un singolo paziente consideriamo l'inserimento della relazione:
 \begin{itemize}
 	\item EFFETTUATA A: una relazione Uno-A-Molti tra PAZIENTE
 	      e DIAGNOSI. La partecipazione di PAZIENTE è parziale mentre quella
