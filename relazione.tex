@@ -9,6 +9,13 @@
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
 
+% RELATIONAL DB SCHEMA
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning,calc}
+\colorlet{lightgray}{gray!20}
+% RELATIONAL DB SCHEMA
+
+
 \usepackage{float} %#$@&*!
 
 \usepackage{caption}
@@ -40,19 +47,6 @@
 
 % REGOLE DI STILE
 % - scrivere in modo impersonale no "abbiamo deciso di"
-% - 
-
-
-% TODO
-% - abbellire hyperlinks
-% - rimuovere CARTELLA-CLINICA dallo schema ER della Progettazione ER
-% - CARTELLA-CLINICA in DIAGNOSI-EFFETTUATA o altro
-
-
-% TODO -- SCHEMI 
-% - primo schema: pazinete fuori regione, attributi composti multivalore, no cartella clinica 
-% - secondo schema: togli ternaria, toglie specializzazione, togli attributi composti, multivalore 
-% - terzo schema: per prestazioni aggiungiamo EFFETTUATA A 
 
 % COSE DA RICORDARE
 % NEI REQUISITI
@@ -254,7 +248,7 @@ relazioni binarie.
 
 
 
-\subsubsection{Le Entità} % TODO sarebbe meglio creare subsubsubsection o paragrafi per ogni entità?
+\subsubsection{Le Entità}
 \begin{itemize}
 	\item PAZIENTE: dai requisiti è possibile individuare le seguenti voci
 	      significative: \textit{codice sanitario}, \textit{cognome},
@@ -263,9 +257,9 @@ relazioni binarie.
 	      Per ognuna di esse è stato creato un attibuto. Il codice fiscale
 	      (d'ora in poi detto anche CF) è stato selezionato come chiave
 	      primaria in quanto,
-	      come definito nei requisiti, univoco\footnote{Proprietà fondamentale
+	      come definito nei requisiti, univoco\footnote{TODO Proprietà fondamentale
 		      di un attributo per la definizione di esso come chiave primaria.}.
-	      %Ricordiamo la definizione di chiave primaria univoca e sottoinsieme minimo TODO
+	      %Ricordiamo la definizione di chiave primaria: univoca e sottoinsieme minimo TODO
 	      Per salvare gli attributi esclusivi per i pazienti fuori regione
 	      riguardanti il nome della ULSS e la regione di appartenenza, è stata
 	      creata l'entità PAZIENTE-FUORI-REGIONE, specializzazione dell'entità
@@ -671,8 +665,115 @@ Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calco
 
 Concludiamo che è conveniente mantenere la ridondanza visto il costo minore delle operazioni giornaliere.
 
+\begin{figure}[H] % TODO abbellire
+    \centering
+    \includegraphics[width=\linewidth]{schema4}
+    \caption{Lo schema Entità-Relazioni finale}
+    \label{fig:ER_finale}
+\end{figure}
+
 \subsection{Traduzione da ER a Relazionale}
 
+\begin{tikzpicture}[relation/.style={rectangle split, rectangle split parts=#1, rectangle split part align=base, draw, anchor=center, align=center, text height=3mm, text centered}]\hspace*{-0.3cm}
+
+% RELATIONS
+
+%\node (pazientetitle) {\textbf{PAZIENTE}};
+%\node [
+%  relation=9,
+%  rectangle split horizontal,
+%  rectangle split part fill={lightgray!50},
+%  anchor=north west,
+%  below=0.6cm of pazientetitle.west,
+%  anchor=west
+%  ]
+%  (paziente)
+%  {
+%   \underline{Codice\_Fiscale}%
+%   \nodepart{two}   Cognome
+%   \nodepart{three} Nome
+%   \nodepart{four}  Data\_di\_Nascita
+%   \nodepart{five}  Luogo\_di\_Nascita
+%   \nodepart{six}  Provincia\_di\_Residenza
+%   \nodepart{seven}  Regione\_di\_Appartenenza
+%   \nodepart{eight}  ULSS
+%   \nodepart{nine}  Totale\_Giorni\_Ricoveri
+%  };
+%
+%\node [below=1.3cm of paziente.west, anchor=west] (ricoverotitle) {\textbf{RICOVERO}};
+%\node [
+%  relation=5,
+%  rectangle split horizontal,
+%  rectangle split part fill={lightgray!50},
+%  anchor=north west,
+%  below=0.6cm of ricoverotitle.west,
+%  anchor=west
+%  ]
+%  (ricovero)
+%  {
+%   \underline{Codice\_Ricovero}%
+%   \nodepart{two}   Data\_Inizio
+%   \nodepart{three} Data\_Fine
+%   \nodepart{four}  Motivo
+%   \nodepart{five}  Divisione\_Ospedaliera
+%  };
+
+
+
+
+
+\node (countrytitle) {\textbf{COUNTRY}};
+
+\node [relation=3, rectangle split horizontal, rectangle split part fill={lightgray!50}, anchor=north west, below=0.6cm of countrytitle.west, anchor=west] (country)
+{\underline{ISO\_code}%
+\nodepart{two}   Name
+\nodepart{three} Description};
+
+\node [below=1.3cm of country.west, anchor=west] (awardtitle) {\textbf{AWARD}};
+
+\node [relation=5, rectangle split horizontal, rectangle split part fill={lightgray!50}, below=0.6cm of awardtitle.west, anchor=west] (award)
+{\underline{URI}%
+\nodepart{two} Name
+\nodepart{three} Description
+\nodepart{four}  Date
+\nodepart{five}  Country\_ISO\_code};
+
+\node [below=1.1cm of award.west, anchor=west] (booktitle) {\textbf{BOOK}};
+
+\node [relation=5, rectangle split horizontal, rectangle split part fill={lightgray!50}, anchor=north west, below=0.6cm of booktitle.west, anchor=west] (book)
+{\underline{URI}%
+\nodepart{two}   Name
+\nodepart{three} Description
+\nodepart{four}  First\_publication\_date
+\nodepart{five} Original\_language};
+
+\node [below=1.4cm of book.west, anchor=west] (genretitle) {\textbf{GENRE}};
+
+\node [relation=3, rectangle split horizontal, rectangle split part fill={lightgray!50}, anchor=north west, below=0.6cm of genretitle.west, anchor=west] (genre)
+{\underline{URI}%
+\nodepart{two}   Name
+\nodepart{three} Description};
+
+\node [below=1.5cm of genre.west, anchor=west] (ell1) {...};
+
+\node [below=1.0cm of ell1.west, anchor=west] (winsawardtitle) {\textbf{WINS\_AWARD}};
+
+\node [relation=3, rectangle split horizontal, rectangle split part fill={lightgray!50}, anchor=north west, below=0.6cm of winsawardtitle.west, anchor=west] (winsaward)
+{\underline{Award\_URI}%
+\nodepart{two}   \underline{Book\_URI}
+\nodepart{three} \underline{Genre\_URI}};
+
+% FOREIGN KEYS
+
+\draw[-latex] (award.five south) -- ++(0,-0.2) -| ($(award.five south) + (4,0)$) |- ($(country.one south) + (0.25,-0.50)$) -| ($(country.one south) + (0.25,0)$);
+
+\draw[-latex] (winsaward.one south) -- ++(0,-0.4) -| ($(winsaward.one south) + (11,0)$) |- ($(award.one south) + (0,-0.35)$) -| ($(award.one south) + (0,0)$);
+
+\draw[-latex] ($(winsaward.two south) + (0.00,0)$) |- ++(0,-0.60) -| ($(winsaward.two south) + (5,0)$) |- ($(book.one south) + (0.00,-0.40)$) -| ($(book.one south) + (0.00,0)$);
+
+\draw[-latex] (winsaward.three south) -- ++(0,-0.2) -| ($(winsaward.three south) + (2.63,0)$) |- ($(genre.one south) + (-0.00,-0.35)$) -| ($(genre.one south) + (-0.0,0)$);
+
+\end{tikzpicture}
 
 
 %% sotto un copia-incolla da vecchio file %%
