@@ -59,6 +59,10 @@
 % - aggiungere numero di accessi effettuati e numero di Pazienti, Ricovero, ecc
 % - Evidenziare la necessità dell'ospedale di accedere spesso alle diagnosi di un dato paziente
 
+%TODO -- FACOLTATIVO
+% - NUOVO VINCOLO INTEGRITÀ:
+%   - due ricoveri distinti di uno stesso paziente non possono avere intersezioni nei periodi [D.Inizio, D.Fine]
+
 
 \section{Progettazione Concettuale}\label{sec:prog_conc}
 
@@ -104,6 +108,7 @@ dato ospedale.
 \end{itemize}
 Tramite un portale web dovrà essere possibile accedere a tale base di dati ed
 aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farmaci.
+% TODO aggiungere esempio di Codice Ricovero (tipo RIC302) così poi nella fase logica si può dire Codice Diagnosi è stato creato ispirandosi a quello già presente (es RIC302DIA1), Codice Terapia es TER123
 % TODO aggiungere numeri/necessità dell'ospedale 
 
 
@@ -122,7 +127,7 @@ Le informazioni secondo
 1) Paziente x
 2) Ricovero x
 3) Viene ricoverato x
-4) Diagnosi
+4) Diagnosi % TODO vincolo integrità Data deve essere contenuta in [D.Inizio, D.Fine] di RICOVERO
 5) Effettuata durante
 6) Terapia
 6.1) Medico
@@ -420,25 +425,22 @@ A questo punto, osservando nuovamente i sottoschemi in Figura \autoref{fig:picco
 %TODO ci sono tutte?
 \end{itemize}
 
+Durante la fase di semplificazione dei concetti vengono analizzate anche le chiavi primarie delle entità.
+Quando una chiave è troppo complessa, cioè composta da molti elementi, è bene sostituirla, così facendo si faciliteranno tutte le operazioni sulla base di dati.
+Si ricorda che un'entità può disporre di chiavi candidate, cioè insiemi di attributi che, per loro natura, rispettano la proprietà di chiave primaria ma che, per qualche motivo, non sono stati scelti come tale.
+Ora è naturale verificare se tra queste chiavi opzionali ce n'è una che, dopo tutte le semplificazioni effettuate allo schema E-R, è migliore della chiave primaria.
+Purtroppo questa soluzione non è sempre possibile, infatti non è raro che le entità siano tra loro distinguibili soltanto per mezzo di un preciso insieme di attributi.
+Nello schema E-R considerato fino ad ora non sono presenti chiavi candidate migliori delle chiavi primarie attuali, infatti la chiave primaria della maggior parte delle entità è composta da un solo attributo.
 
+Rimangono da analizzare DIAGNOSI, TERAPIA e la nuova TERAPIA-PRESCRITTA.
+La chiave primaria di quest'ultima, per il modo in cui l'entità è stata costruita, non può essere modificata a meno di introdurre pesanti vincoli di integrità.
+Ora sorge un problema: TERAPIA-PRESCRITTA è un'entità debole che dipende da due entità a loro volta deboli.
+Ciò significa che per identificare una terapia prescritta si deve risalire al ricovero da una parte ed al farmaco dall'altra, nel mentre si deve anche ricordare \textit{Data} in DIAGNOSI, \textit{Dose Giornaliera} e \textit{Modalità Somministrazione} in TERAPIA.
+Intuitivamente questo equivale ad avere una chiave primaria in TERAPIA-PRESCRITTA composta da 5 elementi.
+Quindi si propone di creare sia in DIAGNOSI che in TERAPIA un nuovo attributo chiamato, rispettivamente, \textit{Codice Diagnosi} e \textit{Codice Terapia} che conterrà un valore alfa numerico simile a quello contenuto in \textit{Codice Ricovero}.
+%TODO servono vincoli integrità nuovi? Non mi pare
 
-
-
-
-Semplificazione delle chiavi
-
-
-
-
-
-
-
-\clearpage
-
-
-
-
-
+Applicando tutte le semplificazioni sopra descritte si ottiene lo schema E-R illustrato In \autoref{fig:ER_ristrutturato}.
 
 \begin{figure}[H] % TODO abbellire
 	\centering
@@ -447,12 +449,13 @@ Semplificazione delle chiavi
   \label{fig:ER_ristrutturato}
 \end{figure}
 
+\clearpage
+
+
 % TODO NELLA FASE LOGICA
 % - verrà aggiunta relazione tra PAZIENTE DIAGNOSI (es EFFETTUATA A) per verificare la differenza di prestazioni
 % - l'unica ridondanza è data da EFFETTUATA A, la ricorsione DIAGNOSI->DIAGNOSI (o ISTANZA DI TERAPIA -> DIAGNOSI) NON è ridondanza (esprime informazioni differenti)
 
-
-\clearpage
 \subsubsection{Analisi delle Ridondanze}
 
 Ai fini di ottimizzare le prestazioni, studiamo se risulta conveniente mantenere l'attributo derivato \textit{Totale Giorni Ricoveri} dell'entità PAZIENTE.
