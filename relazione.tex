@@ -47,6 +47,7 @@
 
 % REGOLE DI STILE
 % - scrivere in modo impersonale no "abbiamo deciso di"
+% - nelle immagini H o !ht ????
 % NUOVO ATTENZIONE!!! TERAPIA-PRESCRITTA o TERAPIA_PRESCRITTA? Perché in fase Relazionale si usa _
 
 % COSE DA RICORDARE
@@ -673,172 +674,227 @@ Concludiamo che è conveniente mantenere la ridondanza visto il costo minore del
     \label{fig:ER_finale}
 \end{figure}
 
+
+
+
 \subsection{Traduzione da ER a Relazionale}
-
-\begin{tikzpicture}[relation/.style={rectangle split, rectangle split parts=#1, rectangle split part align=base, draw, anchor=center, align=center, text height=3mm, text centered}]\hspace*{-0.3cm}
-
-% RELATIONS
-
-% TODO FIX
-%\node (pazientetitle) {\textbf{PAZIENTE}};
-%\node [
-%  relation=6,
-%  rectangle split horizontal,
-%  rectangle split part fill={lightgray!50},
-%  anchor=north west,
-%  below=0.6cm of pazientetitle.west,
-%  anchor=west
-%  ]
-%  (paziente1)
-%  {
-%   \underline{Codice\_Fiscale}%
-%   \nodepart{two}   Cognome
-%   \nodepart{three} Nome
-%   \nodepart{four}  Data\_di\_Nascita
-%   \nodepart{five}  Luogo\_di\_Nascita
-%  };
-%\node [
-%  relation=5,
-%  rectangle split horizontal,
-%  rectangle split part fill={lightgray!50},
-%  anchor=north west,
-%  below=1.1cm of paziente1.west,
-%  anchor=west
-%  ]
-%  (paziente2)
-%  {
-%   \nodepart[dashed]{one}
-%   \nodepart{two}  Provincia\_\\di\_\\Residenza
-%   \nodepart{three}  Regione\_\\di\_\\Appartenenza
-%   \nodepart{four}  ULSS
-%   \nodepart{five}  Totale\_\\Giorni\_\\Ricoveri
-%  };
-% TODO END FIX
-
-
-\node (pazientetitle) {\textbf{PAZIENTE}};
-\node [
-  relation=4,
-  rectangle split horizontal,
-  rectangle split part fill={lightgray!50},
-  anchor=north west,
-  below=0.6cm of pazientetitle.west,
-  anchor=west
+\begin{tikzpicture} % TODO spostare dopo la spiegazione
+  [relation/.style={
+    rectangle split,
+    rectangle split parts=#1,
+    rectangle split part align=base,
+    draw,
+    anchor=center,
+    align=center,
+    text height=3mm,
+    text centered
+    }
   ]
-  (paziente)
-  {
-   \underline{Codice\_Fiscale}%
-   \nodepart{two}   Cognome
-   \nodepart{three} \dots
-   \nodepart{four} Luogo\_di\_Nascita
-  };
+  %\hspace*{-1cm} % tutto un po' più a  sinistra
 
-\node [below=1.3cm of paziente.west, anchor=west] (ricoverotitle) {\textbf{RICOVERO}};
-\node [
-  relation=5,
-  rectangle split horizontal,
-  rectangle split part fill={lightgray!50},
-  anchor=north west,
-  below=0.6cm of ricoverotitle.west,
-  anchor=west
-  ]
-  (ricovero)
-  {
-   \underline{Codice\_Ricovero}%
-   \nodepart{two}   Data\_Inizio
-   \nodepart{three} Data\_Fine
-   \nodepart{four}  Motivo
-   \nodepart{five}  Divisione\_Ospedaliera
-  };
-
-\node [below=1.3cm of ricovero.west, anchor=west] (diagnosititle) {\textbf{DIAGNOSI}};
-\node [
-  relation=5,
-  rectangle split horizontal,
-  rectangle split part fill={lightgray!50},
-  anchor=north west,
-  below=0.6cm of diagnosititle.west,
-  anchor=west
-  ]
-  (diagnosi)
-  {
-   \underline{Codice\_Diagnosi}%
-   \nodepart{two}   Data
-   \nodepart{three} Codice\_Patologia
-   \nodepart{four}  Gravità\_Patologia
-   \nodepart{five}  Medico
-  };
-
-\node [below=1.3cm of diagnosi.west, anchor=west] (terapiatitle) {\textbf{TERAPIA}};
-\node [
-  relation=3,
-  rectangle split horizontal,
-  rectangle split part fill={lightgray!50},
-  anchor=north west,
-  below=0.6cm of terapiatitle.west,
-  anchor=west
-  ]
-  (terapia)
-  {
-   \underline{Codice\_Terapia}%
-   \nodepart{two}   Dose\_Giornaliera
-   \nodepart{three} Modalità\_Somministrazione
-  };
-
-\node [below=1.3cm of terapia.west, anchor=west] (terapiaprescrittatitle) {\textbf{TERAPIA\_PRESCRITTA}};
-\node [
-  relation=5,
-  rectangle split horizontal,
-  rectangle split part fill={lightgray!50},
-  anchor=north west,
-  below=0.6cm of terapiaprescrittatitle.west,
-  anchor=west
-  ]
-  (terapiaprescritta)
-  {
-   \underline{Diagnosi}
-   \nodepart{two} \underline{Terapia}
-   \nodepart{three} Data\_Inizio
-   \nodepart{four} Data\_Fine
-   \nodepart{five} Medico\_Prescrivente
-  };
-
-\node [below=1.3cm of terapiaprescritta.west, anchor=west] (farmacotitle) {\textbf{FARMACO}};
-\node [
-  relation=3,
-  rectangle split horizontal,
-  rectangle split part fill={lightgray!50},
-  anchor=north west,
-  below=0.6cm of farmacotitle.west,
-  anchor=west
-  ]
-  (farmaco)
-  {
-   \underline{Nome\_Commerciale}
-   \nodepart{two} Dose\_Giornaliera\_Raccomandata
-   \nodepart{three} Azienda\_Produttrice
-  };
-
-\node [below=1.3cm of farmaco.west, anchor=west] (principiotitle) {\textbf{PRINCIPIO\_ATTIVO}};
-\node [
-  relation=1,
-  rectangle split horizontal,
-  rectangle split part fill={lightgray!50},
-  anchor=north west,
-  below=0.6cm of principiotitle.west,
-  anchor=west
-  ]
-  (principio)
-  {
-    \underline{Nome}
-  };
+  % RELATIONS
+  
+  % TODO FIX
+  %\node (pazientetitle) {\textbf{PAZIENTE}};
+  %\node [
+  %  relation=6,
+  %  rectangle split horizontal,
+  %  rectangle split part fill={lightgray!50},
+  %  anchor=north west,
+  %  below=0.6cm of pazientetitle.west,
+  %  anchor=west
+  %  ]
+  %  (paziente1)
+  %  {
+  %   \underline{Codice\_Fiscale}%
+  %   \nodepart{two}   Cognome
+  %   \nodepart{three} Nome
+  %   \nodepart{four}  Data\_di\_Nascita
+  %   \nodepart{five}  Luogo\_di\_Nascita
+  %  };
+  %\node [
+  %  relation=5,
+  %  rectangle split horizontal,
+  %  rectangle split part fill={lightgray!50},
+  %  anchor=north west,
+  %  below=1.1cm of paziente1.west,
+  %  anchor=west
+  %  ]
+  %  (paziente2)
+  %  {
+  %   \nodepart[dashed]{one}
+  %   \nodepart{two}  Provincia\_\\di\_\\Residenza
+  %   \nodepart{three}  Regione\_\\di\_\\Appartenenza
+  %   \nodepart{four}  ULSS
+  %   \nodepart{five}  Totale\_\\Giorni\_\\Ricoveri
+  %  };
+  % TODO END FIX
+  
+  
+  \node (pazientetitle) {\textbf{PAZIENTE}};
+  \node [
+    relation=5,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of pazientetitle.west,
+    anchor=west
+    ]
+    (paziente)
+    {
+     \underline{Codice\_Fiscale}%
+     \nodepart{two}   Cognome
+     \nodepart{three} Nome
+     \nodepart{four} \dots
+     \nodepart{five} Luogo\_di\_Nascita
+    };
+  
+  \node [below=1.3cm of paziente.west, anchor=west] (ricoverotitle) {\textbf{RICOVERO}};
+  \node [
+    relation=5,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of ricoverotitle.west,
+    anchor=west
+    ]
+    (ricovero)
+    {
+     \underline{Codice\_Ricovero}%
+     \nodepart{two}   Data\_Inizio
+     \nodepart{three} Data\_Fine
+     \nodepart{four}  Motivo
+     \nodepart{five}  Divisione\_Ospedaliera
+    };
+  
+  \node [below=1.3cm of ricovero.west, anchor=west] (diagnosititle) {\textbf{DIAGNOSI}};
+  \node [
+    relation=5,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of diagnosititle.west,
+    anchor=west
+    ]
+    (diagnosi)
+    {
+     \underline{Codice\_Diagnosi}%
+     \nodepart{two}   Data
+     \nodepart{three} Codice\_Patologia
+     \nodepart{four}  Gravità\_Patologia
+     \nodepart{five}  Medico
+    };
+  
+  \node [below=1.3cm of diagnosi.west, anchor=west] (terapiatitle) {\textbf{TERAPIA}};
+  \node [
+    relation=3,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of terapiatitle.west,
+    anchor=west
+    ]
+    (terapia)
+    {
+     \underline{Codice\_Terapia}%
+     \nodepart{two}   Dose\_Giornaliera
+     \nodepart{three} Modalità\_Somministrazione
+    };
+  
+  \node [below=1.3cm of terapia.west, anchor=west] (terapiaprescrittatitle) {\textbf{TERAPIA\_PRESCRITTA}};
+  \node [
+    relation=5,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of terapiaprescrittatitle.west,
+    anchor=west
+    ]
+    (terapiaprescritta)
+    {
+     \underline{Diagnosi}
+     \nodepart{two} \underline{Terapia}
+     \nodepart{three} Data\_Inizio
+     \nodepart{four} Data\_Fine
+     \nodepart{five} Medico\_Prescrivente
+    };
+  
+  \node [below=1.3cm of terapiaprescritta.west, anchor=west] (farmacotitle) {\textbf{FARMACO}};
+  \node [
+    relation=3,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of farmacotitle.west,
+    anchor=west
+    ]
+    (farmaco)
+    {
+     \underline{Nome\_Commerciale}
+     \nodepart{two} Dose\_Giornaliera\_Raccomandata
+     \nodepart{three} Azienda\_Produttrice
+    };
+  
+  \node [below=1.3cm of farmaco.west, anchor=west] (principiotitle) {\textbf{PRINCIPIO\_ATTIVO}};
+  \node [
+    relation=1,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of principiotitle.west,
+    anchor=west
+    ]
+    (principio)
+    {
+      \underline{Nome}
+    };
 
   % TODO abbellire allineamento verticale tra frecce 
   \draw[-latex] (terapiaprescritta.one south) -- ++(0,-0.4) -| ($(terapiaprescritta.one south) + (11,0)$) |- ($(diagnosi.one south) + (-0.2,-0.50)$) -| ($(diagnosi.one south) + (-0.2,0)$);
 
   \draw[-latex] (terapiaprescritta.two south) -- ++(0,-0.2) -| ($(terapiaprescritta.two south) + (9,0)$) |- ($(terapia.one south) + (0,-0.50)$) -| ($(terapia.one south) + (0,0)$);
-
 \end{tikzpicture}
+
+
+% TODO leggere capitolo 14 Elmasri
+% TODO leggere capitolo 9 Atzeni
+
+Finalmente è possibile iniziare la traduzione del modello E-R in quello Relazionale.
+Come prima cosa, in quanto immediato, ogni entità verrà rappresentata da una tupla.%TODO verifica correttezza 
+Queste verranno poi modificate per poter mantenere anche le informazioni delle relazioni, può capitare che ad una relazione venga associata un nuova tupla.
+
+In (fig relazionale-iniziale) %TODO FIX \autoref{fig:relazionale_iniziale}
+si può vedere una prima modellazione dello schema Relazionale, con le seguenti tuple:
+\begin{itemize} % TODO abbellire
+  \item PAZIENTE(\textit{\underline{Codice\_Fiscale}, Cognome, Nome, Data\_di\_Nascita,\\
+    Luogo\_di\_Nascita, Provincia\_di\_Residenza, Regione\_di\_Appartenenza,\\
+  ULSS, Totale\_Giorni\_Ricovero}) con \textit{Codice\_Fiscale} come chiave primaria.
+  Per motivi di spazio, rappresentata nello schema in una forma compatta;
+  \item RICOVERO(\textit{\underline{Codice\_Ricovero}, Data\_Inizio, Data\_Fine, Motivo, Divisione\_Ospedaliera}) con \textit{Codice\_Ricovero} come chiave primaria. 
+  \item DIAGNOSI(\textit{\underline{Codice\_Diagnosi}, Data, Codice\_Patologia, Gravità\_Patologia,\\Medico}) con \textit{Codice\_Diagnosi} come chiave primaria. 
+  \item TERAPIA(\textit{\underline{Codice\_Terapia}, Dose\_Giornaliera,\\Modalità\_Somministrazione}) con \textit{Codice\_Terapia} come chiave primaria. 
+  \item FARMACO(\textit{\underline{Nome\_Commerciale}, Dose\_Giornaliera\_Raccomandata,\\Azienda\_Produttrice}) con \textit{Nome\_Commerciale} come chiave primaria. 
+  \item PRINCIPIO\_ATTIVO(\textit{\underline{Nome}}) con \textit{Nome} come chiave primaria. 
+\end{itemize}
+
+% TODO sistemare sta cavolo di larghezza... Causa: latex non sa spaccare PAROLA_PAROLA
+Bisogna prestare più attenzione a TERAPIA\_PRESCRITTA perché, in quanto entità debole, la sua chiave primaria dipende dalle relazioni VIENE\_CURATA\_DA e VIENE\_PRESCRITTA, o meglio, comprende degli identificatori esterni.
+Nel dettaglio un identificatore sarà dato dalla chiave primaria di DIAGNOSI mentre l'altro dalla chiave primaria di TERAPIA.
+Si ricorda che le entità identificate esternamente partecipano alle associazioni identificanti sempre con una cardinalità minima e massima pari a uno.
+Quindi, nonostante le due relazioni siano di tipi differenti (Uno-A-Uno ed Uno-A-Molti), possono essere trattate allo stesso modo, cioè aggiungendo alla tupla
+
+% TODO FIX
+% %\vspace{1mm}
+% \smallskip
+% \hspace{2mm}
+% TERAPIA\_PRESCRITTA(\textit{Data\_Inizio, Data\_Fine, Medico\_Prescrivente})
+% \vspace{5mm}
+% \smallskip
+% i nuovi valori \textit{Diagnosi} e \textit{Terapia}
+
+
+
+%TERAPIA\_PRESCRITTA(\textit{\underline{Diagnosi}, \underline{Terapia}, Data\_Inizio, Data\_Fine,\\Medico\_Prescrivente})
 
 
 %% sotto un copia-incolla da vecchio file %%
@@ -848,11 +904,7 @@ Concludiamo che è conveniente mantenere la ridondanza visto il costo minore del
 %                            DI CHIAVI (Y,Z)..."
 % 
 % - Traduzione di VIENE-RICOVERATO (da scrivere bene perchè è la prima)
-% 
-% PAZIENTE (_CF_, NOME,...)
-% RICOVERO (_CODICE-RICOVERO_,...,DIVISIONE-OSPEDALIERA, CF, MOTIVO)
-%           . CF chiave esterna not null, 
-%           . MOTIVO not null
+%
 % . Specificare che la traduzione cattura la partecipazione (0,N)(1,1)
 %   e non (1,N)(1,1), bisogna introdurre un vincolo esterno per garantire
 %   (1,N)
