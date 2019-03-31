@@ -1,4 +1,6 @@
-\documentclass{article}
+\documentclass
+%[draft] %TODO rimuovere draft dopo aver localizzato overfull warning
+{article}
 
 \usepackage[italian]{babel}
 \usepackage[utf8]{inputenc}
@@ -676,8 +678,58 @@ Concludiamo che è conveniente mantenere la ridondanza visto il costo minore del
 
 
 
-
+\clearpage
 \subsection{Traduzione da ER a Relazionale}
+
+% TODO leggere capitolo 14 Elmasri
+% TODO leggere capitolo 9 Atzeni
+
+Finalmente è possibile iniziare la traduzione del modello E-R in quello Relazionale.
+Come prima cosa, in quanto immediato, ogni entità verrà rappresentata sotto forma di tupla.%TODO verifica correttezza 
+Queste tuple verranno poi modificate per poter mantenere anche le informazioni relative alle relazioni, può capitare che ad una relazione venga associata un nuova tupla.
+%TODO idea generale di modello relazionale Le tuple saranno raccolte in varie tabelle in cui ogni riga
+
+In (fig relazionale-iniziale) %TODO FIX \autoref{fig:relazionale_iniziale}
+si può vedere una prima modellazione dello schema Relazionale, con le seguenti tuple:
+\begin{itemize} % TODO abbellire
+  \item PAZIENTE(\textit{\underline{Codice\_Fiscale}, Cognome, Nome, Data\_di\_Nascita,\\
+    Luogo\_di\_Nascita, Provincia\_di\_Residenza, Regione\_di\_Appartenenza,\\
+  ULSS, Totale\_Giorni\_Ricovero}) con \textit{Codice\_Fiscale} come chiave primaria.
+  Per motivi di spazio, rappresentata nello schema in una forma compatta;
+  \item RICOVERO(\textit{\underline{Codice\_Ricovero}, Data\_Inizio, Data\_Fine, Motivo,\\Divisione\_Ospedaliera}) con \textit{Codice\_Ricovero} come chiave primaria;
+  \item DIAGNOSI(\textit{\underline{Codice\_Diagnosi}, Data, Codice\_Patologia, Gravità\_Patologia,\\Medico}) con \textit{Codice\_Diagnosi} come chiave primaria;
+  \item TERAPIA(\textit{\underline{Codice\_Terapia}, Dose\_Giornaliera,\\Modalità\_Somministrazione}) con \textit{Codice\_Terapia} come chiave primaria;
+  \item FARMACO(\textit{\underline{Nome\_Commerciale}, Dose\_Giornaliera\_Raccomandata,\\Azienda\_Produttrice}) con \textit{Nome\_Commerciale} come chiave primaria;
+  \item PRINCIPIO\_ATTIVO(\textit{\underline{Nome}}) con \textit{Nome} come chiave primaria. 
+\end{itemize}
+% TODO sistemare sta cavolo di larghezza... Causa: latex non sa spaccare PAROLA_PAROLA
+Bisogna prestare più attenzione a TERAPIA\_PRESCRITTA perché, in quanto entità debole, la sua chiave primaria dipende dalle relazioni\\VIENE\_CURATA\_DA e VIENE\_PRESCRITTA, o meglio, comprende degli\\identificatori esterni.
+Nel dettaglio un identificatore sarà dato dalla chiave primaria di DIAGNOSI mentre l'altro dalla chiave primaria di TERAPIA.
+Si ricorda che le entità identificate esternamente partecipano alle associazioni identificanti sempre con una cardinalità minima e massima pari a uno.
+Quindi, nonostante le due relazioni siano di tipi differenti (Uno-A-Uno ed Uno-A-Molti), possono essere trattate allo stesso modo, cioè aggiungendo alla tupla
+\vspace{3mm}
+\\
+\hspace{10mm}
+TERAPIA\_PRESCRITTA(\textit{Data\_Inizio, Data\_Fine, Medico\_Prescrivente})
+\vspace{3mm}
+\\
+i nuovi valori referenziali \textit{Diagnosi} e \textit{Terapia}.
+Questi, rispettivamente, conterranno il valore \textit{Codice\_Diagnosi} e \textit{Codice\_Terapia} delle tuple dalle quali TERAPIA\_PRESCRITTA dipende.
+La tupla risultante è la seguente:
+\vspace{3mm}
+\\ TERAPIA\_PRESCRITTA(\textit{\underline{Codice\_Diagnosi}, \underline{Codice\_Terapia}, Data\_Inizio, Data\_Fine, Medico\_Prescrivente})
+\vspace{3mm}
+\\
+la chiave primaria è composta dalla coppia (\textit{Codice\_Diagnosi, Codice\_Terapia}).
+
+In questi passaggi, in realtà, è stato fatto qualcosa di più di una semplice traduzione di una entità dal modello E-R a quello Relazione, infatti sono state tradotte anche due relazioni.
+
+La prima è VIENE\_CURATA\_DA fornisce l'informazione: una patologia, trovata per mezzo di una diagnosi, può essere curata con l'applicazione di un particolare terapia.
+Quest'informazione, nel modello relazionale, può essere trovata cercando, tra tutte le tuple per le terapie prescritte, una che abbia il campo \textit{Diagnosi} uguale al campo \textit{Codice\_Diagnosi}.
+Notare che non esiste nessuna certezza che tale tupla esista.
+Questa possibilità è consistente con quanto modellato nello schema E-R (la partecipazione di DIAGNOSI è parziale).
+Bisogna, invece, introdurre un vincolo che vieti che due tuple del tipo TERAPIA\_PRESCRITTA referenzino la stessa diagnosi, in altre parole bisogna assicurare la proprietà di chiave al campo \textit{Diagnosi}.
+
 \begin{tikzpicture} % TODO spostare dopo la spiegazione
   [relation/.style={
     rectangle split,
@@ -690,7 +742,7 @@ Concludiamo che è conveniente mantenere la ridondanza visto il costo minore del
     text centered
     }
   ]
-  %\hspace*{-1cm} % tutto un po' più a  sinistra
+  %\hspace*{-0.2cm} % tutto un po' più a  sinistra
 
   % RELATIONS
   
@@ -831,7 +883,7 @@ Concludiamo che è conveniente mantenere la ridondanza visto il costo minore del
     (farmaco)
     {
      \underline{Nome\_Commerciale}
-     \nodepart{two} Dose\_Giornaliera\_Raccomandata
+     \nodepart{two} Dose\_Giornaliera\_Racc. % TODO si può migliorare
      \nodepart{three} Azienda\_Produttrice
     };
   
@@ -850,52 +902,204 @@ Concludiamo che è conveniente mantenere la ridondanza visto il costo minore del
     };
 
   % TODO abbellire allineamento verticale tra frecce 
-  \draw[-latex] (terapiaprescritta.one south) -- ++(0,-0.4) -| ($(terapiaprescritta.one south) + (11,0)$) |- ($(diagnosi.one south) + (-0.2,-0.50)$) -| ($(diagnosi.one south) + (-0.2,0)$);
+  \draw[-latex] (terapiaprescritta.one south) -- ++(0,-0.4) -| ($(terapiaprescritta.one south) + (10,0)$) |- ($(diagnosi.one south) + (-0.2,-0.50)$) -| ($(diagnosi.one south) + (-0.2,0)$);
 
-  \draw[-latex] (terapiaprescritta.two south) -- ++(0,-0.2) -| ($(terapiaprescritta.two south) + (9,0)$) |- ($(terapia.one south) + (0,-0.50)$) -| ($(terapia.one south) + (0,0)$);
+  \draw[-latex] (terapiaprescritta.two south) -- ++(0,-0.2) -| ($(terapiaprescritta.two south) + (8.2,0)$) |- ($(terapia.one south) + (0,-0.50)$) -| ($(terapia.one south) + (0,0)$);
 \end{tikzpicture}
 
-
-% TODO leggere capitolo 14 Elmasri
-% TODO leggere capitolo 9 Atzeni
-
-Finalmente è possibile iniziare la traduzione del modello E-R in quello Relazionale.
-Come prima cosa, in quanto immediato, ogni entità verrà rappresentata da una tupla.%TODO verifica correttezza 
-Queste verranno poi modificate per poter mantenere anche le informazioni delle relazioni, può capitare che ad una relazione venga associata un nuova tupla.
-
-In (fig relazionale-iniziale) %TODO FIX \autoref{fig:relazionale_iniziale}
-si può vedere una prima modellazione dello schema Relazionale, con le seguenti tuple:
-\begin{itemize} % TODO abbellire
-  \item PAZIENTE(\textit{\underline{Codice\_Fiscale}, Cognome, Nome, Data\_di\_Nascita,\\
-    Luogo\_di\_Nascita, Provincia\_di\_Residenza, Regione\_di\_Appartenenza,\\
-  ULSS, Totale\_Giorni\_Ricovero}) con \textit{Codice\_Fiscale} come chiave primaria.
-  Per motivi di spazio, rappresentata nello schema in una forma compatta;
-  \item RICOVERO(\textit{\underline{Codice\_Ricovero}, Data\_Inizio, Data\_Fine, Motivo, Divisione\_Ospedaliera}) con \textit{Codice\_Ricovero} come chiave primaria. 
-  \item DIAGNOSI(\textit{\underline{Codice\_Diagnosi}, Data, Codice\_Patologia, Gravità\_Patologia,\\Medico}) con \textit{Codice\_Diagnosi} come chiave primaria. 
-  \item TERAPIA(\textit{\underline{Codice\_Terapia}, Dose\_Giornaliera,\\Modalità\_Somministrazione}) con \textit{Codice\_Terapia} come chiave primaria. 
-  \item FARMACO(\textit{\underline{Nome\_Commerciale}, Dose\_Giornaliera\_Raccomandata,\\Azienda\_Produttrice}) con \textit{Nome\_Commerciale} come chiave primaria. 
-  \item PRINCIPIO\_ATTIVO(\textit{\underline{Nome}}) con \textit{Nome} come chiave primaria. 
-\end{itemize}
-
-% TODO sistemare sta cavolo di larghezza... Causa: latex non sa spaccare PAROLA_PAROLA
-Bisogna prestare più attenzione a TERAPIA\_PRESCRITTA perché, in quanto entità debole, la sua chiave primaria dipende dalle relazioni VIENE\_CURATA\_DA e VIENE\_PRESCRITTA, o meglio, comprende degli identificatori esterni.
-Nel dettaglio un identificatore sarà dato dalla chiave primaria di DIAGNOSI mentre l'altro dalla chiave primaria di TERAPIA.
-Si ricorda che le entità identificate esternamente partecipano alle associazioni identificanti sempre con una cardinalità minima e massima pari a uno.
-Quindi, nonostante le due relazioni siano di tipi differenti (Uno-A-Uno ed Uno-A-Molti), possono essere trattate allo stesso modo, cioè aggiungendo alla tupla
-
-% TODO FIX
-% %\vspace{1mm}
-% \smallskip
-% \hspace{2mm}
-% TERAPIA\_PRESCRITTA(\textit{Data\_Inizio, Data\_Fine, Medico\_Prescrivente})
-% \vspace{5mm}
-% \smallskip
-% i nuovi valori \textit{Diagnosi} e \textit{Terapia}
+La seconda relazione è VIENE\_PRESCRITTA.
+Anche in questo caso il campo \textit{Terapia} permette di trovare tutte le particolari applicazioni di una data terapia.
+In questo caso, poiché la relazione è del tipo Uno-A-Molti, la possibilità che lo stesso \textit{Codice\_Terapia} venga referenziato da tuple differenti non è un problema.
+Invece, deve essere introdotto un vincolo d'integrità per assicurare che ogni TERAPIA salvata sia stata applicata almeno una volta (partecipazione totale).
 
 
 
-%TERAPIA\_PRESCRITTA(\textit{\underline{Diagnosi}, \underline{Terapia}, Data\_Inizio, Data\_Fine,\\Medico\_Prescrivente})
+% ORA LE RELAZIONI
+Ora che tutte le entità sono state tradotte si può procedere alla traduzione delle relazioni.
+Il risultato finale è rappresentato in (TODO figura sotto)
 
+VIENE\_RICOVERATO è del tipo Uno-A-Molti con entrambe le partecipazioni totali.
+Come visto in precedenza non c'è modo di assicurare la partecipazione se non con dei vincoli esterni, in questo caso da applicare sia su PAZIENTE che su RICOVERO.
+La tupla che rappresenta i ricoveri deve essere modificata 
+
+
+
+
+
+
+
+
+
+
+\begin{tikzpicture} % TODO abbellire
+  [relation/.style={
+    rectangle split,
+    rectangle split parts=#1,
+    rectangle split part align=base,
+    draw,
+    anchor=center,
+    align=center,
+    text height=3mm,
+    text centered
+    }
+  ]
+  %\hspace*{-0.2cm} % tutto un po' più a  sinistra
+  
+  \node (pazientetitle) {\textbf{PAZIENTE}};
+  \node [
+    relation=5,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of pazientetitle.west,
+    anchor=west
+    ]
+    (paziente)
+    {
+     \underline{Codice\_Fiscale}%
+     \nodepart{two}   Cognome
+     \nodepart{three} Nome
+     \nodepart{four} \dots
+     \nodepart{five} Luogo\_di\_Nascita
+    };
+  
+  \node [below=1.3cm of paziente.west, anchor=west] (ricoverotitle) {\textbf{RICOVERO}};
+  \node [
+    relation=4,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of ricoverotitle.west,
+    anchor=west
+    ]
+    (ricovero)
+    {
+     \underline{Codice\_Ricovero}%
+     \nodepart{two}   Data\_Inizio
+     \nodepart{three} \dots
+     \nodepart{four}  Paziente
+    };
+  
+  \node [below=1.3cm of ricovero.west, anchor=west] (diagnosititle) {\textbf{DIAGNOSI}};
+  \node [
+    relation=5,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of diagnosititle.west,
+    anchor=west
+    ]
+    (diagnosi)
+    {
+     \underline{Codice\_Diagnosi}%
+     \nodepart{two}   Data
+     \nodepart{three} \dots
+     \nodepart{four} Paziente
+     \nodepart{five} Ricovero
+    };
+  
+  \node [below=1.3cm of diagnosi.west, anchor=west] (terapiaprescrittatitle) {\textbf{TERAPIA\_PRESCRITTA}};
+  \node [
+    relation=4,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of terapiaprescrittatitle.west,
+    anchor=west
+    ]
+    (terapiaprescritta)
+    {
+     \underline{Terapia}
+     \nodepart{two} \underline{Diagnosi}
+     \nodepart{three} \dots
+     \nodepart{four} Effetto\_Collaterale
+    };
+  
+  \node [below=1.3cm of terapiaprescritta.west, anchor=west] (terapiatitle) {\textbf{TERAPIA}};
+  \node [
+    relation=4,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of terapiatitle.west,
+    anchor=west
+    ]
+    (terapia)
+    {
+     \underline{Codice\_Terapia}%
+     \nodepart{two}   Dose\_Giornaliera
+     \nodepart{three} \dots
+     \nodepart{four} Farmaco
+    };
+  
+  \node [below=1.3cm of terapia.west, anchor=west] (farmacotitle) {\textbf{FARMACO}};
+  \node [
+    relation=3,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of farmacotitle.west,
+    anchor=west
+    ]
+    (farmaco)
+    {
+     \underline{Nome\_Commerciale}
+     \nodepart{two} Dose\_Giornaliera\_Racc. % TODO si può migliorare
+     \nodepart{three} Azienda\_Produttrice
+    };
+  
+  \node [below=1.3cm of farmaco.west, anchor=west] (principiotitle) {\textbf{PRINCIPIO\_ATTIVO}};
+  \node [
+    relation=1,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of principiotitle.west,
+    anchor=west
+    ]
+    (principio)
+    {
+      \underline{Nome}
+    };
+
+  \node [below=1.3cm of principio.west, anchor=west] (contienetitle) {\textbf{CONTIENE}};
+  \node [
+    relation=3,
+    rectangle split horizontal,
+    rectangle split part fill={lightgray!50},
+    anchor=north west,
+    below=0.6cm of contienetitle.west,
+    anchor=west
+    ]
+    (contiene)
+    {
+     \underline{Farmaco}
+     \nodepart{two} \underline{Principio\_Attivo}
+     \nodepart{three} Quantità
+    };
+
+  % TODO abbellire allineamento verticale tra frecce 
+  % TODO arco diagnosi-ricovero diagnosi-paziente
+  % TODO arco terapia-farmaco
+  % TODO arco contiene-principio contiene-farmaco
+
+  \draw[-latex] (ricovero.four south) -- ++(0,-0.3) -| ($(ricovero.four south) + (1.2,0)$) |- ($(paziente.one south) + (-0.2,-0.6)$) -| ($(paziente.one south) + (-0.2,0)$);
+
+  \draw[-latex] (diagnosi.four south) -- ++(0,-0.4) -| ($(diagnosi.four south) + (3,0)$) |- ($(paziente.one south) + (0,-0.4)$) -| ($(paziente.one south) + (0,0)$);
+  \draw[-latex] (diagnosi.five south) -- ++(0,-0.2) -| ($(diagnosi.five south) + (1.1,0)$) |- ($(ricovero.one south) + (0,-0.6)$) -| ($(ricovero.one south) + (0,0)$);
+
+  % TODO abbellire curva
+  \draw (terapia.four south) -- ++(0,-0.2) -| ($(terapia.four south) + (1.1,-0.2)$);
+  \draw ($(terapia.four south) + (1.1,-0.2)$) to[out=90,in=90] ($(terapia.four south) + (1.35,-0.2)$);
+  \draw[-latex] ($(terapia.four south) + (1.35,-0.2)$) -| ($(terapia.four south) + (3.8,-0.2)$) |- ($(farmaco.one south) + (0,-0.4)$) -| ($(farmaco.one south) + (0,0)$);
+
+
+  \draw[-latex] (terapiaprescritta.one south) -- ++(0,-0.4) -| ($(terapiaprescritta.one south) + (7.5,-0.4)$) |- ($(terapia.one south) + (0,-0.6)$) -| ($(terapia.one south) + (0,0)$);
+  \draw[-latex] (terapiaprescritta.two south) -- ++(0,-0.2) -| ($(terapiaprescritta.two south) + (5,0)$) |- ($(diagnosi.one south) + (-0.2,-0.6)$) -| ($(diagnosi.one south) + (-0.2,0)$);
+
+  \draw[-latex] (contiene.one south) -- ++(0,-0.4) -| ($(contiene.one south) + (6.5,0)$) |- ($(farmaco.one south) + (-0.2,-0.6)$) -| ($(farmaco.one south) + (-0.2,0)$);
+  \draw[-latex] (contiene.two south) -- ++(0,-0.2) -| ($(contiene.two south) + (4,0)$) |- ($(principio.one south) + (0,-0.6)$) -| ($(principio.one south) + (0,0)$);
+\end{tikzpicture}
 
 %% sotto un copia-incolla da vecchio file %%
 
