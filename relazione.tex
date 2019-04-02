@@ -230,6 +230,7 @@ in FARMACO sono presenti \textit{Nome Principi Attivi} e \textit{Quantità Princ
 L'unica semplificazione attuabile è creare una nuova entità chiamata PRINCIPIO-ATTIVO è metterla in relazione Molti-A-Molti con FARMACO attraverso la nuova relazione CONTIENE.
 PRINCIPIO-ATTIVO avrà un solo attributo, scelto anche come chiave primaria, chiamato \textit{Nome}, mentre alla relazione CONTIENE verrà aggiunto l'attributo \textit{Quantità}.
 In questo modo saranno modellate esattamente le stesse informazioni precedentemente modellate dagli attributi multivalore.
+% TODO in realtà ora le informazioni sono "sicure" nel senso che prima l'ordine in cui si inserivano nomi e quantità modificavano la reale informazione
 
 \begin{figure}[!ht] % TODO abbellire
   \centering
@@ -248,21 +249,21 @@ La nuova entità, quindi, è caratterizzata da:
 \textit{Data Fine} che indica il giorno in cui il paziente terminerà la terapia;
 \textit{Medico Prescrivente} che indica il medico che ha prescritto la terapia e deciso il periodo di applicazione.
 Osservando che la relazione MOTIVA-TERAPIA non può esistere senza la partecipazione simultanea di DIAGNOSI (come \textit{Viene Curata da}) e di TERAPIA si è deciso di rendere TERAPIA-PRESCRITTA un'entità debole.
-La chiave primaria è composta dalle nuove relazioni binare VIENE-CURATA-DA e VIENE-PRESCRITTA, per entrambe la partecipazione di TERAPIA-PRESCRITTA è totale, mentre la cardinalità è al massimo uno.%TODO cardinalità 1 suona male
+La chiave primaria è composta dalle nuove relazioni binare VIENE-CURATA-DA e VIENE-PRESCRITTA, per entrambe la partecipazione di TERAPIA-PRESCRITTA è totale, mentre la cardinalità è al massimo uno. %TODO cardinalità 1 suona male
 DIAGNOSI e TERAPIA interagiscono con le nuove relazioni, rispettivamente, nello stesso modo con cui interagivano con la relazione ternaria.
 Per quanto riguarda \textit{È Effetto Collaterale} si può dire che rappresenti perfettamente la possibilità che una terapia prescritta possa causare una nuova patologia.
 Notare che le partecipazioni sono appunto parziali.
 Ovviamente anche il vincolo d'integrità precedentemente definito, dovrà essere modificato:
 \begin{itemize}
   \item TERAPIA-PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con la DIAGNOSI con cui definisce la sua chiave primaria;
-  \item TERAPIA-PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con una DIAGNOSI che ha una data successiva alla data della DIAGNOSI con cui definisce la sua chiave primaria;
+  \item TERAPIA-PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con una DIAGNOSI che ha una data successiva alla data della DIAGNOSI con cui definisce la sua chiave primaria; % TODO data precedente?
 \end{itemize}
 A questo punto, osservando nuovamente i sottoschemi in Figura \autoref{fig:piccolo2} ed in Figura \autoref{fig:piccolo3}, è chiaro che modellino ogni possibile situazione:
 \begin{itemize}
   \item una DIAGNOSI a cui non è ancora stata assegnata una terapia;
   \item la prescrizione di una specifica terapia;
   \item la scoperta di una nuova patologia, attraverso una nuova diagnosi, causata dall'applicazione di una terapia;
-  \item la possibilità che una TERAPIA possa curare più patologie (in DIAGNOSI differenti).
+  \item la possibilità che una TERAPIA possa curare più patologie (registrate attraverso DIAGNOSI differenti).
 %TODO ci sono tutte?
 \end{itemize}
 
@@ -299,7 +300,7 @@ Applicando tutte le semplificazioni sopra descritte si ottiene lo schema E-R ill
 
 \subsubsection{Analisi delle Ridondanze}
 
-Ai fini di ottimizzare le prestazioni, studiamo se risulta conveniente mantenere l'attributo derivato \textit{Totale Giorni Ricoveri} dell'entità PAZIENTE.
+Ai fini di ottimizzare le prestazioni, è stato studiato se risultasse conveniente mantenere l'attributo derivato \textit{Totale Giorni Ricoveri} dell'entità PAZIENTE.
 
 \begin{figure}[H] % TODO abbellire
 	\centering
@@ -308,7 +309,7 @@ Ai fini di ottimizzare le prestazioni, studiamo se risulta conveniente mantenere
 	\label{fig:attributo-ridondante}
 \end{figure}
 
-Riportiamo i volumi stimati in \autoref{tab:volumi-attributo-ridondante} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-attributo-ridondante}.
+I volumi stimati sono riportati in \autoref{tab:volumi-attributo-ridondante} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-attributo-ridondante}.
 % TODO aggiungere operazione di modifica date dei ricoveri
 
 \begin{table}[H]
@@ -402,11 +403,11 @@ Viene creato quindi il ciclo in \autoref{fig:ciclo-ridondanza} PAZIENTE, RICOVER
 	\caption{Ciclo con ridondanza}
 	\label{fig:ciclo-ridondanza}
 \end{figure}
-Procediamo a valutare se è conveniente mantenere la relazione EFFETTUATA A tra PAZIENTE e DIAGNOSI in funzione della frequenza delle operazioni di inserimento nuove diagnosi e stampa dello storico diagnosi di un paziente.
+Si procede con il valutare se è conveniente mantenere la relazione EFFETTUATA A tra PAZIENTE e DIAGNOSI in funzione della frequenza delle operazioni di inserimento nuove diagnosi e stampa dello storico diagnosi di un paziente.
 
 % TODO REQUISITO specificare nei requisiti le operazioni richieste e i volumi
 
-Riportiamo i volumi stimati in \autoref{tab:volumi-ciclo} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-ciclo}
+I volumi stimati sono riportati in \autoref{tab:volumi-ciclo} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-ciclo}
 
 % TODO REQUISITO spostare table:volumi nei requisiti, no non si può non tutti esistono nei requisiti
 \begin{table}[H]
@@ -527,8 +528,8 @@ Concludiamo che è conveniente mantenere la ridondanza visto il costo minore del
 % TODO leggere capitolo 14 Elmasri
 % TODO leggere capitolo 9 Atzeni
 
-A questo è possibile iniziare la traduzione del modello E-R in quello Relazionale.
-Come prima cosa, in quanto immediato, ogni entità verrà rappresentata sotto forma di tupla.%TODO verifica correttezza 
+In questa fase della progettazione logica è possibile iniziare la traduzione del modello E-R in quello Relazionale.
+Come prima cosa, in quanto immediato, ogni entità verrà rappresentata sotto forma di tupla. %TODO verifica correttezza 
 Queste tuple verranno poi modificate per poter mantenere anche le informazioni relative alle relazioni, può capitare che ad una relazione venga associata un nuova tupla.
 %TODO idea generale di modello relazionale Le tuple saranno raccolte in varie tabelle in cui ogni riga
 
@@ -567,7 +568,7 @@ la chiave primaria è composta dalla coppia (\textit{Codice\_Diagnosi, Codice\_T
 
 In questi passaggi, in realtà, è stato fatto qualcosa di più di una semplice traduzione di una entità dal modello E-R a quello Relazione, infatti sono state tradotte anche due relazioni.
 
-La prima è VIENE\_CURATA\_DA fornisce l'informazione: una patologia, trovata per mezzo di una diagnosi, può essere curata con l'applicazione di un particolare terapia.
+La prima è VIENE\_CURATA\_DA che fornisce l'informazione: una patologia, trovata per mezzo di una diagnosi, può essere curata con l'applicazione di una particolare terapia.
 Quest'informazione, nel modello relazionale, può essere trovata cercando, tra tutte le tuple per le terapie prescritte, una che abbia il campo \textit{Diagnosi} uguale al campo \textit{Codice\_Diagnosi}.
 Notare che non esiste nessuna certezza che tale tupla esista.
 Questa possibilità è consistente con quanto modellato nello schema E-R (la partecipazione di DIAGNOSI è parziale).
