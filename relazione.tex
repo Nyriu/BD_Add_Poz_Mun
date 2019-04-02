@@ -47,6 +47,7 @@
 \cleardoublepage
 \setcounter{page}{1}
 
+
 % REGOLE DI STILE
 % - scrivere in modo impersonale no "abbiamo deciso di"
 % - nelle immagini H o !ht ????
@@ -246,10 +247,10 @@ Può essere trasformato in due nuovi attributi \textit{Codice Patologia} e \text
 
 Bisogna prestare più attenzione agli attributi multivalore:
 in FARMACO sono presenti \textit{Nome Principi Attivi} e \textit{Quantità Principi Attivi} entrambi obbligatori e multivalore.
-L'unica semplificazione attuabile è creare una nuova entità chiamata PRINCIPIO-ATTIVO è metterla in relazione Molti-A-Molti con FARMACO attraverso la nuova relazione CONTIENE.
+L'unica semplificazione attuabile è creare una nuova entità chiamata PRINCIPIO-ATTIVO e metterla in relazione Molti-A-Molti con FARMACO attraverso la nuova relazione CONTIENE.
 PRINCIPIO-ATTIVO avrà un solo attributo, scelto anche come chiave primaria, chiamato \textit{Nome}, mentre alla relazione CONTIENE verrà aggiunto l'attributo \textit{Quantità}.
 In questo modo saranno modellate esattamente le stesse informazioni precedentemente modellate dagli attributi multivalore.
-% TODO in realtà ora le informazioni sono "sicure" nel senso che prima l'ordine in cui si inserivano nomi e quantità modificavano la reale informazione
+In realtà ora le informazioni sono salvate in un formato meno equivoco: prima non era chiaro come si mantenessero in relazione il nome del principio attivo e la sua quantità.
 
 \begin{figure}[!ht] % TODO abbellire
   \centering
@@ -259,8 +260,7 @@ In questo modo saranno modellate esattamente le stesse informazioni precedenteme
 \end{figure}
 
 Un'ulteriore trasformazione da effettuare riguarda la relazione ternaria.
-Infatti MOTIVA-TERAPIA, come è stato accennato in precedenza%TODO verificare accennamento
-, può essere espressa tramite relazioni binarie.
+Infatti MOTIVA-TERAPIA, come è stato accennato in precedenza, può essere espressa tramite relazioni binarie.
 In Figura \autoref{fig:piccolo3} si può vedere il risultato di tale trasformazione.
 Si nota subito la nuova entità TERAPIA-PRESCRITTA, creata proprio per rappresentare una particolare applicazione di una terapia al fine di curare una patologia di una specifica diagnosi.
 La nuova entità, quindi, è caratterizzata da:
@@ -268,14 +268,14 @@ La nuova entità, quindi, è caratterizzata da:
 \textit{Data Fine} che indica il giorno in cui il paziente terminerà la terapia;
 \textit{Medico Prescrivente} che indica il medico che ha prescritto la terapia e deciso il periodo di applicazione.
 Osservando che la relazione MOTIVA-TERAPIA non può esistere senza la partecipazione simultanea di DIAGNOSI (come \textit{Viene Curata da}) e di TERAPIA si è deciso di rendere TERAPIA-PRESCRITTA un'entità debole.
-La chiave primaria è composta dalle nuove relazioni binare VIENE-CURATA-DA e VIENE-PRESCRITTA, per entrambe la partecipazione di TERAPIA-PRESCRITTA è totale, mentre la cardinalità è al massimo uno. %TODO cardinalità 1 suona male
+La chiave primaria è composta dalle nuove relazioni binare VIENE-CURATA-DA e VIENE-PRESCRITTA, per entrambe la partecipazione di TERAPIA-PRESCRITTA è totale, mentre la cardinalità è al massimo uno.
 DIAGNOSI e TERAPIA interagiscono con le nuove relazioni, rispettivamente, nello stesso modo con cui interagivano con la relazione ternaria.
 Per quanto riguarda \textit{È Effetto Collaterale} si può dire che rappresenti perfettamente la possibilità che una terapia prescritta possa causare una nuova patologia.
 Notare che le partecipazioni sono appunto parziali.
 Ovviamente anche il vincolo d'integrità precedentemente definito, dovrà essere modificato:
 \begin{itemize}
   \item TERAPIA-PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con la DIAGNOSI con cui definisce la sua chiave primaria;
-  \item TERAPIA-PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con una DIAGNOSI che ha una data successiva alla data della DIAGNOSI con cui definisce la sua chiave primaria; % TODO data precedente?
+  \item TERAPIA-PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con una DIAGNOSI che ha una data precedente alla data della DIAGNOSI con cui definisce la sua chiave primaria;
 \end{itemize}
 A questo punto, osservando nuovamente i sottoschemi in Figura \autoref{fig:piccolo2} ed in Figura \autoref{fig:piccolo3}, è chiaro che modellino ogni possibile situazione:
 \begin{itemize}
@@ -546,11 +546,13 @@ Concludiamo che è conveniente mantenere la ridondanza visto il costo minore del
 
 % TODO leggere capitolo 14 Elmasri
 % TODO leggere capitolo 9 Atzeni
+% TODO fare abbreviazioni consistenti con quelle fatte su SQL
 
 In questa fase della progettazione logica è possibile iniziare la traduzione del modello E-R in quello Relazionale.
 Come prima cosa, in quanto immediato, ogni entità verrà rappresentata sotto forma di tupla. %TODO verifica correttezza 
 Queste tuple verranno poi modificate per poter mantenere anche le informazioni relative alle relazioni, può capitare che ad una relazione venga associata un nuova tupla.
-%TODO idea generale di modello relazionale Le tuple saranno raccolte in varie tabelle in cui ogni riga
+%TODO idea generale di modello relazionale
+%Si ricorda che le tuple saranno raccolte in varie tabelle in cui ogni riga
 
 In (fig relazionale-iniziale) %TODO FIX \autoref{fig:relazionale_iniziale}
 si può vedere una prima modellazione dello schema Relazionale, con le seguenti tuple:
@@ -593,7 +595,7 @@ Notare che non esiste nessuna certezza che tale tupla esista.
 Questa possibilità è consistente con quanto modellato nello schema E-R (la partecipazione di DIAGNOSI è parziale).
 Bisogna, invece, introdurre un vincolo che vieti che due tuple del tipo TERAPIA\_PRESCRITTA referenzino la stessa diagnosi, in altre parole bisogna assicurare la proprietà di chiave al campo \textit{Diagnosi}.
 
-\begin{tikzpicture} % TODO spostare dopo la spiegazione
+\begin{tikzpicture}
   [relation/.style={
     rectangle split,
     rectangle split parts=#1,
@@ -770,6 +772,7 @@ Bisogna, invece, introdurre un vincolo che vieti che due tuple del tipo TERAPIA\
   \draw[-latex] (terapiaprescritta.two south) -- ++(0,-0.2) -| ($(terapiaprescritta.two south) + (8.2,0)$) |- ($(terapia.one south) + (0,-0.50)$) -| ($(terapia.one south) + (0,0)$);
 \end{tikzpicture}
 
+
 La seconda relazione è VIENE\_PRESCRITTA.
 Anche in questo caso il campo \textit{Terapia} permette di trovare tutte le particolari applicazioni di una data terapia.
 In questo caso, poiché la relazione è del tipo Uno-A-Molti, la possibilità che lo stesso \textit{Codice\_Terapia} venga referenziato da tuple differenti non è un problema.
@@ -777,9 +780,8 @@ Invece, deve essere introdotto un vincolo d'integrità per assicurare che ogni T
 
 
 
-% ORA LE RELAZIONI
 Ora che tutte le entità sono state tradotte si può procedere alla traduzione delle relazioni.
-Il risultato finale è rappresentato in (TODO figura sotto)
+Il risultato finale è rappresentato in (TODO figura sotto).
 
 VIENE\_RICOVERATO è del tipo Uno-A-Molti con entrambe le partecipazioni totali.
 Come visto in precedenza non c'è modo di assicurare la partecipazione se non con dei vincoli esterni, in questo caso da applicare sia su PAZIENTE che su RICOVERO.
