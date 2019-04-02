@@ -4,59 +4,59 @@ create schema ospedale;
 set search_path to ospedale;
 
 create table paziente (
-    cf 
-    cognome
-    nome
-    data_di_nascita
-    luogo_di_nascita
-    provincia_di_residenza
-    regione_di_appartenenza
-    ulss
-    totale_giorni_ricovero
+    cf varchar(16) primary key,
+    cognome varchar not null,
+    nome varchar not null,
+    data_di_nascita date not null,
+    luogo_di_nascita date not null,
+    provincia_di_residenza varchar(2) not null,
+    regione_di_appartenenza varchar,
+    ulss varchar,
+    totale_giorni_ricovero int, -- dove si aggiunge il conto?
 );
 
 create table ricovero (
-    codice_ricovero
-    data_inizio
-    data_fine
-    motivo
-    divisione_ospedaliera
+    codice_ricovero varchar(20) primary key, --provvisorio 20
+    data_inizio date,
+    data_fine date,
+    motivo varchar,
+    divisione_ospedaliera varchar
 );
 
 create table diagnosi (
-    codice_diagnosi
-    data_diagnosi
-    codice_patologia
-    gravita_patologia
-    medico
+    codice_diagnosi varchar(20) primary key,
+    data_diagnosi timestamp,
+    codice_patologia varchar(20),
+    gravita_patologia boolean,
+    medico varchar(16)
 );
 
 create table terapia (
-    codice_terapia
-    dose_giornaliera
-    modalita_somministrazione
+    codice_terapia varchar(20) primary key,
+    dose_giornaliera int,
+    modalita_somministrazione varchar
 );
 
 create table terapia_prescritta (
-    data_inizio
-    data_fine
-    medico_prescrivente
-    codice_diagnosi
-    codice_terapia
+    data_inizio date,
+    data_fine date,
+    medico_prescrivente varchar(16),
+    codice_diagnosi varchar(20) references diagnosi, 
+    codice_terapia varchar(20) references terapia
 );
 
 create table farmaco (
-    nome_commerciale
-    azienda_produttrice
-    dose_giornaliera_raccomandata
+    nome_commerciale varchar primary key,
+    azienda_produttrice varchar,
+    dose_giornaliera_raccomandata int,
 );
 
-create table principio attivo (
-    nome
+create table principio_attivo (
+    nome varchar primary key,
 );
 
 create table contiene (
-    farmaco
-    principio_attivo
-    quantità
+    farmaco varchar references farmaco,
+    principio_attivo varchar references principio_attivo,
+    quantità int
 );
