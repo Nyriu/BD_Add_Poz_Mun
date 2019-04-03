@@ -948,7 +948,7 @@ La tupla che rappresenta i ricoveri deve essere modificata
   % TODO arco terapia-farmaco
   % TODO arco contiene-principio contiene-farmaco
 
-  \draw[-latex] (ricovero.four south) -- ++(0,-0.3) -| ($(ricovero.four south) + (1.2,0)$) |- ($(paziente.one south) + (-0.2,-0.6)$) -| ($(paziente.one south) + (-0.2,0)$);
+    \draw[-latex] (ricovero.four south) -- ++(0,-0.3) -| ($(ricovero.four south) + (1.2,0)$) |- ($(paziente.one south) + (-0.2,-0.6)$) -| ($(paziente.one south) + (-0.2,0)$);
 
   \draw[-latex] (diagnosi.four south) -- ++(0,-0.4) -| ($(diagnosi.four south) + (3,0)$) |- ($(paziente.one south) + (0,-0.4)$) -| ($(paziente.one south) + (0,0)$);
   \draw[-latex] (diagnosi.five south) -- ++(0,-0.2) -| ($(diagnosi.five south) + (1.1,0)$) |- ($(ricovero.one south) + (0,-0.6)$) -| ($(ricovero.one south) + (0,0)$);
@@ -965,6 +965,7 @@ La tupla che rappresenta i ricoveri deve essere modificata
   \draw[-latex] (contiene.one south) -- ++(0,-0.4) -| ($(contiene.one south) + (6.5,0)$) |- ($(farmaco.one south) + (-0.2,-0.6)$) -| ($(farmaco.one south) + (-0.2,0)$);
   \draw[-latex] (contiene.two south) -- ++(0,-0.2) -| ($(contiene.two south) + (4,0)$) |- ($(principio.one south) + (0,-0.6)$) -| ($(principio.one south) + (0,0)$);
 \end{tikzpicture}
+
 
 %% sotto un copia-incolla da vecchio file %%
 
