@@ -6,3 +6,4 @@
 *.synctex.gz
 *.fdb_latexmk
 *.pdf
+node_modules/

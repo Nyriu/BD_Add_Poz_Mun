@@ -1,0 +1,34 @@
+{
+  "name": "bd_add_poz_mun",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nyriu/BD_Add_Poz_Mun.git"
+  },
+  "author": "add_poz_mun",
+  "license": "UNLICENSED",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/Nyriu/BD_Add_Poz_Mun/issues"
+  },
+  "homepage": "https://github.com/Nyriu/BD_Add_Poz_Mun#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "bootstrap-table": "^1.14.2",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-ipfilter": "^0.3.1",
+    "lodash": "^4.17.11",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
+  }
+}
