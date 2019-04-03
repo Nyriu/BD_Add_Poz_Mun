@@ -15,4 +15,5 @@ const routes = require('./routes');
 
 app.use(routes);
 
-app.listen(7766, '0.0.0.0');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0');
