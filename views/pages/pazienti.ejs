@@ -1,0 +1,46 @@
+<!-- views/pages/pazienti.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="container">
+
+<header>
+  <% include ../partials/header %>
+</header>
+
+<main>
+  <div class="jumbotron">
+    <h1>Pazienti</h1>
+    <table
+      data-toggle="table"
+      data-pagination="true"
+      data-search="true">
+      <thead>
+        <tr>
+          <th data-sortable="true" data-field="id">ID</th>
+          <th data-sortable="true" data-field="first-name">Nome</th>
+          <th data-sortable="true" data-field="last-name">Cognome</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (var i = 0; i < data.length; i++) { %>
+          <tr>
+            <td><%= data[i].id %></td>
+            <td><%= data[i].firstName %></td>
+            <td><%= data[i].lastName %></td>
+          </tr>    
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>
