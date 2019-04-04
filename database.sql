@@ -193,3 +193,43 @@ $$ language plpgsql;
 
 create trigger dvd_esclusivo before insert or update
   on DVD for each row execute procedure valida_dvd();
+
+
+-----------------------------------------------------------------------
+-- TODO TRIGGERS --
+-----------------------------------------------------------------------
+
+-- PAZIENTE almeno un RICOVERO
+    -- quando aggiungi PAZIENTE
+    -- quando rimuovi RICOVERO
+    -- quando modifichi campo Paziente in RICOVERO
+
+-- Totale_Giorni_Ricoveri
+    -- quando aggiungi PAZIENTE (inizializzazione?)
+    -- quando aggiungi RICOVERO
+    -- quando rimuovi RICOVERO
+    -- quando modifichi campo Data Inizio in RICOVERO
+    -- quando modifichi campo Data Fine in RICOVERO
+    -- quando modifichi campo Paziente in RICOVERO
+
+-- TERAPIA_PRESCRITTA DIAGNOSI->DIAGNOSI no uguale o precedente
+    -- modifica campo Effetto_Collaterale
+    -- problema modifica Diagnsi in T_P non si pone perchè in quel caso disfi e rifai tupla
+    -- TODO
+
+-- TERAPIA almeno una TERAPIA_PRESCRITTA
+    -- quando aggiungi TERAPIA
+    -- quando rimuovi TERAPIA_PRESCRITTA
+    -- problema modifica Terapia in T_P non si pone perchè in quel caso disfi e rifai tupla
+
+-- FARMACO almeno un PRINCIPIO_ATTIVO
+  -- il check da fare su CONTIENE
+    -- quando aggiungi FARMACO
+    -- quando rimuovi PRINCIPIO_ATTIVO
+    -- quando rimuovi tupla da CONTIENE
+
+-- PRINCIPIO_ATTIVO almeno un FARMACO
+  -- il check da fare su CONTIENE
+    -- quando aggiungi PRINCIPIO_ATTIVO
+    -- quando rimuovi FARMACO
+    -- quando rimuovi tupla da CONTIENE
