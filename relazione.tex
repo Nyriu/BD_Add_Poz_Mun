@@ -784,17 +784,22 @@ Ora che tutte le entità sono state tradotte si può procedere alla traduzione d
 Il risultato finale è rappresentato in (TODO figura sotto).
 
 VIENE\_RICOVERATO è del tipo Uno-A-Molti con entrambe le partecipazioni totali.
-Come visto in precedenza non c'è modo di assicurare la partecipazione se non con dei vincoli esterni, in questo caso da applicare sia su PAZIENTE che su RICOVERO.
-La tupla che rappresenta i ricoveri deve essere modificata 
+Come visto in precedenza non c'è modo di assicurare la partecipazione se non con dei vincoli esterni, in questo caso da applicare su RICOVERO.
+La tupla che rappresenta i ricoveri deve essere modificata aggiungendo un campo per una chiave esterna chiamata \textit{Paziente}.
 
+Anche le relazioni EFFETTUATA\_DURANTE, EFFETTUATA\_A e SOMMINISTRATA devono essere affrontate allo stesso modo, tutte del tipo Uno-A-Molti.
+DIAGNOSI partecipa alle prime due con cardinalità pari a uno bisognerà quindi aggiungere due nuovi campi: il primo punterà alla chiave primaria di RICOVERO, mentre il secondo a quella di PAZIENTE.
+Poiché una diagnosi deve essere necessariamente collegata ad un ricovero, dunque anche ad un paziente, i campi appena introdotti non possono essere lasciati vuoti.
+A TERAPIA verrà aggiunta una chiave esterna contenente l'identificatore di FARMACO, anch'essa deve obbligatoriamente contenere un valore.
 
+È\_EFFETTO\_COLLATERALE si differenzia dai casi precedenti non solo perché è del tipo Uno-A-Uno ma soprattutto perché non necessita di vincoli esterni, in quanto le due entità partecipano in modo parziale.
+Data la simmetria della relazione, si può scegliere se modificare la tupla relativa a DIAGNOSI o quella di TERAPIA\_PRESCRITTA.
+In questo caso si è preferito usare quest'ultima perché diagnosi ha già dei campi che potrebbero rimanere vuoti e anche perché le terapie prescritte sono in numero minore, significa meno spazi vuoti.%TODO motivare meglio oppure non motivare affatto
 
-
-
-
-
-
-
+L'ultima relazione da analizzare è CONTIENE, del tipo Molti-A-Molti.
+L'unico modo per trasformare queste relazioni è creare una nuova tupla, nello specifico è stata chiamata CONTIENE ed è composta da tre valori: la chiavi esterne \textit{Farmaco} e \textit{Principio\_Attivo} seguite da \textit{Quantità}.
+La chiave primaria della tupla è formata dai primi due valori in modo che un qualsiasi FARMACO possa essere messo in relazione con tutti i principi attivi necessari e, viceversa, che un PRINCIPIO\_ATTIVO possa essere contenuto in più farmaci.
+Notare che è obbligatoria l'introduzione di due vincoli d'integrità, uno deve assicurare che un PRINCIPIO\_ATTIVO compaia in almeno un farmaco, l'altro che un farmaco contenga almeno un PRINCIPIO\_ATTIVO\footnote{f*****o omeopatia}. %TODO REMOVE
 
 \begin{tikzpicture} % TODO abbellire
   [relation/.style={
@@ -965,39 +970,6 @@ La tupla che rappresenta i ricoveri deve essere modificata
   \draw[-latex] (contiene.one south) -- ++(0,-0.4) -| ($(contiene.one south) + (6.5,0)$) |- ($(farmaco.one south) + (-0.2,-0.6)$) -| ($(farmaco.one south) + (-0.2,0)$);
   \draw[-latex] (contiene.two south) -- ++(0,-0.2) -| ($(contiene.two south) + (4,0)$) |- ($(principio.one south) + (0,-0.6)$) -| ($(principio.one south) + (0,0)$);
 \end{tikzpicture}
-
-
-%% sotto un copia-incolla da vecchio file %%
-
-% SCRIVIAMO LA LISTA DELLE TABELLE CON TUTTE LE CHIAVI BELLE DENTRO 
-% SOTTO SCRIVIAMO LA LISTA: "LA RELAZIONE X è GARANTITA DA QUESTA COMBO 
-%                            DI CHIAVI (Y,Z)..."
-% 
-% - Traduzione di VIENE-RICOVERATO (da scrivere bene perchè è la prima)
-%
-% . Specificare che la traduzione cattura la partecipazione (0,N)(1,1)
-%   e non (1,N)(1,1), bisogna introdurre un vincolo esterno per garantire
-%   (1,N)
-% 
-% - Traduzione di EFFETTUATA-DURANTE 
-%   . lo creiamo aggiungendo una chiave esterna su DIAGNOSI con not null
-% 
-% - Traduzione di CARTELLA-CLINICA
-%   . lo creiamo aggiungendo una chiave esterna su DIAGNOSI con not null
-% 
-% - Traduzione di SOMMINISTRATO-DURANTE
-%   . lo creiamo aggiungendo una chiave esterna su TERAPIA con not null
-% 
-% - Traduzione di CURATA-DA e di ISTANZA-DI e EFFETTO-COLLATERALE
-%   . ISTANZA-DI-TERAPIA (__DIAGNOSI_,_TERAPIA__,...,DIAGNOSI-EC) 
-%   DIAGNOSI e TERAPIA e DIAGNOSI-EC sono chiavi esterne.
-%   La coppia DIAGNOSI e TERAPIA è chiave. 
-%   Si deve inserire UNIQUE per DIAGNOSI e non per la coppia per 
-%   garantire (1,1).      
-%   Si deve inserire un vincolo esterno per garantire (1,N) su terapia
-%   Si deve inserire UNIQUE su DIAGNOSI-EC per garantire 1 tra DIAG e EC
-
-
 
 
 \clearpage
