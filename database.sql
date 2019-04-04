@@ -6,54 +6,78 @@ drop schema ospedale cascade;
 create schema ospedale;
 set search_path to ospedale;
 
+-- domini:
+
+-- cf
+create domain dom_cf as varchar
+    check ( value ~ '[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]' ) -- es MRARSS80A01F205W
+    
+-- cod ric
+create domain dom_ric as varchar
+    check ( value ~ ('RIC' || '[0-9]+')) 
+
+-- cod dia
+create domain dom_dia as varchar
+    check ( value ~ ('DIA' || '[0-9]+')) 
+
+-- cod ter
+create domain dom_ter as varchar
+    check ( value ~ ('TER' || '[0-9]+')) 
+
+-- cod pat
+create domain ICD10 as varchar
+    check ( value ~ ('[A-Z](\w){2}' || '(\.[0-9]*)?')) -- NON FUNZIONA ANCORA
+    -- Il formato è :
+    -- Lettera + 2 alfanum (eventualmente + . + cifre variabili)
+
 create table paziente (
-    cf varchar(16) primary key,
+    cf dom_cf primary key,
     cognome varchar not null,
     nome varchar not null,
-    data_di_nascita date not null,
-    luogo_di_nascita varchar not null,
-    provincia_di_residenza varchar(2) not null,
-    regione_di_appartenenza varchar,
+    data_nasc date not null,
+    luogo_nasc varchar not null,
+    prov_res varchar(2) not null,
+    reg_app varchar,
     ulss varchar,
-    totale_giorni_ricovero int -- valore da aggiornare tramite trigger quando
+    tot_gg_ric int -- valore da aggiornare tramite trigger quando
                                -- viene inserita data_fine in un nuovo ricovero
 );
 
 create table ricovero (
-    codice_ricovero varchar(20) primary key, --provvisorio 20
-    data_inizio date,
-    data_fine date,
+    cod_ric dom_ric primary key, --provvisorio 20
+    data_i date,
+    data_f date,
     motivo varchar,
-    divisione_ospedaliera varchar
+    div_osp varchar
 );
 
 create table diagnosi (
-    codice_diagnosi varchar(20) primary key,
-    data_diagnosi timestamp,
-    codice_patologia varchar(20),
-    gravita_patologia boolean,
+    cod_dia dom_dia primary key,
+    data_dia timestamp,
+    cod_pat ICD10,
+    grav_pat boolean,
     medico varchar(16)
 );
 
 create table terapia (
-    codice_terapia varchar(20) primary key,
-    dose_giornaliera int,
-    modalita_somministrazione varchar
+    cod_ter varchar(20) primary key,
+    dose_gio int,
+    mod_somm varchar
 );
 
 create table terapia_prescritta (
-    data_inizio date,
-    data_fine date,
-    medico_prescrivente varchar(16),
-    codice_diagnosi varchar(20) references diagnosi, 
-    codice_terapia varchar(20) references terapia,
-    primary key (codice_diagnosi, codice_terapia)
+    data_i date,
+    data_f date,
+    med_presc varchar(16),
+    cod_dia dom_dia references diagnosi, 
+    cod_ter dom_ter references terapia,
+    primary key (cod_dia, cod_ter)
 );
 
 create table farmaco (
-    nome_commerciale varchar primary key,
-    azienda_produttrice varchar,
-    dose_giornaliera_raccomandata int
+    nome_comm varchar primary key,
+    azienda_prod varchar,
+    dose_gg_racc int
 );
 
 create table principio_attivo (
@@ -62,7 +86,7 @@ create table principio_attivo (
 
 create table contiene (
     farmaco varchar references farmaco,
-    principio_attivo varchar references principio_attivo,
+    pr_attivo varchar references principio_attivo,
     quantità int
 );
 
@@ -88,11 +112,9 @@ create domain dom_cod_prodotto as integer
 -----------------------------------------------------------------------
 -- ESEMPIO INSERT --
 -----------------------------------------------------------------------
-insert into paziente(cf, nome, cognome, data_di_nascita, luogo_di_nascita, provincia_di_residenza, regione_di_appartenenza)
-  values
-    ('CF13123', 'Rossi', 'Luigino' , '2000-02-2', 'EH', 'EH', 'Feudo di Falkreath'), 
-    ('CF86923', 'Rossi', 'Marietto', '2000-02-2', 'EH', 'EH', 'Feudo di Falkreath')
-;
+insert into paziente(cf, cognome, nome, data_nasc, luogo_nasc, prov_res, reg_app)
+	values 
+	('RSSMRA80A01F205X', 'Rossi', 'Mario', '1980-01-01', 'Milano', 'MI', 'Lombardia');
 
 
 -----------------------------------------------------------------------
