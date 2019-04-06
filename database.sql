@@ -96,7 +96,7 @@ create table contiene (
     pr_attivo varchar references principio_attivo(nome) 
                       on update cascade 
                       on delete cascade,
-    quantità int not null,
+    quantita int not null,
     primary key (farmaco, pr_attivo)
 );
 
@@ -114,13 +114,16 @@ create table terapia_prescritta (
     data_i date not null,
     data_f date not null,
     med_presc varchar(16) not null,
-    cod_dia dom_dia references diagnosi(cod_dia) 
+    diagnosi dom_dia unique references diagnosi(cod_dia)
                     on update cascade 
                     on delete no action, 
-    cod_ter dom_ter references terapia(cod_ter) 
+    terapia dom_ter references terapia(cod_ter) 
                     on update cascade 
                     on delete no action,
-    primary key (cod_dia, cod_ter)
+    coll_dia dom_dia unique references diagnosi(cod_dia)
+                    on update cascade 
+                    on delete no action, 
+    primary key (diagnosi, terapia)
 );
 
 
@@ -160,10 +163,15 @@ $$
     -- quando modifichi campo Data Fine in RICOVERO
     -- quando modifichi campo Paziente in RICOVERO
 
+-- DIAGNOSI una sola TERAPIA_PRESCRITTA TODO BASTA UNIQUE!!
+    -- Diagnosi in T_P deve essere chiave, deve essere introdotto un vincolo che asscuri che una Diagnosi compaia una sola volta dentro tutta la tabella delel T_P
+
+-- DIAGNOSI è effetto collaterale di una sola TERAPIA_PRESCRITTA TODO BASTA UNIQUE!!
+    -- coll_dia in T_P deve essere chiave, deve essere introdotto un vincolo che asscuri che una coll_dia compaia una sola volta dentro tutta la tabella delel T_P
+
 -- TERAPIA_PRESCRITTA DIAGNOSI->DIAGNOSI no uguale o precedente
     -- modifica campo Effetto_Collaterale
     -- problema modifica Diagnsi in T_P non si pone perchè in quel caso disfi e rifai tupla
-    -- TODO
 
 -- TERAPIA almeno una TERAPIA_PRESCRITTA
     -- quando aggiungi TERAPIA
