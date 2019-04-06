@@ -65,10 +65,10 @@ create table ricovero (
 
 create table diagnosi (
     cod_dia dom_dia primary key,
-    data_dia date,
-    cod_pat ICD10,
-    grav_pat boolean,
-    medico varchar(16),
+    data_dia date not null,
+    cod_pat ICD10 not null,
+    grav_pat boolean not null,
+    medico varchar(16) not null,
     paziente dom_cf not null 
                     references paziente(cf) 
                     on update cascade 
