@@ -124,6 +124,21 @@ create table terapia_prescritta (
 );
 
 
+create or replace function ricalcolo_gg(cf_paz)
+returns int
+language plpgsql as $$
+    declare
+        gg int;
+    begin
+
+        select sum(ricovero.data_f - ricovero.data_i) into gg
+        from paziente join ricovero on paziente.cf = ricovero.paziente
+        where paziente.cf = cf_paz ;
+
+        return gg;
+    end
+$$
+
 
 
 
