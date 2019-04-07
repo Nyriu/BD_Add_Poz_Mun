@@ -1,0 +1,44 @@
+<!-- views/pages/pazienti.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="container">
+
+<header>
+  <% include ../partials/header %>
+</header>
+
+<main>
+  <div class="jumbotron">
+    <h1>Crea Paziente</h1>
+    <form method="post" action="/pazienti/create">
+      <div class="form-group">
+          <label for="first-name">Nome:</label>
+          <input type="text" class="form-control" name="firstName" id="first-name">
+      </div>
+      <div class="form-group">
+          <label for="last-name">Cognome:</label>
+          <input type="text" class="form-control" name="lastName" id="last-name">
+      </div>
+      <div class="form-group">
+          <label for="fiscal-code">Codice Fiscale:</label>
+          <input type="text" class="form-control" name="fiscalCode" id="fiscal-code">
+      </div>
+      <div class="form-group">
+          <label for="date">Data di nascita:</label>
+          <input type="text" class="form-control" name="date" id="date">
+      </div>
+      <button type="submit" class="btn btn-default">Crea</button>
+    </form>
+  </div>
+</main>
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>

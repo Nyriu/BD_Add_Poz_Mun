@@ -13,7 +13,7 @@ const logger = winston.createLogger({
      */
   transports: [
     // Write logs to 'error.log'
-    new winston.transports.File({
+    /* new winston.transports.File({
       filename: './logs/error.log',
       level: 'error',
       format: winston.format.combine(
@@ -25,7 +25,7 @@ const logger = winston.createLogger({
       handleExceptions: true,
       maxsize: 5242880, // 5MB
       maxFiles: 3,
-    }),
+    }), */
     // Write logs to console
     new winston.transports.Console({
       level: 'silly',
