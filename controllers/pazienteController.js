@@ -1,3 +1,5 @@
+const logger = require('../lib/logger');
+
 const pazienteController = {
 
   getPazienti(req, res) {
@@ -8,8 +10,13 @@ const pazienteController = {
     });
   },
 
+  getCreatePaziente(req, res) {
+    res.render('pages/paziente.ejs');
+  },
+
   postCreatePaziente(req, res) {
-    res.send('NOT IMPLEMENTED: postCreatePaziente');
+    logger.log('info', JSON.stringify(req.body));
+    res.send('NOT IMPLEMENTED: postCreatePaziente, check terminal');
   },
 
   deletePaziente(req, res) {
