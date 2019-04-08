@@ -1,0 +1,21 @@
+Abruzzo                 ASL
+Basilicata              ASP
+Calabria                ASP
+Campania                ASL
+Emilia-Romagna          AUSL
+Friuli-Venezia-Giulia   AAS
+Lazio                   ASL
+Liguria                 ASL
+Lombardia               ATS
+Marche                  ASUR
+Molise                  ASREM
+Piemonte                ASL
+Puglia                  ASL
+Sardegna                ATS
+Sicilia                 ASP
+Toscana                 ASL
+Trentino-Alto-Adige     APSS
+Umbria                  AUSL
+Valle-d'Aosta           AUSL
+Veneto                  ULSS
+
