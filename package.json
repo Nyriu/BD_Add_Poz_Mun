@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "start": "node server.js"
+    "start": "node server.js",
+    "local": "forever --watch --watchDirectory ../example-app ./server.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "express": "^4.16.4",
     "express-ipfilter": "^0.3.1",
     "lodash": "^4.17.11",
+    "pg": "^7.9.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {
