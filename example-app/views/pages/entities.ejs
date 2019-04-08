@@ -1,0 +1,54 @@
+<!-- views/pages/pazienti.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="container">
+
+<header>
+  <% include ../partials/header %>
+</header>
+
+<main>
+  <div class="jumbotron">
+    <div class="row">
+      <div class="col-sm-8">
+        <h1 class="text-capitalize"><%= entities %></h1>
+      </div>
+      <div class="col-sm-4">
+        <a href="<%= entities %>/create" class="btn btn-primary text-capitalize" role="button">Crea <%= entity %></a>
+      </div>
+    </div>
+    <table
+      data-toggle="table"
+      data-pagination="true"
+      data-search="true">
+      <thead>
+        <tr>
+          <% for (var i = 0; i < keys.length; i++) { %>
+            <th data-sortable="true" data-field="<%= keys[i] %>"><%= translations[keys[i]] %></th>
+          <% } %>  
+        </tr>
+      </thead>
+      <tbody>
+        <% for (var i = 0; i < data.length; i++) { %>
+          <tr>
+            <td><a href="/<%= entities %>/<%= data[i][keys[0]] %>"><%= data[i][keys[0]] %></a></td>
+            <% for (var j = 1; j < keys.length; j++) { %>
+              <td><%= data[i][keys[j]] %></td>
+            <% } %>
+          </tr>    
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>
