@@ -37,10 +37,18 @@ v_nomi <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mu
 # Lettura dei cognomi da file
 v_cognomi <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\cognomi.txt")
 
+# Generazione delle date di nascita
+# Formato YYYY-MM-DD
+data_nasc <- sample(seq(as.Date('1910/01/01'), as.Date('2019/04/01'), by="day"), 10000, replace = T)
+
+
+
 # Creazione del dataframe
 pazienti_df <- data.frame(
     nome=sample(v_nomi, 10000, replace = T),
     cognome=sample(v_cognomi, 10000, replace = T)
+    data_nasc,
+    
 )
 
 # Inserimento del dataframe nella tabella paziente del db
