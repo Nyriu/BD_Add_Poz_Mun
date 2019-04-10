@@ -7,6 +7,11 @@ const app = express();
 // const ips = ['', '127.0.0.1'];
 // app.use(ipfilter(ips, { mode: 'allow' }));
 
+// Parse URL-encoded bodies (as sent by HTML forms)
+app.use(express.urlencoded({ extended: true }));
+// Parse JSON bodies (as sent by API clients)
+app.use(express.json());
+
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
 

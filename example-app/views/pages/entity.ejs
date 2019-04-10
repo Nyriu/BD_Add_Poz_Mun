@@ -1,0 +1,38 @@
+<!-- views/pages/pazienti.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="container">
+
+<header>
+  <% include ../partials/header %>
+</header>
+
+<main>
+  <div class="jumbotron">
+    <h1 class="text-capitalize"><%= entity %></h1>
+    <div class="panel panel-default">
+      <div class="panel-heading text-capitalize">Dati <%= entity %></div>
+      <div class="panel-body">
+        <% for (var i = 0; i < keys.length; i++) { %>
+          <div class="row">
+            <div class="cell col-sm-6 form-group">
+              <span class="label-default"><%= translations[keys[i]] %></span>
+              <div class="field" name="<%= keys[i] %>"><%= data[0][keys[i]] %></div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>
