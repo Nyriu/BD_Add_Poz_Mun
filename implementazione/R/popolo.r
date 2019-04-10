@@ -63,12 +63,5 @@ dbWriteTable(con,
 
 ######################################################################################
 
-# Bisogna generare gli attibuti per le varie tabelle.
-# In particolare bisogna fare attenzione al formato di:
-# codici (per quello fiscale bisogna scelgiere quanto realistico)
-# date
-#
-
-
 #  Disconnessione dal db 
 dbDisconnect(con)
