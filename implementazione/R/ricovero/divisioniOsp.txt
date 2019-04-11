@@ -1,0 +1,38 @@
+Allergologia
+Angiologia
+Cardiochirurgia pediatrica
+Cardiochirurgia
+Cardiologia
+Chirurgia generale
+Chirurgia maxillo facciale
+Chirurgia plastica
+Chirurgia toracica
+Chirurgia vascolare
+Ematologia
+Malattie endocrine
+Immunologia
+Geriatria
+Malattie infettive e tropicali
+Nefrologia
+Neurochirurgia
+Neurologia
+Oculistica
+Odontoiatria e stomatologia
+Ortopedia e traumatologia
+Otorinolaringoiatria
+Psichiatria
+Tossicologia
+Urologia
+Terapia intensiva
+Unita' coronarica
+Astanteria
+Dermatologia
+Emodialisi
+Gastroenterologia
+Lungodegenti
+Oncologia
+Pneumologia
+Radiologia
+Neuro-riabilitazione
+Detenuti
+Cure palliative

@@ -1,0 +1,31 @@
+appendicite
+arteriopatia
+asma
+broncopneumopatia
+colecistectomia
+complicanze diabete
+frattura del collo del femore
+gastroenterite
+infezione del tratto urinario
+influenza
+tonsillite
+calcoli renali
+ipertensione arteriosa
+scompenso cardiaco 
+infiammazione intestinale
+infiammazione acuta del timpano sx
+cefalea acuta
+basso livello di pressione oculare
+episodi frequenti di collasso 
+convulsioni 
+shock emorragico 
+ustione terzo grado 
+bronchite acuta
+bronchite cronica
+broncotracheite
+laringite acuta
+tracheite acuta
+broncotroncoassassinosi
+ictus
+infarto
+imprecisato
