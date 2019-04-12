@@ -67,7 +67,7 @@ create table diagnosi (
     cod_dia dom_dia primary key,
     data_dia date not null,
     cod_pat ICD10 not null,
-    grav_pat boolean not null,
+    grav_pat varchar not null,
     medico varchar(16) not null,
     paziente dom_cf not null 
                     references paziente(cf) 
@@ -190,7 +190,7 @@ alter table diagnosi add
     check(check_data_valida(data_dia, ricovero));
 
 
--- data_i terapia_prescritta uguale o successiva data_i ricovero
+-- data_i terapia_prescritta uguale o successiva data diagnosi
 create or replace function check_data_valida_ter_pre(data date, dia dom_dia)
 returns bool as
 $$
@@ -228,7 +228,7 @@ $$ language plpgsql;
 alter table terapia_prescritta add
   constraint check_dia_valide
     check(check_dia_valide(diagnosi, coll_dia));
-
+--TODO la data della terapia prescritta deve essere compresa tra le due date di diagnosi \
 
 -----------------------------------------------------------------------
 -- TODO TRIGGERS --

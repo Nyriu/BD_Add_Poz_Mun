@@ -210,14 +210,6 @@ crognale
 curcio
 cusin
 cutillo
-d'achille
-d'agapito
-d'alessandro
-dallago
-d'ambrosio
-d'amico
-d'amora
-d'amore
 De Angelis
 de bacco
 de cataldo
@@ -240,7 +232,6 @@ deiana
 del aguila rosario
 delgadillo vargas
 delgado
-d'emilia
 di benimeo
 di carlo
 di lena
@@ -267,7 +258,6 @@ Donati
 donatini
 donnhauser
 dorascenzi
-d'ottavio 
 dotti
 ducci
 eichenberger
@@ -448,7 +438,6 @@ mamone
 manchia
 Mancini
 mane
-mane'
 mangano
 manzi
 marano
@@ -568,7 +557,6 @@ paul
 Pellegrini
 Pellegrino
 pelliccia
-pello'
 pelo
 Pepe
 pereira de castro

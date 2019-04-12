@@ -438,19 +438,21 @@ I volumi stimati sono riportati in \autoref{tab:volumi-ciclo} e la frequenza del
 		Ricovero              & E             & 300000          \\ \hline
 		Diagnosi              & E             & 1200000         \\ \hline
 		Terapia               & E             & 30000           \\ \hline
-		Istanza di Terapia    & E             & 1200000         \\ \hline
+		Istanza di Terapia    & E             & 1200000         \\ \hline %% TODO ridurre a 1100000
 		Farmaco               & E             & 10000           \\ \hline
 		Viene Ricoverato      & R             & 300000          \\ \hline
 		Effettuata Durante    & R             & 1200000         \\ \hline
 		Effettuta A           & R             & 1200000         \\ \hline
-		Curata Da             & R             & 1200000         \\ \hline
-		Istanza Di            & R             & 1200000         \\ \hline
+		Curata Da             & R             & 1200000         \\ \hline %% TODO ridurre a 1100000 
+		Istanza Di            & R             & 1200000         \\ \hline %% TODO ridurre a 1100000
 		Effetto Collaterale   & R             & 50000           \\ \hline
 		Somministrato Durante & R             & 10000           \\ \hline
 	\end{tabular}
 	\caption{Tabella dei volumi}
 	\label{tab:volumi}
 \end{table}
+
+%% TODO Istanza di terapia a 1100000 per contare il ~10% di diagnosi senza cura
 
 \begin{table}[H]
 	\centering
