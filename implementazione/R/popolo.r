@@ -519,6 +519,7 @@ conta_quant <- function(n){
 
 lista_df_contiene <- list()
 
+# I principi attivi sono meno dei farmaci 
 for(i in 1:length(pr_att)){
 
     contenuto <- data.frame(
@@ -531,7 +532,7 @@ for(i in 1:length(pr_att)){
 
 }
 
-
+# Aggiungo i farmaci mancanti 
 for(i in (length(pr_att)+1):length(nome_farmaci)){
 
     contenuto <- data.frame(
@@ -544,6 +545,7 @@ for(i in (length(pr_att)+1):length(nome_farmaci)){
 
 }
 
+# Aggiungo un decimo dei farmaci in modo da averne alcuni con doppio principio attivo 
 for(i in (length(nome_farmaci)+1):(floor( length(nome_farmaci) + (length(nome_farmaci)/10) ) ) ){
 
     contenuto <- data.frame(
@@ -559,6 +561,9 @@ for(i in (length(nome_farmaci)+1):(floor( length(nome_farmaci) + (length(nome_fa
 contiene_df <- megabind(lista_df_contiene)
 
 write.csv(contiene_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\contiene.csv"))
+
+
+
 
 
 
