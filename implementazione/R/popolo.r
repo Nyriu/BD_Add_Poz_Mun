@@ -26,14 +26,18 @@
 
 # Procedura per l'ottimizzazione del binding di liste di dataframes
 megabind <- function(lista_df){
+
     # Un indice parte dall'inzio
     i = 1
+
     # Un indice parte dal fondo
     for(f in length(lista_df): 1){
+
         # Se si incontrano il primo riparte dall'inizio
         if(i >= f){
             i = 1
         } 
+
         # Se sono uguali ho finito
         if(i != f){
             lista_df[[i]] = rbind(lista_df[[i]],lista_df[[f]])
@@ -42,6 +46,7 @@ megabind <- function(lista_df){
         i = i + 1
 
     }
+
     # Restituisco il dataframe completo
     lista_df[[1]]
 }
@@ -406,6 +411,154 @@ write.csv(diagnosi_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Ad
 
 
 
+
+
+
+
+
+
+
+#######                                       #######
+####### POPOLO PER LA TABELLA PRINCIPI ATTIVI #######
+#######                                       #######
+
+
+# Creo il dataframe dei principi attivi
+pr_att <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\pr_attivo.txt")
+
+lista_df_principi <- list()
+
+# Inserisco tutti i principi in un dataframe
+for(i in 1:length(pr_att)){
+
+    principio <- data.frame(nome=pr_att[i])
+    lista_df_principi[[i]] <- principio
+
+}
+
+pr_attivi_df <- megabind(lista_df_principi) 
+names(pr_attivi_df)[names(pr_attivi_df) == 'x'] <- "nome" # sto casino perchè il df ha solo una colonna
+
+write.csv(pr_attivi_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pr_attivi.csv"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#######                               #######
+####### POPOLO PER LA TABELLA FARMACO #######
+#######                               #######
+
+# Creo i df per aziende, farmaci
+aziende <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\azienda.txt",stringsAsFactors = FALSE)
+
+nome_farmaci <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\farmaco.txt", stringsAsFactors = FALSE)
+
+
+lista_df_farmaci <- list()
+
+for(i in 1:length(nome_farmaci)){
+
+    farmaco <- data.frame(
+                    nome_comm=nome_farmaci[i],
+                    azienda_prod=sample(aziende,1,replace=T),
+                    dose_gg_racc=sample(1:3,1,replace=T)
+                    )
+
+    lista_df_farmaci[[i]] <- farmaco
+
+}
+
+farmaci_df <- megabind(lista_df_farmaci)
+
+write.csv(farmaci_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\farmaci.csv"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#######                                #######
+####### POPOLO PER LA TABELLA CONTIENE #######
+#######                                #######
+
+nome_farmaci <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\farmaco.txt")
+
+pr_att <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\pr_attivo.txt")
+
+conta_quant <- function(n){
+    paste(n,"mg",collapse="")
+}
+
+lista_df_contiene <- list()
+
+for(i in 1:length(pr_att)){
+
+    contenuto <- data.frame(
+                        farmaco=nome_farmaci[i],
+                        pr_attivo=pr_att[i],
+                        quantita=conta_quant(sample(seq(5,40,by=5),1,replace=T))
+                        )
+    
+    lista_df_contiene[[i]] <- contenuto
+
+}
+
+
+for(i in (length(pr_att)+1):length(nome_farmaci)){
+
+    contenuto <- data.frame(
+                        farmaco=nome_farmaci[i],
+                        pr_attivo=sample(pr_att, 1, replace=T),
+                        quantita=conta_quant(sample(seq(5,40,by=5),1,replace=T))
+                        )
+
+    lista_df_contiene[[i]] <- contenuto
+
+}
+
+for(i in (length(nome_farmaci)+1):(floor( length(nome_farmaci) + (length(nome_farmaci)/10) ) ) ){
+
+    contenuto <- data.frame(
+                        farmaco=sample(nome_farmaci,1, replace=T),
+                        pr_attivo=sample(pr_att, 1, replace=T),
+                        quantita=conta_quant(sample(seq(5,40,by=5),1,replace=T))
+                        )
+
+    lista_df_contiene[[i]] <- contenuto
+
+}
+
+contiene_df <- megabind(lista_df_contiene)
+
+write.csv(contiene_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\contiene.csv"))
 
 
 

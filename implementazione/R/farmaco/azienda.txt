@@ -1,0 +1,50 @@
+Pfizer
+Bristol-Myers Squibb
+GlaxoSmithKline
+Sanofi-Aventis
+Novartis
+Hoffmann-La Roche
+Merck & Co.
+AstraZeneca
+Abbott Laboratories
+Johnson & Johnson
+Wyeth
+Eli Lilly and Company
+Bayer
+Amgen
+Boehringer Ingelheim
+Baxter International
+Takeda Pharmaceutical Co.
+Schering-Plough
+Astellas Pharma Inc.
+Procter & Gamble
+Schering
+Merck KGaA
+Eisai Co.
+Novo Nordisk
+Teva Pharmaceutical Industries
+Genentech
+Sankyo Co.
+Akzo Nobel
+Alcon
+Menarini
+Forest Laboratories
+Daiichi Pharmaceutical Co.
+Chugai Pharmaceutical Co.
+Taisho Pharmaceutical
+Altana
+Barr
+Bausch & Lomb
+Mitsubishi Pharma
+Biogen Idec
+Genzyme
+Solvay
+UCB
+Allergan
+Kyowa Hakko Kogyo Co.
+Shionogi & Co.
+Chiron Corporation
+Watson Pharmaceuticals
+H. Lundbeck
+Sumitomo Chemical Co.
+Tanabe Seiyaku Co.

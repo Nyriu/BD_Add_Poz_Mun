@@ -1,0 +1,9 @@
+orale
+sublinguale
+rettale
+intravascolare
+intramuscolare
+sottocutanea
+intradermica
+inalatoria
+transcutanea
