@@ -14,6 +14,56 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+# Procedura per l'ottimizzazione del binding di liste di dataframes
+megabind <- function(lista_df){
+    # Un indice parte dall'inzio
+    i = 1
+    # Un indice parte dal fondo
+    for(f in length(lista_df): 1){
+        # Se si incontrano il primo riparte dall'inizio
+        if(i >= f){
+            i = 1
+        } 
+        # Se sono uguali ho finito
+        if(i != f){
+            lista_df[[i]] = rbind(lista_df[[i]],lista_df[[f]])
+        }
+        
+        i = i + 1
+
+    }
+    # Restituisco il dataframe completo
+    lista_df[[1]]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #######                                #######
 ####### POPOLO PER LA TABELLA PAZIENTE #######
 #######                                #######
@@ -53,45 +103,36 @@ cf_gen <- function(nome, cognome, data) {
     cf = paste0(NOM,COG,DA,FINE, collapse="")
 }
 
-# GENERAZIONE DEL PAZIENTE 0 !!!!!
 
-# Scelto nome a caso
-nom = sample(v_nomi,1,replace=T) 
+lista_df_pazienti <- list()
 
-# Scelto cognome a caso
-cog = sample(v_cognomi,1,replace=T)
+for(i in 1:10000){
+    # Scelto nome a caso
+    nom = sample(v_nomi,1,replace=T) 
+    # Scelto cognome a caso
+    cog = sample(v_cognomi,1,replace=T)
+    # Data di nascita in range
+    dnasc = sample(seq(as.Date('1910/01/01'), as.Date('2019/04/01'), by="day"), 1, replace = T)
+    # CF basato su nome, cognome, data di nascita e altri caratteri random
+    cfi = cf_gen(nom, cog, dnasc)
+    # Scelto luogo di nascita
+    lnasc = sample(v_luoghi,1,replace=T)
+    # Estrae una riga dal dataframe pru
+    df_line <- pru[sample(1:nrow(pru),1),]
+    # Crea un vettore di stringhe di elementi del df
+    prreul <- strsplit(paste(df_line,collapse=" "), " ")
+    # Inizializza tutti i parametri restanti
+    pres = prreul[[1]][1]
+    rapp = prreul[[1]][2]
+    ul = prreul[[1]][3]
 
-# Data di nascita in range
-dnasc = sample(seq(as.Date('1910/01/01'), as.Date('2019/04/01'), by="day"), 1, replace = T)
+    # Nel caso in cui sia residente in regione Friuli annulla i parametri successivi
+    if(prreul[[1]][2] == "Friuli-Venezia-Giulia"){
+        rapp = NA
+        ul = NA
+    }
 
-# CF basato su nome, cognome, data di nascita e altri caratteri random
-cfi = cf_gen(nom, cog, dnasc)
-
-# Scelto luogo di nascita
-lnasc = sample(v_luoghi,1,replace=T)
-
-# Estrae una riga dal dataframe pru
-df_line <- pru[sample(1:nrow(pru),1),]
-
-# Crea un vettore di stringhe di elementi del df
-prreul <- strsplit(paste(df_line,collapse=" "), " ")
-
-# Inizializza tutti i parametri restanti
-pres = prreul[[1]][1]
-rapp = prreul[[1]][2]
-ul = prreul[[1]][3]
-# Nel caso in cui sia residente in regione Friuli annulla i parametri successivi
-if(prreul[[1]][2] == "Friuli-Venezia-Giulia"){
-    rapp = NA
-    ul = NA
-}
-
-# Inizialmente questo valore è settato a 0????
-tot_gg_ric = 0
-
-
-# Creazione del dataframe con l'inserimento del paziente 0
-pazienti_df <- data.frame(
+    paziente <- data.frame(
                     cf=cfi,
                     cognome=cog,
                     nome=nom,
@@ -103,43 +144,16 @@ pazienti_df <- data.frame(
                     tot_gg_ric=0
                     )
 
+    lista_df_pazienti[[i]] <- paziente
 
-# Esecuzione del ciclo per la generazione di tutti gli altri pazienti
-for (i in 1:10000) {
-    nom = sample(v_nomi,1,replace=T)
-    cog = sample(v_cognomi,1,replace=T)
-    dnasc = sample(seq(as.Date('1910/01/01'), as.Date('2019/04/01'), by="day"), 1, replace = T)
-    cfi = cf_gen(nom, cog, dnasc)
-    lnasc = sample(v_luoghi,1,replace=T)
-    df_line <- pru[sample(1:nrow(pru),1),]
-    prreul <- strsplit(paste(df_line,collapse=" "), " ")
-    pres = prreul[[1]][1]
-    rapp = prreul[[1]][2]
-    ul = prreul[[1]][3]
-    if(prreul[[1]][2] == "Friuli-Venezia-Giulia"){
-        rapp = NA
-        ul = NA
-    }
-    tot_gg_ric = 0
-
-    altropazzo <- data.frame(
-            cf=cfi,
-            cognome=cog,
-            nome=nom,
-            data_nasc=dnasc,
-            luogo_nasc=lnasc,
-            prov_res=pres,
-            reg_app=rapp,
-            ulss=ul,
-            tot_gg_ric=0
-            )
-
-    pazienti_df <- rbind(pazienti_df, altropazzo)
 }
+
+pazienti_df <- megabind(lista_df_pazienti)
 
 
 # MEMORIZZAZIONE del dataframe pazienti_df nel file csv
 write.csv(pazienti_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pazienti.csv"))
+
 
 
 
@@ -175,175 +189,100 @@ divosp <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mu
 mot <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\ricovero\\motivi.txt")
 
 # Del dataframe dei pazienti mi serve solo il CF e la data di nascita
-paz <- pazienti[,c(2,5)]
+utile <- pazienti[,c(2,5)]
 
 # Creo un vettore di lughezza quanto i pazienti del db
 # Assegno a ogni cella un numero random da 1 a 5
-nric <- sample(1:5, nrow(paz), replace=T)
+nric <- sample(1:5, nrow(utile), replace=T)
 
 # Funzione di creazione del codice del ricovero
 cric <- function(n){
     paste0("RIC",n,collapse="")
 }
 
+# Creo una lista per memorizzare i ricoveri
+lista_df_ricoveri <- list()
 
-# GENERAZIONE DEI RICOVERI DEL PRIMO PAZIENTE
+# Inizializzo un contatore per il codice dei ricoveri
+indice_ricovero = 1
 
-n_paziente = 1
-
-#
-# Creazione della data di inizio e della data di fine
-#
-
-# Prendo la data attuale e quella di nascita
-dnasc = as.Date(paz[n_paziente,2])
-datt <- as.Date("2019-04-11")
-
-# Prendo il numero di ricoveri random per questo paziente
-nricoveri <- nric[n_paziente]
-# Conto il numero di giorni tra un intervallo netto e l'altro 
-intervallo = floor((datt-dnasc) / nricoveri)
-
-# Creo un vettore di intervalli di date
-v_intervalli = vector()
-class(v_intervalli) <- "Date"
-
-# Lo popolo
-dtemp = dnasc
-v_intervalli[1] = dtemp
-for(k in 2:(nricoveri+1)){
-    dtemp = dtemp + intervallo
-    v_intervalli[k] = dtemp
-}
-
-# Creo un vettore per le date di inizio
-v_date_i <- vector()
-class(v_date_i) <- "Date"
-
-#Creo un vettore per le date di fine
-v_date_f <- vector()
-class(v_date_f) <- "Date"
-
-# Popolo i due vettori
-k = 1
-while(k <= nricoveri){
-
-    v_date_i[k] = sample(seq(as.Date(v_intervalli[k]),as.Date(v_intervalli[k+1]),by="day"),1 , replace=T)
-
-    v_date_f[k] = sample(seq(as.Date(v_date_i[k]),as.Date(v_intervalli[k+1]),by="day"),1 , replace=T)
-
-    k= k+1
-}
-
-#
-# Fine creazione date
-#
-
-# Seleziono un motivo random 
-moti = sample(mot,1,replace=T)
-
-# Seleziono una divisione ospedaliera random
-divis_osp = sample(divosp,1,replace=T)
-
-# Prendo il cf del paziente
-pazio = paz[n_paziente,1]
-
-
-#
-# Creo il dataframe dei ricoveri per il primo paziente
-#
-
-# Creo il dataframe del primo ricovero
-
-# Creazione del codice
-n_ricovero = 1
-codice_ric = cric(n_ricovero)
-
-k = 1
-ricoveri_df <- data.frame(
-                    cod_ric = codice_ric,
-                    data_i = v_date_i[k],
-                    data_f = v_date_f[k],
-                    motivo = moti,
-                    div_osp = divis_osp,
-                    paziente = pazio
-                    )
-
-# Ci appiccico gli altri eventuali ricoveri
-k = k+1
-while(k <= nricoveri){
+for(n_paziente in 1: nrow(utile)){
     
-    n_ricovero = n_ricovero + 1
-    codice_ric = cric(i)
-    moti = sample(mot,1,replace=T)
-    divis_osp = sample(divosp,1,replace=T)
-
-    altroricovero <- data.frame(
-                        cod_ric = codice_ric,
-                        data_i = v_date_i[k],
-                        data_f = v_date_f[k],
-                        motivo = moti,
-                        div_osp = divis_osp,
-                        paziente = pazio
-                        )
-
-    ricoveri_df <- rbind(ricoveri_df,altroricovero)
-    
-    k = k+1
-}
-
-
-for(n_paziente in 2:nrow(paz)){
-    pazio = paz[n_paziente,1]
-    dnasc = as.Date(paz[n_paziente,2])
+    # Prendo la data attuale e quella di nascita per creare la data di inizio e fine del ricovero
+    dnasc = as.Date(utile[n_paziente,2])
     datt <- as.Date("2019-04-11")
+    # Prendo il numero di ricoveri random per questo paziente
     nricoveri <- nric[n_paziente]
+    # Conto il numero di giorni tra un intervallo netto e l'altro 
     intervallo = floor((datt-dnasc) / nricoveri)
+    # Creo un vettore di intervalli di date
     v_intervalli = vector()
     class(v_intervalli) <- "Date"
+
+    # Lo popolo
     dtemp = dnasc
     v_intervalli[1] = dtemp
     for(k in 2:(nricoveri+1)){
         dtemp = dtemp + intervallo
         v_intervalli[k] = dtemp
     }
+
+    # Creo un vettore per le date di inizio
     v_date_i <- vector()
     class(v_date_i) <- "Date"
+    #Creo un vettore per le date di fine
     v_date_f <- vector()
     class(v_date_f) <- "Date"
-    k = 1
-    while(k <= nricoveri){
+
+    # Popolo i due vettori
+    for(k in 1:nricoveri){
+
         v_date_i[k] = sample(seq(as.Date(v_intervalli[k]),as.Date(v_intervalli[k+1]),by="day"),1 , replace=T)
+
         v_date_f[k] = sample(seq(as.Date(v_date_i[k]),as.Date(v_intervalli[k+1]),by="day"),1 , replace=T)
-        k= k+1
-    }
-    k = 1
-    while(k <= nricoveri){
-
-        n_ricovero = n_ricovero + 1
-        codice_ric = cric(n_ricovero)
-        moti = sample(mot,1,replace=T)
-        divis_osp = sample(divosp,1,replace=T)
-
-        altroricovero <- data.frame(
-                            cod_ric = codice_ric,
-                            data_i = v_date_i[k],
-                            data_f = v_date_f[k],
-                            motivo = moti,
-                            div_osp = divis_osp,
-                            paziente = pazio
-                            )
-        ricoveri_df <- rbind(ricoveri_df,altroricovero)
-        k = k+1
     }
 
+    # Seleziono un motivo random 
+    moti = sample(mot,1,replace=T)
+
+    # Seleziono una divisione ospedaliera random
+    divis_osp = sample(divosp,1,replace=T)
+
+    # Prendo il cf del paziente
+    cf_paz = utile[n_paziente,1]
+
+    # Creazione del codice
+    codice_ric = cric(indice_ricovero)
+
+    # Genero tutti i ricoveri per quel determinato paziente
+    for(k in 1:nricoveri){
+
+        ricovero <- data.frame(
+                        cod_ric = codice_ric,
+                        data_i = v_date_i[k],
+                        data_f = v_date_f[k],
+                        motivo = moti,
+                        div_osp = divis_osp,
+                        paziente = cf_paz
+                        )
+
+        lista_df_ricoveri[[indice_ricovero]] <- ricovero
+        indice_ricovero = indice_ricovero + 1
+
+    }
 }
+
+ricoveri_df <- megabind(lista_df_ricoveri)
+
 
 # MEMORIZZAZIONE del dataframe ricoveri nel file csv
 write.csv(ricoveri_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\ricoveri.csv"))
 
 # TODO ricoveri senza fine 
 # TODO uno con 6 ricoveri
+
+
+
 
 
 
@@ -382,17 +321,11 @@ for(i in 1:999){
 #Creo il dataframe dei medici
 medici <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\diagnosi\\medico.txt")
 
-# Creo il dataframe dei pazienti 
-pazienti <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pazienti.csv", stringsAsFactors = FALSE)
-
 # Creo il dataframe dei ricoveri
 ricoveri <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
 
-# Creo il join dei due dataframe
-paz_x_ric <- merge(pazienti, ricoveri, by.x="cf", by.y="paziente" )
-
 # Seleziono solo le colonne che mi servono: cf, cod_ric, data_i, data_f
-utile <- paz_x_ric[,c(1,12,13,14)]
+utile <- ricoveri[,c(2,3,4,7)]
 
 # Memorizzo in una variabile il numero di tuple utili
 n_tuple <- nrow(utile)
@@ -412,31 +345,22 @@ cdia <- function(n){
 v_date <- vector()
 class(v_date) <- "Date"
 
+# Creo una lista per memorizzare i dataframe delle diagnosi
+lista_df_diagnosi <- list()
 
-# Dichiaro una funzione per creare nuovi dataframe per le diagnosi
-new_empty_diagnosi_df <- function(){
-    data.frame(
-        cod_dia=character(),
-        data_dia=as.Date(character()),
-        cod_pat=character(),
-        grav_pat=character(),
-        medico=character(),
-        paziente=character(),
-        ricovero=character()
-    )
-}
+# Inizializzo un indice per il codice delle diagnosi
+indice_df = 1
 
-# Dichiaro una funzione che crea un blocchetto di diagnosi per un ricovero
-creazione_blocchetto <- function(utile, indice_tupla,indice_df){
-    # Seleziono la tupla contenente il ricovero di cui devo popolare
-    tupla = utile[indice_tupla,]
 
-    blocchetto_diagnosi_di_un_ricovero = new_empty_diagnosi_df()
+for(indice_tupla in 1 : n_tuple){
+
+    # Seleziono una tupla
+    tupla = utile[indice_tupla,]    
 
     # Creazione delle date delle diagnosi 
     # Prendo la data di inizio e fine del ricovero
-    dinizio = as.Date(tupla[,3])
-    dfine <- as.Date(tupla[,4])
+    dinizio = as.Date(tupla[,2])
+    dfine <- as.Date(tupla[,3])
     # Considero tante date random in questo intervallo quante quelle in n_diagnosi
     v_date <- sample(seq(dinizio,dfine,by="day"),n_diagnosi[indice_tupla],replace=T)
     # Seleziono tanti codici icd10 quanti il numero di diagnosi
@@ -446,76 +370,33 @@ creazione_blocchetto <- function(utile, indice_tupla,indice_df){
     # Seleziono i medici a caso 
     v_med <- sample(medici, n_diagnosi[indice_tupla], replace=T)
 
-    # Creo un nuova riga di dataframe per ogni diagnosi e la appendo al principale
+    # Creo un nuovo dataframe di una riga contenente una sola diagnosi 
     for(indice_diagnosi_ricovero in 1:n_diagnosi[indice_tupla]){
         
-        altradiagnosi<- data.frame(
+        diagnosi <- data.frame(
                             cod_dia=cdia(indice_df),
                             data_dia=v_date[indice_diagnosi_ricovero],
                             cod_pat=v_codpat[indice_diagnosi_ricovero],
                             grav_pat=v_gravita[indice_diagnosi_ricovero],
                             medico=v_med[indice_diagnosi_ricovero],
-                            paziente=tupla[1],
-                            ricovero=tupla[2]
+                            paziente=tupla[4],
+                            ricovero=tupla[1]
         )
 
-        blocchetto_diagnosi_di_un_ricovero <- rbind(blocchetto_diagnosi_di_un_ricovero,altradiagnosi)
-
+        # Inserisco la nuova diagnosi in una lista
+        lista_df_diagnosi[[indice_df]] <- diagnosi
         indice_df = indice_df + 1
     }
-
-    blocchetto_diagnosi_di_un_ricovero
 }
 
-# Funzione per calcolare l'indice di diagnosi per il successivo blocchetto    
-conta_indice_df <- function(indice_tupla,n_diagnosi){
-    sum = 0
-    if(indice_tupla == 1){
-        1
-    } else {
-        for(i in 1:(indice_tupla-1)){
-            sum = sum + n_diagnosi[i]
-        }
-        sum = sum + 1 
-        sum
-    } 
-}
-
-# Creo dei dataframe temporanei per l'ottimizzazione
-diagnosi_di_piu_ricoveri = new_empty_diagnosi_df()
-diagnosi_df_parte_1 = new_empty_diagnosi_df()
-diagnosi_df_parte_2 = new_empty_diagnosi_df()
-
-# Divido l'insieme dei ricoveri in p parti PARI
-p = 24
-for(k in 1:p){
-
-    # Per ogni parte genero dei blocchi di diagnosi componendo blocchetti di diagnosi di singoli ricoveri
-    for(indice_tupla in (ceiling(  n_tuple * ((k-1)/p) ) + 1) : ceiling( n_tuple * k/p )   ){ 
-        indice_df = conta_indice_df(indice_tupla, n_diagnosi)  
-        diagnosi_di_piu_ricoveri <- rbind(diagnosi_di_piu_ricoveri, creazione_blocchetto(utile,indice_tupla,indice_df))
-    }
-
-    # Divisione del df per ottimizzazione generale
-    if(k <= p/2){
-        diagnosi_df_parte_1 <- rbind(diagnosi_df_parte_1,diagnosi_di_piu_ricoveri)
-    } else {
-        diagnosi_df_parte_2 <- rbind(diagnosi_df_parte_2,diagnosi_di_piu_ricoveri)
-    }
-
-    # Svuoto il df intermediario per evitare duplicati
-    diagnosi_di_piu_ricoveri = new_empty_diagnosi_df()
-}
-
-# Creo il dataframe finale
-diagnosi_df = new_empty_diagnosi_df()
-
-# Incorporo tutto nel df finale
-diagnosi_df <- rbind(diagnosi_df_parte_1,diagnosi_df_parte_2)
-
+# Creo il dataframe completo delle diagnosi
+diagnosi_df <- megabind(lista_df_diagnosi)
 
 # Salvo il dataframe in un csv
 write.csv(diagnosi_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\diagnosi.csv"))
+
+
+
 
 
 
@@ -596,3 +477,20 @@ dbWriteTable(con,
 
 #  Disconnessione dal db 
 dbDisconnect(con)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
