@@ -394,9 +394,12 @@ paz_x_ric <- merge(pazienti, ricoveri, by.x="cf", by.y="paziente" )
 # Seleziono solo le colonne che mi servono: cf, cod_ric, data_i, data_f
 utile <- paz_x_ric[,c(1,12,13,14)]
 
+# Memorizzo in una variabile il numero di tuple utili
+n_tuple <- nrow(utile)
+
 # Per ogni tupla utile devo generare un valore random di diagnosi per mantenere la media di 4 a ricovero
 n_diagnosi <- vector()
-for(i in 1:nrow(utile)){
+for(i in 1:n_tuple){
     n_diagnosi[i] = sample(1:7,1,replace=T)
 }
 
@@ -405,86 +408,46 @@ cdia <- function(n){
     paste0("DIA",n,collapse="")
 }
 
-# Per ogni tupla devo generare le diagnosi
-# tengo conto delle tuple tramite un indice
-indice_tupla = 1
-
-tupla = utile[indice_tupla,]
-
-# Creazione delle date delle diagnosi 
-# Prendo la data di inizio e fine del ricovero
-dinizio = as.Date(tupla[,3])
-dfine <- as.Date(tupla[,4])
-
-# Considero tante date random in questo intervallo quante quelle in n_diagnosi
+# Diachiaro un vettore di date utile in seguito
 v_date <- vector()
 class(v_date) <- "Date"
-v_date <- sample(seq(dinizio,dfine,by="day"),n_diagnosi[indice_tupla],replace=T)
 
-# Seleziono tanti codici icd10 quanti il numero di diagnosi
-v_codpat <- sample(icd10, n_diagnosi[indice_tupla],replace=T)
 
-# Creo un vettore di gravità delle patologie diagnosticate
-v_gravita <- sample(c("Alta","Bassa"),n_diagnosi[indice_tupla],replace=T)
-
-# Seleziono i medici a caso 
-v_med <- sample(medici, n_diagnosi[indice_tupla], replace=T)
-
-# Creo il primo dataframe
-indice_df = 1
-indice_diagnosi_ricovero = 1
-
-diagnosi_df <- data.frame(
-                    cod_dia=cdia(indice_df),
-                    data_dia=v_date[indice_diagnosi_ricovero],
-                    cod_pat=v_codpat[indice_diagnosi_ricovero],
-                    grav_pat=v_gravita[indice_diagnosi_ricovero],
-                    medico=v_med[indice_diagnosi_ricovero],
-                    paziente=tupla[1],
-                    ricovero=tupla[2]
-)
-
-indice_df = indice_df + 1
-indice_diagnosi_ricovero =indice_diagnosi_ricovero + 1 
-
-# Inserisco le altre diagnosi per quel ricovero
-while(indice_diagnosi_ricovero <= n_diagnosi[indice_tupla]){
-    
-    altradiagnosi<- data.frame(
-                        cod_dia=cdia(indice_df),
-                        data_dia=v_date[indice_diagnosi_ricovero],
-                        cod_pat=v_codpat[indice_diagnosi_ricovero],
-                        grav_pat=v_gravita[indice_diagnosi_ricovero],
-                        medico=v_med[indice_diagnosi_ricovero],
-                        paziente=tupla[1],
-                        ricovero=tupla[2]
+# Dichiaro una funzione per creare nuovi dataframe per le diagnosi
+new_empty_diagnosi_df <- function(){
+    data.frame(
+        cod_dia=character(),
+        data_dia=as.Date(character()),
+        cod_pat=character(),
+        grav_pat=character(),
+        medico=character(),
+        paziente=character(),
+        ricovero=character()
     )
-
-    diagnosi_df <- rbind(diagnosi_df,altradiagnosi)
-
-    indice_df = indice_df + 1
-    indice_diagnosi_ricovero = indice_diagnosi_ricovero +1
-
 }
 
-
-# Seleziono gli altri ricoveri e genero tutte le altre tabelle
-indice_tupla = indice_tupla + 1
-
-while(indice_tupla <= nrow(utile)){
-    
+# Dichiaro una funzione che crea un blocchetto di diagnosi per un ricovero
+creazione_blocchetto <- function(utile, indice_tupla,indice_df){
+    # Seleziono la tupla contenente il ricovero di cui devo popolare
     tupla = utile[indice_tupla,]
 
+    blocchetto_diagnosi_di_un_ricovero = new_empty_diagnosi_df()
+
+    # Creazione delle date delle diagnosi 
+    # Prendo la data di inizio e fine del ricovero
     dinizio = as.Date(tupla[,3])
     dfine <- as.Date(tupla[,4])
+    # Considero tante date random in questo intervallo quante quelle in n_diagnosi
     v_date <- sample(seq(dinizio,dfine,by="day"),n_diagnosi[indice_tupla],replace=T)
+    # Seleziono tanti codici icd10 quanti il numero di diagnosi
     v_codpat <- sample(icd10, n_diagnosi[indice_tupla],replace=T)
+    # Creo un vettore di gravità delle patologie diagnosticate
     v_gravita <- sample(c("Alta","Bassa"),n_diagnosi[indice_tupla],replace=T)
+    # Seleziono i medici a caso 
     v_med <- sample(medici, n_diagnosi[indice_tupla], replace=T)
 
-    indice_diagnosi_ricovero = 1
-
-    while(indice_diagnosi_ricovero <= n_diagnosi[indice_tupla]){
+    # Creo un nuova riga di dataframe per ogni diagnosi e la appendo al principale
+    for(indice_diagnosi_ricovero in 1:n_diagnosi[indice_tupla]){
         
         altradiagnosi<- data.frame(
                             cod_dia=cdia(indice_df),
@@ -496,21 +459,63 @@ while(indice_tupla <= nrow(utile)){
                             ricovero=tupla[2]
         )
 
-        diagnosi_df <- rbind(diagnosi_df,altradiagnosi)
+        blocchetto_diagnosi_di_un_ricovero <- rbind(blocchetto_diagnosi_di_un_ricovero,altradiagnosi)
 
         indice_df = indice_df + 1
-        indice_diagnosi_ricovero = indice_diagnosi_ricovero +1
     }
 
-    indice_tupla = indice_tupla + 1
-    
+    blocchetto_diagnosi_di_un_ricovero
 }
+
+# Funzione per calcolare l'indice di diagnosi per il successivo blocchetto    
+conta_indice_df <- function(indice_tupla,n_diagnosi){
+    sum = 0
+    if(indice_tupla == 1){
+        1
+    } else {
+        for(i in 1:(indice_tupla-1)){
+            sum = sum + n_diagnosi[i]
+        }
+        sum = sum + 1 
+        sum
+    } 
+}
+
+# Creo dei dataframe temporanei per l'ottimizzazione
+diagnosi_di_piu_ricoveri = new_empty_diagnosi_df()
+diagnosi_df_parte_1 = new_empty_diagnosi_df()
+diagnosi_df_parte_2 = new_empty_diagnosi_df()
+
+# Divido l'insieme dei ricoveri in p parti PARI
+p = 24
+for(k in 1:p){
+
+    # Per ogni parte genero dei blocchi di diagnosi componendo blocchetti di diagnosi di singoli ricoveri
+    for(indice_tupla in (ceiling(  n_tuple * ((k-1)/p) ) + 1) : ceiling( n_tuple * k/p )   ){ 
+        indice_df = conta_indice_df(indice_tupla, n_diagnosi)  
+        diagnosi_di_piu_ricoveri <- rbind(diagnosi_di_piu_ricoveri, creazione_blocchetto(utile,indice_tupla,indice_df))
+    }
+
+    # Divisione del df per ottimizzazione generale
+    if(k <= p/2){
+        diagnosi_df_parte_1 <- rbind(diagnosi_df_parte_1,diagnosi_di_piu_ricoveri)
+    } else {
+        diagnosi_df_parte_2 <- rbind(diagnosi_df_parte_2,diagnosi_di_piu_ricoveri)
+    }
+
+    # Svuoto il df intermediario per evitare duplicati
+    diagnosi_di_piu_ricoveri = new_empty_diagnosi_df()
+}
+
+# Creo il dataframe finale
+diagnosi_df = new_empty_diagnosi_df()
+
+# Incorporo tutto nel df finale
+diagnosi_df <- rbind(diagnosi_df_parte_1,diagnosi_df_parte_2)
 
 
 # Salvo il dataframe in un csv
 write.csv(diagnosi_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\diagnosi.csv"))
-
-# TODO per fare ricoveri senza diagnosi basta mettere nel while ( ... <= nrow(utile) - x )
 
 
 
