@@ -25,6 +25,8 @@
 
 
 # Procedura per l'ottimizzazione del binding di liste di dataframes
+# Input: Lista di dataframe
+# Restituisce un dataframe 
 megabind <- function(lista_df){
 
     # Un indice parte dall'inzio
@@ -561,6 +563,65 @@ for(i in (length(nome_farmaci)+1):(floor( length(nome_farmaci) + (length(nome_fa
 contiene_df <- megabind(lista_df_contiene)
 
 write.csv(contiene_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\contiene.csv"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#######                               #######
+####### POPOLO PER LA TABELLA TERAPIA #######
+#######                               #######
+
+farmaci <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\farmaci.csv", stringsAsFactors = FALSE)
+
+msomm <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\somministrazione.txt")
+
+# Funzione di creazione del codice della terapia
+cter <- function(n){
+    paste0("TER",n,collapse="")
+}
+
+lista_df_terapie <- list()
+
+for(i in seq( 1 , (length(farmaci[,1])*3) , by=3 )  ){
+
+    v_msomm <- sample(msomm, 3, replace = FALSE)
+    
+    s= 1
+    for(k in i : (i+2)){
+        
+        terapia <- data.frame(
+                    cod_ter=cter(k),
+                    dose_gio=sample(c(1,2,3),1,replace=T),
+                    mod_somm=v_msomm[s],
+                    farmaco=farmaci[(floor(i/3)+1),2]
+                    )  
+    
+        lista_df_terapie[[k]] <- terapia
+        s = s + 1
+    }
+     
+}
+
+terapie_df <- megabind(lista_df_terapie)
+
+write.csv(terapie_df,  file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie.csv") )
+
+
 
 
 
