@@ -249,27 +249,18 @@ for(n_paziente in 1: nrow(utile)){
         v_date_f[k] = sample(seq(as.Date(v_date_i[k]),as.Date(v_intervalli[k+1]),by="day"),1 , replace=T)
     }
 
-    # Seleziono un motivo random 
-    moti = sample(mot,1,replace=T)
-
-    # Seleziono una divisione ospedaliera random
-    divis_osp = sample(divosp,1,replace=T)
-
     # Prendo il cf del paziente
     cf_paz = utile[n_paziente,1]
-
-    # Creazione del codice
-    codice_ric = cric(indice_ricovero)
 
     # Genero tutti i ricoveri per quel determinato paziente
     for(k in 1:nricoveri){
 
         ricovero <- data.frame(
-                        cod_ric = codice_ric,
+                        cod_ric = cric(indice_ricovero),
                         data_i = v_date_i[k],
                         data_f = v_date_f[k],
-                        motivo = moti,
-                        div_osp = divis_osp,
+                        motivo = sample(mot,1,replace=T),
+                        div_osp = sample(divosp,1,replace=T),
                         paziente = cf_paz
                         )
 
@@ -398,6 +389,7 @@ for(indice_tupla in 1 : n_tuple){
 
 # Creo il dataframe completo delle diagnosi
 diagnosi_df <- megabind(lista_df_diagnosi)
+colnames(diagnosi_df) <- c("cod_dia","data_dia","cod_pat","grav_pat","medico","paziente","ricovero")
 
 # Salvo il dataframe in un csv
 write.csv(diagnosi_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\diagnosi.csv"))
@@ -622,6 +614,90 @@ terapie_df <- megabind(lista_df_terapie)
 write.csv(terapie_df,  file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie.csv") )
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#######                                          #######
+####### POPOLO PER LA TABELLA TERAPIA PRESCRITTA #######
+#######                                          #######
+
+terapie <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie.csv", stringsAsFactors = FALSE)
+
+diagnosi <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\diagnosi.csv", stringsAsFactors = FALSE)
+
+ricoveri <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
+
+medici <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\diagnosi\\medico.txt")
+
+cross <- merge(x=ricoveri, y=diagnosi, by.x="cod_ric", by.y="ricovero")
+
+utile <- cross[,c(1,3,4,7,9,10)]
+colnames(utile) <- c("cric","r_data_i","r_data_f","paz","cdia","d_data")
+
+
+# Ordino le diagnosi in base alla data
+#diagnosi <- diagnosi[order(diagnosi$data_dia),]
+
+lista_df_tprescritte <- list()
+
+# Il numero di terapie prescritte deve essere il numero di diagnosi - 10%
+n_tp <- length(diagnosi[,1]) - floor(length(diagnosi[,1])/10)
+
+lista_eff_coll <- vector()
+class(lista_eff_coll) <- "Date"
+
+for(i in (n_tp+1) : length(diagnosi[,1])){
+
+    lista_eff_coll[i-n_tp] <- diagnosi[i,3]
+
+}
+
+
+
+for(i in 1 : n_tp ){
+
+
+
+
+
+
+    terapia_prescritta <- data.frame(
+                            data_i
+                            data_f
+                            med_presc
+                            diagnosi
+                            terapia
+                            coll_dia
+                            )
+
+    lista_df_tprescritte[[i]] <- terapia_prescritta
+
+}
+
+
+
+terapia_prescritta <- data.frame(
+                            data_i
+                            data_f
+                            med_presc
+                            diagnosi
+                            terapia
+                            coll_dia
+                            )
 
 
 
