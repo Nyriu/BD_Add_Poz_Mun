@@ -67,7 +67,7 @@ create table diagnosi (
     cod_dia dom_dia primary key,
     data_dia date not null,
     cod_pat ICD10 not null,
-    grav_pat varchar not null,
+    grav_pat boolean not null,
     medico varchar(16) not null,
     paziente dom_cf not null 
                     references paziente(cf) 
@@ -190,7 +190,7 @@ alter table diagnosi add
     check(check_data_valida(data_dia, ricovero));
 
 
--- data_i terapia_prescritta uguale o successiva data diagnosi
+-- data_i terapia_prescritta uguale o successiva data_i ricovero
 create or replace function check_data_valida_ter_pre(data date, dia dom_dia)
 returns bool as
 $$
@@ -211,24 +211,34 @@ alter table terapia_prescritta add
 -- TERAPIA_PRESCRITTA DIAGNOSI->DIAGNOSI no uguale o precedente
     -- aggiunta nuova T_P
     -- modifica dei campi
-create or replace function check_dia_valide(dia dom_dia, coll_dia dom_dia)
+create or replace function check_dia_valide(data_i_ter date, dia dom_dia, coll_dia dom_dia)
 returns bool as
 $$
   begin
-    perform *
-    from diagnosi d1, diagnsi d2
-    where d1.cod_dia = dia and
-          d2.cod_dia = coll_dia and
-          d1.data_dia <= d2.data_dia;
-    return found;
+    if coll_dia is null
+    then
+      perform *
+      from diagnosi
+      where cod_dia = dia and
+            data_dia <= data_i_ter;
+      return found;
+    else
+      perform *
+      from diagnosi d1, diagnosi d2
+      where d1.cod_dia = dia and
+            d2.cod_dia = coll_dia and
+            d1.data_dia <= data_i_ter and
+            data_i_ter <= d2.data_dia;
+      return found;
+    end if;
   end;
 $$ language plpgsql;
 
 -- TODO testing
 alter table terapia_prescritta add
   constraint check_dia_valide
-    check(check_dia_valide(diagnosi, coll_dia));
---TODO la data della terapia prescritta deve essere compresa tra le due date di diagnosi \
+    check(check_dia_valide(data_i, diagnosi, coll_dia));
+
 
 -----------------------------------------------------------------------
 -- TODO TRIGGERS --
@@ -241,6 +251,25 @@ alter table terapia_prescritta add
   -- TODO nella relazione scrivere che questo non va implementato per evitare dipendenze cicliche
   -- Soluzione: creare una funzione che di tanto in tanto pulisca i pazienti senza ricoveri
   -- (per il nostro dominio è una cosa strana che vengano cancellati ricoveri)
+
+-- TENTATIVO FALLITO CON CONSTRAINT
+-- create or replace function check_almeno_un_ric(cf dom_cf)
+-- returns bool as
+-- $$
+--   begin
+--     perform *
+--     from ricovero
+--     where paziente = cf;
+--     return found;
+--   end;
+-- $$ language plpgsql;
+-- 
+-- -- TODO testing
+-- alter table paziente add
+--   deferrable constraint check_almeno_un_ric
+--     check(check_almeno_un_ric(cf));
+--ERRORE:  un vincolo CHECK non può essere marcato DEFERRABLE
+--FINE TENTATIVO FALLITO CON CONSTRAINT
 
 
 -- Totale_Giorni_Ricoveri
@@ -321,7 +350,7 @@ create trigger aggiornamento_gg_update after update
 -- FARMACO almeno un PRINCIPIO_ATTIVO
   -- il check da fare su CONTIENE
     -- NO -- quando aggiungi FARMACO
-    -- quando rimuovi PRINCIPIO_ATTIVO TODO
+    -- quando rimuovi PRINCIPIO_ATTIVO -- coperto dal trigger che rimuove tupla da contiene.. dato cascade in P_A
     -- quando rimuovi tupla da CONTIENE
     -- quando aggiorni tupla da CONTIENE
 -- Per evitare dipendenze cicliche permetto ad un P_A di rimanere senza FARMACI
@@ -355,4 +384,3 @@ create trigger controlla_almeno_pa_up before update
     when ( new.farmaco <> old.farmaco or
            new.pr_attivo <> old.pr_attivo)
     execute procedure almeno_un_pa_cont();
-
