@@ -104,9 +104,35 @@ insert into ricovero(cod_ric, data_i, motivo, div_osp, paziente) values
 update ricovero set data_i = '2000-01-01' where cod_ric = 'RIC001';
 update ricovero set data_f = '2000-02-26' where cod_ric = 'RIC004';
 
-update ricovero set data_f = '2000-01-26' where cod_ric = 'RIC003'; -- deve fallire
-update ricovero set data_f = '1999-02-26' where cod_ric = 'RIC003'; -- deve fallire
-update ricovero set data_i = '2000-03-01' where cod_ric = 'RIC001'; -- deve fallire
+-- update ricovero set data_f = '2000-01-26' where cod_ric = 'RIC003'; -- deve fallire
+-- update ricovero set data_f = '1999-02-26' where cod_ric = 'RIC003'; -- deve fallire
+-- update ricovero set data_i = '2000-03-01' where cod_ric = 'RIC001'; -- deve fallire
+select * from paziente;
+select * from ricovero;
+select * from diagnosi;
+
+-- testing su terapia prescritta TODO completare
+insert into farmaco (azienda_prod, dose_gg_racc, nome_comm) values
+  ('ciccio',1,'AAA')
+  ;
+-- testing su data diagnosi
+insert into diagnosi (cod_dia, data_dia, cod_pat, grav_pat, medico, ricovero) values
+  ('DIA01', '2000-03-01', 'T10.103040', 'true', 'Gigio', 'RIC003'), -- stesso giorno di inizio ricvero (ric senza fine)
+  ('DIA02', '2000-01-05', 'T10.103040', 'true', 'Gigio', 'RIC001')  -- stesso giorno di inizio ricvero (ric con fine)
+  ;
+update diagnosi set data_dia = '2000-03-02' where cod_dia = 'DIA01'; -- okay (ric senza fine)
+update diagnosi set data_dia = '2000-01-08' where cod_dia = 'DIA02'; -- okay
+
+  -- devono fallire
+insert into diagnosi (cod_dia, data_dia, cod_pat, grav_pat, medico, ricovero) values
+  ('DIA03', '2000-02-01', 'T10.103040', 'true', 'Gigio', 'RIC003'); -- prima di data_i(ric senza fine)
+insert into diagnosi (cod_dia, data_dia, cod_pat, grav_pat, medico, paziente, ricovero) values
+  ('DIA04', '2000-05-01', 'T10.103040', 'true', 'Gigio', 'RIC001'); -- dopo data_f
+
+update diagnosi set data_dia = '1999-03-02' where cod_dia = 'DIA01'; -- fallire (ric senza fine)
+update diagnosi set data_dia = '2000-01-18' where cod_dia = 'DIA02'; -- fallire
+
+-- testing su terapia prescritta TODO completare
 
 -- testing su terapia prescritta TODO completare
 insert into farmaco (azienda_prod, dose_gg_racc, nome_comm) values
@@ -120,18 +146,6 @@ insert into diagnosi (cod_dia, data_dia, cod_pat, grav_pat, medico, paziente, ri
   ;
 update diagnosi set data_dia = '2000-03-02' where cod_dia = 'DIA01'; -- okay (ric senza fine)
 update diagnosi set data_dia = '2000-01-08' where cod_dia = 'DIA02'; -- okay
-
-  -- devono fallire
-insert into diagnosi (cod_dia, data_dia, cod_pat, grav_pat, medico, paziente, ricovero) values
-  ('DIA03', '2000-02-01', 'T10.103040', 'true', 'Gigio', 'ABCDEF01A01A012B', 'RIC003'); -- prima di data_i(ric senza fine)
-insert into diagnosi (cod_dia, data_dia, cod_pat, grav_pat, medico, paziente, ricovero) values
-  ('DIA04', '2000-05-01', 'T10.103040', 'true', 'Gigio', 'ABCDEF01A01A012A', 'RIC001'); -- dopo data_f
-
-update diagnosi set data_dia = '1999-03-02' where cod_dia = 'DIA01'; -- fallire (ric senza fine)
-update diagnosi set data_dia = '2000-01-18' where cod_dia = 'DIA02'; -- fallire
-
--- testing su terapia prescritta TODO completare
-
 
 
 ---------------------------------------------------

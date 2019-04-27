@@ -49,15 +49,14 @@ create table paziente (
     reg_app varchar,
     ulss varchar,
     tot_gg_ric int default 0               
-);
-
+); 
 create table ricovero (
     cod_ric dom_ric primary key, 
     data_i date not null,
     data_f date,
     motivo varchar not null,
     div_osp varchar not null, 
-    paziente dom_cf not null
+   paziente dom_cf not null
                     references paziente(cf) 
                     on update cascade 
                     on delete cascade
@@ -69,14 +68,14 @@ create table diagnosi (
     cod_pat ICD10 not null,
     grav_pat boolean not null,
     medico varchar(16) not null,
-    paziente dom_cf not null 
-                    references paziente(cf) 
-                    on update cascade 
-                    on delete cascade,
     ricovero dom_ric not null
                      references ricovero(cod_ric) 
                      on update cascade 
-                     on delete no action
+                     on delete no action,
+    -- viene inserito in automatico sfruttando ricovero
+    paziente dom_cf references paziente(cf)
+                    on update cascade 
+                    on delete cascade
 );
 
 create table farmaco (
@@ -151,7 +150,7 @@ $$;
 -- CONSTRAINTS sulle date
   -- RICOVERO e TERAPIA_PRESCRITTA data_i < data_f
   -- DIAGNOSI deve avere data compresa in data_i e data_f del RICOVERO
-  -- data_i di TERAPIA_PRESCRITTA deve essere uguale o successiva alla data dela diagnosi
+  -- data_i di TERAPIA_PRESCRITTA deve essere uguale o successiva alla data della diagnosi
 create or replace function check_date_valide(data_i date, data_f date)
 returns bool as
 $$
@@ -190,14 +189,15 @@ alter table diagnosi add
     check(check_data_valida(data_dia, ricovero));
 
 
--- data_i terapia_prescritta uguale o successiva data_i ricovero
+-- data_i terapia_prescritta uguale o successiva data_dia diagnosi
 create or replace function check_data_valida_ter_pre(data date, dia dom_dia)
 returns bool as
 $$
   begin
     perform *
     from diagnosi
-    where dia = cod_dia;
+    where dia = cod_dia and
+          data_dia <= data;
     return found;
   end;
 $$ language plpgsql;
@@ -238,6 +238,9 @@ $$ language plpgsql;
 alter table terapia_prescritta add
   constraint check_dia_valide
     check(check_dia_valide(data_i, diagnosi, coll_dia));
+
+
+
 
 
 -----------------------------------------------------------------------
@@ -321,6 +324,38 @@ create trigger aggiornamento_gg_update after update
            old.data_f is null       or
            new.paziente <> old.paziente )
       execute procedure aggiorna_gg_update();
+
+
+-- DIAGNOSI stesso paziente del RICVOERO (Effettuata A)
+  -- quando
+    -- aggiunta nuova diagnosi
+    -- update paziente nel ricovero -- NON serve perché cascade
+
+create or replace function get_paziente(ric dom_ric)
+returns dom_cf as
+$$
+  declare
+      paz dom_cf;
+  begin
+    select paziente into paz
+    from ricovero
+    where cod_ric = ric;
+    return paz;
+  end;
+$$ language plpgsql;
+
+create or replace function init_paziente()
+returns trigger as
+$$
+  begin
+    new.paziente := get_paziente(new.ricovero);
+    return new;
+  end;
+$$ language plpgsql;
+
+create trigger init_paziente_dia before insert
+  on diagnosi for each row
+  execute procedure init_paziente();
 
 
 -- DIAGNOSI una sola TERAPIA_PRESCRITTA TODO BASTA UNIQUE!!

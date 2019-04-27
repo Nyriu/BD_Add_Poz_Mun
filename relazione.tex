@@ -203,7 +203,7 @@ Al termine di questa terza fase di progettazione è necessario introdurre dei vi
 %TODO ho dimenticato qualcosa?? 
 Nella fase logica verrà mostrato che questa relazione può essere trasformata, senza perdita d'informazione, e con l'aggiunta di una nuova entità, in tre relazioni binarie. 
 
-Dai requisiti è richiesto di memorizzare il medico che ha effettuato la diagnosi e il medico che ha prescritto la terapia. Ciò è stato fatto memorizzando le due informazioni attraverso l'introduzione dell'attributo \textit{Medico} in DIAGNOSI e \textit{Medico Prescrivente} in MOTIVA-TERAPIA. Non è stata introdotta un'entità rappresentativa del medico perchè scarna di informazione, di conseguenza il medico verrà rappresentato soltanto attraverso il proprio codice tramite gli attributi precedentemente specificati. 
+Dai requisiti è richiesto di memorizzare il medico che ha effettuato la diagnosi e il medico che ha prescritto la terapia. Ciò è stato fatto memorizzando le due informazioni attraverso l'introduzione dell'attributo \textit{Medico} in DIAGNOSI e \textit{Medico Prescrivente} in MOTIVA-TERAPIA. Non è stata introdotta un'entità rappresentativa del medico perché scarna di informazione, di conseguenza il medico verrà rappresentato soltanto attraverso il proprio codice tramite gli attributi precedentemente specificati. 
 % TODO Medico?
 In conclusione lo schema Entità-Relazioni si presenta come in \autoref{fig:ER_progettazione_modello}.
 
@@ -955,8 +955,8 @@ Notare che è obbligatoria l'introduzione di due vincoli d'integrità, uno deve 
 \clearpage
 \section{Definizione della Base di Dati in SQL}
 Il risultato della sezione precedente è lo schema Relazionale che verrà effettivamente usato per creare la base di dati.%TODO migliorare intro
-Per prima cosa dovrà essere definita una tabella per ogni tupla dello schema poi si procederà alla creazione di funzioni, constraints e triggers per assicurare i vincoli d'integrità.
-Si suppone che tutti i comandi SQL successivi vengano eseguiti all'interno dello schema \textit{ospedale}, cioè dopo l'esecuzione del seguente blocco:
+Per prima cosa dovrà essere definita una tabella per ogni tupla dello schema poi si procederà alla creazione di funzioni, constraints e triggers per assicurare tutti i vincoli d'integrità.
+Si suppone che ciascuno dei seguenti comandi SQL venga eseguito all'interno dello schema \textit{ospedale}, cioè dopo l'esecuzione del seguente blocco:
 \begin{lstlisting}
 create schema ospedale;
 set search_path to ospedale;
@@ -987,6 +987,7 @@ Il primo e l'ultimo rispettano le normali convenzioni mentre il secondo è stato
 Diversamente \textit{dom\_dia} e \textit{dom\_ter} sono stati definiti durante la costruzione della base di dati, per comodità entrambi hanno una struttura simile a quella di \textit{dom\_ric}.
 
 Si può ora procedere alla creazione delle tabelle, sotto ne sono riportate tre a titolo d'esempio:
+\clearpage
 \begin{lstlisting}
 create table paziente (
     cf dom_cf primary key,
@@ -1030,39 +1031,128 @@ create table terapia_prescritta (
     primary key (diagnosi, terapia)
 );
 \end{lstlisting}
+\clearpage
 Questa tripletta è stata scelta in quanto illustra ogni possibile casistica:
 \begin{itemize}
   \item una tabella semplice, con un solo attributo come chiave ed un campo con valore di default;
-  \item una tabella un po' più complessa che presenta anche un campo chiave esterna;
-  \item ed infine una tabella che rappresenta un'entità debole, con chiave primaria una coppia;
+  \item una tabella leggermente più complessa che presenta anche un campo chiave esterna;
+  \item ed infine una tabella che rappresenta un'entità debole, con una coppia di valori come chiave primaria;
 \end{itemize}
 Le rimanenti tabelle sono di complessità minore od uguale a quelle mostrate.
+% TODO schema della base di dati con pochi dati dentro
+% Una quadretto per tabella con due righe di numero dentro
+TODO piccola parentesi sulle scelte di 'on update' e 'on delete'
 
 A questo punto si può procedere con la creazione dei constraints.
-Si vuole mantenere consistente l'attributo \textit{tot\_gg\_ric} in \textit{paziente} in modo che indichi quanti giorni il paziente ha passato da ricoverato.
+Questi possono essere sfruttati per assicurare i vincoli tra le varie date di inizio e fine presenti nella base di dati, nello specifico:
+\begin{itemize}
+  \item in generale una tabella con dei campi che indicano una data d'inizio ed una di fine deve rispettare la condizione \textit{data\_i} $\leq$ \textit{data\_f};
+  \item una DIAGNOSI deve avere \textit{data\_dia} compresa tra \textit{data\_i} e \textit{data\_f} del RICOVERO a cui appartiene;
+  \item una TERAPIA\_PRESCRITTA non può avere una \textit{data\_i} anteriore a quella della DIAGNOSI in cui è stata prescritta;
+\end{itemize}
+Il primo punto può essere facilmente soddisfatto dal seguente blocco, notare che la parte finale del codice può essere applicata a tutte le tabelle con due campi del tipo \textit{date}.
+\begin{lstlisting}
+create or replace function
+check_date_valide(data_i date, data_f date)
+returns bool as
+$$
+  begin
+    return data_i < data_f;
+  end;
+$$ language plpgsql;
+
+alter table ricovero add
+  constraint check_date_valide_ric
+    check(check_date_valide(data_i, data_f));
+\end{lstlisting}
+Il secondo punto richiede una funzione più articolata: a partire dal codice identificativo di un RICOVERO si devono ottenere le sue date, per poi verificare la condizione, ricordando che alcuni ricoveri non presentato una data di fine.
+\begin{lstlisting}
+create or replace function
+check_data_valida(data_dia date, ric dom_ric)
+returns bool as
+$$
+  begin
+    perform *
+    from ricovero
+    where ric = cod_ric and
+          data_i <= data_dia  and
+          (data_f >= data_dia or
+            data_f is null);
+    return found;
+  end;
+$$ language plpgsql;
+
+alter table diagnosi add
+  constraint check_data_valida_dia
+    check(check_data_valida(data_dia, ricovero));
+\end{lstlisting}
+Non verrà riportato il blocco per la terza condizione perché è semplicemente una rivisitazione del codice appena illustrato: ottenuta \textit{data\_dia} si verifica che sia minore o uguale alla data della TERAPIA\_PRESCRITTA.
+
+Di seguito sono riportati tutti i vincoli di integrità ancora da implementare:
+\begin{enumerate}
+  \item \label{vinc:paz_almu_ric} ogni paziente deve essere stato ricoverato almeno una volta;
+  \item \label{vinc:dia_ric_paz_uguale} tutte le diagnosi di un dato ricovero devono avere il campo \textit{paziente} uguale a quello del ricovero;
+  \item \label{vinc:dia_alpu_tp} ad ogni diagnosi può corrispondere al più una terapia\_prescritta;
+  \item \label{vinc:dia_effc_alpu_tp} ogni diagnosi può essere effetto collaterale di al più una terapia\_prescritta;
+  \item \label{vinc:ter_almu_tp} ogni terapia deve essere stata prescritta almeno una volta;
+  \item \label{vinc:far_almu_pr} ogni farmaco deve contenere almeno un principio\_attivo;
+  \item \label{vinc:pr_almnu_far} ogni principio\_attivo deve essere contenuto in almeno un farmaco;
+\end{enumerate}
+
+I vincoli \ref{vinc:dia_alpu_tp} e \ref{vinc:dia_effc_alpu_tp} possono essere assicurati impostando ad unique i campi \textit{diagnosi} e \textit{coll\_dia} in TERAPIA\_PRESCRITTA. % TODO se necessario spiegare perché
+
+Il vincolo \ref{vinc:dia_ric_paz_uguale} è facile da assicurare: basta 
+
 
 \begin{lstlisting}
-create or replace function ricalcolo_gg(cf_paz dom_cf)
-returns int
-language plpgsql as $$
-    declare
-        gg int;
-    begin
-        select sum(ricovero.data_f-ricovero.data_i)
-        into gg
-        from paziente
-          join ricovero
-            on paziente.cf = ricovero.paziente
-        where paziente.cf = cf_paz;
-        return gg;
-    end
-$$;
+DIAGNOSI stesso paziente del RICVOERO (Effettuata A)
+aggiunta nuova diagnosi
+update paziente nel ricovero--NON serve xke cascade
+
+create or replace function init_paziente()
+returns trigger as
+$$
+  begin
+    new.paziente := get_paziente(new.ricovero);
+    return new;
+  end;
+$$ language plpgsql;
+
+create trigger init_paziente_dia before insert
+  on diagnosi for each row
+  execute procedure init_paziente();
 \end{lstlisting}
+
+Il vincolo \ref{vinc:paz_almu_ric} non può essere modellato né come constraint né come trigger perché introdurrebbe una dipendenza ciclica con la condizione \textit{not null} del campo \textit{paziente} in RICOVERO
+
+
+% TODO da mettere in fondo alla parte dei Triggers
+% Poiché postgre non ha un costrutto per gli attributi derivati, dobbiamo implementarlo noi
+% Si vuole mantenere consistente l'attributo \textit{tot\_gg\_ric} in \textit{paziente} in modo che indichi quanti giorni il paziente ha passato da ricoverato.
+% \begin{lstlisting}
+% create or replace function
+%     ricalcolo_gg(cf_paz dom_cf)
+% returns int
+% language plpgsql as $$
+%     declare
+%         gg int;
+%     begin
+%         select sum(ricovero.data_f-ricovero.data_i)
+%         into gg
+%         from paziente
+%           join ricovero
+%             on paziente.cf = ricovero.paziente
+%         where paziente.cf = cf_paz;
+%         return gg;
+%     end
+% $$;
+% \end{lstlisting}
 
 
 % Attributo derivato
 % Assicurare i vincoli di integrità
 %
+\cleardoublepage
 \subsection{Definizione di Query Significative}
 
 
