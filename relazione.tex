@@ -1101,14 +1101,11 @@ Di seguito sono riportati tutti i vincoli di integrità ancora da implementare:
 
 I vincoli \ref{vinc:dia_alpu_tp} e \ref{vinc:dia_effc_alpu_tp} possono essere assicurati impostando ad unique i campi \textit{diagnosi} e \textit{coll\_dia} in TERAPIA\_PRESCRITTA. % TODO se necessario spiegare perché
 
-Il vincolo \ref{vinc:dia_ric_paz_uguale} è facile da assicurare: basta 
-
-
+Il vincolo \ref{vinc:dia_ric_paz_uguale} è facile da assicurare.
+Infatti basta sfruttare una funzione (in questo caso \textit{get\_paziente}) che, a partire dal codice di un ricovero, torni il paziente di quel ricovero, tale output sarà il valore del campo \textit{paziente} della diagnosi.
+Sono stati creati due trigger: il primo scatta alla creazione di una nuova diagnosi, mentre il secondo assicura che \textit{paziente} rimanga coerente anche dopo l'aggiornamento del campo \textit{ricovero}.
+In realtà il secondo trigger protegge anche da eventuali aggiornamenti errati del paziente, impostando sempre il valore corretto.
 \begin{lstlisting}
-DIAGNOSI stesso paziente del RICVOERO (Effettuata A)
-aggiunta nuova diagnosi
-update paziente nel ricovero--NON serve xke cascade
-
 create or replace function init_paziente()
 returns trigger as
 $$
@@ -1121,37 +1118,107 @@ $$ language plpgsql;
 create trigger init_paziente_dia before insert
   on diagnosi for each row
   execute procedure init_paziente();
+
+create trigger update_paziente_dia before update
+  on diagnosi
+  for each row
+  when ( new.paziente <> old.paziente or
+         new.ricovero <> old.ricovero )
+  execute procedure init_paziente();
 \end{lstlisting}
 
-Il vincolo \ref{vinc:paz_almu_ric} non può essere modellato né come constraint né come trigger perché introdurrebbe una dipendenza ciclica con la condizione \textit{not null} del campo \textit{paziente} in RICOVERO
+Il vincolo \ref{vinc:paz_almu_ric} non può essere modellato né come constraint né come trigger perché introdurrebbe una dipendenza ciclica con la condizione \textit{not null} del campo \textit{paziente} in RICOVERO.
+Il constraint \textit{not null} in RICOVERO è necessario perché deve essere sempre possibile risalire alle informazioni del paziente di un dato ricovero.
+Diversamente la presenza nella base di dati di un PAZIENTE che non è mai stato ricoverato, situazione comunque anomala, non ha effetti disastrosi: in qualsiasi momento si può rimuovere tale paziente oppure gli si può attribuire un ricovero.
+La creazione di un trigger (o di un constraint) impedirebbe l'inserimento di un paziente perché questo, al momento dell'inserimento non sarebbe associato ad alcun ricovero, d'altra parte non sarebbe nemmeno possibile inserire prima il ricovero perché non si avrebbe il valore della chiave esterna.
+Si potrebbe pensare di disabilitare momentaneamente il trigger (o constraint), inserire il paziente, inserire il ricovero e poi riabilitarlo, ma questa soluzione è stata scartata in quanto non-safe.
+
+Uno stesso ragionamento può essere fatto anche per \ref{vinc:ter_almu_tp}.
+Ricordando che una TERAPIA\_PRESCRITTA, essendo un'entità debole, deve necessariamente essere inserita dopo la TERAPIA da cui dipende.
+
+Si può notare che anche i vincoli \ref{vinc:far_almu_pr} e \ref{vinc:pr_almnu_far} creano una dipendenza ciclica.
+A livello intuitivo sarà possibile implementarne soltanto uno.
+Similmente a quanto detto prima è più grave che, dato una farmaco, non si sappiano quali principi attivi lo compongono, piuttosto che aver memorizzato principi attivi che non compaiono in alcun farmaco.
+Nel blocco sottostante viene illustrata questa soluzione:
+
+TODO manca l'inserimento di un nuovo farmaco... come fare a creare tupla in CONTIENE? non si può perché non conosco a priori. Sta all'utente
+
+Sotto assicuro che ad un farmaco non vengano mai rimossi tutti i principi attivi
+\begin{lstlisting}
+create or replace function almeno_un_pa_cont()
+returns trigger as
+$$
+  begin
+    perform *
+    from contiene
+    where old.farmaco == farmaco and
+          old.pr_attivo <> pr_attivo;
+    if not found
+    then
+      raise exception
+        'Rimarrebbe senza principi attivi';
+      return null;
+    else
+      return new;
+    end if;
+  end;
+$$ language plpgsql;
+
+create trigger controlla_almeno_pa_del before delete
+  on contiene for each row
+    execute procedure almeno_un_pa_cont();
+
+create trigger controlla_almeno_pa_up before update
+  on contiene for each row
+    when ( new.farmaco <> old.farmaco or
+           new.pr_attivo <> old.pr_attivo)
+    execute procedure almeno_un_pa_cont();
+\end{lstlisting}
 
 
-% TODO da mettere in fondo alla parte dei Triggers
-% Poiché postgre non ha un costrutto per gli attributi derivati, dobbiamo implementarlo noi
-% Si vuole mantenere consistente l'attributo \textit{tot\_gg\_ric} in \textit{paziente} in modo che indichi quanti giorni il paziente ha passato da ricoverato.
-% \begin{lstlisting}
-% create or replace function
-%     ricalcolo_gg(cf_paz dom_cf)
-% returns int
-% language plpgsql as $$
-%     declare
-%         gg int;
-%     begin
-%         select sum(ricovero.data_f-ricovero.data_i)
-%         into gg
-%         from paziente
-%           join ricovero
-%             on paziente.cf = ricovero.paziente
-%         where paziente.cf = cf_paz;
-%         return gg;
-%     end
-% $$;
-% \end{lstlisting}
+Osservando lo schema in \autoref{fig:ER_finale} si può notare la presenza di un attributo derivato in PAZIENTE.
+SQL non offre un costrutto per la definizione di tali attributi, è necessario creare dei triggers:
+\begin{lstlisting}
+create or replace function aggiorna_gg_update()
+returns trigger as
+$$
+  begin
+    update paziente
+    set tot_gg_ric = ricalcolo_gg(new.paziente)
+    where paziente.cf = new.paziente;
+
+    if new.paziente <> old.paziente
+      then
+      update paziente
+      set tot_gg_ric = ricalcolo_gg(old.paziente)
+      where paziente.cf = old.paziente;
+    end if;
+    return new;
+  end;
+$$ language plpgsql;
+
+create trigger aggiornamento_gg_insert after insert
+  on ricovero for each row
+  execute procedure aggiorna_gg_insert();
+
+create trigger aggiornamento_gg_update after update
+  on ricovero for each row
+    when ( new.data_i <> old.data_i or
+           new.data_f <> old.data_f or
+           old.data_i is null       or
+           old.data_f is null       or
+           new.paziente <> old.paziente )
+      execute procedure aggiorna_gg_update();
+\end{lstlisting}
+La funzione \textit{ricalcolo\_gg} calcola la somma totale dei giorni che una paziente ha passato da ricoverato.
 
 
 % Attributo derivato
 % Assicurare i vincoli di integrità
 %
+
+TODO trigger per creazione codici di diagnosi e terapia
+TODO dire sopra nella crazione domini aggionrare blocco codice SQL
 \cleardoublepage
 \subsection{Definizione di Query Significative}
 

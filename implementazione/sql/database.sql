@@ -27,17 +27,21 @@ set search_path to ospedale;
 create domain dom_cf as varchar
     check ( value ~ '^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$' ); -- es MRARSS80A01F205W
     
-create domain dom_ric as varchar
-    check ( value ~ ('RIC' || '[0-9]+')); 
+create sequence dom_ric_seq;
+create domain dom_ric as int default nextval('dom_ric_seq') not null;
+--     check ( value ~ ('RIC' || '[0-9]+')); 
 
-create domain dom_dia as varchar
-    check ( value ~ ('DIA' || '[0-9]+')); 
+create sequence dom_dia_seq;
+create domain dom_dia as int default nextval('dom_dia_seq') not null;
+--     check ( value ~ ('DIA' || '[0-9]+')); 
 
-create domain dom_ter as varchar
-    check ( value ~ ('TER' || '[0-9]+')); 
+create sequence dom_ter_seq;
+create domain dom_ter as int default nextval('dom_ter_seq') not null;
+--     check ( value ~ ('TER' || '[0-9]+')); 
 
 create domain ICD10 as varchar
     check ( value ~ ('^[A-Z]([A-Z]|[0-9]){2}((\.)([0-9])*)?$')); 
+
 
 create table paziente (
     cf dom_cf primary key,
@@ -132,7 +136,7 @@ language plpgsql as $$
     declare
         gg int;
     begin
-        -- select sum(age(ricovero.data_f, ricovero.data_i)) into gg
+        --TODO 2000/01/01 - 2000/01/01 = 0 ma e' stato in ric un giorno quindi +1?
         select sum(ricovero.data_f-ricovero.data_i) into gg
         from paziente
           join ricovero on paziente.cf = ricovero.paziente
@@ -301,6 +305,8 @@ $$
     set tot_gg_ric = ricalcolo_gg(new.paziente)
     where paziente.cf = new.paziente;
 
+    -- se ho cambiato paziente devo anche ricalcolare
+    -- il valore per il vecchio senza ricovero
     if new.paziente <> old.paziente
       then
       update paziente
@@ -357,6 +363,12 @@ create trigger init_paziente_dia before insert
   on diagnosi for each row
   execute procedure init_paziente();
 
+create trigger update_paziente_dia before update
+  on diagnosi
+  for each row
+  when ( new.paziente <> old.paziente or
+         new.ricovero <> old.ricovero )
+  execute procedure init_paziente();
 
 -- DIAGNOSI una sola TERAPIA_PRESCRITTA TODO BASTA UNIQUE!!
     -- Diagnosi in T_P deve essere chiave, deve essere introdotto un vincolo che asscuri che una Diagnosi compaia una sola volta dentro tutta la tabella delel T_P
