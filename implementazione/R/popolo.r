@@ -256,7 +256,7 @@ for(n_paziente in 1: nrow(utile)){
     for(k in 1:nricoveri){
 
         ricovero <- data.frame(
-                        cod_ric = cric(indice_ricovero),
+                        cod_ric = indice_ricovero,
                         data_i = v_date_i[k],
                         data_f = v_date_f[k],
                         motivo = sample(mot,1,replace=T),
@@ -372,7 +372,7 @@ for(indice_tupla in 1 : n_tuple){
     for(indice_diagnosi_ricovero in 1:n_diagnosi[indice_tupla]){
         
         diagnosi <- data.frame(
-                            cod_dia=cdia(indice_df),
+                            cod_dia=indice_df,
                             data_dia=v_date[indice_diagnosi_ricovero],
                             cod_pat=v_codpat[indice_diagnosi_ricovero],
                             grav_pat=v_gravita[indice_diagnosi_ricovero],
@@ -597,7 +597,7 @@ for(i in seq( 1 , (length(farmaci[,1])*3) , by=3 )  ){
     for(k in i : (i+2)){
         
         terapia <- data.frame(
-                    cod_ter=cter(k),
+                    cod_ter=k,
                     dose_gio=sample(c(1,2,3),1,replace=T),
                     mod_somm=v_msomm[s],
                     farmaco=farmaci[(floor(i/3)+1),2]
@@ -643,61 +643,88 @@ ricoveri <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_M
 
 medici <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\diagnosi\\medico.txt")
 
+pazienti <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pazienti.csv", stringsAsFactors = FALSE)
+
 cross <- merge(x=ricoveri, y=diagnosi, by.x="cod_ric", by.y="ricovero")
 
 utile <- cross[,c(1,3,4,7,9,10)]
 colnames(utile) <- c("cric","r_data_i","r_data_f","paz","cdia","d_data")
 
+# Prendo tutti i pazienti in ordine alfabetico
+pazienti <- pazienti[order(pazienti$cf),]
+pazienti <- pazienti[,2]
 
-# Ordino le diagnosi in base alla data
-#diagnosi <- diagnosi[order(diagnosi$data_dia),]
+
+# Ordino il dataframe per ordine alfabetico del cf paziente e la data della diagnosi
+utile_1 <- utile[order(utile$paz,utile$r_data_i,utile$d_data),]
+
 
 lista_df_tprescritte <- list()
+indice_tp = 1
 
-# Il numero di terapie prescritte deve essere il numero di diagnosi - 10%
-n_tp <- length(diagnosi[,1]) - floor(length(diagnosi[,1])/10)
+for(i in 1:(length(pazienti))){
 
-lista_eff_coll <- vector()
-class(lista_eff_coll) <- "Date"
+    # Per ogni paziente recupero tutte le diagnosi
+    paz_att <- pazienti[i]
 
-for(i in (n_tp+1) : length(diagnosi[,1])){
+    codici_diagnosi_per_singolo_paziente <- utile_1[which(utile_1$paz == paz_att), 5]
+    date_tutte_diagnosi_per_singolo_paziente <- utile_1[which(utile_1$paz == paz_att), 6]
 
-    lista_eff_coll[i-n_tp] <- diagnosi[i,3]
+    k = 1
+    while(k <= length(codici_diagnosi_per_singolo_paziente)){
+        
+        # Stabilisco delle probabilità per sapere se la patologia ha una cura
+        prob_cura = sample(1:10,1,replace=T)
+        prob_eff_coll = 1
+        effcoll = NA
+
+
+        if(prob_cura != 10){
+
+            if(k < length(codici_diagnosi_per_singolo_paziente)){
+               
+                di = sample(seq(as.Date(date_tutte_diagnosi_per_singolo_paziente[k]), as.Date(date_tutte_diagnosi_per_singolo_paziente[k+1]), by="day"), 1, replace=T)
+                df = sample(seq(di, as.Date(date_tutte_diagnosi_per_singolo_paziente[k+1]), by="day"), 1, replace=T)
+               
+                prob_eff_coll = sample(1:20,1,replace=T)
+
+                if(prob_eff_coll == 1){
+                    effcoll = codici_diagnosi_per_singolo_paziente[k+1]
+                }
+            
+            } else {
+                di = sample(seq(as.Date(date_tutte_diagnosi_per_singolo_paziente[k]), as.Date("2019-04-11"), by="day"), 1, replace=T)
+                df = sample(seq(di, as.Date("2019-04-11"), by="day"), 1, replace=T)
+            }
+
+            terapia_prescritta <- data.frame(
+                            data_i = di,
+                            data_f = df,
+                            med_presc = sample(medici, 1, replace=T),
+                            diagnosi = codici_diagnosi_per_singolo_paziente[k],
+                            terapia = sample(terapie[,2],1,replace=T),
+                            coll_dia = effcoll
+                            )
+
+            lista_df_tprescritte[[indice_tp]] <- terapia_prescritta
+            indice_tp = indice_tp + 1
+
+
+            k = k + 1
+
+            if((k < (length(codici_diagnosi_per_singolo_paziente))) && (prob_eff_coll == 1)){
+                k = k + 1
+            }
+        
+        }
+    }
 
 }
 
+terapie_prescritte_df <- megabind(lista_df_tprescritte)
 
+write.csv(terapie_prescritte_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie_prescritte.csv"))
 
-for(i in 1 : n_tp ){
-
-
-
-
-
-
-    terapia_prescritta <- data.frame(
-                            data_i
-                            data_f
-                            med_presc
-                            diagnosi
-                            terapia
-                            coll_dia
-                            )
-
-    lista_df_tprescritte[[i]] <- terapia_prescritta
-
-}
-
-
-
-terapia_prescritta <- data.frame(
-                            data_i
-                            data_f
-                            med_presc
-                            diagnosi
-                            terapia
-                            coll_dia
-                            )
 
 
 
