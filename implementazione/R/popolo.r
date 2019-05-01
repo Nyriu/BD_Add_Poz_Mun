@@ -364,7 +364,7 @@ for(indice_tupla in 1 : n_tuple){
     # Seleziono tanti codici icd10 quanti il numero di diagnosi
     v_codpat <- sample(icd10, n_diagnosi[indice_tupla],replace=T)
     # Creo un vettore di gravità delle patologie diagnosticate
-    v_gravita <- sample(c("Alta","Bassa"),n_diagnosi[indice_tupla],replace=T)
+    v_gravita <- sample(c(TRUE,FALSE),n_diagnosi[indice_tupla],replace=T)
     # Seleziono i medici a caso 
     v_med <- sample(medici, n_diagnosi[indice_tupla], replace=T)
 
@@ -458,9 +458,9 @@ write.csv(pr_attivi_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_A
 #######                               #######
 
 # Creo i df per aziende, farmaci
-aziende <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\azienda.txt",stringsAsFactors = FALSE)
+aziende <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\azienda.txt")
 
-nome_farmaci <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\farmaco.txt", stringsAsFactors = FALSE)
+nome_farmaci <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\farmaco.txt")
 
 
 lista_df_farmaci <- list()
@@ -774,24 +774,95 @@ con <- dbConnect(drv,
 #################################### AREA 51 #########################################
 ######################################################################################
 
+# Procedura per leggere un file sql 
+getSQL <- function(filepath){
+  file = file(filepath, "r")
+  sql.string <- ""
+
+  while (TRUE){
+    line <- readLines(file, n = 1)
+
+    if ( length(line) == 0 ){
+      break
+    }
+
+    line <- gsub("\\t", " ", line)
+
+    if(grepl("--",line) == TRUE){
+      line <- paste(sub("--","/*",line),"*/")
+    }
+
+    sql.string <- paste(sql.string, line)
+  }
+
+  close(file)
+  return(sql.string)
+}
+
 
 # Setta il path sullo schema "ospedale"
 dbGetQuery(con, "set search_path to ospedale;")
 
-# Query di test (mostra il dataframe)
-dbGetQuery(con, "select * from paziente;")
+# Eseguo tutte le query del file contenente il database
+dbGetQuery(con, getSQL("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\sql\\database.sql"))
+
+
+
+
+
+pazienti_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pazienti.csv", stringsAsFactors = FALSE)
+ricoveri_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
+diagnosi_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\diagnosi.csv", stringsAsFactors = FALSE)
+pr_attivi_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pr_attivi.csv", stringsAsFactors = FALSE)
+farmaci_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\farmaci.csv", stringsAsFactors = FALSE)
+contiene_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\contiene.csv", stringsAsFactors = FALSE)
+terapie_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie.csv", stringsAsFactors = FALSE)
+terapie_pr_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie_prescritte.csv", stringsAsFactors = FALSE)
+
+pazienti_df <- pazienti_df[,2:10]
+ricoveri_df <- ricoveri_df[,2:7]
+diagnosi_df <- diagnosi_df[,2:8]
+
+
+
+# Inserimento dei pazienti
+dbWriteTable(con, name="paziente", value=pazienti_df, row.names=FALSE, append=TRUE)
+
+# Inserimento dei ricoveri
+for(i in seq(1,length(ricoveri_df[,1]),by = 3000)){
+    if(i+2999 < length(ricoveri_df[,1])){
+        dbWriteTable(con, name="ricovero", value=ricoveri_df[i:(i+2999),1:6], row.names=FALSE, append=TRUE)
+    } else {
+        dbWriteTable(con, name="ricovero", value=ricoveri_df[i:(length(ricoveri_df[,1])),1:6], row.names=FALSE, append=TRUE)
+    }
+}
+
+# Inserimento delle diagnosi
+dbWriteTable(con, name="diagnosi", value=diagnosi_df[,1:7], row.names=FALSE, append=TRUE)
+
+# Inserimento dei principi attivi
+dbWriteTable(con, name="principio_attivo", value=pr_attivi_df[2], row.names=FALSE, append=TRUE)
+
+# Inserimento dei farmaci
+dbWriteTable(con, name="farmaco", value=farmaci_df[,2:4], row.names=FALSE, append=TRUE)
+
+# Inserimento della tabella contiene
+dbWriteTable(con, name="contiene", value=contiene_df[,2:4], row.names=FALSE, append=TRUE)
+
+# Inserimento delle terapie
+dbWriteTable(con, name="terapia", value=terapie_df[,2:5], row.names=FALSE, append=TRUE)
+
+# Inserimento delle terapie prescritte
+dbWriteTable(con, name="terapia_prescritta", value=terapie_pr_df[,2:7], row.names=FALSE, append=TRUE)
+
+
+
+
+
+
 
 # Query memorizzata in un dataframe (una variabile che contiene il dataframe)
 res <- dbGetQuery(con, "select * from paziente;")
-
-# !!!ATTENZIONE!!! ANCORA NON TESTATO
-# Inserimento del dataframe nella tabella paziente del db 
-dbWriteTable(con, 
-             name="paziente",
-             value=pazienti_df,
-             append=F,
-             row.names=T)
-
 
 ######################################################################################
 ######################################################################################
