@@ -1,29 +1,21 @@
 const router = require('express').Router();
-const {
-  getHome,
-  getEntities,
-  getCreateEntity,
-  postCreateEntity,
-  getEntity,
-  deleteEntity,
-  getUpdateEntity,
-  postUpdateEntity,
-} = require('../controllers');
+const { getHome } = require('../controllers');
+const pazienteRouter = require('./pazienti');
+const diagnosiRouter = require('./diagnosi');
+const ricoveroRouter = require('./ricoveri');
+const farmacoRouter = require('./farmaci');
+const terapiaRouter = require('./terapie');
+const terapiaPrescrittaRouter = require('./terapie-prescritte');
+
 
 router.get('/', getHome);
 
-router.get('/:entities', getEntities);
+router.use('/pazienti', pazienteRouter);
+router.use('/diagnosi', diagnosiRouter);
+router.use('/ricoveri', ricoveroRouter);
+router.use('/farmaci', farmacoRouter);
+router.use('/terapie', terapiaRouter);
+router.use('/terapie-prescritte', terapiaPrescrittaRouter);
 
-router.get('/:entities/create', getCreateEntity);
-
-router.post('/:entities/create', postCreateEntity);
-
-router.get('/:entities/:id', getEntity);
-
-router.delete('/:entities/:id/delete', deleteEntity);
-
-router.get('/:entities/:id/update', getUpdateEntity);
-
-router.post('/:entities/:id/update', postUpdateEntity);
 
 module.exports = router;

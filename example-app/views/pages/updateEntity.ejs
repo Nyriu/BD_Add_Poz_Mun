@@ -1,0 +1,34 @@
+<!-- views/pages/updateEntity.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %>
+</head>
+<body class="container">
+
+<header>
+  <% include ../partials/header %>
+</header>
+
+<main>
+  <div class="jumbotron">
+    <h1 class="text-capitalize">Aggiorna <%= entity %></h1>
+    <form method="post" action="/<%= entities %>/<%= data[0].cf %>/update">
+      <% for (var i = 0; i < columns.length; i++) { %>
+        <div class="form-group">
+            <label for="<%= columns[i] %>" class="text-capitalize"><%= translations[columns[i]] %>:</label>
+            <input type="text" class="form-control" name="<%= columns[i] %>" value="<%= data[0][columns[i]] %>">
+        </div> 
+      <% } %>
+      <button type="submit" class="btn btn-success">Salva</button>
+    </form>
+  </div>
+</main>
+
+<footer>
+    <% include ../partials/footer %>
+</footer>
+
+</body>
+</html>

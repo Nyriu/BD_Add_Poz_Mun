@@ -1,0 +1,23 @@
+<!-- views/partials/sidebars/entities.ejs -->
+<div class="well">
+    <h2 class="text-capitalize"><%= entities %></h2>
+    <table data-toggle="table">
+        <thead>
+            <tr>
+                <% for (var i = 0; i < columns.length; i++) { %>
+                <th data-sortable="true" data-field="<%= columns[i] %>"><%= translations[columns[i]] %></th>
+                <% } %>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (var i = 0; i < data.length; i++) { %>
+            <tr>
+                <td><a href="/<%= entities %>/<%= data[i][columns[0]] %>"><%= data[i][columns[0]] %></a></td>
+                <% for (var j = 1; j < columns.length; j++) { %>
+                <td><%= data[i][columns[j]] %></td>
+                <% } %>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>

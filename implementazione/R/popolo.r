@@ -256,7 +256,7 @@ for(n_paziente in 1: nrow(utile)){
     for(k in 1:nricoveri){
 
         ricovero <- data.frame(
-                        cod_ric = cric(indice_ricovero),
+                        cod_ric = indice_ricovero,
                         data_i = v_date_i[k],
                         data_f = v_date_f[k],
                         motivo = sample(mot,1,replace=T),
@@ -364,7 +364,7 @@ for(indice_tupla in 1 : n_tuple){
     # Seleziono tanti codici icd10 quanti il numero di diagnosi
     v_codpat <- sample(icd10, n_diagnosi[indice_tupla],replace=T)
     # Creo un vettore di gravità delle patologie diagnosticate
-    v_gravita <- sample(c("Alta","Bassa"),n_diagnosi[indice_tupla],replace=T)
+    v_gravita <- sample(c(TRUE,FALSE),n_diagnosi[indice_tupla],replace=T)
     # Seleziono i medici a caso 
     v_med <- sample(medici, n_diagnosi[indice_tupla], replace=T)
 
@@ -372,7 +372,7 @@ for(indice_tupla in 1 : n_tuple){
     for(indice_diagnosi_ricovero in 1:n_diagnosi[indice_tupla]){
         
         diagnosi <- data.frame(
-                            cod_dia=cdia(indice_df),
+                            cod_dia=indice_df,
                             data_dia=v_date[indice_diagnosi_ricovero],
                             cod_pat=v_codpat[indice_diagnosi_ricovero],
                             grav_pat=v_gravita[indice_diagnosi_ricovero],
@@ -458,9 +458,9 @@ write.csv(pr_attivi_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_A
 #######                               #######
 
 # Creo i df per aziende, farmaci
-aziende <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\azienda.txt",stringsAsFactors = FALSE)
+aziende <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\azienda.txt")
 
-nome_farmaci <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\farmaco.txt", stringsAsFactors = FALSE)
+nome_farmaci <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\farmaco.txt")
 
 
 lista_df_farmaci <- list()
@@ -597,7 +597,7 @@ for(i in seq( 1 , (length(farmaci[,1])*3) , by=3 )  ){
     for(k in i : (i+2)){
         
         terapia <- data.frame(
-                    cod_ter=cter(k),
+                    cod_ter=k,
                     dose_gio=sample(c(1,2,3),1,replace=T),
                     mod_somm=v_msomm[s],
                     farmaco=farmaci[(floor(i/3)+1),2]
@@ -647,57 +647,83 @@ cross <- merge(x=ricoveri, y=diagnosi, by.x="cod_ric", by.y="ricovero")
 
 utile <- cross[,c(1,3,4,7,9,10)]
 colnames(utile) <- c("cric","r_data_i","r_data_f","paz","cdia","d_data")
+utile <- utile[order(utile$paz),]
+
+# Prendo tutti i pazienti in ordine alfabetico
+pazienti <- utile[,4]
+pazienti <- unique(pazienti)
 
 
-# Ordino le diagnosi in base alla data
-#diagnosi <- diagnosi[order(diagnosi$data_dia),]
+# Ordino il dataframe per ordine alfabetico del cf paziente e la data della diagnosi
+utile_1 <- utile[order(utile$paz,utile$r_data_i,utile$d_data),]
+
 
 lista_df_tprescritte <- list()
+indice_tp = 1
 
-# Il numero di terapie prescritte deve essere il numero di diagnosi - 10%
-n_tp <- length(diagnosi[,1]) - floor(length(diagnosi[,1])/10)
+for(i in 1:(length(pazienti))){
 
-lista_eff_coll <- vector()
-class(lista_eff_coll) <- "Date"
+    # Per ogni paziente recupero tutte le diagnosi
+    paz_att <- pazienti[i]
 
-for(i in (n_tp+1) : length(diagnosi[,1])){
+    codici_diagnosi_per_singolo_paziente <- utile_1[which(utile_1$paz == paz_att), 5]
+    date_tutte_diagnosi_per_singolo_paziente <- utile_1[which(utile_1$paz == paz_att), 6]
 
-    lista_eff_coll[i-n_tp] <- diagnosi[i,3]
+    k = 1
+    while(k <= length(codici_diagnosi_per_singolo_paziente)){
+        
+        # Stabilisco delle probabilità per sapere se la patologia ha una cura
+        prob_cura = sample(1:10,1,replace=T)
+        prob_eff_coll = 1
+        effcoll = NA
+
+
+        if(prob_cura != 10){
+
+            if(k < length(codici_diagnosi_per_singolo_paziente)){
+               
+                di = sample(seq(as.Date(date_tutte_diagnosi_per_singolo_paziente[k]), as.Date(date_tutte_diagnosi_per_singolo_paziente[k+1]), by="day"), 1, replace=T)
+                df = sample(seq(di, as.Date(date_tutte_diagnosi_per_singolo_paziente[k+1]), by="day"), 1, replace=T)
+               
+                prob_eff_coll = sample(1:20,1,replace=T)
+
+                if(prob_eff_coll == 1){
+                    effcoll = codici_diagnosi_per_singolo_paziente[k+1]
+                }
+            
+            } else {
+                di = sample(seq(as.Date(date_tutte_diagnosi_per_singolo_paziente[k]), as.Date("2019-04-11"), by="day"), 1, replace=T)
+                df = sample(seq(di, as.Date("2019-04-11"), by="day"), 1, replace=T)
+            }
+
+            terapia_prescritta <- data.frame(
+                            data_i = di,
+                            data_f = df,
+                            med_presc = sample(medici, 1, replace=T),
+                            diagnosi = codici_diagnosi_per_singolo_paziente[k],
+                            terapia = sample(terapie[,2],1,replace=T),
+                            coll_dia = effcoll
+                            )
+
+            lista_df_tprescritte[[indice_tp]] <- terapia_prescritta
+            indice_tp = indice_tp + 1
+
+
+            k = k + 1
+
+            if((k < (length(codici_diagnosi_per_singolo_paziente))) && (prob_eff_coll == 1)){
+                k = k + 1
+            }
+        
+        }
+    }
 
 }
 
+terapie_prescritte_df <- megabind(lista_df_tprescritte)
 
+write.csv(terapie_prescritte_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie_prescritte.csv"))
 
-for(i in 1 : n_tp ){
-
-
-
-
-
-
-    terapia_prescritta <- data.frame(
-                            data_i
-                            data_f
-                            med_presc
-                            diagnosi
-                            terapia
-                            coll_dia
-                            )
-
-    lista_df_tprescritte[[i]] <- terapia_prescritta
-
-}
-
-
-
-terapia_prescritta <- data.frame(
-                            data_i
-                            data_f
-                            med_presc
-                            diagnosi
-                            terapia
-                            coll_dia
-                            )
 
 
 
@@ -747,24 +773,111 @@ con <- dbConnect(drv,
 #################################### AREA 51 #########################################
 ######################################################################################
 
+# Procedura per leggere un file sql 
+getSQL <- function(filepath){
+  file = file(filepath, "r")
+  sql.string <- ""
+
+  while (TRUE){
+    line <- readLines(file, n = 1)
+
+    if ( length(line) == 0 ){
+      break
+    }
+
+    line <- gsub("\\t", " ", line)
+
+    if(grepl("--",line) == TRUE){
+      line <- paste(sub("--","/*",line),"*/")
+    }
+
+    sql.string <- paste(sql.string, line)
+  }
+
+  close(file)
+  return(sql.string)
+}
+
 
 # Setta il path sullo schema "ospedale"
 dbGetQuery(con, "set search_path to ospedale;")
 
-# Query di test (mostra il dataframe)
-dbGetQuery(con, "select * from paziente;")
+# Eseguo tutte le query del file contenente il database
+dbGetQuery(con, getSQL("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\sql\\database.sql"))
+
+
+
+
+
+pazienti_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pazienti.csv", stringsAsFactors = FALSE)
+ricoveri_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
+diagnosi_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\diagnosi.csv", stringsAsFactors = FALSE)
+pr_attivi_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pr_attivi.csv", stringsAsFactors = FALSE)
+farmaci_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\farmaci.csv", stringsAsFactors = FALSE)
+contiene_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\contiene.csv", stringsAsFactors = FALSE)
+terapie_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie.csv", stringsAsFactors = FALSE)
+terapie_pr_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie_prescritte.csv", stringsAsFactors = FALSE)
+
+pazienti_df <- pazienti_df[,2:10]
+ricoveri_df <- ricoveri_df[,2:7]
+diagnosi_df <- diagnosi_df[,2:8]
+pr_attivi_df <- pr_attivi_df[2]
+farmaci_df <- farmaci_df[,2:4]
+contiene_df <- contiene_df[,2:4]
+terapie_df <- terapie_df[,2:5]
+terapie_pr_df <- terapie_pr_df[,2:7]
+
+
+# Inserimento dei pazienti
+dbWriteTable(con, name="paziente", value=pazienti_df, row.names=FALSE, append=TRUE)
+
+# Inserimento dei ricoveri
+for(i in seq(1,length(ricoveri_df[,1]),by = 3000)){
+    if(i+2999 < length(ricoveri_df[,1])){
+        dbWriteTable(con, name="ricovero", value=ricoveri_df[i:(i+2999),], row.names=FALSE, append=TRUE)
+    } else {
+        dbWriteTable(con, name="ricovero", value=ricoveri_df[i:(length(ricoveri_df[,1])),], row.names=FALSE, append=TRUE)
+    }
+}
+
+# Inserimento delle diagnosi
+dbWriteTable(con, name="diagnosi", value=diagnosi_df, row.names=FALSE, append=TRUE)
+
+# Inserimento dei principi attivi
+dbWriteTable(con, name="principio_attivo", value=pr_attivi_df, row.names=FALSE, append=TRUE)
+
+# Inserimento dei farmaci
+dbWriteTable(con, name="farmaco", value=farmaci_df, row.names=FALSE, append=TRUE)
+
+# Inserimento della tabella contiene
+dbWriteTable(con, name="contiene", value=contiene_df, row.names=FALSE, append=TRUE)
+
+# Inserimento delle terapie
+dbWriteTable(con, name="terapia", value=terapie_df, row.names=FALSE, append=TRUE)
+
+# Inserimento delle terapie prescritte
+dbWriteTable(con, name="terapia_prescritta", value=terapie_pr_df, row.names=FALSE, append=TRUE)
+
+
+
+
+
+
 
 # Query memorizzata in un dataframe (una variabile che contiene il dataframe)
-res <- dbGetQuery(con, "select * from paziente;")
+res <- dbGetQuery(con, "
 
-# !!!ATTENZIONE!!! ANCORA NON TESTATO
-# Inserimento del dataframe nella tabella paziente del db 
-dbWriteTable(con, 
-             name="paziente",
-             value=pazienti_df,
-             append=F,
-             row.names=T)
+set search_path to ospedale;
 
+select * from paziente join ricovero on paziente.cf = ricovero.paziente
+                       join diagnosi on ricovero.cod_ric = diagnosi.ricovero
+					   join terapia_prescritta on diagnosi.cod_dia  = terapia_prescritta.diagnosi
+					   join terapia on terapia_prescritta.terapia= terapia.cod_ter
+					   join farmaco on terapia.farmaco = farmaco.nome_comm
+					   join contiene on farmaco.nome_comm = contiene.farmaco
+					   join principio_attivo on contiene.pr_attivo = principio_attivo.nome;
+                       
+                       ")
 
 ######################################################################################
 ######################################################################################

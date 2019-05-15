@@ -1,4 +1,4 @@
-<!-- views/pages/pazienti.ejs -->
+<!-- views/pages/entities.ejs -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,12 +13,12 @@
 
 <main>
   <div class="jumbotron">
-    <div class="row">
+    <div class="row flex-row">
       <div class="col-sm-8">
         <h1 class="text-capitalize"><%= entities %></h1>
       </div>
       <div class="col-sm-4">
-        <a href="<%= entities %>/create" class="btn btn-primary text-capitalize" role="button">Crea <%= entity %></a>
+        <a href="<%= entities %>/create" class="btn btn-primary btn-create text-capitalize" role="button">Crea <%= entity %></a>
       </div>
     </div>
     <table
@@ -27,17 +27,17 @@
       data-search="true">
       <thead>
         <tr>
-          <% for (var i = 0; i < keys.length; i++) { %>
-            <th data-sortable="true" data-field="<%= keys[i] %>"><%= translations[keys[i]] %></th>
+          <% for (var i = 0; i < columns.length; i++) { %>
+            <th data-sortable="true" data-field="<%= columns[i] %>"><%= translations[columns[i]] %></th>
           <% } %>  
         </tr>
       </thead>
       <tbody>
         <% for (var i = 0; i < data.length; i++) { %>
           <tr>
-            <td><a href="/<%= entities %>/<%= data[i][keys[0]] %>"><%= data[i][keys[0]] %></a></td>
-            <% for (var j = 1; j < keys.length; j++) { %>
-              <td><%= data[i][keys[j]] %></td>
+            <td><a href="/<%= entities %>/<%= data[i][columns[0]] %>"><%= data[i][columns[0]] %></a></td>
+            <% for (var j = 1; j < columns.length; j++) { %>
+              <td><%= data[i][columns[j]] %></td>
             <% } %>
           </tr>    
         <% } %>

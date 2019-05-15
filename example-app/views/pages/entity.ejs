@@ -1,38 +1,58 @@
-<!-- views/pages/pazienti.ejs -->
+<!-- views/pages/entity.ejs -->
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <% include ../partials/head %>
 </head>
+
 <body class="container">
 
-<header>
-  <% include ../partials/header %>
-</header>
+  <header>
+    <% include ../partials/header %>
+  </header>
 
-<main>
-  <div class="jumbotron">
-    <h1 class="text-capitalize"><%= entity %></h1>
-    <div class="panel panel-default">
-      <div class="panel-heading text-capitalize">Dati <%= entity %></div>
-      <div class="panel-body">
-        <% for (var i = 0; i < keys.length; i++) { %>
-          <div class="row">
-            <div class="cell col-sm-6 form-group">
-              <span class="label-default"><%= translations[keys[i]] %></span>
-              <div class="field" name="<%= keys[i] %>"><%= data[0][keys[i]] %></div>
+  <main>
+    <div class="jumbotron">
+      <h1 class="text-capitalize"><%= entity %></h1>
+      <div class="row flex-row">
+        <div class="col-sm-8">
+          <div class="panel panel-default">
+            <div class="panel-heading text-capitalize">Dati <%= entity %></div>
+            <div class="panel-body">
+              <% for (var i = 0; i < columns.length; i++) { %>
+              <div class="row">
+                <div class="cell col-sm-6 form-group">
+                  <span class="label-default"><%= translations[columns[i]] %></span>
+                  <div class="field" name="<%= columns[i] %>"><%= data[0][columns[i]] %></div>
+                </div>
+              </div>
+              <% } %>
             </div>
           </div>
+        </div>
+        <% if(typeof sidebar !== 'undefined'){ %>
+        <div class="col-sm-4">            
+            <%- include('../partials/sidebars/entities', {data: sidebar, columns: sidebarColumns}); %>
+        </div>
         <% } %>
       </div>
+      <div class="row flex-row">
+        <a href="<%= data[0].cf %>/update" class="col-sm-2 btn btn-primary btn-create text-capitalize"
+          role="button">Aggiorna
+          <%= entity %></a>
+        <form method="post" action="<%= data[0].cf %>/delete">
+          <button type="submit" class="col-sm-2  btn btn-danger">Elimina <%= entity %></button>
+        </form>
+      </div>
     </div>
-  </div>
-</main>
+  </main>
 
-<footer>
+  <footer>
     <% include ../partials/footer %>
-</footer>
+  </footer>
 
 </body>
+
 </html>

@@ -1,0 +1,6 @@
+        cf        | cognome |  nome   | data_nasc  | luogo_nasc | prov_res | reg_app | ulss | tot_gg_ric 
+------------------+---------+---------+------------+------------+----------+---------+------+------------
+ ABCDEF01A01A012A | Belli   | Armando | 2000-01-01 | Abbabba    | AB       |         |      |          9
+ ABCDEF01A01A012B | Celli   | Armando | 2000-01-01 | Abbabba    | AB       |         |      |         45
+(2 rows)
+

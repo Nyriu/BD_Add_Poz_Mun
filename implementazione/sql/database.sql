@@ -31,7 +31,8 @@ create sequence dom_ric_seq;
 create domain dom_ric as int default nextval('dom_ric_seq') not null;
 
 create sequence dom_dia_seq;
-create domain dom_dia as int default nextval('dom_dia_seq') not null;
+create domain dom_dia as int default nextval('dom_dia_seq');
+--     check ( value ~ ('DIA' || '[0-9]+')); 
 
 create sequence dom_ter_seq;
 create domain dom_ter as int default nextval('dom_ter_seq') not null;
@@ -60,7 +61,7 @@ create table ricovero (
     data_f date,
     motivo varchar not null,
     div_osp varchar not null, 
-   paziente dom_cf not null
+    paziente dom_cf not null
                     references paziente(cf) 
                     on update cascade 
                     on delete cascade
@@ -71,7 +72,7 @@ create table diagnosi (
     data_dia date not null,
     cod_pat ICD10 not null,
     grav_pat boolean not null,
-    medico varchar(16) not null,
+    medico varchar not null,
     ricovero dom_ric not null
                      references ricovero(cod_ric) 
                      on update cascade 
@@ -100,7 +101,7 @@ create table contiene (
     pr_attivo dom_pa references principio_attivo(cod_pa) 
                       on update cascade 
                       on delete cascade,
-    quantita int not null,
+    quantita varchar not null,
     primary key (farmaco, pr_attivo)
 );
 
@@ -117,7 +118,7 @@ create table terapia (
 create table terapia_prescritta (
     data_i date not null,
     data_f date not null,
-    med_presc varchar(16) not null,
+    med_presc varchar not null,
     diagnosi dom_dia unique references diagnosi(cod_dia)
                     on update cascade 
                     on delete no action, 
@@ -160,7 +161,7 @@ create or replace function check_date_valide(data_i date, data_f date)
 returns bool as
 $$
   begin
-    return data_i < data_f;
+    return data_i <= data_f;
   end;
 $$ language plpgsql;
 

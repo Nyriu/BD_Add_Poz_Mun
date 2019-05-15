@@ -1,970 +1,970 @@
 "","nome_comm","azienda_prod","dose_gg_racc"
-"1","ZIAGEN","Takeda Pharmaceutical Co.",1
-"2","ZONEGRAN","Amgen",2
-"3","ABSORICA","Mitsubishi Pharma",2
-"4","NORPRAMIN","Altana",3
-"5","SALAGEN","Altana",2
-"6","BUMEX","Akzo Nobel",2
-"7","CHEMET","Alcon",3
-"8","Bebulin","Schering-Plough",2
-"9","NASONEX","Takeda Pharmaceutical Co.",2
-"10","OTEZLA","Hoffmann-La Roche",2
-"11","DEMADEX","Novo Nordisk",3
-"12","GLUCAGEN","Taisho Pharmaceutical",2
-"13","OSMITROL","Schering-Plough",3
-"14","PENLAC","Eisai Co.",2
-"15","AZILECT","Bayer",1
-"16","CALCIUM DISODIUM VERSENATE","Biogen Idec",1
-"17","XOLAIR","Biogen Idec",3
-"18","EMEND","Genzyme",3
-"19","HYCAMTIN","Allergan",2
-"20","GLICONORM","Novo Nordisk",2
-"21","RESECTISOL","Eli Lilly and Company",3
-"22","LOPROX","Mitsubishi Pharma",1
-"23","ELITEK","H. Lundbeck",1
-"24","SAVAYSA","Shionogi & Co.",2
-"25","DIPENTUM","Taisho Pharmaceutical",1
-"26","AXERT","Kyowa Hakko Kogyo Co.",2
-"27","VALTREX","Johnson & Johnson",3
-"28","ADVIL","Sumitomo Chemical Co.",1
-"29","PLAN B","UCB",2
-"30","CroFab","Genzyme",2
-"31","COMPRO","Watson Pharmaceuticals",1
-"32","UNITUXIN","Taisho Pharmaceutical",3
-"33","VELTASSA","Barr",3
-"34","SIMULECT","Kyowa Hakko Kogyo Co.",1
+"1","ZIAGEN","Baxter International",1
+"2","ZONEGRAN","Watson Pharmaceuticals",1
+"3","ABSORICA","Forest Laboratories",1
+"4","NORPRAMIN","Takeda Pharmaceutical Co.",2
+"5","SALAGEN","Chugai Pharmaceutical Co.",3
+"6","BUMEX","Altana",1
+"7","CHEMET","GlaxoSmithKline",1
+"8","Bebulin","UCB",2
+"9","NASONEX","Menarini",1
+"10","OTEZLA","Taisho Pharmaceutical",2
+"11","DEMADEX","Biogen Idec",2
+"12","GLUCAGEN","Alcon",1
+"13","OSMITROL","UCB",2
+"14","PENLAC","Shionogi & Co.",3
+"15","AZILECT","Solvay",1
+"16","CALCIUM DISODIUM VERSENATE","Schering-Plough",3
+"17","XOLAIR","Daiichi Pharmaceutical Co.",2
+"18","EMEND","Baxter International",2
+"19","HYCAMTIN","Altana",1
+"20","GLICONORM","Schering",3
+"21","RESECTISOL","Schering-Plough",1
+"22","LOPROX","Chiron Corporation",3
+"23","ELITEK","UCB",2
+"24","SAVAYSA","Johnson & Johnson",1
+"25","DIPENTUM","Akzo Nobel",2
+"26","AXERT","Eli Lilly and Company",2
+"27","VALTREX","Solvay",1
+"28","ADVIL","Johnson & Johnson",3
+"29","PLAN B","Eisai Co.",3
+"30","CroFab","H. Lundbeck",3
+"31","COMPRO","UCB",2
+"32","UNITUXIN","Wyeth",1
+"33","VELTASSA","Novo Nordisk",2
+"34","SIMULECT","Procter & Gamble",3
 "35","LAMISIL","Novartis",3
-"36","PROZAC","GlaxoSmithKline",1
-"37","CONCERTA","Chugai Pharmaceutical Co.",1
-"38","COREG","Procter & Gamble",1
-"39","JAKAFI","Amgen",3
-"40","INVANZ","Procter & Gamble",1
-"41","CARDENE","Genentech",2
-"42","ADENOCARD","Novartis",3
-"43","MARQIBO KIT","Barr",3
-"44","ARCAPTA NEOHALER","Barr",2
-"45","FOSRENOL","Amgen",2
-"46","DANTRIUM","Kyowa Hakko Kogyo Co.",3
-"47","BETADINE","Genzyme",1
-"48","BENTYL","Novartis",2
-"49","NEMBUTAL SODIUM","Schering",2
-"50","AVASTIN","Akzo Nobel",1
-"51","Albiglutide","Boehringer Ingelheim",3
-"52","FERRLECIT","Schering",2
-"53","MIFEPREX","Amgen",3
-"54","ATACAND","Alcon",3
-"55","PROVENGE","Taisho Pharmaceutical",3
-"56","TRECATOR","Bausch & Lomb",1
-"57","AMERGE","Genentech",2
-"58","AUGMENTIN","Merck & Co.",3
-"59","VIROPTIC","Teva Pharmaceutical Industries",3
-"60","TUSSIGON","Alcon",3
-"61","IMODIUM","Bayer",1
-"62","KLONOPIN","Bausch & Lomb",1
-"63","MESTINON","Daiichi Pharmaceutical Co.",1
-"64","HECTOROL","Daiichi Pharmaceutical Co.",1
-"65","DITROPAN XL","Genentech",2
-"66","RIDAURA","Wyeth",1
-"67","TIMOPTIC","Sanofi-Aventis",1
-"68","CEREBYX","Baxter International",2
-"69","MESNEX","Novartis",1
-"70","CELEBREX","Procter & Gamble",3
-"71","FLUMADINE","Bausch & Lomb",1
-"72","LOVENOX","Sankyo Co.",2
-"73","NITRO-DUR","Hoffmann-La Roche",3
-"74","LITHOSTAT","Daiichi Pharmaceutical Co.",1
-"75","PRIALT","Schering-Plough",2
-"76","AVAPRO","Solvay",2
-"77","ALAWAY","Shionogi & Co.",2
-"78","SPRYCEL","Novartis",3
-"79","FELDENE","Mitsubishi Pharma",2
-"80","OZURDEX","Hoffmann-La Roche",2
-"81","NARDIL","UCB",3
-"82","REXULTI","Johnson & Johnson",3
-"83","CLINORIL","Eisai Co.",1
-"84","LIPOFEN","Alcon",1
-"85","REMERON","Schering-Plough",3
-"86","FEMSTAT 3","Hoffmann-La Roche",2
-"87","HUMATROPE","Genentech",3
-"88","REPATHA","Tanabe Seiyaku Co.",2
-"89","CORGARD","Tanabe Seiyaku Co.",2
-"90","ERAXIS","Bausch & Lomb",2
-"91","TRAVATAN Z","Pfizer",3
-"92","ZOLADEX","Schering-Plough",2
-"93","LOTEMAX","Schering",1
-"94","TAVIST-1","Altana",2
-"95","EVISTA","Chugai Pharmaceutical Co.",2
-"96","TRULICITY","Merck & Co.",2
-"97","XENICAL","H. Lundbeck",2
-"98","DURLAZA","AstraZeneca",3
-"99","TOBI","GlaxoSmithKline",1
-"100","IRESSA","Eli Lilly and Company",1
-"101","MOBIC","Tanabe Seiyaku Co.",1
-"102","LIBRIUM","Abbott Laboratories",2
-"103","RIFADIN","Takeda Pharmaceutical Co.",2
-"104","EMPLICITI","UCB",1
-"105","AVENTYL","Procter & Gamble",3
-"106","ALECENSA","Genentech",3
-"107","CHANTIX","Bausch & Lomb",1
-"108","IFEX","H. Lundbeck",3
-"109","XOPENEX","Daiichi Pharmaceutical Co.",3
-"110","SANDIMMUNE","Daiichi Pharmaceutical Co.",2
-"111","MINIPRESS","GlaxoSmithKline",2
-"112","CARDIZEM","Schering",2
-"113","KEYTRUDA","Eisai Co.",3
-"114","SURVANTA","Astellas Pharma Inc.",1
-"115","RESTORIL","Allergan",1
-"116","TAMBOCOR","Schering-Plough",2
-"117","LOPRESSOR","Novartis",3
-"118","KARBINAL ER","Akzo Nobel",3
-"119","SECONAL","AstraZeneca",2
-"120","ESTRADERM","Novartis",1
-"121","VIRACEPT","Barr",3
-"122","ACTIVASE","Genentech",1
-"123","TROPICACYL","Bristol-Myers Squibb",3
-"124","CYANOKIT","Biogen Idec",1
-"125","CYTOMEL","Eli Lilly and Company",3
-"126","COLESTID","Merck & Co.",2
-"127","INDERAL","Shionogi & Co.",1
-"128","TIKOSYN","Procter & Gamble",1
-"129","ALOXI","Teva Pharmaceutical Industries",2
-"130","EDARBI","Schering",2
-"131","THALOMID","Solvay",1
-"132","LUVOX","Takeda Pharmaceutical Co.",1
-"133","ROBAXIN","Genzyme",2
-"134","CEFOTAN","Sanofi-Aventis",3
-"135","ZEMURON","Astellas Pharma Inc.",3
-"136","FLOLAN","Watson Pharmaceuticals",3
-"137","NILANDRON","Procter & Gamble",2
+"36","PROZAC","AstraZeneca",2
+"37","CONCERTA","Eli Lilly and Company",3
+"38","COREG","Bristol-Myers Squibb",1
+"39","JAKAFI","Alcon",3
+"40","INVANZ","Merck & Co.",1
+"41","CARDENE","Abbott Laboratories",1
+"42","ADENOCARD","Merck & Co.",3
+"43","MARQIBO KIT","Teva Pharmaceutical Industries",3
+"44","ARCAPTA NEOHALER","Shionogi & Co.",1
+"45","FOSRENOL","Merck KGaA",1
+"46","DANTRIUM","Forest Laboratories",1
+"47","BETADINE","UCB",3
+"48","BENTYL","Sanofi-Aventis",3
+"49","NEMBUTAL SODIUM","Mitsubishi Pharma",1
+"50","AVASTIN","Daiichi Pharmaceutical Co.",1
+"51","Albiglutide","Abbott Laboratories",3
+"52","FERRLECIT","Bausch & Lomb",2
+"53","MIFEPREX","Novo Nordisk",1
+"54","ATACAND","Watson Pharmaceuticals",2
+"55","PROVENGE","Genentech",2
+"56","TRECATOR","Taisho Pharmaceutical",3
+"57","AMERGE","Biogen Idec",1
+"58","AUGMENTIN","Novo Nordisk",1
+"59","VIROPTIC","Procter & Gamble",3
+"60","TUSSIGON","Amgen",2
+"61","IMODIUM","Akzo Nobel",2
+"62","KLONOPIN","Bayer",2
+"63","MESTINON","Johnson & Johnson",2
+"64","HECTOROL","Akzo Nobel",2
+"65","DITROPAN XL","Eli Lilly and Company",1
+"66","RIDAURA","Tanabe Seiyaku Co.",1
+"67","TIMOPTIC","Merck KGaA",2
+"68","CEREBYX","AstraZeneca",1
+"69","MESNEX","Barr",1
+"70","CELEBREX","Mitsubishi Pharma",1
+"71","FLUMADINE","Baxter International",2
+"72","LOVENOX","Solvay",2
+"73","NITRO-DUR","Allergan",1
+"74","LITHOSTAT","Taisho Pharmaceutical",1
+"75","PRIALT","Pfizer",2
+"76","AVAPRO","Astellas Pharma Inc.",3
+"77","ALAWAY","Barr",1
+"78","SPRYCEL","Alcon",3
+"79","FELDENE","Sanofi-Aventis",1
+"80","OZURDEX","GlaxoSmithKline",2
+"81","NARDIL","Solvay",2
+"82","REXULTI","Watson Pharmaceuticals",2
+"83","CLINORIL","Biogen Idec",2
+"84","LIPOFEN","Genzyme",3
+"85","REMERON","Solvay",3
+"86","FEMSTAT 3","Hoffmann-La Roche",3
+"87","HUMATROPE","Akzo Nobel",2
+"88","REPATHA","Forest Laboratories",2
+"89","CORGARD","GlaxoSmithKline",1
+"90","ERAXIS","Merck KGaA",2
+"91","TRAVATAN Z","Novartis",3
+"92","ZOLADEX","Bayer",1
+"93","LOTEMAX","GlaxoSmithKline",2
+"94","TAVIST-1","Mitsubishi Pharma",3
+"95","EVISTA","Hoffmann-La Roche",3
+"96","TRULICITY","Solvay",1
+"97","XENICAL","Boehringer Ingelheim",1
+"98","DURLAZA","Akzo Nobel",2
+"99","TOBI","Genentech",1
+"100","IRESSA","H. Lundbeck",2
+"101","MOBIC","Merck & Co.",2
+"102","LIBRIUM","Chiron Corporation",3
+"103","RIFADIN","Novo Nordisk",1
+"104","EMPLICITI","Bristol-Myers Squibb",2
+"105","AVENTYL","AstraZeneca",2
+"106","ALECENSA","Sumitomo Chemical Co.",2
+"107","CHANTIX","Eisai Co.",3
+"108","IFEX","Allergan",1
+"109","XOPENEX","Forest Laboratories",2
+"110","SANDIMMUNE","Sanofi-Aventis",2
+"111","MINIPRESS","Sumitomo Chemical Co.",2
+"112","CARDIZEM","Eli Lilly and Company",3
+"113","KEYTRUDA","Pfizer",1
+"114","SURVANTA","Procter & Gamble",3
+"115","RESTORIL","Procter & Gamble",3
+"116","TAMBOCOR","Sumitomo Chemical Co.",3
+"117","LOPRESSOR","Daiichi Pharmaceutical Co.",1
+"118","KARBINAL ER","Chugai Pharmaceutical Co.",2
+"119","SECONAL","Bristol-Myers Squibb",2
+"120","ESTRADERM","Akzo Nobel",1
+"121","VIRACEPT","Shionogi & Co.",2
+"122","ACTIVASE","Takeda Pharmaceutical Co.",2
+"123","TROPICACYL","Akzo Nobel",3
+"124","CYANOKIT","Biogen Idec",3
+"125","CYTOMEL","Watson Pharmaceuticals",2
+"126","COLESTID","Forest Laboratories",1
+"127","INDERAL","Merck KGaA",1
+"128","TIKOSYN","Pfizer",3
+"129","ALOXI","AstraZeneca",3
+"130","EDARBI","Pfizer",2
+"131","THALOMID","Amgen",1
+"132","LUVOX","Pfizer",2
+"133","ROBAXIN","Amgen",3
+"134","CEFOTAN","Sumitomo Chemical Co.",2
+"135","ZEMURON","Takeda Pharmaceutical Co.",2
+"136","FLOLAN","Chiron Corporation",3
+"137","NILANDRON","Bausch & Lomb",2
 "138","ACETADOTE","Biogen Idec",3
-"139","RELENZA","Hoffmann-La Roche",3
-"140","ATROVENT","Novo Nordisk",1
-"141","TRANDATE","Barr",1
-"142","PREZISTA","Chiron Corporation",3
-"143","LIVALO","H. Lundbeck",3
-"144","DEXILANT","Merck KGaA",1
-"145","PERJETA","Schering-Plough",2
-"146","BAT","Mitsubishi Pharma",3
-"147","IMITREX","Pfizer",2
-"148","TRICOR","Eisai Co.",2
-"149","MYRBETRIQ","Chugai Pharmaceutical Co.",2
-"150","Berinert","Eisai Co.",2
-"151","VESICARE","Altana",2
-"152","AFINITOR","Schering-Plough",1
-"153","SYNAREL","Wyeth",2
-"154","ARIMIDEX","Akzo Nobel",1
-"155","OLEPTRO","H. Lundbeck",2
-"156","SANCUSO","Chiron Corporation",2
-"157","ALREX","Genentech",2
-"158","CLEVIPREX","Abbott Laboratories",2
-"159","ACIPHEX","Boehringer Ingelheim",2
-"160","NORTHERA","Bayer",1
-"161","NORFLEX","Barr",2
-"162","REYATAZ","Pfizer",1
-"163","ZANAFLEX","Kyowa Hakko Kogyo Co.",1
-"164","ZYMAR","Mitsubishi Pharma",2
-"165","ALKERAN","Biogen Idec",2
-"166","LEUKERAN","Bayer",2
-"167","RIMACTANE","Kyowa Hakko Kogyo Co.",3
-"168","PROMACTA","Biogen Idec",3
-"169","NOROXIN","Schering",3
-"170","PROLEUKIN","Eli Lilly and Company",3
-"171","VariZIG","Novo Nordisk",3
-"172","FANAPT","Barr",2
-"173","LUPRON","Chiron Corporation",3
-"174","Cytogam","Sanofi-Aventis",3
-"175","BILTRICIDE","Forest Laboratories",3
-"176","MIGRANAL","Schering",1
-"177","ALIMTA","GlaxoSmithKline",3
-"178","CYSTADANE","Forest Laboratories",3
-"179","MICARDIS","Eisai Co.",3
-"180","LIMBREL","Solvay",1
-"181","TOPROL-XL","Mitsubishi Pharma",2
-"182","SINEMET","Sanofi-Aventis",2
-"183","ELDEPRYL","Sanofi-Aventis",1
-"184","ESTROGEL","Tanabe Seiyaku Co.",1
-"185","ARRANON","Daiichi Pharmaceutical Co.",2
-"186","LETAIRIS","Watson Pharmaceuticals",2
-"187","MYDRIACYL","Boehringer Ingelheim",3
-"188","TRI-LUMA","Sankyo Co.",1
-"189","VICTOZA","Merck & Co.",1
-"190","WELCHOL","Abbott Laboratories",2
-"191","Ceprotin","Sumitomo Chemical Co.",3
-"192","ANZEMET","Chugai Pharmaceutical Co.",1
-"193","SYNAGIS","Allergan",2
-"194","OPTIVAR","Chiron Corporation",3
-"195","ELIXOPHYLLIN","Watson Pharmaceuticals",1
-"196","ANTIZOL","Mitsubishi Pharma",1
-"197","TAPAZOLE","Altana",1
-"198","MEFOXIN","Watson Pharmaceuticals",2
-"199","MAXALT","Taisho Pharmaceutical",1
-"200","EPOGEN/PROCRIT","Menarini",1
-"201","NIMOTOP","Genzyme",3
-"202","PRECOSE","Chugai Pharmaceutical Co.",3
-"203","ZOMETA","Bayer",2
-"204","ISUPREL","Altana",2
-"205","STROMECTOL","AstraZeneca",3
-"206","DESFERAL","Mitsubishi Pharma",2
-"207","ACTOS","Pfizer",1
-"208","DDAVP","Altana",2
-"209","MEPHYTON","UCB",1
-"210","VELTANE","Boehringer Ingelheim",2
-"211","CARAFATE","Chugai Pharmaceutical Co.",2
-"212","PEPCID","Novo Nordisk",3
-"213","PROVIGIL","GlaxoSmithKline",1
-"214","WELLBUTRIN","Chiron Corporation",3
-"215","ZERIT","Pfizer",3
-"216","POTIGA","Chugai Pharmaceutical Co.",1
-"217","MS CONTIN","Shionogi & Co.",2
-"218","ELIQUIS","Amgen",1
-"219","MAVIK","Takeda Pharmaceutical Co.",1
-"220","GLYNASE","Genzyme",1
-"221","LATUDA","Shionogi & Co.",2
-"222","CILOXAN","Alcon",2
-"223","CYRAMZA","Sumitomo Chemical Co.",1
-"224","PHOSPHOLINE IODIDE","Eli Lilly and Company",3
-"225","ZOFRAN","Baxter International",3
-"226","ABILIFY","Kyowa Hakko Kogyo Co.",2
-"227","DETROL","Akzo Nobel",3
-"228","GENOPTIC","Schering-Plough",2
-"229","ANTIVERT","Novo Nordisk",3
-"230","DIABINESE","Takeda Pharmaceutical Co.",2
-"231","RETAVASE","Chiron Corporation",3
-"232","VANIQA","Novo Nordisk",2
-"233","ZYPREXA","Schering",2
-"234","PRALUENT","Chiron Corporation",2
-"235","DIOVAN","Eisai Co.",1
-"236","FIRAZYR","Pfizer",3
-"237","LEVAQUIN","GlaxoSmithKline",3
-"238","AKPENTOLATE","Akzo Nobel",3
-"239","LYRICA","Genentech",2
-"240","CERVIDIL","Novartis",1
-"241","PEGASYS","Novartis",2
-"242","TREANDA","Schering",1
-"243","VUMON","Sanofi-Aventis",2
-"244","CAPEX","Hoffmann-La Roche",3
-"245","TESTRED","Forest Laboratories",2
-"246","BICNU","Alcon",1
-"247","INVIRASE","Eli Lilly and Company",2
-"248","LEXAPRO","UCB",3
-"249","VIRAMUNE","Procter & Gamble",1
-"250","XANAX","Novartis",3
-"251","ACTIGALL","Novartis",2
-"252","BONIVA","Schering-Plough",2
-"253","XYLOCAINE","Wyeth",2
-"254","H.P. ACTHAR GEL","Takeda Pharmaceutical Co.",2
-"255","RYTHMOL","Bayer",3
-"256","NORPACE","UCB",3
-"257","PROTONIX","Akzo Nobel",2
-"258","NEOSPORIN","Takeda Pharmaceutical Co.",2
-"259","DELATESTRYL","Shionogi & Co.",3
-"260","OCUFEN","Merck KGaA",3
-"261","UVADEX","Merck & Co.",1
-"262","KEFZOL","Sumitomo Chemical Co.",2
-"263","AVANDIA","Bausch & Lomb",2
-"264","HYDERGINE","Abbott Laboratories",1
-"265","NICOTROL","Chugai Pharmaceutical Co.",1
-"266","HUMIRA","Watson Pharmaceuticals",1
-"267","VFEND","Akzo Nobel",2
-"268","REMICADE","Boehringer Ingelheim",1
-"269","LAMICTAL","Kyowa Hakko Kogyo Co.",2
-"270","CUBICIN","Merck KGaA",1
-"271","K-TAB","Takeda Pharmaceutical Co.",3
-"272","VALIUM","Sankyo Co.",1
-"273","TRENTAL","Mitsubishi Pharma",3
-"274","ANGIOMAX","Procter & Gamble",2
-"275","ZIOPTAN","Bristol-Myers Squibb",2
-"276","ACTIQ","Biogen Idec",1
-"277","SAVELLA","Schering-Plough",1
-"278","ROCALTROL","H. Lundbeck",1
-"279","XYREM","Forest Laboratories",1
-"280","AMIDATE","Watson Pharmaceuticals",3
-"281","ALBALON","Boehringer Ingelheim",1
+"139","RELENZA","Bausch & Lomb",3
+"140","ATROVENT","Bristol-Myers Squibb",3
+"141","TRANDATE","Forest Laboratories",3
+"142","PREZISTA","Boehringer Ingelheim",1
+"143","LIVALO","Hoffmann-La Roche",2
+"144","DEXILANT","Novo Nordisk",1
+"145","PERJETA","Altana",3
+"146","BAT","Boehringer Ingelheim",1
+"147","IMITREX","Shionogi & Co.",2
+"148","TRICOR","Pfizer",2
+"149","MYRBETRIQ","Novo Nordisk",1
+"150","Berinert","Eli Lilly and Company",3
+"151","VESICARE","UCB",1
+"152","AFINITOR","Tanabe Seiyaku Co.",2
+"153","SYNAREL","Astellas Pharma Inc.",3
+"154","ARIMIDEX","Chugai Pharmaceutical Co.",2
+"155","OLEPTRO","Watson Pharmaceuticals",1
+"156","SANCUSO","Wyeth",3
+"157","ALREX","H. Lundbeck",2
+"158","CLEVIPREX","Hoffmann-La Roche",3
+"159","ACIPHEX","Taisho Pharmaceutical",3
+"160","NORTHERA","Forest Laboratories",1
+"161","NORFLEX","Alcon",1
+"162","REYATAZ","Genentech",1
+"163","ZANAFLEX","Sumitomo Chemical Co.",2
+"164","ZYMAR","H. Lundbeck",1
+"165","ALKERAN","Novartis",3
+"166","LEUKERAN","Abbott Laboratories",3
+"167","RIMACTANE","Taisho Pharmaceutical",2
+"168","PROMACTA","Eli Lilly and Company",2
+"169","NOROXIN","Daiichi Pharmaceutical Co.",1
+"170","PROLEUKIN","Eli Lilly and Company",2
+"171","VariZIG","GlaxoSmithKline",3
+"172","FANAPT","Sankyo Co.",2
+"173","LUPRON","Novartis",2
+"174","Cytogam","Forest Laboratories",1
+"175","BILTRICIDE","Johnson & Johnson",2
+"176","MIGRANAL","Eisai Co.",1
+"177","ALIMTA","Novo Nordisk",3
+"178","CYSTADANE","Chugai Pharmaceutical Co.",2
+"179","MICARDIS","Eli Lilly and Company",1
+"180","LIMBREL","Procter & Gamble",1
+"181","TOPROL-XL","Astellas Pharma Inc.",3
+"182","SINEMET","Mitsubishi Pharma",1
+"183","ELDEPRYL","Chugai Pharmaceutical Co.",2
+"184","ESTROGEL","Schering-Plough",1
+"185","ARRANON","Kyowa Hakko Kogyo Co.",3
+"186","LETAIRIS","Merck KGaA",1
+"187","MYDRIACYL","Astellas Pharma Inc.",3
+"188","TRI-LUMA","Mitsubishi Pharma",2
+"189","VICTOZA","Altana",3
+"190","WELCHOL","Amgen",1
+"191","Ceprotin","Teva Pharmaceutical Industries",3
+"192","ANZEMET","Schering-Plough",2
+"193","SYNAGIS","Eisai Co.",3
+"194","OPTIVAR","Taisho Pharmaceutical",2
+"195","ELIXOPHYLLIN","Baxter International",2
+"196","ANTIZOL","AstraZeneca",2
+"197","TAPAZOLE","Eisai Co.",2
+"198","MEFOXIN","Sankyo Co.",2
+"199","MAXALT","Alcon",1
+"200","EPOGEN/PROCRIT","UCB",2
+"201","NIMOTOP","Watson Pharmaceuticals",2
+"202","PRECOSE","Eisai Co.",1
+"203","ZOMETA","Hoffmann-La Roche",2
+"204","ISUPREL","Akzo Nobel",1
+"205","STROMECTOL","Merck KGaA",3
+"206","DESFERAL","Daiichi Pharmaceutical Co.",1
+"207","ACTOS","Takeda Pharmaceutical Co.",1
+"208","DDAVP","Novo Nordisk",3
+"209","MEPHYTON","Baxter International",2
+"210","VELTANE","Procter & Gamble",3
+"211","CARAFATE","H. Lundbeck",1
+"212","PEPCID","Akzo Nobel",1
+"213","PROVIGIL","Novartis",3
+"214","WELLBUTRIN","AstraZeneca",3
+"215","ZERIT","Baxter International",3
+"216","POTIGA","Biogen Idec",2
+"217","MS CONTIN","Baxter International",2
+"218","ELIQUIS","Tanabe Seiyaku Co.",3
+"219","MAVIK","Baxter International",3
+"220","GLYNASE","Amgen",1
+"221","LATUDA","Pfizer",1
+"222","CILOXAN","Wyeth",3
+"223","CYRAMZA","Forest Laboratories",2
+"224","PHOSPHOLINE IODIDE","GlaxoSmithKline",3
+"225","ZOFRAN","Abbott Laboratories",3
+"226","ABILIFY","Bausch & Lomb",1
+"227","DETROL","Mitsubishi Pharma",1
+"228","GENOPTIC","Astellas Pharma Inc.",1
+"229","ANTIVERT","Genzyme",2
+"230","DIABINESE","Mitsubishi Pharma",3
+"231","RETAVASE","Boehringer Ingelheim",1
+"232","VANIQA","Genentech",2
+"233","ZYPREXA","Bayer",2
+"234","PRALUENT","Eisai Co.",3
+"235","DIOVAN","Schering",2
+"236","FIRAZYR","Takeda Pharmaceutical Co.",2
+"237","LEVAQUIN","Biogen Idec",3
+"238","AKPENTOLATE","Bausch & Lomb",2
+"239","LYRICA","Chiron Corporation",2
+"240","CERVIDIL","Genentech",1
+"241","PEGASYS","Sankyo Co.",1
+"242","TREANDA","Schering-Plough",2
+"243","VUMON","Shionogi & Co.",1
+"244","CAPEX","Sanofi-Aventis",2
+"245","TESTRED","Baxter International",1
+"246","BICNU","Eli Lilly and Company",2
+"247","INVIRASE","Barr",2
+"248","LEXAPRO","Johnson & Johnson",3
+"249","VIRAMUNE","Eisai Co.",1
+"250","XANAX","Daiichi Pharmaceutical Co.",2
+"251","ACTIGALL","Tanabe Seiyaku Co.",2
+"252","BONIVA","Hoffmann-La Roche",1
+"253","XYLOCAINE","Merck KGaA",3
+"254","H.P. ACTHAR GEL","Wyeth",1
+"255","RYTHMOL","Pfizer",1
+"256","NORPACE","Genentech",1
+"257","PROTONIX","Watson Pharmaceuticals",3
+"258","NEOSPORIN","Alcon",2
+"259","DELATESTRYL","Schering",1
+"260","OCUFEN","Daiichi Pharmaceutical Co.",3
+"261","UVADEX","Chiron Corporation",3
+"262","KEFZOL","Akzo Nobel",1
+"263","AVANDIA","Baxter International",1
+"264","HYDERGINE","Genentech",2
+"265","NICOTROL","Allergan",2
+"266","HUMIRA","Boehringer Ingelheim",2
+"267","VFEND","Daiichi Pharmaceutical Co.",1
+"268","REMICADE","H. Lundbeck",1
+"269","LAMICTAL","Watson Pharmaceuticals",2
+"270","CUBICIN","Procter & Gamble",1
+"271","K-TAB","Abbott Laboratories",2
+"272","VALIUM","Eli Lilly and Company",2
+"273","TRENTAL","GlaxoSmithKline",3
+"274","ANGIOMAX","Takeda Pharmaceutical Co.",3
+"275","ZIOPTAN","Sanofi-Aventis",3
+"276","ACTIQ","Wyeth",1
+"277","SAVELLA","Schering",2
+"278","ROCALTROL","Bausch & Lomb",2
+"279","XYREM","Shionogi & Co.",3
+"280","AMIDATE","Daiichi Pharmaceutical Co.",1
+"281","ALBALON","Chugai Pharmaceutical Co.",3
 "282","AMBISOME","Astellas Pharma Inc.",3
-"283","DYRENIUM","UCB",3
-"284","PANHEMATIN","Bausch & Lomb",3
-"285","CLARITIN","Forest Laboratories",1
-"286","CLOBEX","Amgen",1
-"287","SEROQUEL","Novartis",1
-"288","UNISOM","Chugai Pharmaceutical Co.",2
-"289","DAYPRO","UCB",3
-"290","MEPRON","Altana",2
-"291","THIOLA","Amgen",1
-"292","LASIX","Bayer",1
-"293","MERREM","Sanofi-Aventis",2
-"294","CIMZIA","Taisho Pharmaceutical",3
-"295","EDURANT","Novo Nordisk",1
-"296","EMTRIVA","Forest Laboratories",3
-"297","AXID","Akzo Nobel",1
-"298","TANZEUM","Tanabe Seiyaku Co.",1
-"299","EFFEXOR XR","Abbott Laboratories",1
+"283","DYRENIUM","Barr",2
+"284","PANHEMATIN","Taisho Pharmaceutical",1
+"285","CLARITIN","Shionogi & Co.",2
+"286","CLOBEX","Chugai Pharmaceutical Co.",1
+"287","SEROQUEL","Shionogi & Co.",2
+"288","UNISOM","Novo Nordisk",3
+"289","DAYPRO","Wyeth",1
+"290","MEPRON","Sumitomo Chemical Co.",2
+"291","THIOLA","Bayer",1
+"292","LASIX","Chugai Pharmaceutical Co.",3
+"293","MERREM","Takeda Pharmaceutical Co.",2
+"294","CIMZIA","Amgen",1
+"295","EDURANT","Tanabe Seiyaku Co.",3
+"296","EMTRIVA","Tanabe Seiyaku Co.",1
+"297","AXID","Sanofi-Aventis",3
+"298","TANZEUM","Altana",3
+"299","EFFEXOR XR","Johnson & Johnson",3
 "300","TOFRANIL","Chugai Pharmaceutical Co.",1
-"301","ARAVA","Novartis",3
-"302","COSMEGEN","Baxter International",3
-"303","SYMLIN","Bristol-Myers Squibb",2
-"304","TENUATE","Johnson & Johnson",2
-"305","PENICILLINA-VK","Barr",1
-"306","BETOPTIC","Chiron Corporation",3
-"307","SIVEXTRO","Sankyo Co.",1
-"308","DIFICID","Menarini",2
-"309","MYCAMINE","Biogen Idec",2
-"310","QUTENZA","H. Lundbeck",2
-"311","VIAGRA","Solvay",1
-"312","ENBREL","Shionogi & Co.",1
-"313","STARLIX","Johnson & Johnson",3
-"314","NEXTERONE","Chugai Pharmaceutical Co.",3
-"315","POLYTRIM","Abbott Laboratories",1
-"316","REPREXAIN","UCB",1
-"317","ALOMIDE","Astellas Pharma Inc.",3
-"318","TRANXENE","Tanabe Seiyaku Co.",2
-"319","SUDAFED","Procter & Gamble",3
-"320","TRUSOPT","Pfizer",2
-"321","ANADROL-50","Barr",3
-"322","IMURAN","Genzyme",3
-"323","BRILINTA","Genzyme",2
-"324","LEXIVA","Pfizer",2
-"325","DOLOPHINE","Schering",3
-"326","AVYCAZ","Pfizer",3
-"327","NORVIR","Alcon",1
-"328","XTANDI","Abbott Laboratories",3
-"329","FURADANTIN","Wyeth",2
-"330","SECTRAL","Chiron Corporation",1
-"331","GEODON","Daiichi Pharmaceutical Co.",3
-"332","LANIAZID","Solvay",3
-"333","KETALAR","Taisho Pharmaceutical",3
-"334","FERRIPROX","Barr",2
-"335","ZOSYN","Sumitomo Chemical Co.",2
-"336","STIMATE","Merck KGaA",3
-"337","DILANTIN","Takeda Pharmaceutical Co.",3
-"338","PARLODEL","Altana",2
-"339","EXELDERM","Mitsubishi Pharma",1
-"340","ULORIC","Takeda Pharmaceutical Co.",3
-"341","LYSODREN","Eli Lilly and Company",1
-"342","ZYBAN","Boehringer Ingelheim",1
-"343","ALDACTONE","Baxter International",1
-"344","ZETIA","Mitsubishi Pharma",1
-"345","AVELOX","Schering",2
-"346","ALPHANATE","Daiichi Pharmaceutical Co.",1
-"347","TRANEX","Sankyo Co.",3
-"348","ROBINUL FORTE","Allergan",3
-"349","AMITIZA","Forest Laboratories",3
-"350","CIPRO","Akzo Nobel",1
-"351","ALTACE","Eisai Co.",2
-"352","KALBITOR","H. Lundbeck",1
-"353","NEUMEGA","Chugai Pharmaceutical Co.",2
-"354","NUVIGIL","Astellas Pharma Inc.",3
-"355","XELJANZ","Teva Pharmaceutical Industries",2
-"356","FACTIVE","Sumitomo Chemical Co.",3
-"357","PROVERA","Schering",2
-"358","CHLOR-TRIMETON","Bayer",3
-"359","RhoGAM","Takeda Pharmaceutical Co.",3
-"360","ZEPATIER","Amgen",2
-"361","FLOXIN OTIC","Akzo Nobel",2
-"362","UROXATRAL","Shionogi & Co.",2
-"363","VANCOCIN","Eli Lilly and Company",2
-"364","IDAMYCIN PFS","Sumitomo Chemical Co.",2
-"365","XYZAL","Bristol-Myers Squibb",2
-"366","CYCLOGYL","Sankyo Co.",3
-"367","RAYOS","Eli Lilly and Company",3
-"368","RIMSO-50","Daiichi Pharmaceutical Co.",1
-"369","PEGINTRON","Eli Lilly and Company",1
-"370","ANBESOL","Teva Pharmaceutical Industries",2
-"371","TNKASE","Bausch & Lomb",1
-"372","AEROSPAN HFA","Taisho Pharmaceutical",3
-"373","OPTIPRANOLOL","Amgen",3
-"374","SOMA","Altana",3
-"375","LEUKINE","Shionogi & Co.",2
-"376","APTIOM","Boehringer Ingelheim",1
-"377","NATRECOR","Allergan",2
-"378","CAVERJECT","Schering-Plough",3
-"379","RESCULA","Boehringer Ingelheim",1
-"380","VISTARIL","Eisai Co.",1
-"381","LINZESS","Genentech",2
-"382","VAPRISOL","Hoffmann-La Roche",1
-"383","ALCAINE","GlaxoSmithKline",1
-"384","ANTABUSE","Alcon",1
-"385","VECTIBIX","Sanofi-Aventis",3
-"386","BACIIM","Genzyme",3
-"387","SYNERAN","GlaxoSmithKline",2
-"388","CUTIVATE","Takeda Pharmaceutical Co.",2
-"389","OXSORALEN","Bristol-Myers Squibb",1
-"390","MAXIPIME","Pfizer",3
-"391","REQUIP","Daiichi Pharmaceutical Co.",2
-"392","DRISDOL","Novartis",3
-"393","ADALAT CC","Baxter International",1
-"394","ZOVIRAX","Mitsubishi Pharma",1
-"395","COUMADIN","Procter & Gamble",3
-"396","PICATO","Genzyme",2
-"397","EPIVIR","AstraZeneca",1
-"398","DARZALEX","Chiron Corporation",2
-"399","NOXAFIL","Tanabe Seiyaku Co.",2
-"400","DELSYM","Taisho Pharmaceutical",2
-"401","ACEON","Altana",2
-"402","BLINCYTO","Astellas Pharma Inc.",2
-"403","CIALIS","Tanabe Seiyaku Co.",2
-"404","NALFON","Novo Nordisk",3
-"405","MINOCIN","Schering",1
-"406","MIACALCIN","Chiron Corporation",1
-"407","KALEXATE","Bayer",1
-"408","IMPLANON","Bausch & Lomb",2
-"409","REVIA","Johnson & Johnson",1
-"410","UNASYN","Teva Pharmaceutical Industries",2
-"411","KENALOG","Chugai Pharmaceutical Co.",1
-"412","HALDOL","Sumitomo Chemical Co.",2
-"413","ATIVAN","Sanofi-Aventis",1
-"414","ONFI","Sumitomo Chemical Co.",1
-"415","ACCUPRIL","Shionogi & Co.",1
-"416","MARINOL","Sankyo Co.",2
-"417","ELOXATIN","Sankyo Co.",3
-"418","LIPITOR","Merck KGaA",2
-"419","SPIRIVA","Akzo Nobel",2
-"420","NEURONTIN","Baxter International",1
-"421","PURINETHOL","Wyeth",2
-"422","ZIRTEC","Biogen Idec",3
-"423","ARCALYST","Novo Nordisk",2
-"424","JARDIANCE","Hoffmann-La Roche",2
-"425","LEVOPHED","Taisho Pharmaceutical",3
-"426","PROVENTIL-HFA","Novo Nordisk",1
-"427","ZELBORAF","Chiron Corporation",3
-"428","PRIMAXIN","Sankyo Co.",3
-"429","REVLIMID","Eli Lilly and Company",1
-"430","DTIC-DOME","Bausch & Lomb",2
-"431","EPIFOAM","Bausch & Lomb",2
-"432","LANOXIN","Astellas Pharma Inc.",2
-"433","BICILLIN L-A","Genzyme",1
-"434","LUXIQ","Akzo Nobel",1
-"435","VIBATIV","Boehringer Ingelheim",2
-"436","NEUPOGEN","AstraZeneca",3
-"437","DEMSER","Daiichi Pharmaceutical Co.",1
-"438","MIOSTAT","Wyeth",2
-"439","RENAGEL","Chugai Pharmaceutical Co.",1
-"440","LUNESTA","Johnson & Johnson",2
-"441","BYSTOLIC","AstraZeneca",2
-"442","AMICAR","Novartis",1
-"443","BACTRIM","Johnson & Johnson",1
-"444","CORTEF","Sumitomo Chemical Co.",3
-"445","LITHOBID","Kyowa Hakko Kogyo Co.",1
-"446","MYCELEX","Chiron Corporation",2
-"447","AFRINOL","Solvay",3
-"448","PULMOZYME","H. Lundbeck",3
-"449","PITOCIN","Sumitomo Chemical Co.",2
-"450","AZELEX","Chiron Corporation",3
-"451","GABITRIL","Solvay",1
-"452","PERFOROMIST","Procter & Gamble",1
-"453","DESOXYN","Novartis",1
-"454","TAZICEF","Shionogi & Co.",2
-"455","RITUXAN","Barr",1
-"456","ADRENALIN","Alcon",1
+"301","ARAVA","GlaxoSmithKline",3
+"302","COSMEGEN","Pfizer",2
+"303","SYMLIN","Sumitomo Chemical Co.",3
+"304","TENUATE","Mitsubishi Pharma",1
+"305","PENICILLINA-VK","Tanabe Seiyaku Co.",2
+"306","BETOPTIC","GlaxoSmithKline",1
+"307","SIVEXTRO","Solvay",3
+"308","DIFICID","H. Lundbeck",1
+"309","MYCAMINE","Chugai Pharmaceutical Co.",1
+"310","QUTENZA","Teva Pharmaceutical Industries",3
+"311","VIAGRA","Chiron Corporation",3
+"312","ENBREL","Eli Lilly and Company",1
+"313","STARLIX","Schering",2
+"314","NEXTERONE","Alcon",1
+"315","POLYTRIM","Allergan",2
+"316","REPREXAIN","Daiichi Pharmaceutical Co.",1
+"317","ALOMIDE","Eisai Co.",3
+"318","TRANXENE","Merck KGaA",1
+"319","SUDAFED","Bayer",1
+"320","TRUSOPT","Bristol-Myers Squibb",3
+"321","ANADROL-50","UCB",3
+"322","IMURAN","Baxter International",3
+"323","BRILINTA","AstraZeneca",3
+"324","LEXIVA","Barr",1
+"325","DOLOPHINE","Biogen Idec",1
+"326","AVYCAZ","Sanofi-Aventis",3
+"327","NORVIR","Schering-Plough",2
+"328","XTANDI","Schering-Plough",2
+"329","FURADANTIN","Baxter International",2
+"330","SECTRAL","Forest Laboratories",1
+"331","GEODON","Bristol-Myers Squibb",2
+"332","LANIAZID","Sanofi-Aventis",3
+"333","KETALAR","Genzyme",1
+"334","FERRIPROX","Solvay",3
+"335","ZOSYN","Teva Pharmaceutical Industries",3
+"336","STIMATE","Abbott Laboratories",1
+"337","DILANTIN","Menarini",3
+"338","PARLODEL","Genentech",3
+"339","EXELDERM","UCB",2
+"340","ULORIC","Chugai Pharmaceutical Co.",2
+"341","LYSODREN","Novo Nordisk",1
+"342","ZYBAN","Solvay",1
+"343","ALDACTONE","Sumitomo Chemical Co.",2
+"344","ZETIA","UCB",2
+"345","AVELOX","Hoffmann-La Roche",1
+"346","ALPHANATE","Alcon",3
+"347","TRANEX","Johnson & Johnson",3
+"348","ROBINUL FORTE","Astellas Pharma Inc.",2
+"349","AMITIZA","Menarini",2
+"350","CIPRO","Kyowa Hakko Kogyo Co.",3
+"351","ALTACE","Procter & Gamble",3
+"352","KALBITOR","Tanabe Seiyaku Co.",2
+"353","NEUMEGA","Biogen Idec",2
+"354","NUVIGIL","H. Lundbeck",3
+"355","XELJANZ","Astellas Pharma Inc.",2
+"356","FACTIVE","UCB",3
+"357","PROVERA","Procter & Gamble",2
+"358","CHLOR-TRIMETON","GlaxoSmithKline",2
+"359","RhoGAM","Kyowa Hakko Kogyo Co.",1
+"360","ZEPATIER","Johnson & Johnson",3
+"361","FLOXIN OTIC","Shionogi & Co.",2
+"362","UROXATRAL","H. Lundbeck",2
+"363","VANCOCIN","Alcon",2
+"364","IDAMYCIN PFS","Teva Pharmaceutical Industries",3
+"365","XYZAL","Bausch & Lomb",1
+"366","CYCLOGYL","Genzyme",1
+"367","RAYOS","Pfizer",3
+"368","RIMSO-50","Merck & Co.",3
+"369","PEGINTRON","Bayer",1
+"370","ANBESOL","Alcon",3
+"371","TNKASE","Allergan",3
+"372","AEROSPAN HFA","AstraZeneca",3
+"373","OPTIPRANOLOL","Wyeth",3
+"374","SOMA","Kyowa Hakko Kogyo Co.",1
+"375","LEUKINE","Merck KGaA",2
+"376","APTIOM","Barr",1
+"377","NATRECOR","Procter & Gamble",2
+"378","CAVERJECT","Kyowa Hakko Kogyo Co.",3
+"379","RESCULA","Allergan",3
+"380","VISTARIL","Sumitomo Chemical Co.",3
+"381","LINZESS","Taisho Pharmaceutical",3
+"382","VAPRISOL","Kyowa Hakko Kogyo Co.",1
+"383","ALCAINE","UCB",3
+"384","ANTABUSE","Eli Lilly and Company",1
+"385","VECTIBIX","Allergan",1
+"386","BACIIM","Wyeth",3
+"387","SYNERAN","AstraZeneca",3
+"388","CUTIVATE","AstraZeneca",2
+"389","OXSORALEN","Alcon",3
+"390","MAXIPIME","Mitsubishi Pharma",1
+"391","REQUIP","Schering-Plough",2
+"392","DRISDOL","Altana",3
+"393","ADALAT CC","Sankyo Co.",2
+"394","ZOVIRAX","Wyeth",3
+"395","COUMADIN","Menarini",1
+"396","PICATO","Hoffmann-La Roche",2
+"397","EPIVIR","Procter & Gamble",3
+"398","DARZALEX","Merck & Co.",3
+"399","NOXAFIL","Forest Laboratories",3
+"400","DELSYM","Merck & Co.",3
+"401","ACEON","Altana",1
+"402","BLINCYTO","Genzyme",1
+"403","CIALIS","Hoffmann-La Roche",3
+"404","NALFON","Tanabe Seiyaku Co.",1
+"405","MINOCIN","Teva Pharmaceutical Industries",3
+"406","MIACALCIN","Shionogi & Co.",2
+"407","KALEXATE","Sumitomo Chemical Co.",2
+"408","IMPLANON","Bayer",1
+"409","REVIA","Pfizer",3
+"410","UNASYN","Novo Nordisk",3
+"411","KENALOG","Alcon",1
+"412","HALDOL","Alcon",1
+"413","ATIVAN","UCB",3
+"414","ONFI","Tanabe Seiyaku Co.",2
+"415","ACCUPRIL","Genentech",1
+"416","MARINOL","Chugai Pharmaceutical Co.",2
+"417","ELOXATIN","Biogen Idec",1
+"418","LIPITOR","Merck KGaA",1
+"419","SPIRIVA","Sanofi-Aventis",2
+"420","NEURONTIN","Kyowa Hakko Kogyo Co.",3
+"421","PURINETHOL","Sumitomo Chemical Co.",2
+"422","ZIRTEC","Bausch & Lomb",3
+"423","ARCALYST","Chugai Pharmaceutical Co.",3
+"424","JARDIANCE","Novartis",3
+"425","LEVOPHED","Merck KGaA",2
+"426","PROVENTIL-HFA","Sumitomo Chemical Co.",1
+"427","ZELBORAF","Sumitomo Chemical Co.",3
+"428","PRIMAXIN","Eli Lilly and Company",2
+"429","REVLIMID","Solvay",1
+"430","DTIC-DOME","Alcon",1
+"431","EPIFOAM","Boehringer Ingelheim",1
+"432","LANOXIN","Tanabe Seiyaku Co.",3
+"433","BICILLIN L-A","Alcon",2
+"434","LUXIQ","Chiron Corporation",1
+"435","VIBATIV","Altana",3
+"436","NEUPOGEN","Mitsubishi Pharma",3
+"437","DEMSER","Wyeth",2
+"438","MIOSTAT","Procter & Gamble",3
+"439","RENAGEL","Merck KGaA",1
+"440","LUNESTA","UCB",3
+"441","BYSTOLIC","Baxter International",2
+"442","AMICAR","Alcon",3
+"443","BACTRIM","Baxter International",1
+"444","CORTEF","Sanofi-Aventis",1
+"445","LITHOBID","Johnson & Johnson",3
+"446","MYCELEX","Shionogi & Co.",1
+"447","AFRINOL","Allergan",1
+"448","PULMOZYME","Schering",1
+"449","PITOCIN","Solvay",2
+"450","AZELEX","Watson Pharmaceuticals",1
+"451","GABITRIL","Sumitomo Chemical Co.",2
+"452","PERFOROMIST","GlaxoSmithKline",1
+"453","DESOXYN","Menarini",1
+"454","TAZICEF","Eisai Co.",2
+"455","RITUXAN","Merck KGaA",1
+"456","ADRENALIN","Taisho Pharmaceutical",1
 "457","ALINIA","Menarini",3
-"458","ORENCIA","Genzyme",1
-"459","AMBIEN","Allergan",1
-"460","MONOKET","Kyowa Hakko Kogyo Co.",2
-"461","SPORANOX","Bausch & Lomb",3
-"462","PROLIA","Allergan",2
-"463","ELIDEL","Allergan",2
-"464","IPRIVASK","Taisho Pharmaceutical",2
-"465","PILOPINE HS","Procter & Gamble",2
-"466","RHINOCORT","GlaxoSmithKline",1
-"467","ANECTINE","Procter & Gamble",2
-"468","NovoSeven","UCB",2
-"469","ELOCON","Forest Laboratories",3
-"470","MARCAINE","Barr",1
-"471","ZANOSAR","GlaxoSmithKline",1
-"472","RIXUBIS","Eli Lilly and Company",3
-"473","SINGULAIR","H. Lundbeck",3
-"474","IOPIDINE","Chiron Corporation",3
-"475","BEXXAR","Bristol-Myers Squibb",3
-"476","VORAXAZE","Chiron Corporation",1
-"477","DOAN’S EXTRA STRENGTH","Chugai Pharmaceutical Co.",2
-"478","TAGAMET HB","Altana",3
-"479","ZANTAC","Daiichi Pharmaceutical Co.",1
-"480","SOLIRIS","Schering",3
-"481","PRILOSEC","Hoffmann-La Roche",1
-"482","BROVANA","Sanofi-Aventis",3
-"483","TOPAMAX","Bausch & Lomb",2
-"484","AMARYL","Merck KGaA",1
-"485","SELZENTRY","Novo Nordisk",1
-"486","ALVESCO","Schering",3
-"487","RAXIBACUMAB","Genzyme",1
-"488","ENLON","Alcon",2
-"489","PATANOL","Watson Pharmaceuticals",3
-"490","ZYLOPRIM","Alcon",1
-"491","VALCYTE","GlaxoSmithKline",1
-"492","MOTRIN IB","Taisho Pharmaceutical",1
-"493","MIRENA","Novo Nordisk",1
-"494","EURAX","Novo Nordisk",2
-"495","MATULANE","Altana",1
-"496","PROSTIN E2","Allergan",2
-"497","MACUGEN","Genentech",2
-"498","BECONASE","Novo Nordisk",3
-"499","HYTRIN","Barr",2
-"500","CARAC","Sanofi-Aventis",1
-"501","RITALIN","Procter & Gamble",3
-"502","OCUPRESS","Abbott Laboratories",3
-"503","SEREVENT","Genzyme",1
-"504","ERY-TAB","Alcon",2
-"505","NIASPAN","Biogen Idec",1
-"506","NESINA","UCB",2
-"507","CNJ-016","Genentech",2
-"508","IMBRUVICA","Merck KGaA",3
-"509","LEVOXYL","Barr",3
-"510","CROLOM","Bristol-Myers Squibb",1
-"511","CRINONE","Boehringer Ingelheim",1
-"512","LOMOTIL","Amgen",3
-"513","SIGNIFOR","Eli Lilly and Company",2
-"514","COLAZAL","Chugai Pharmaceutical Co.",1
-"515","TERAZOL 3","Menarini",1
-"516","SARAFEM","Baxter International",1
-"517","METHERGIN","Taisho Pharmaceutical",1
-"518","CANCIDAS","Johnson & Johnson",1
-"519","NEUPRO","Genzyme",1
-"520","TARCEVA","Genzyme",3
-"521","COMMIT","Kyowa Hakko Kogyo Co.",2
-"522","HEPSERA","Sankyo Co.",2
-"523","NAVELBINE","Hoffmann-La Roche",3
-"524","CRIXIVAN","Bristol-Myers Squibb",2
-"525","PREVACID","Daiichi Pharmaceutical Co.",3
-"526","FARXIGA","Amgen",1
-"527","THYROSHIELD","AstraZeneca",3
-"528","VOLTAREN","Boehringer Ingelheim",3
-"529","ELMIRON","GlaxoSmithKline",3
-"530","CASODEX","Johnson & Johnson",3
-"531","FLOMAX","Merck KGaA",3
+"458","ORENCIA","Baxter International",3
+"459","AMBIEN","Novo Nordisk",3
+"460","MONOKET","Eisai Co.",1
+"461","SPORANOX","Allergan",2
+"462","PROLIA","Astellas Pharma Inc.",3
+"463","ELIDEL","Abbott Laboratories",2
+"464","IPRIVASK","Allergan",1
+"465","PILOPINE HS","Amgen",1
+"466","RHINOCORT","Genzyme",3
+"467","ANECTINE","Schering",3
+"468","NovoSeven","Altana",2
+"469","ELOCON","Chugai Pharmaceutical Co.",1
+"470","MARCAINE","Astellas Pharma Inc.",3
+"471","ZANOSAR","Akzo Nobel",1
+"472","RIXUBIS","Bayer",3
+"473","SINGULAIR","Merck KGaA",3
+"474","IOPIDINE","Akzo Nobel",3
+"475","BEXXAR","Abbott Laboratories",1
+"476","VORAXAZE","Eisai Co.",3
+"477","DOAN’S EXTRA STRENGTH","Tanabe Seiyaku Co.",3
+"478","TAGAMET HB","Merck & Co.",1
+"479","ZANTAC","Shionogi & Co.",1
+"480","SOLIRIS","Chiron Corporation",3
+"481","PRILOSEC","Forest Laboratories",1
+"482","BROVANA","Astellas Pharma Inc.",3
+"483","TOPAMAX","Mitsubishi Pharma",1
+"484","AMARYL","UCB",2
+"485","SELZENTRY","Genentech",2
+"486","ALVESCO","Astellas Pharma Inc.",3
+"487","RAXIBACUMAB","Sanofi-Aventis",3
+"488","ENLON","Merck KGaA",3
+"489","PATANOL","Hoffmann-La Roche",2
+"490","ZYLOPRIM","Pfizer",3
+"491","VALCYTE","Eisai Co.",1
+"492","MOTRIN IB","Genentech",2
+"493","MIRENA","Chugai Pharmaceutical Co.",2
+"494","EURAX","Watson Pharmaceuticals",1
+"495","MATULANE","Johnson & Johnson",1
+"496","PROSTIN E2","Taisho Pharmaceutical",2
+"497","MACUGEN","Allergan",3
+"498","BECONASE","Schering",2
+"499","HYTRIN","Pfizer",2
+"500","CARAC","Astellas Pharma Inc.",1
+"501","RITALIN","Schering-Plough",2
+"502","OCUPRESS","Forest Laboratories",1
+"503","SEREVENT","GlaxoSmithKline",3
+"504","ERY-TAB","Pfizer",1
+"505","NIASPAN","Novo Nordisk",1
+"506","NESINA","Sanofi-Aventis",3
+"507","CNJ-016","Eisai Co.",2
+"508","IMBRUVICA","Takeda Pharmaceutical Co.",2
+"509","LEVOXYL","Eli Lilly and Company",3
+"510","CROLOM","Hoffmann-La Roche",3
+"511","CRINONE","Teva Pharmaceutical Industries",1
+"512","LOMOTIL","Novartis",2
+"513","SIGNIFOR","GlaxoSmithKline",3
+"514","COLAZAL","Tanabe Seiyaku Co.",3
+"515","TERAZOL 3","Eisai Co.",2
+"516","SARAFEM","Chiron Corporation",3
+"517","METHERGIN","AstraZeneca",2
+"518","CANCIDAS","Baxter International",2
+"519","NEUPRO","Barr",2
+"520","TARCEVA","Shionogi & Co.",3
+"521","COMMIT","Boehringer Ingelheim",2
+"522","HEPSERA","UCB",2
+"523","NAVELBINE","Novo Nordisk",3
+"524","CRIXIVAN","Schering-Plough",1
+"525","PREVACID","Eli Lilly and Company",2
+"526","FARXIGA","Novo Nordisk",1
+"527","THYROSHIELD","Biogen Idec",1
+"528","VOLTAREN","Barr",1
+"529","ELMIRON","Genentech",1
+"530","CASODEX","Takeda Pharmaceutical Co.",2
+"531","FLOMAX","Altana",3
 "532","SUBLIMAZE","Schering",2
-"533","GLYSET","Daiichi Pharmaceutical Co.",2
-"534","INVOKANA","Chugai Pharmaceutical Co.",1
-"535","RAPAMUNE","Alcon",3
-"536","ZARONTIN","Genzyme",1
-"537","NAPROSYN","Forest Laboratories",1
-"538","ADDERALL XR 10","Teva Pharmaceutical Industries",3
-"539","SYPRINE","Shionogi & Co.",1
-"540","VANTAS","Alcon",1
-"541","KALETRA","Chugai Pharmaceutical Co.",3
-"542","ANAFRANIL","Chugai Pharmaceutical Co.",1
-"543","DARAPRIM","Biogen Idec",1
-"544","DOXIL (LIPOSOMIALE)","Sankyo Co.",2
-"545","OXISTAT","Bristol-Myers Squibb",3
-"546","ATROPEN","Sankyo Co.",1
-"547","TINDAMAX","Abbott Laboratories",1
-"548","FROVA","Pfizer",2
-"549","ROWASA","Bristol-Myers Squibb",1
-"550","KEFLEX","Genzyme",3
-"551","MYOBLOC","Tanabe Seiyaku Co.",2
-"552","FUZEON","Tanabe Seiyaku Co.",2
-"553","NITROPRESS","Teva Pharmaceutical Industries",3
-"554","FABRAZYME","UCB",2
-"555","SABRIL","Altana",2
-"556","Gammagard S/D","Baxter International",1
-"557","TYKERB","Teva Pharmaceutical Industries",2
-"558","FRAGMIN","Allergan",2
-"559","PROTOPAM CHLORIDE","Sankyo Co.",3
-"560","VIDEX","Johnson & Johnson",2
-"561","TALWIN","Merck KGaA",3
-"562","URECHOLINE","Boehringer Ingelheim",3
-"563","AVAGE","Schering",1
-"564","TOVIAZ","Allergan",2
-"565","ORVATEN","Boehringer Ingelheim",3
-"566","XELODA","Genentech",3
-"567","ZOCOR","AstraZeneca",3
-"568","MYAMBUTOL","Forest Laboratories",2
-"569","TYSABRI","Mitsubishi Pharma",1
-"570","AMOXIL","Altana",1
-"571","TRIDIONE","Genentech",3
-"572","MICROZIDE","Genentech",1
-"573","CEENU","Solvay",1
-"574","CATAPRES","GlaxoSmithKline",3
-"575","RID MOUSSE","Menarini",2
-"576","ZONALON","Chugai Pharmaceutical Co.",2
-"577","OXYCONTIN","Astellas Pharma Inc.",1
-"578","STENDRA","Watson Pharmaceuticals",1
-"579","TYGACIL","Sumitomo Chemical Co.",3
-"580","MONURIL","AstraZeneca",1
-"581","MUSCORIL","Genentech",1
-"582","ZINACEF","Novartis",2
-"583","ACTONEL","Alcon",3
-"584","COMTAN","Solvay",3
-"585","MACRODANTIN","Takeda Pharmaceutical Co.",1
-"586","DIAMOX","Astellas Pharma Inc.",1
-"587","RETROVIR","Menarini",3
-"588","CAMPTOSAR","Genzyme",1
-"589","SPRIX","Tanabe Seiyaku Co.",2
-"590","CERUBIDINA","Pfizer",3
-"591","ESBRIET","Chugai Pharmaceutical Co.",3
-"592","PRISTIQ","Bausch & Lomb",2
-"593","DIBENZYLINE","Takeda Pharmaceutical Co.",2
-"594","ALPHAGAN P","Genzyme",1
-"595","AZULFIDINE","Chiron Corporation",2
-"596","ANTARA","Amgen",3
-"597","CYTOTEC","Menarini",3
-"598","MENTAX","Boehringer Ingelheim",2
-"599","NEXAVAR","Bristol-Myers Squibb",2
-"600","AROMASIN","Pfizer",3
-"601","CELLCEPT","Takeda Pharmaceutical Co.",1
-"602","MONOCLATE-P","Alcon",3
-"603","HERCEPTIN","Novo Nordisk",3
-"604","SIMPONI","Abbott Laboratories",1
-"605","ALTOPREV","Allergan",3
-"606","BIAXIN","Hoffmann-La Roche",1
-"607","ISENTRESS","Daiichi Pharmaceutical Co.",1
-"608","CYMBALTA","Abbott Laboratories",1
-"609","ALLI","Altana",1
-"610","ELSPAR","Menarini",3
-"611","TOBREX","Altana",1
-"612","GEMZAR","Daiichi Pharmaceutical Co.",3
-"613","MEGACE","Genzyme",2
-"614","ARALEN","Eisai Co.",2
-"615","MYCOBUTIN","Abbott Laboratories",1
-"616","CERDELGA","Sanofi-Aventis",2
-"617","NYSTOP","Menarini",3
-"618","CAMPATH","H. Lundbeck",2
-"619","LEVITRA","Solvay",3
-"620","ZYDELIG","Schering-Plough",3
-"621","KEPPRA","Altana",1
-"622","NEORAL","Sumitomo Chemical Co.",2
-"623","ORAPRED","UCB",1
-"624","CARTIA XT","Taisho Pharmaceutical",1
-"625","SOMAVERT","Alcon",2
-"626","COGENTIN","Allergan",1
-"627","TEMODAR","Watson Pharmaceuticals",2
-"628","DIFLUCAN","Chugai Pharmaceutical Co.",2
-"629","ZAROXOLYN","Takeda Pharmaceutical Co.",3
-"630","KYPROLIS","Teva Pharmaceutical Industries",1
-"631","TRANSDERM SCOP","Hoffmann-La Roche",1
-"632","NEXIUM","Sanofi-Aventis",3
-"633","NEO-FRADIN","Astellas Pharma Inc.",1
-"634","MUSE","Abbott Laboratories",1
-"635","SANCTURA","AstraZeneca",1
-"636","PLAQUENIL","Bristol-Myers Squibb",3
-"637","ZYVOX","Shionogi & Co.",3
-"638","COLIMICINA-M","Sanofi-Aventis",1
-"639","DIPRIVAN","Bayer",2
-"640","ABREVA","Menarini",2
-"641","AREDIA","Watson Pharmaceuticals",1
-"642","ZITROMAX","Merck KGaA",1
-"643","TYZINE","Watson Pharmaceuticals",1
-"644","LESCOL","Taisho Pharmaceutical",1
-"645","BREVITAL SODIUM","Genzyme",3
-"646","CLAFORAN","Sankyo Co.",3
-"647","DALIRESP","Hoffmann-La Roche",3
-"648","TEVETEN","Genentech",2
-"649","TASIGNA","Genentech",3
-"650","SORIATANE","Bristol-Myers Squibb",3
-"651","SONATA","Shionogi & Co.",2
-"652","ALFERON","Chugai Pharmaceutical Co.",1
-"653","VIMPAT","Novo Nordisk",2
-"654","ENABLEX","Astellas Pharma Inc.",2
-"655","ASCLERA","Bausch & Lomb",1
-"656","PRECEDEX","Novartis",2
-"657","NIX","Kyowa Hakko Kogyo Co.",1
-"658","TRACLEER","Eisai Co.",1
-"659","SUTENT","Kyowa Hakko Kogyo Co.",1
-"660","TRIGLIDE","Barr",1
-"661","KYNAMRO","UCB",1
-"662","COMETRIQ","Biogen Idec",1
-"663","NITHIODOTE","Johnson & Johnson",2
-"664","INTELENCE","Procter & Gamble",3
-"665","NALLPEN","Wyeth",1
-"666","KINERET","Abbott Laboratories",2
-"667","REMODULIN","Genzyme",2
-"668","GRIS-PEG","Bristol-Myers Squibb",2
-"669","COZAAR","Schering-Plough",1
-"670","LIBRAX","Menarini",3
-"671","SYNERCID","Taisho Pharmaceutical",2
-"672","INAPSINE","Abbott Laboratories",2
-"673","TAMIFLU","Amgen",3
-"674","TENORMIN","Merck & Co.",1
-"675","AGGRASTAT","Sanofi-Aventis",2
-"676","CYTOVENE","Alcon",2
-"677","NAMENDA","Takeda Pharmaceutical Co.",3
-"678","EVOXAC","Watson Pharmaceuticals",1
-"679","PRIFTIN","Schering",1
-"680","VIBERZI","Sankyo Co.",3
-"681","CAMILA","Daiichi Pharmaceutical Co.",3
-"682","LASTACAFT","Mitsubishi Pharma",2
-"683","VASOSTRICT","Abbott Laboratories",3
-"684","VENTAVIS","Amgen",2
-"685","FUSILEV","UCB",1
-"686","PRADAXA","AstraZeneca",1
-"687","PRAVACHOL","Solvay",1
-"688","D.H.E. 45","Baxter International",2
-"689","DENAVIR","Schering",1
-"690","CELESTONE SOLUSPAN","Johnson & Johnson",2
-"691","KETEK","Watson Pharmaceuticals",2
-"692","PROSCAR","Sankyo Co.",1
-"693","FLAGYL","Teva Pharmaceutical Industries",2
-"694","LODOSYN","Eli Lilly and Company",3
-"695","SELSUN","Boehringer Ingelheim",2
-"696","VIVELLE","Kyowa Hakko Kogyo Co.",3
-"697","ALOCRIL","Schering-Plough",1
-"698","ETHYOL","Bausch & Lomb",3
-"699","THAM","Barr",2
-"700","DILAUDID","Sankyo Co.",1
-"701","PRINIVIL","Schering",1
-"702","COLCRYS","Bausch & Lomb",3
-"703","Kcentra","Chiron Corporation",3
-"704","ARICEPT","Tanabe Seiyaku Co.",2
-"705","INVEGA","Altana",3
-"706","ASTELIN","Forest Laboratories",3
-"707","NAVANE","Johnson & Johnson",1
-"708","ARIXTRA","Schering",3
-"709","UREX","Pfizer",1
-"710","TEFLARO","Schering",1
-"711","EXELON","Menarini",1
-"712","INSPRA","Merck KGaA",3
-"713","OFEV","Schering",1
-"714","REOPRO","Menarini",1
-"715","ZOMIG","Chugai Pharmaceutical Co.",3
-"716","ISORDIL","Bausch & Lomb",1
-"717","KALYDECO","Amgen",2
-"718","RESCRIPTOR","Kyowa Hakko Kogyo Co.",2
-"719","ORAP","Chiron Corporation",1
-"720","CLARINEX","Daiichi Pharmaceutical Co.",1
-"721","ISOPTO CARPINE","Teva Pharmaceutical Industries",1
-"722","PULMICORT","AstraZeneca",1
-"723","QUELICIN","Boehringer Ingelheim",2
-"724","Corifact","Merck & Co.",1
-"725","UNIVASC","Baxter International",3
-"726","BUPRENEX","Wyeth",2
-"727","STREPTASE","Sanofi-Aventis",2
-"728","MONONINE","Watson Pharmaceuticals",3
-"729","DURAMORPH PF","Johnson & Johnson",2
-"730","APOKYN","Hoffmann-La Roche",1
-"731","ULTRAM","Sanofi-Aventis",2
-"732","DIABETA","Mitsubishi Pharma",1
-"733","SULFAMYLON","Genentech",1
-"734","SENSIPAR","Chugai Pharmaceutical Co.",3
-"735","LUCENTIS","Forest Laboratories",1
-"736","ECOZA","Sumitomo Chemical Co.",3
-"737","BOTOX","Shionogi & Co.",3
-"738","R-GENE 10","Novo Nordisk",3
-"739","SAMSCA","Merck KGaA",2
-"740","COPAXONE","Johnson & Johnson",1
-"741","MUSTARGEN","Eli Lilly and Company",2
-"742","PREVALITE","Schering-Plough",1
-"743","PRANDIN","Bausch & Lomb",2
-"744","SUSTIVA","Bausch & Lomb",2
-"745","BENICAR","Novartis",2
-"746","TEKTURNA","Forest Laboratories",3
-"747","DEPACON","Astellas Pharma Inc.",2
-"748","CORVERT","Biogen Idec",1
-"749","FETZIMA","UCB",1
-"750","AMRIX","Menarini",1
-"751","MYSOLINE","Genentech",3
-"752","PREPIDIL","Daiichi Pharmaceutical Co.",3
-"753","NEULASTA","Merck & Co.",2
-"754","LOTENSIN","Taisho Pharmaceutical",2
-"755","VIREAD","Boehringer Ingelheim",1
-"756","VANOS","Solvay",1
-"757","MEDROL","Chiron Corporation",1
-"758","GLIADEL","GlaxoSmithKline",3
-"759","KUVAN","Novartis",3
-"760","ERYTHROCIN","Biogen Idec",2
-"761","NIACOR","Alcon",2
-"762","LOTRONEX","Johnson & Johnson",2
-"763","STELARA","Schering",1
-"764","ZEVALIN","Johnson & Johnson",3
-"765","SYNTHROID","Baxter International",2
-"766","XALKORI","Genzyme",3
-"767","PROMETHEGAN","Sankyo Co.",1
-"768","PERSANTINE","GlaxoSmithKline",2
-"769","PAXIL","Tanabe Seiyaku Co.",3
-"770","LIORESAL","Abbott Laboratories",3
-"771","FORTEO","Mitsubishi Pharma",3
-"772","CORDRAN","Hoffmann-La Roche",3
-"773","CELONTIN","Novartis",3
-"774","ANCEF","Daiichi Pharmaceutical Co.",1
-"775","CRESTOR","Teva Pharmaceutical Industries",3
-"776","ERGOMAR","Baxter International",3
-"777","NICORETTE","Sumitomo Chemical Co.",2
-"778","DIFFERIN","Bristol-Myers Squibb",2
-"779","ERIVEDGE","Biogen Idec",2
-"780","INDOCIN","Baxter International",1
-"781","SOMATULINE DEPOT","Schering",1
-"782","ACZONE","Novartis",2
-"783","KLOR-CON","Sumitomo Chemical Co.",1
-"784","PROGLYCEM","Wyeth",1
-"785","NIPENT","Kyowa Hakko Kogyo Co.",2
-"786","LUMIGAN","Chugai Pharmaceutical Co.",2
-"787","NOLVADEX","Novartis",3
-"788","DURAGESIC","Merck & Co.",3
-"789","ZAVESCA","Schering-Plough",2
-"790","INFASURF","Watson Pharmaceuticals",3
-"791","JANUVIA","Eisai Co.",1
-"792","DIDRONEL","Taisho Pharmaceutical",3
-"793","ALEVE","GlaxoSmithKline",2
-"794","ABELCET","Altana",3
-"795","HALCION","GlaxoSmithKline",3
-"796","HEPAGAM B","Tanabe Seiyaku Co.",1
-"797","ALAVERT","Hoffmann-La Roche",3
-"798","CLOMID","Bristol-Myers Squibb",1
-"799","DORAL","Wyeth",3
-"800","VIBRAMYCIN","Kyowa Hakko Kogyo Co.",1
-"801","TRILEPTAL","Menarini",1
-"802","MALARONE","H. Lundbeck",3
-"803","VAGISTAT-1","Biogen Idec",1
-"804","FASLODEX","Baxter International",3
-"805","ASACOL","Merck & Co.",1
-"806","ZYKADIA","Chugai Pharmaceutical Co.",3
-"807","RILUTEK","Altana",3
-"808","VASOTEC","Sanofi-Aventis",3
-"809","OPDIVO","Hoffmann-La Roche",2
-"810","ALBENZA","Tanabe Seiyaku Co.",1
-"811","CALAN","Schering",2
-"812","ALDARA","AstraZeneca",2
-"813","XALATAN","AstraZeneca",1
-"814","DALVANCE","Merck & Co.",1
-"815","MIRAPEX","Solvay",1
-"816","NATAZIA","H. Lundbeck",2
-"817","NEBUPENT","Bausch & Lomb",1
-"818","DUVOID","Solvay",3
-"819","TAZORAC","Teva Pharmaceutical Industries",3
-"820","ALLEGRA","Amgen",3
-"821","MONISTAT 3","Bausch & Lomb",1
-"822","CAPASTAT","Astellas Pharma Inc.",2
-"823","SILVADENE","Tanabe Seiyaku Co.",3
-"824","EDECRIN","Taisho Pharmaceutical",3
-"825","NATACYN","GlaxoSmithKline",1
-"826","NORVASC","Novo Nordisk",2
-"827","TIGAN","Menarini",1
-"828","ANEXSIA 5/325","Mitsubishi Pharma",1
-"829","JUXTAPID","Johnson & Johnson",3
-"830","PLAVIX","Forest Laboratories",3
-"831","PIN-X","Shionogi & Co.",1
-"832","CARDURA","Genzyme",2
-"833","PERCOCET","Novartis",3
-"834","VIDAZA","Bristol-Myers Squibb",2
-"835","TIMENTIN","H. Lundbeck",2
-"836","FOSCAVIR","Daiichi Pharmaceutical Co.",1
-"837","GLUCOPHAGE","Biogen Idec",2
-"838","CEFTIN","Boehringer Ingelheim",1
-"839","RISPERDAL","Amgen",1
-"840","BARACLUDE","Forest Laboratories",1
-"841","MACROBID","Tanabe Seiyaku Co.",3
-"842","TACHIPIRINA","Bristol-Myers Squibb",3
-"843","ZYFLO","Barr",3
-"844","MARPLAN","Procter & Gamble",3
-"845","NIZORAL","Genzyme",3
-"846","EXJADE","Novo Nordisk",3
-"847","MAXAIR","Bayer",3
-"848","TOPICORT","H. Lundbeck",2
-"849","ADIPEX-P","Novartis",2
-"850","AZOPT","Akzo Nobel",2
-"851","BLEPH-10","Boehringer Ingelheim",2
-"852","FELBATOL","Sumitomo Chemical Co.",3
-"853","MITOSOL","Novartis",3
-"854","MYLERAN","Barr",2
-"855","BETAPACE","Solvay",1
-"856","BYETTA","Abbott Laboratories",1
-"857","BACTROBAN","Novo Nordisk",3
-"858","RECOMBINATE","Daiichi Pharmaceutical Co.",2
-"859","PARNATE","Schering-Plough",2
-"860","ROBINUL","Astellas Pharma Inc.",1
-"861","ADASUVE","Takeda Pharmaceutical Co.",2
-"862","CELEXA","Barr",2
-"863","ROZEREM","Novartis",3
-"864","AVODART","Chiron Corporation",3
-"865","ORBACTIV","Bristol-Myers Squibb",3
-"866","COARTEM","Hoffmann-La Roche",2
-"867","ACTEMRA","GlaxoSmithKline",1
-"868","LOPID","Menarini",3
-"869","PONSTEL","GlaxoSmithKline",3
-"870","DIURIL","Barr",2
-"871","VIRAZOLE","Merck & Co.",1
-"872","RELPAX","Altana",3
-"873","SANDOSTATIN","Chiron Corporation",2
-"874","FOSAMAX","Teva Pharmaceutical Industries",3
-"875","CAPRELSA","Wyeth",1
-"876","PRAXBIND","Sumitomo Chemical Co.",2
-"877","BETAGAN","Takeda Pharmaceutical Co.",1
-"878","SEROMICINA","Teva Pharmaceutical Industries",1
-"879","PRELONE","H. Lundbeck",3
-"880","BAL","Schering",3
-"881","KRYSTEXXA","Mitsubishi Pharma",2
-"882","TESSALON","Barr",1
-"883","TORISEL","Chugai Pharmaceutical Co.",2
-"884","ANCOBON","UCB",2
-"885","REGLAN","Daiichi Pharmaceutical Co.",2
-"886","VRAYLAR","UCB",2
-"887","ONGLYZA","Mitsubishi Pharma",2
-"888","BREVIBLOC","Chugai Pharmaceutical Co.",1
-"889","BLOXIVERZ","Bausch & Lomb",1
-"890","EDEX","UCB",3
-"891","ELLA","Bausch & Lomb",2
-"892","HYDREA","Barr",2
-"893","TRADJENTA","Novartis",2
-"894","SANTYL","Bristol-Myers Squibb",3
-"895","OPHTHETIC","GlaxoSmithKline",1
-"896","TAXOTERE","Amgen",2
-"897","PANCREAZE","Boehringer Ingelheim",2
-"898","AZACTAM","Tanabe Seiyaku Co.",2
-"899","ACHROMYCIN V","Baxter International",3
-"900","FLONASE","Johnson & Johnson",2
-"901","OTREXUP","Hoffmann-La Roche",2
-"902","SUPRAX","Hoffmann-La Roche",2
-"903","NPLATE","Forest Laboratories",1
-"904","INTEGRILIN","Boehringer Ingelheim",3
-"905","PROCARDIA","Procter & Gamble",3
-"906","TUDORZA PRESSAIR","Astellas Pharma Inc.",2
-"907","ACCOLATE","Johnson & Johnson",2
-"908","INTRON A","Schering",2
-"909","CHOLAC","Takeda Pharmaceutical Co.",1
-"910","ARANESP","Merck & Co.",2
-"911","CUROSURF","Schering",2
-"912","DEXEDRINE","Teva Pharmaceutical Industries",1
-"913","ELIMITE","Solvay",1
-"914","VELCADE","Genentech",1
-"915","PROGRAF","Pfizer",2
-"916","CORLOPAM","Bayer",3
-"917","ROGAINE","Schering-Plough",3
-"918","DOVONEX","GlaxoSmithKline",2
-"919","SOTRADECOL","Hoffmann-La Roche",2
-"920","ETOPOPHOS","Menarini",2
-"921","EVZIO","Bristol-Myers Squibb",3
-"922","AGRYLIN","Genzyme",3
-"923","RETIN-A","Wyeth",2
-"924","TENEX","Novo Nordisk",1
-"925","BELVIQ","Pfizer",2
-"926","CLEOCIN","Menarini",1
-"927","QUALAQUIN","Taisho Pharmaceutical",3
-"928","MULTAQ","Genzyme",1
-"929","BACTOCILL","Kyowa Hakko Kogyo Co.",3
-"930","STRATTERA","Solvay",1
-"931","APTIVUS","Baxter International",1
-"932","RAZADYNE","Merck KGaA",1
-"933","DEMEROL","Altana",1
-"934","ERBITUX","Taisho Pharmaceutical",2
-"935","XIFAXAN","GlaxoSmithKline",2
-"936","EMADINE","GlaxoSmithKline",1
-"937","AYGESTIN","Watson Pharmaceuticals",3
-"938"," VENTOLIN-HFA","Abbott Laboratories",2
-"939","ENTYVIO","Wyeth",1
-"940","GLEEVEC","Watson Pharmaceuticals",1
-"941","FEMARA","Solvay",2
-"942","TAFINLAR","Wyeth",1
-"943","EFFIENT","Bristol-Myers Squibb",1
-"944","DigiFab","Eli Lilly and Company",3
-"945","CUPRIMINE","Solvay",2
-"946","DIPROLENE","Watson Pharmaceuticals",1
-"947","TYZEKA","Novo Nordisk",1
-"948","PROPECIA","Daiichi Pharmaceutical Co.",1
-"949","METOPIRONE","Johnson & Johnson",2
-"950","TEGRETOL","H. Lundbeck",3
-"951","ZOLOFT","Bausch & Lomb",2
-"952","PREMARIN","Sanofi-Aventis",2
-"953","PORTRAZZA","Schering",2
-"954","MIDAMOR","Teva Pharmaceutical Industries",1
-"955","SEPTRA","Kyowa Hakko Kogyo Co.",2
-"956","SOLU-CORTEF","Watson Pharmaceuticals",2
-"957","ZESTRIL","Amgen",2
-"958","CLOZARIL","Bayer",2
-"959","VIVACTIL","Sumitomo Chemical Co.",2
-"960","DORIBAX","Mitsubishi Pharma",3
-"961","TAXOL","Chiron Corporation",1
-"962","FINACEA","Akzo Nobel",1
-"963","THYROGEN","Akzo Nobel",3
-"964","FORADIL","Bayer",2
-"965","HIPREX","Chiron Corporation",3
-"966","FORTAZ","Biogen Idec",1
-"967","XARELTO","AstraZeneca",2
-"968","ELLENCE","Allergan",1
-"969","SULAR","Watson Pharmaceuticals",3
+"533","GLYSET","Eli Lilly and Company",1
+"534","INVOKANA","GlaxoSmithKline",2
+"535","RAPAMUNE","Genzyme",2
+"536","ZARONTIN","Sumitomo Chemical Co.",2
+"537","NAPROSYN","Hoffmann-La Roche",1
+"538","ADDERALL XR 10","Amgen",2
+"539","SYPRINE","Takeda Pharmaceutical Co.",2
+"540","VANTAS","Novo Nordisk",1
+"541","KALETRA","Boehringer Ingelheim",1
+"542","ANAFRANIL","Tanabe Seiyaku Co.",3
+"543","DARAPRIM","Wyeth",2
+"544","DOXIL (LIPOSOMIALE)","Bayer",1
+"545","OXISTAT","Forest Laboratories",3
+"546","ATROPEN","Merck KGaA",3
+"547","TINDAMAX","UCB",1
+"548","FROVA","AstraZeneca",3
+"549","ROWASA","Eli Lilly and Company",2
+"550","KEFLEX","Genentech",1
+"551","MYOBLOC","Eli Lilly and Company",2
+"552","FUZEON","Daiichi Pharmaceutical Co.",2
+"553","NITROPRESS","Sankyo Co.",3
+"554","FABRAZYME","Chiron Corporation",3
+"555","SABRIL","Schering",3
+"556","Gammagard S/D","Akzo Nobel",2
+"557","TYKERB","Eli Lilly and Company",3
+"558","FRAGMIN","Biogen Idec",2
+"559","PROTOPAM CHLORIDE","Sanofi-Aventis",3
+"560","VIDEX","Astellas Pharma Inc.",1
+"561","TALWIN","Bausch & Lomb",1
+"562","URECHOLINE","Mitsubishi Pharma",2
+"563","AVAGE","Baxter International",3
+"564","TOVIAZ","Alcon",2
+"565","ORVATEN","AstraZeneca",1
+"566","XELODA","Barr",1
+"567","ZOCOR","Bausch & Lomb",2
+"568","MYAMBUTOL","GlaxoSmithKline",1
+"569","TYSABRI","Chiron Corporation",1
+"570","AMOXIL","Procter & Gamble",3
+"571","TRIDIONE","Merck KGaA",1
+"572","MICROZIDE","Boehringer Ingelheim",2
+"573","CEENU","Pfizer",1
+"574","CATAPRES","Solvay",1
+"575","RID MOUSSE","Genentech",1
+"576","ZONALON","H. Lundbeck",3
+"577","OXYCONTIN","Bausch & Lomb",3
+"578","STENDRA","Shionogi & Co.",1
+"579","TYGACIL","Bausch & Lomb",3
+"580","MONURIL","Novo Nordisk",2
+"581","MUSCORIL","H. Lundbeck",1
+"582","ZINACEF","Taisho Pharmaceutical",3
+"583","ACTONEL","Sanofi-Aventis",2
+"584","COMTAN","Forest Laboratories",1
+"585","MACRODANTIN","Pfizer",1
+"586","DIAMOX","Biogen Idec",3
+"587","RETROVIR","Johnson & Johnson",1
+"588","CAMPTOSAR","GlaxoSmithKline",2
+"589","SPRIX","AstraZeneca",1
+"590","CERUBIDINA","Shionogi & Co.",2
+"591","ESBRIET","Procter & Gamble",3
+"592","PRISTIQ","Pfizer",1
+"593","DIBENZYLINE","Taisho Pharmaceutical",3
+"594","ALPHAGAN P","Watson Pharmaceuticals",2
+"595","AZULFIDINE","UCB",2
+"596","ANTARA","Tanabe Seiyaku Co.",1
+"597","CYTOTEC","Sanofi-Aventis",1
+"598","MENTAX","Chiron Corporation",1
+"599","NEXAVAR","Schering",2
+"600","AROMASIN","Menarini",3
+"601","CELLCEPT","Barr",2
+"602","MONOCLATE-P","Amgen",1
+"603","HERCEPTIN","Mitsubishi Pharma",3
+"604","SIMPONI","Astellas Pharma Inc.",3
+"605","ALTOPREV","UCB",1
+"606","BIAXIN","Amgen",2
+"607","ISENTRESS","Sumitomo Chemical Co.",3
+"608","CYMBALTA","Procter & Gamble",2
+"609","ALLI","Astellas Pharma Inc.",3
+"610","ELSPAR","Sanofi-Aventis",2
+"611","TOBREX","Chugai Pharmaceutical Co.",2
+"612","GEMZAR","Bayer",3
+"613","MEGACE","Schering",3
+"614","ARALEN","Johnson & Johnson",3
+"615","MYCOBUTIN","Bayer",1
+"616","CERDELGA","Amgen",1
+"617","NYSTOP","Eisai Co.",1
+"618","CAMPATH","Biogen Idec",3
+"619","LEVITRA","Bausch & Lomb",3
+"620","ZYDELIG","Kyowa Hakko Kogyo Co.",1
+"621","KEPPRA","UCB",2
+"622","NEORAL","Shionogi & Co.",3
+"623","ORAPRED","Bausch & Lomb",1
+"624","CARTIA XT","Akzo Nobel",3
+"625","SOMAVERT","Genzyme",2
+"626","COGENTIN","Barr",2
+"627","TEMODAR","H. Lundbeck",1
+"628","DIFLUCAN","Boehringer Ingelheim",3
+"629","ZAROXOLYN","Barr",2
+"630","KYPROLIS","Watson Pharmaceuticals",2
+"631","TRANSDERM SCOP","AstraZeneca",3
+"632","NEXIUM","Eli Lilly and Company",3
+"633","NEO-FRADIN","Eli Lilly and Company",1
+"634","MUSE","Allergan",3
+"635","SANCTURA","Takeda Pharmaceutical Co.",1
+"636","PLAQUENIL","Solvay",3
+"637","ZYVOX","Bausch & Lomb",1
+"638","COLIMICINA-M","Bausch & Lomb",3
+"639","DIPRIVAN","Schering",2
+"640","ABREVA","Hoffmann-La Roche",2
+"641","AREDIA","Abbott Laboratories",2
+"642","ZITROMAX","Genentech",1
+"643","TYZINE","Wyeth",2
+"644","LESCOL","Forest Laboratories",3
+"645","BREVITAL SODIUM","Altana",3
+"646","CLAFORAN","UCB",2
+"647","DALIRESP","Novo Nordisk",1
+"648","TEVETEN","Sanofi-Aventis",1
+"649","TASIGNA","Bausch & Lomb",3
+"650","SORIATANE","Sankyo Co.",2
+"651","SONATA","Takeda Pharmaceutical Co.",3
+"652","ALFERON","Mitsubishi Pharma",1
+"653","VIMPAT","Alcon",2
+"654","ENABLEX","Merck & Co.",3
+"655","ASCLERA","AstraZeneca",2
+"656","PRECEDEX","Shionogi & Co.",1
+"657","NIX","Takeda Pharmaceutical Co.",1
+"658","TRACLEER","Daiichi Pharmaceutical Co.",2
+"659","SUTENT","Shionogi & Co.",2
+"660","TRIGLIDE","Tanabe Seiyaku Co.",3
+"661","KYNAMRO","Amgen",1
+"662","COMETRIQ","Shionogi & Co.",2
+"663","NITHIODOTE","Genentech",3
+"664","INTELENCE","Wyeth",2
+"665","NALLPEN","Genentech",2
+"666","KINERET","Sanofi-Aventis",3
+"667","REMODULIN","Baxter International",2
+"668","GRIS-PEG","Genentech",2
+"669","COZAAR","Pfizer",1
+"670","LIBRAX","Eli Lilly and Company",3
+"671","SYNERCID","Daiichi Pharmaceutical Co.",2
+"672","INAPSINE","Biogen Idec",3
+"673","TAMIFLU","Wyeth",1
+"674","TENORMIN","Alcon",1
+"675","AGGRASTAT","H. Lundbeck",1
+"676","CYTOVENE","Novo Nordisk",3
+"677","NAMENDA","Biogen Idec",2
+"678","EVOXAC","Genentech",1
+"679","PRIFTIN","Abbott Laboratories",3
+"680","VIBERZI","Abbott Laboratories",1
+"681","CAMILA","Eli Lilly and Company",1
+"682","LASTACAFT","Watson Pharmaceuticals",2
+"683","VASOSTRICT","Chugai Pharmaceutical Co.",3
+"684","VENTAVIS","Schering",1
+"685","FUSILEV","Eisai Co.",1
+"686","PRADAXA","Teva Pharmaceutical Industries",3
+"687","PRAVACHOL","Alcon",3
+"688","D.H.E. 45","Kyowa Hakko Kogyo Co.",1
+"689","DENAVIR","Menarini",1
+"690","CELESTONE SOLUSPAN","Sanofi-Aventis",3
+"691","KETEK","Amgen",1
+"692","PROSCAR","Procter & Gamble",1
+"693","FLAGYL","Astellas Pharma Inc.",2
+"694","LODOSYN","Biogen Idec",2
+"695","SELSUN","Pfizer",3
+"696","VIVELLE","Taisho Pharmaceutical",2
+"697","ALOCRIL","Sankyo Co.",2
+"698","ETHYOL","Amgen",3
+"699","THAM","Sankyo Co.",3
+"700","DILAUDID","Barr",1
+"701","PRINIVIL","GlaxoSmithKline",2
+"702","COLCRYS","Sankyo Co.",3
+"703","Kcentra","Forest Laboratories",2
+"704","ARICEPT","Baxter International",2
+"705","INVEGA","Schering-Plough",1
+"706","ASTELIN","Mitsubishi Pharma",3
+"707","NAVANE","Takeda Pharmaceutical Co.",1
+"708","ARIXTRA","Chiron Corporation",1
+"709","UREX","Daiichi Pharmaceutical Co.",1
+"710","TEFLARO","Bayer",2
+"711","EXELON","AstraZeneca",3
+"712","INSPRA","Shionogi & Co.",2
+"713","OFEV","Solvay",2
+"714","REOPRO","Wyeth",2
+"715","ZOMIG","Hoffmann-La Roche",2
+"716","ISORDIL","Daiichi Pharmaceutical Co.",2
+"717","KALYDECO","Altana",3
+"718","RESCRIPTOR","Menarini",1
+"719","ORAP","Akzo Nobel",1
+"720","CLARINEX","Tanabe Seiyaku Co.",2
+"721","ISOPTO CARPINE","Altana",3
+"722","PULMICORT","Sanofi-Aventis",2
+"723","QUELICIN","Chiron Corporation",1
+"724","Corifact","Novo Nordisk",2
+"725","UNIVASC","Alcon",3
+"726","BUPRENEX","Johnson & Johnson",2
+"727","STREPTASE","Eli Lilly and Company",1
+"728","MONONINE","AstraZeneca",2
+"729","DURAMORPH PF","Merck KGaA",3
+"730","APOKYN","Boehringer Ingelheim",2
+"731","ULTRAM","Bausch & Lomb",3
+"732","DIABETA","Barr",3
+"733","SULFAMYLON","Solvay",2
+"734","SENSIPAR","Novartis",2
+"735","LUCENTIS","Taisho Pharmaceutical",1
+"736","ECOZA","Solvay",3
+"737","BOTOX","Bayer",2
+"738","R-GENE 10","Menarini",1
+"739","SAMSCA","UCB",3
+"740","COPAXONE","Shionogi & Co.",3
+"741","MUSTARGEN","Takeda Pharmaceutical Co.",1
+"742","PREVALITE","Forest Laboratories",3
+"743","PRANDIN","GlaxoSmithKline",1
+"744","SUSTIVA","Amgen",3
+"745","BENICAR","Pfizer",2
+"746","TEKTURNA","Sumitomo Chemical Co.",1
+"747","DEPACON","Genzyme",2
+"748","CORVERT","Wyeth",3
+"749","FETZIMA","Procter & Gamble",1
+"750","AMRIX","Biogen Idec",2
+"751","MYSOLINE","Novartis",3
+"752","PREPIDIL","Novartis",3
+"753","NEULASTA","Watson Pharmaceuticals",2
+"754","LOTENSIN","Merck KGaA",2
+"755","VIREAD","Genzyme",2
+"756","VANOS","AstraZeneca",2
+"757","MEDROL","Taisho Pharmaceutical",3
+"758","GLIADEL","Astellas Pharma Inc.",2
+"759","KUVAN","Shionogi & Co.",3
+"760","ERYTHROCIN","Baxter International",2
+"761","NIACOR","Merck & Co.",2
+"762","LOTRONEX","Procter & Gamble",1
+"763","STELARA","Barr",3
+"764","ZEVALIN","Watson Pharmaceuticals",3
+"765","SYNTHROID","Schering-Plough",2
+"766","XALKORI","Genentech",2
+"767","PROMETHEGAN","Genentech",1
+"768","PERSANTINE","Schering-Plough",2
+"769","PAXIL","Forest Laboratories",1
+"770","LIORESAL","Genentech",3
+"771","FORTEO","Daiichi Pharmaceutical Co.",1
+"772","CORDRAN","Chugai Pharmaceutical Co.",1
+"773","CELONTIN","Eli Lilly and Company",1
+"774","ANCEF","Barr",2
+"775","CRESTOR","AstraZeneca",2
+"776","ERGOMAR","Sanofi-Aventis",2
+"777","NICORETTE","Abbott Laboratories",3
+"778","DIFFERIN","Boehringer Ingelheim",2
+"779","ERIVEDGE","UCB",1
+"780","INDOCIN","Bausch & Lomb",1
+"781","SOMATULINE DEPOT","Pfizer",3
+"782","ACZONE","Sumitomo Chemical Co.",2
+"783","KLOR-CON","Merck & Co.",2
+"784","PROGLYCEM","Teva Pharmaceutical Industries",2
+"785","NIPENT","AstraZeneca",3
+"786","LUMIGAN","Genzyme",3
+"787","NOLVADEX","UCB",2
+"788","DURAGESIC","Allergan",3
+"789","ZAVESCA","Teva Pharmaceutical Industries",1
+"790","INFASURF","H. Lundbeck",2
+"791","JANUVIA","Pfizer",3
+"792","DIDRONEL","Teva Pharmaceutical Industries",3
+"793","ALEVE","Amgen",3
+"794","ABELCET","Takeda Pharmaceutical Co.",1
+"795","HALCION","Takeda Pharmaceutical Co.",2
+"796","HEPAGAM B","Taisho Pharmaceutical",1
+"797","ALAVERT","Barr",1
+"798","CLOMID","AstraZeneca",2
+"799","DORAL","Solvay",1
+"800","VIBRAMYCIN","Sankyo Co.",1
+"801","TRILEPTAL","Eisai Co.",3
+"802","MALARONE","GlaxoSmithKline",1
+"803","VAGISTAT-1","Genentech",3
+"804","FASLODEX","Bausch & Lomb",3
+"805","ASACOL","Schering-Plough",2
+"806","ZYKADIA","UCB",2
+"807","RILUTEK","Taisho Pharmaceutical",1
+"808","VASOTEC","Taisho Pharmaceutical",1
+"809","OPDIVO","Wyeth",2
+"810","ALBENZA","Wyeth",3
+"811","CALAN","AstraZeneca",3
+"812","ALDARA","Sumitomo Chemical Co.",2
+"813","XALATAN","Chiron Corporation",3
+"814","DALVANCE","Alcon",2
+"815","MIRAPEX","Sumitomo Chemical Co.",1
+"816","NATAZIA","Altana",2
+"817","NEBUPENT","Merck KGaA",3
+"818","DUVOID","Abbott Laboratories",3
+"819","TAZORAC","GlaxoSmithKline",3
+"820","ALLEGRA","GlaxoSmithKline",1
+"821","MONISTAT 3","Menarini",2
+"822","CAPASTAT","Eisai Co.",1
+"823","SILVADENE","Wyeth",1
+"824","EDECRIN","Baxter International",3
+"825","NATACYN","Schering-Plough",2
+"826","NORVASC","Tanabe Seiyaku Co.",1
+"827","TIGAN","Sanofi-Aventis",1
+"828","ANEXSIA 5/325","Barr",3
+"829","JUXTAPID","Novo Nordisk",2
+"830","PLAVIX","Eisai Co.",3
+"831","PIN-X","Alcon",3
+"832","CARDURA","Allergan",3
+"833","PERCOCET","Akzo Nobel",3
+"834","VIDAZA","Menarini",1
+"835","TIMENTIN","Teva Pharmaceutical Industries",1
+"836","FOSCAVIR","Genzyme",3
+"837","GLUCOPHAGE","Takeda Pharmaceutical Co.",3
+"838","CEFTIN","Taisho Pharmaceutical",2
+"839","RISPERDAL","Sanofi-Aventis",2
+"840","BARACLUDE","Shionogi & Co.",1
+"841","MACROBID","Hoffmann-La Roche",2
+"842","TACHIPIRINA","Takeda Pharmaceutical Co.",3
+"843","ZYFLO","Mitsubishi Pharma",1
+"844","MARPLAN","Watson Pharmaceuticals",2
+"845","NIZORAL","Bausch & Lomb",3
+"846","EXJADE","Sumitomo Chemical Co.",3
+"847","MAXAIR","Amgen",2
+"848","TOPICORT","Amgen",2
+"849","ADIPEX-P","Pfizer",3
+"850","AZOPT","Barr",2
+"851","BLEPH-10","Teva Pharmaceutical Industries",1
+"852","FELBATOL","Baxter International",1
+"853","MITOSOL","Bayer",1
+"854","MYLERAN","Altana",3
+"855","BETAPACE","Hoffmann-La Roche",3
+"856","BYETTA","Procter & Gamble",3
+"857","BACTROBAN","Novo Nordisk",1
+"858","RECOMBINATE","AstraZeneca",1
+"859","PARNATE","UCB",3
+"860","ROBINUL","Watson Pharmaceuticals",2
+"861","ADASUVE","Boehringer Ingelheim",1
+"862","CELEXA","Schering-Plough",2
+"863","ROZEREM","Solvay",2
+"864","AVODART","Tanabe Seiyaku Co.",1
+"865","ORBACTIV","Allergan",1
+"866","COARTEM","Wyeth",1
+"867","ACTEMRA","Wyeth",2
+"868","LOPID","Chiron Corporation",2
+"869","PONSTEL","Mitsubishi Pharma",2
+"870","DIURIL","Menarini",3
+"871","VIRAZOLE","Akzo Nobel",1
+"872","RELPAX","Astellas Pharma Inc.",2
+"873","SANDOSTATIN","Pfizer",3
+"874","FOSAMAX","Barr",1
+"875","CAPRELSA","Novartis",3
+"876","PRAXBIND","Novartis",3
+"877","BETAGAN","Biogen Idec",2
+"878","SEROMICINA","Procter & Gamble",2
+"879","PRELONE","Watson Pharmaceuticals",1
+"880","BAL","Menarini",2
+"881","KRYSTEXXA","Amgen",2
+"882","TESSALON","Hoffmann-La Roche",3
+"883","TORISEL","Pfizer",1
+"884","ANCOBON","Pfizer",2
+"885","REGLAN","H. Lundbeck",2
+"886","VRAYLAR","Eisai Co.",1
+"887","ONGLYZA","Sankyo Co.",2
+"888","BREVIBLOC","Schering-Plough",3
+"889","BLOXIVERZ","Eisai Co.",2
+"890","EDEX","Eli Lilly and Company",3
+"891","ELLA","Daiichi Pharmaceutical Co.",2
+"892","HYDREA","Genzyme",2
+"893","TRADJENTA","Allergan",2
+"894","SANTYL","Biogen Idec",3
+"895","OPHTHETIC","Schering-Plough",3
+"896","TAXOTERE","Amgen",3
+"897","PANCREAZE","AstraZeneca",2
+"898","AZACTAM","Procter & Gamble",1
+"899","ACHROMYCIN V","Kyowa Hakko Kogyo Co.",3
+"900","FLONASE","Novo Nordisk",3
+"901","OTREXUP","Pfizer",1
+"902","SUPRAX","Amgen",1
+"903","NPLATE","Akzo Nobel",2
+"904","INTEGRILIN","Daiichi Pharmaceutical Co.",2
+"905","PROCARDIA","Genentech",3
+"906","TUDORZA PRESSAIR","Merck & Co.",2
+"907","ACCOLATE","Procter & Gamble",2
+"908","INTRON A","Genentech",2
+"909","CHOLAC","Menarini",1
+"910","ARANESP","Bayer",1
+"911","CUROSURF","Watson Pharmaceuticals",1
+"912","DEXEDRINE","Shionogi & Co.",2
+"913","ELIMITE","Menarini",2
+"914","VELCADE","Teva Pharmaceutical Industries",1
+"915","PROGRAF","Schering-Plough",2
+"916","CORLOPAM","Shionogi & Co.",3
+"917","ROGAINE","Bristol-Myers Squibb",3
+"918","DOVONEX","Bausch & Lomb",2
+"919","SOTRADECOL","Daiichi Pharmaceutical Co.",3
+"920","ETOPOPHOS","Sanofi-Aventis",2
+"921","EVZIO","Schering-Plough",1
+"922","AGRYLIN","Merck & Co.",1
+"923","RETIN-A","Bayer",1
+"924","TENEX","Chugai Pharmaceutical Co.",1
+"925","BELVIQ","Bristol-Myers Squibb",2
+"926","CLEOCIN","Johnson & Johnson",3
+"927","QUALAQUIN","Novo Nordisk",3
+"928","MULTAQ","Genentech",2
+"929","BACTOCILL","Sanofi-Aventis",1
+"930","STRATTERA","Chiron Corporation",3
+"931","APTIVUS","Schering-Plough",1
+"932","RAZADYNE","Bayer",3
+"933","DEMEROL","Forest Laboratories",3
+"934","ERBITUX","Daiichi Pharmaceutical Co.",1
+"935","XIFAXAN","Bausch & Lomb",1
+"936","EMADINE","Alcon",3
+"937","AYGESTIN","Boehringer Ingelheim",2
+"938"," VENTOLIN-HFA","Bayer",3
+"939","ENTYVIO","AstraZeneca",3
+"940","GLEEVEC","Schering",3
+"941","FEMARA","Shionogi & Co.",2
+"942","TAFINLAR","Chiron Corporation",1
+"943","EFFIENT","Bausch & Lomb",1
+"944","DigiFab","Chiron Corporation",3
+"945","CUPRIMINE","Bausch & Lomb",3
+"946","DIPROLENE","Sanofi-Aventis",2
+"947","TYZEKA","Amgen",3
+"948","PROPECIA","Eli Lilly and Company",1
+"949","METOPIRONE","Eli Lilly and Company",3
+"950","TEGRETOL","Novo Nordisk",3
+"951","ZOLOFT","UCB",3
+"952","PREMARIN","Merck KGaA",2
+"953","PORTRAZZA","Akzo Nobel",2
+"954","MIDAMOR","Amgen",2
+"955","SEPTRA","Shionogi & Co.",3
+"956","SOLU-CORTEF","Solvay",1
+"957","ZESTRIL","Sanofi-Aventis",3
+"958","CLOZARIL","Schering-Plough",3
+"959","VIVACTIL","AstraZeneca",1
+"960","DORIBAX","GlaxoSmithKline",3
+"961","TAXOL","Barr",3
+"962","FINACEA","Forest Laboratories",3
+"963","THYROGEN","Daiichi Pharmaceutical Co.",3
+"964","FORADIL","Schering",3
+"965","HIPREX","Sumitomo Chemical Co.",2
+"966","FORTAZ","Teva Pharmaceutical Industries",3
+"967","XARELTO","Barr",2
+"968","ELLENCE","Hoffmann-La Roche",2
+"969","SULAR","Teva Pharmaceutical Industries",2
