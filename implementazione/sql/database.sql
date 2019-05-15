@@ -29,15 +29,16 @@ create domain dom_cf as varchar
     
 create sequence dom_ric_seq;
 create domain dom_ric as int default nextval('dom_ric_seq') not null;
---     check ( value ~ ('RIC' || '[0-9]+')); 
 
 create sequence dom_dia_seq;
-create domain dom_dia as int default nextval('dom_dia_seq') ; -- tolgo not null perchè altrimenti mi scatta il trigger sull'effetto collaterale
+create domain dom_dia as int default nextval('dom_dia_seq');
 --     check ( value ~ ('DIA' || '[0-9]+')); 
 
 create sequence dom_ter_seq;
 create domain dom_ter as int default nextval('dom_ter_seq') not null;
---     check ( value ~ ('TER' || '[0-9]+')); 
+
+create sequence dom_pa_seq;
+create domain dom_pa as int default nextval('dom_pa_seq') not null;
 
 create domain ICD10 as varchar
     check ( value ~ ('^[A-Z]([A-Z]|[0-9]){2}((\.)([0-9])*)?$')); 
@@ -89,14 +90,15 @@ create table farmaco (
 );
 
 create table principio_attivo (
-    nome varchar primary key
+    cod_pa dom_pa primary key,
+    nome varchar
 );
 
 create table contiene (
     farmaco varchar references farmaco(nome_comm) 
                     on update cascade 
                     on delete cascade,
-    pr_attivo varchar references principio_attivo(nome) 
+    pr_attivo dom_pa references principio_attivo(cod_pa) 
                       on update cascade 
                       on delete cascade,
     quantita varchar not null,

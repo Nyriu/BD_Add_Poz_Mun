@@ -257,7 +257,8 @@ Può essere trasformato in due nuovi attributi \textit{Codice Patologia} e \text
 Bisogna prestare più attenzione agli attributi multivalore:
 in FARMACO sono presenti \textit{Nome Principi Attivi} e \textit{Quantità Principi Attivi} entrambi obbligatori e multivalore.
 L'unica semplificazione attuabile è creare una nuova entità chiamata PRINCIPIO-ATTIVO e metterla in relazione Molti-A-Molti con FARMACO attraverso la nuova relazione CONTIENE.
-PRINCIPIO-ATTIVO avrà un solo attributo, scelto anche come chiave primaria, chiamato \textit{Nome}, mentre alla relazione CONTIENE verrà aggiunto l'attributo \textit{Quantità}.
+Poiché i nomi dei principi attivi possono essere molto lunghi e non hanno un formato standard, in PRINCIPIO-ATTIVO verrà creata una chiave numerica sequenziale chiamata \textit{cod\_pa} avrà un solo attributo,   TODO FINIRE!!! scelto anche come chiave primaria, chiamato \textit{Nome}, mentre alla relazione CONTIENE verrà aggiunto l'attributo \textit{Quantità}.
+ 
 In questo modo saranno modellate esattamente le stesse informazioni precedentemente modellate dagli attributi multivalore.
 In realtà ora le informazioni sono salvate in un formato meno equivoco: prima non era chiaro come si mantenessero in relazione il nome del principio attivo e la sua quantità.
 
@@ -315,7 +316,7 @@ Applicando tutte le semplificazioni sopra descritte si ottiene lo schema E-R ill
 \begin{figure}[H] % TODO abbellire
 	\centering
 	\includegraphics[width=\linewidth]{schema2}
-	\caption{Lo schema Entità-Relazioni completo}
+	\caption{Lo schema Entità-Relazioni ristrutturato}
   \label{fig:ER_ristrutturato}
 \end{figure}
 
@@ -725,7 +726,7 @@ Bisogna, invece, introdurre un vincolo che vieti che due tuple del tipo TERAPIA\
   
   \node [below=1.3cm of farmaco.west, anchor=west] (principiotitle) {\textbf{PRINCIPIO\_ATTIVO}};
   \node [
-    relation=1,
+    relation=2,
     rectangle split horizontal,
     rectangle split part fill={lightgray!50},
     anchor=north west,
@@ -734,7 +735,8 @@ Bisogna, invece, introdurre un vincolo che vieti che due tuple del tipo TERAPIA\
     ]
     (principio)
     {
-     \nodepart{one} \underline{nome}
+     \nodepart{one} \underline{cod\_pa}
+     \nodepart{two} nome
     };
 
   \draw[-latex] (terapiaprescritta.one south) -- ++(0,-0.4) -| ($(terapiaprescritta.one south) + (7,0)$) |- ($(diagnosi.one south) + (-0,-0.6)$) -| ($(diagnosi.one south) + (-0,0)$);
@@ -899,7 +901,7 @@ Notare che è obbligatoria l'introduzione di due vincoli d'integrità, uno deve 
   
   \node [below=1.3cm of farmaco.west, anchor=west] (principiotitle) {\textbf{PRINCIPIO\_ATTIVO}};
   \node [
-    relation=1,
+    relation=2,
     rectangle split horizontal,
     rectangle split part fill={lightgray!50},
     anchor=north west,
@@ -908,7 +910,8 @@ Notare che è obbligatoria l'introduzione di due vincoli d'integrità, uno deve 
     ]
     (principio)
     {
-     \nodepart{one}  \underline{nome}
+     \nodepart{one}  \underline{cod\_pa}
+     \nodepart{two}  nome
     };
 
   \node [below=1.3cm of principio.west, anchor=west] (contienetitle) {\textbf{CONTIENE}};

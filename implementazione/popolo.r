@@ -11,6 +11,9 @@
 
 
 
+# Setto la working directory
+# getwd()
+
 
 
 
@@ -76,16 +79,16 @@ megabind <- function(lista_df){
 #######                                #######
 
 # Lettura dei nomi
-v_nomi <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\paziente\\nomi.txt")
+v_nomi <- readLines(".\\implementazione\\R\\paziente\\nomi.txt")
 
 # Lettura dei cognomi
-v_cognomi <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\paziente\\cognomi.txt")
+v_cognomi <- readLines(".\\implementazione\\R\\paziente\\cognomi.txt")
 
 # Lettura dei luoghi
-v_luoghi <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\paziente\\luoghi.txt")
+v_luoghi <- readLines(".\\implementazione\\R\\paziente\\luoghi.txt")
 
 # Creazione dataframe prov_res,reg_app,ulss
-pru <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\paziente\\pro-reg-ulss.csv", stringsAsFactors = FALSE)
+pru <- read.csv(".\\implementazione\\R\\paziente\\pro-reg-ulss.csv", stringsAsFactors = FALSE)
 
 # Funzione per la generazione del cf farlocco
 cf_gen <- function(nome, cognome, data) {
@@ -159,7 +162,7 @@ pazienti_df <- megabind(lista_df_pazienti)
 
 
 # MEMORIZZAZIONE del dataframe pazienti_df nel file csv
-write.csv(pazienti_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pazienti.csv"))
+write.csv(pazienti_df, file(".\\implementazione\\popoliCSV\\pazienti.csv"))
 
 
 
@@ -187,13 +190,13 @@ write.csv(pazienti_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Ad
 # Serve che ogni paziente abbia in media 3 ricoveri
 
 # Creo il dataframe dei pazienti
-pazienti <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pazienti.csv", stringsAsFactors = FALSE)
+pazienti <- read.csv(".\\implementazione\\popoliCSV\\pazienti.csv", stringsAsFactors = FALSE)
 
 # Creo il dataframe delle divisioni ospedaliere
-divosp <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\ricovero\\divisioniOsp.txt")
+divosp <- readLines(".\\implementazione\\R\\ricovero\\divisioniOsp.txt")
 
 # Creo il dataframe dei motivi di ricovero
-mot <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\ricovero\\motivi.txt")
+mot <- readLines(".\\implementazione\\R\\ricovero\\motivi.txt")
 
 # Del dataframe dei pazienti mi serve solo il CF e la data di nascita
 utile <- pazienti[,c(2,5)]
@@ -215,19 +218,19 @@ indice_ricovero = 1
 
 for(n_paziente in 1: nrow(utile)){
     
-    # Prendo la data attuale e quella di nascita per creare la data di inizio e fine del ricovero
-    dnasc = as.Date(utile[n_paziente,2])
+    # Prendo la data attuale e quella di apertura del db per creare la data di inizio e fine del ricovero
+    d_apertura_db = as.Date("2008-01-01")
     datt <- as.Date("2019-04-11")
     # Prendo il numero di ricoveri random per questo paziente
     nricoveri <- nric[n_paziente]
     # Conto il numero di giorni tra un intervallo netto e l'altro 
-    intervallo = floor((datt-dnasc) / nricoveri)
+    intervallo = floor((datt-d_apertura_db) / nricoveri)
     # Creo un vettore di intervalli di date
     v_intervalli = vector()
     class(v_intervalli) <- "Date"
 
     # Lo popolo
-    dtemp = dnasc
+    dtemp = d_apertura_db
     v_intervalli[1] = dtemp
     for(k in 2:(nricoveri+1)){
         dtemp = dtemp + intervallo
@@ -247,6 +250,18 @@ for(n_paziente in 1: nrow(utile)){
         v_date_i[k] = sample(seq(as.Date(v_intervalli[k]),as.Date(v_intervalli[k+1]),by="day"),1 , replace=T)
 
         v_date_f[k] = sample(seq(as.Date(v_date_i[k]),as.Date(v_intervalli[k+1]),by="day"),1 , replace=T)
+        
+        
+        # Faccio in modo che una percentuale di ricoveri sia ancora in corso
+        if(k == nricoveri){
+
+            ricovero_finisce = sample(0:20, 1, replace = T)
+
+            if(ricovero_finisce == 0) {
+                v_date_f[k] = NA;
+            }
+        }
+
     }
 
     # Prendo il cf del paziente
@@ -274,7 +289,7 @@ ricoveri_df <- megabind(lista_df_ricoveri)
 
 
 # MEMORIZZAZIONE del dataframe ricoveri nel file csv
-write.csv(ricoveri_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\ricoveri.csv"))
+write.csv(ricoveri_df, file(".\\implementazione\\popoliCSV\\ricoveri.csv"))
 
 # TODO ricoveri senza fine 
 # TODO uno con 6 ricoveri
@@ -284,6 +299,36 @@ write.csv(ricoveri_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Ad
 
 
 
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
+####################################################################################################################################
 
 
 
@@ -317,10 +362,10 @@ for(i in 1:999){
 }
 
 #Creo il dataframe dei medici
-medici <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\diagnosi\\medico.txt")
+medici <- readLines(".\\implementazione\\R\\diagnosi\\medico.txt")
 
 # Creo il dataframe dei ricoveri
-ricoveri <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
+ricoveri <- read.csv(".\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
 
 # Seleziono solo le colonne che mi servono: cf, cod_ric, data_i, data_f
 utile <- ricoveri[,c(2,3,4,7)]
@@ -353,12 +398,20 @@ indice_df = 1
 for(indice_tupla in 1 : n_tuple){
 
     # Seleziono una tupla
-    tupla = utile[indice_tupla,]    
+    tupla = utile[indice_tupla,]
 
     # Creazione delle date delle diagnosi 
     # Prendo la data di inizio e fine del ricovero
     dinizio = as.Date(tupla[,2])
     dfine <- as.Date(tupla[,3])
+
+    # Inserisco nel vettore di date finali la data odierna se in quella cella è null
+    if(is.na(dfine[length(dfine)]) ){
+        datafittizia = Sys.Date()
+        dfine[length(dfine)] = datafittizia
+    }
+
+
     # Considero tante date random in questo intervallo quante quelle in n_diagnosi
     v_date <- sample(seq(dinizio,dfine,by="day"),n_diagnosi[indice_tupla],replace=T)
     # Seleziono tanti codici icd10 quanti il numero di diagnosi
@@ -392,7 +445,7 @@ diagnosi_df <- megabind(lista_df_diagnosi)
 colnames(diagnosi_df) <- c("cod_dia","data_dia","cod_pat","grav_pat","medico","paziente","ricovero")
 
 # Salvo il dataframe in un csv
-write.csv(diagnosi_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\diagnosi.csv"))
+write.csv(diagnosi_df, file(".\\implementazione\\popoliCSV\\diagnosi.csv"))
 
 
 
@@ -418,22 +471,26 @@ write.csv(diagnosi_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Ad
 
 
 # Creo il dataframe dei principi attivi
-pr_att <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\pr_attivo.txt")
+pr_att <- readLines(".\\implementazione\\R\\farmaco\\pr_attivo.txt")
 
 lista_df_principi <- list()
 
 # Inserisco tutti i principi in un dataframe
 for(i in 1:length(pr_att)){
 
-    principio <- data.frame(nome=pr_att[i])
+    principio <- data.frame(
+                        cod_pa=i,
+                        nome=pr_att[i]
+                           )
+
     lista_df_principi[[i]] <- principio
 
 }
 
 pr_attivi_df <- megabind(lista_df_principi) 
-names(pr_attivi_df)[names(pr_attivi_df) == 'x'] <- "nome" # sto casino perchè il df ha solo una colonna
+#names(pr_attivi_df)[names(pr_attivi_df) == 'x'] <- "nome" # sto casino perchè il df ha solo una colonna
 
-write.csv(pr_attivi_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pr_attivi.csv"))
+write.csv(pr_attivi_df, file(".\\implementazione\\popoliCSV\\pr_attivi.csv"))
 
 
 
@@ -458,9 +515,9 @@ write.csv(pr_attivi_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_A
 #######                               #######
 
 # Creo i df per aziende, farmaci
-aziende <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\azienda.txt")
+aziende <- readLines(".\\implementazione\\R\\farmaco\\azienda.txt")
 
-nome_farmaci <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\farmaco.txt")
+nome_farmaci <- readLines(".\\implementazione\\R\\farmaco\\farmaco.txt")
 
 
 lista_df_farmaci <- list()
@@ -479,7 +536,7 @@ for(i in 1:length(nome_farmaci)){
 
 farmaci_df <- megabind(lista_df_farmaci)
 
-write.csv(farmaci_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\farmaci.csv"))
+write.csv(farmaci_df, file(".\\implementazione\\popoliCSV\\farmaci.csv"))
 
 
 
@@ -503,9 +560,10 @@ write.csv(farmaci_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add
 ####### POPOLO PER LA TABELLA CONTIENE #######
 #######                                #######
 
-nome_farmaci <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\farmaco.txt")
+nome_farmaci <- readLines(".\\implementazione\\R\\farmaco\\farmaco.txt")
 
-pr_att <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\pr_attivo.txt")
+pr_att <- read.csv(".\\implementazione\\popoliCSV\\pr_attivi.csv", stringsAsFactors = FALSE)
+pr_att <- pr_att[,2]
 
 conta_quant <- function(n){
     paste(n,"mg",collapse="")
@@ -554,7 +612,7 @@ for(i in (length(nome_farmaci)+1):(floor( length(nome_farmaci) + (length(nome_fa
 
 contiene_df <- megabind(lista_df_contiene)
 
-write.csv(contiene_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\contiene.csv"))
+write.csv(contiene_df, file(".\\implementazione\\popoliCSV\\contiene.csv"))
 
 
 
@@ -578,9 +636,9 @@ write.csv(contiene_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Ad
 ####### POPOLO PER LA TABELLA TERAPIA #######
 #######                               #######
 
-farmaci <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\farmaci.csv", stringsAsFactors = FALSE)
+farmaci <- read.csv(".\\implementazione\\popoliCSV\\farmaci.csv", stringsAsFactors = FALSE)
 
-msomm <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\farmaco\\somministrazione.txt")
+msomm <- readLines(".\\implementazione\\R\\farmaco\\somministrazione.txt")
 
 # Funzione di creazione del codice della terapia
 cter <- function(n){
@@ -611,7 +669,7 @@ for(i in seq( 1 , (length(farmaci[,1])*3) , by=3 )  ){
 
 terapie_df <- megabind(lista_df_terapie)
 
-write.csv(terapie_df,  file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie.csv") )
+write.csv(terapie_df,  file(".\\implementazione\\popoliCSV\\terapie.csv") )
 
 
 
@@ -635,24 +693,23 @@ write.csv(terapie_df,  file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Ad
 ####### POPOLO PER LA TABELLA TERAPIA PRESCRITTA #######
 #######                                          #######
 
-terapie <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie.csv", stringsAsFactors = FALSE)
+terapie <- read.csv(".\\implementazione\\popoliCSV\\terapie.csv", stringsAsFactors = FALSE)
 
-diagnosi <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\diagnosi.csv", stringsAsFactors = FALSE)
+diagnosi <- read.csv(".\\implementazione\\popoliCSV\\diagnosi.csv", stringsAsFactors = FALSE)
 
-ricoveri <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
+ricoveri <- read.csv(".\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
 
-medici <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\diagnosi\\medico.txt")
-
-pazienti <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pazienti.csv", stringsAsFactors = FALSE)
+medici <- readLines(".\\implementazione\\R\\diagnosi\\medico.txt")
 
 cross <- merge(x=ricoveri, y=diagnosi, by.x="cod_ric", by.y="ricovero")
 
 utile <- cross[,c(1,3,4,7,9,10)]
 colnames(utile) <- c("cric","r_data_i","r_data_f","paz","cdia","d_data")
+utile <- utile[order(utile$paz),]
 
 # Prendo tutti i pazienti in ordine alfabetico
-pazienti <- pazienti[order(pazienti$cf),]
-pazienti <- pazienti[,2]
+pazienti <- utile[,4]
+pazienti <- unique(pazienti)
 
 
 # Ordino il dataframe per ordine alfabetico del cf paziente e la data della diagnosi
@@ -694,7 +751,7 @@ for(i in 1:(length(pazienti))){
             
             } else {
                 di = sample(seq(as.Date(date_tutte_diagnosi_per_singolo_paziente[k]), as.Date("2019-04-11"), by="day"), 1, replace=T)
-                df = sample(seq(di, as.Date("2019-04-11"), by="day"), 1, replace=T)
+                df = sample(seq(di, as.Date(Sys.Date()), by="day"), 1, replace=T)
             }
 
             terapia_prescritta <- data.frame(
@@ -723,7 +780,7 @@ for(i in 1:(length(pazienti))){
 
 terapie_prescritte_df <- megabind(lista_df_tprescritte)
 
-write.csv(terapie_prescritte_df, file("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie_prescritte.csv"))
+write.csv(terapie_prescritte_df, file(".\\implementazione\\popoliCSV\\terapie_prescritte.csv"))
 
 
 
@@ -804,25 +861,29 @@ getSQL <- function(filepath){
 dbGetQuery(con, "set search_path to ospedale;")
 
 # Eseguo tutte le query del file contenente il database
-dbGetQuery(con, getSQL("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\sql\\database.sql"))
+dbGetQuery(con, getSQL(".\\implementazione\\sql\\database.sql"))
 
 
 
 
 
-pazienti_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pazienti.csv", stringsAsFactors = FALSE)
-ricoveri_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
-diagnosi_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\diagnosi.csv", stringsAsFactors = FALSE)
-pr_attivi_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pr_attivi.csv", stringsAsFactors = FALSE)
-farmaci_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\farmaci.csv", stringsAsFactors = FALSE)
-contiene_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\contiene.csv", stringsAsFactors = FALSE)
-terapie_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie.csv", stringsAsFactors = FALSE)
-terapie_pr_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\terapie_prescritte.csv", stringsAsFactors = FALSE)
+pazienti_df <- read.csv(".\\implementazione\\popoliCSV\\pazienti.csv", stringsAsFactors = FALSE)
+ricoveri_df <- read.csv(".\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
+diagnosi_df <- read.csv(".\\implementazione\\popoliCSV\\diagnosi.csv", stringsAsFactors = FALSE)
+pr_attivi_df <- read.csv(".\\implementazione\\popoliCSV\\pr_attivi.csv", stringsAsFactors = FALSE)
+farmaci_df <- read.csv(".\\implementazione\\popoliCSV\\farmaci.csv", stringsAsFactors = FALSE)
+contiene_df <- read.csv(".\\implementazione\\popoliCSV\\contiene.csv", stringsAsFactors = FALSE)
+terapie_df <- read.csv(".\\implementazione\\popoliCSV\\terapie.csv", stringsAsFactors = FALSE)
+terapie_pr_df <- read.csv(".\\implementazione\\popoliCSV\\terapie_prescritte.csv", stringsAsFactors = FALSE)
 
 pazienti_df <- pazienti_df[,2:10]
 ricoveri_df <- ricoveri_df[,2:7]
 diagnosi_df <- diagnosi_df[,2:8]
-
+pr_attivi_df <- pr_attivi_df[,2:3]
+farmaci_df <- farmaci_df[,2:4]
+contiene_df <- contiene_df[,2:4]
+terapie_df <- terapie_df[,2:5]
+terapie_pr_df <- terapie_pr_df[,2:7]
 
 
 # Inserimento dei pazienti
@@ -831,30 +892,39 @@ dbWriteTable(con, name="paziente", value=pazienti_df, row.names=FALSE, append=TR
 # Inserimento dei ricoveri
 for(i in seq(1,length(ricoveri_df[,1]),by = 3000)){
     if(i+2999 < length(ricoveri_df[,1])){
-        dbWriteTable(con, name="ricovero", value=ricoveri_df[i:(i+2999),1:6], row.names=FALSE, append=TRUE)
+        dbWriteTable(con, name="ricovero", value=ricoveri_df[i:(i+2999),], row.names=FALSE, append=TRUE)
     } else {
-        dbWriteTable(con, name="ricovero", value=ricoveri_df[i:(length(ricoveri_df[,1])),1:6], row.names=FALSE, append=TRUE)
+        dbWriteTable(con, name="ricovero", value=ricoveri_df[i:(length(ricoveri_df[,1])),], row.names=FALSE, append=TRUE)
     }
 }
 
 # Inserimento delle diagnosi
-dbWriteTable(con, name="diagnosi", value=diagnosi_df[,1:7], row.names=FALSE, append=TRUE)
+dbWriteTable(con, name="diagnosi", value=diagnosi_df, row.names=FALSE, append=TRUE)
 
 # Inserimento dei principi attivi
-dbWriteTable(con, name="principio_attivo", value=pr_attivi_df[2], row.names=FALSE, append=TRUE)
+dbWriteTable(con, name="principio_attivo", value=pr_attivi_df, row.names=FALSE, append=TRUE)
 
 # Inserimento dei farmaci
-dbWriteTable(con, name="farmaco", value=farmaci_df[,2:4], row.names=FALSE, append=TRUE)
+dbWriteTable(con, name="farmaco", value=farmaci_df, row.names=FALSE, append=TRUE)
 
 # Inserimento della tabella contiene
-dbWriteTable(con, name="contiene", value=contiene_df[,2:4], row.names=FALSE, append=TRUE)
+dbWriteTable(con, name="contiene", value=contiene_df, row.names=FALSE, append=TRUE)
 
 # Inserimento delle terapie
-dbWriteTable(con, name="terapia", value=terapie_df[,2:5], row.names=FALSE, append=TRUE)
+dbWriteTable(con, name="terapia", value=terapie_df, row.names=FALSE, append=TRUE)
 
 # Inserimento delle terapie prescritte
-dbWriteTable(con, name="terapia_prescritta", value=terapie_pr_df[,2:7], row.names=FALSE, append=TRUE)
+dbWriteTable(con, name="terapia_prescritta", value=terapie_pr_df, row.names=FALSE, append=TRUE)
 
+
+# Si settano gli indici per i domini 
+dbGetQuery(con, "select setval('dom_ric_seq', (select max(cod_ric) from ricovero) );")
+
+dbGetQuery(con, "select setval('dom_dia_seq', (select max(cod_dia) from diagnosi) );")
+
+dbGetQuery(con, "select setval('dom_pa_seq', (select max(cod_pa) from principio_attivo) );")
+
+dbGetQuery(con, "select setval('dom_ter_seq', (select max(cod_ter) from terapia) );")
 
 
 
@@ -862,7 +932,19 @@ dbWriteTable(con, name="terapia_prescritta", value=terapie_pr_df[,2:7], row.name
 
 
 # Query memorizzata in un dataframe (una variabile che contiene il dataframe)
-res <- dbGetQuery(con, "select * from paziente;")
+res <- dbGetQuery(con, "
+
+set search_path to ospedale;
+
+select * from paziente join ricovero on paziente.cf = ricovero.paziente
+                       join diagnosi on ricovero.cod_ric = diagnosi.ricovero
+					   join terapia_prescritta on diagnosi.cod_dia  = terapia_prescritta.diagnosi
+					   join terapia on terapia_prescritta.terapia= terapia.cod_ter
+					   join farmaco on terapia.farmaco = farmaco.nome_comm
+					   join contiene on farmaco.nome_comm = contiene.farmaco
+					   join principio_attivo on contiene.pr_attivo = principio_attivo.nome;
+                       
+                       ")
 
 ######################################################################################
 ######################################################################################
@@ -870,20 +952,4 @@ res <- dbGetQuery(con, "select * from paziente;")
 
 #  Disconnessione dal db 
 dbDisconnect(con)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
