@@ -9,7 +9,9 @@ const {
   postUpdatePaziente,
 } = require('../../controllers/pazienteController');
 
-router.get('/', getPazienti);
+router.get('/', async(req, res) => {
+  await getPazienti(req, res);
+});
 
 router.get('/create', getCreatePaziente);
 

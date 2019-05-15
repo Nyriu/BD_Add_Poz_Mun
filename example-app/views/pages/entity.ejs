@@ -1,4 +1,4 @@
-<!-- views/pages/pazienti.ejs -->
+<!-- views/pages/entity.ejs -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,31 +15,37 @@
 
   <main>
     <div class="jumbotron">
+      <h1 class="text-capitalize"><%= entity %></h1>
       <div class="row flex-row">
         <div class="col-sm-8">
-          <h1 class="text-capitalize"><%= entity %>
-          </h1>
-        </div>
-        <div class="col-sm-4">
-          <a href="<%= data[0].cf %>/update" class="btn btn-primary btn-create text-capitalize" role="button">Aggiorna <%= entity %></a>
-        </div>
-      </div>
-      <div class="panel panel-default">
-        <div class="panel-heading text-capitalize">Dati <%= entity %></div>
-        <div class="panel-body">
-          <% for (var i = 0; i < columns.length; i++) { %>
-          <div class="row">
-            <div class="cell col-sm-6 form-group">
-              <span class="label-default"><%= translations[columns[i]] %></span>
-              <div class="field" name="<%= columns[i] %>"><%= data[0][columns[i]] %></div>
+          <div class="panel panel-default">
+            <div class="panel-heading text-capitalize">Dati <%= entity %></div>
+            <div class="panel-body">
+              <% for (var i = 0; i < columns.length; i++) { %>
+              <div class="row">
+                <div class="cell col-sm-6 form-group">
+                  <span class="label-default"><%= translations[columns[i]] %></span>
+                  <div class="field" name="<%= columns[i] %>"><%= data[0][columns[i]] %></div>
+                </div>
+              </div>
+              <% } %>
             </div>
           </div>
-          <% } %>
         </div>
+        <% if(typeof sidebar !== 'undefined'){ %>
+        <div class="col-sm-4">            
+            <%- include('../partials/sidebars/entities', {data: sidebar, columns: sidebarColumns}); %>
+        </div>
+        <% } %>
       </div>
-      <form method="post" action="<%= data[0].cf %>/delete">
-        <button type="submit" class="btn btn-success">Elimina <%= entity %></button>
-      </form>
+      <div class="row flex-row">
+        <a href="<%= data[0].cf %>/update" class="col-sm-2 btn btn-primary btn-create text-capitalize"
+          role="button">Aggiorna
+          <%= entity %></a>
+        <form method="post" action="<%= data[0].cf %>/delete">
+          <button type="submit" class="col-sm-2  btn btn-danger">Elimina <%= entity %></button>
+        </form>
+      </div>
     </div>
   </main>
 

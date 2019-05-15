@@ -54,7 +54,7 @@ const controller = {
     ];
     pool.query(
       `INSERT INTO ospedale.ricovero
-      VALUES($1, $2, $3, $4, $6)`, // query end
+      VALUES($1, $2, $3, $4, $5, $6)`, // query end
       values,
       (err, queryRes) => {
         if (err) {

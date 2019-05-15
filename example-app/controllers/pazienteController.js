@@ -8,25 +8,23 @@ const columns = ['cf', 'cognome', 'nome', 'data_nasc', 'luogo_nasc', 'prov_res',
 
 const controller = {
 
-  getPazienti(req, res) {
-    pool.query(
-      `SELECT * 
-      FROM ospedale.paziente`, // query end
-      (err, queryRes) => {
-        if (err) {
-          throw err;
-        }
-        logger.log('info', queryRes);
-        const data = queryRes.rows;
-        res.render('pages/entities.ejs', {
-          entities,
-          entity,
-          columns,
-          translations,
-          data,
-        });
-      },
-    );
+  async getPazienti(req, res) {
+    try {
+      const { rows } = await pool.query(
+        `SELECT * 
+      FROM ospedale.paziente`,
+      );
+      const data = rows;
+      res.render('pages/entities.ejs', {
+        entities,
+        entity,
+        columns,
+        translations,
+        data,
+      });
+    } catch (e) {
+      throw e;
+    }
   },
 
   getCreatePaziente(req, res) {
@@ -79,15 +77,29 @@ const controller = {
         if (err) {
           throw err;
         }
-        logger.log('info', queryRes);
+        logger.log('info', JSON.stringify(queryRes.rows));
         const data = queryRes.rows;
-        res.render('pages/entity.ejs', {
-          entities,
-          entity,
-          columns,
-          translations,
-          data,
-        });
+        pool.query(
+          `SELECT *
+          FROM ospedale.ricovero
+          WHERE paziente = '${id}'`, // query end
+          (err2, queryRes2) => {
+            if (err2) {
+              throw err2;
+            }
+            logger.log('info', JSON.stringify(queryRes2.rows));
+            const sidebar = queryRes2.rows;
+            res.render('pages/entity.ejs', {
+              entities,
+              entity,
+              columns,
+              translations,
+              data,
+              sidebar,
+              sidebarColumns: ['cod_ric', 'data_i', 'data_f', 'motivo', 'div_osp', 'paziente'],
+            });
+          },
+        );
       },
     );
   },
