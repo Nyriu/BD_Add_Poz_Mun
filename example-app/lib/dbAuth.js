@@ -12,10 +12,10 @@ const pool = new Pool({
 
 // local config
 const pool = new Pool({
-  user: 'appuniuser',
-  host: 'localhost',
-  database: 'appuni',
-  password: 'appunipassword',
+  user: 'bd_18_paolo_addis',
+  host: '158.110.145.186',
+  database: 'bd_18_paolo_addis',
+  password: 'corso_bd_2018',
   port: 5432,
 });
 
