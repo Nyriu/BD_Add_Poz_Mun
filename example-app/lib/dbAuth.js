@@ -1,16 +1,30 @@
-const { Pool } = require('pg');
+const {
+  Pool,
+} = require('pg');
 
-/* const pool = new Pool({
+// heroku config
+/*
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+*/
+
+// local config
+const pool = new Pool({
   user: 'appuniuser',
   host: 'localhost',
   database: 'appuni',
   password: 'appunipassword',
   port: 5432,
-}); */
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
 });
+
+// wish this worked better ...
+pool.query("SET SCHEMA 'ospedale'", (err) => {
+  if (err) {
+    throw err;
+  }
+});
+
 
 module.exports = pool;
