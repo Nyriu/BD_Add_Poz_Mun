@@ -643,16 +643,15 @@ ricoveri <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_M
 
 medici <- readLines("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\R\\diagnosi\\medico.txt")
 
-pazienti <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_Poz_Mun\\implementazione\\popoliCSV\\pazienti.csv", stringsAsFactors = FALSE)
-
 cross <- merge(x=ricoveri, y=diagnosi, by.x="cod_ric", by.y="ricovero")
 
 utile <- cross[,c(1,3,4,7,9,10)]
 colnames(utile) <- c("cric","r_data_i","r_data_f","paz","cdia","d_data")
+utile <- utile[order(utile$paz),]
 
 # Prendo tutti i pazienti in ordine alfabetico
-pazienti <- pazienti[order(pazienti$cf),]
-pazienti <- pazienti[,2]
+pazienti <- utile[,4]
+pazienti <- unique(pazienti)
 
 
 # Ordino il dataframe per ordine alfabetico del cf paziente e la data della diagnosi
@@ -822,7 +821,11 @@ terapie_pr_df <- read.csv("C:\\Users\\addis\\Desktop\\Progetto Database\\BD_Add_
 pazienti_df <- pazienti_df[,2:10]
 ricoveri_df <- ricoveri_df[,2:7]
 diagnosi_df <- diagnosi_df[,2:8]
-
+pr_attivi_df <- pr_attivi_df[2]
+farmaci_df <- farmaci_df[,2:4]
+contiene_df <- contiene_df[,2:4]
+terapie_df <- terapie_df[,2:5]
+terapie_pr_df <- terapie_pr_df[,2:7]
 
 
 # Inserimento dei pazienti
@@ -831,29 +834,29 @@ dbWriteTable(con, name="paziente", value=pazienti_df, row.names=FALSE, append=TR
 # Inserimento dei ricoveri
 for(i in seq(1,length(ricoveri_df[,1]),by = 3000)){
     if(i+2999 < length(ricoveri_df[,1])){
-        dbWriteTable(con, name="ricovero", value=ricoveri_df[i:(i+2999),1:6], row.names=FALSE, append=TRUE)
+        dbWriteTable(con, name="ricovero", value=ricoveri_df[i:(i+2999),], row.names=FALSE, append=TRUE)
     } else {
-        dbWriteTable(con, name="ricovero", value=ricoveri_df[i:(length(ricoveri_df[,1])),1:6], row.names=FALSE, append=TRUE)
+        dbWriteTable(con, name="ricovero", value=ricoveri_df[i:(length(ricoveri_df[,1])),], row.names=FALSE, append=TRUE)
     }
 }
 
 # Inserimento delle diagnosi
-dbWriteTable(con, name="diagnosi", value=diagnosi_df[,1:7], row.names=FALSE, append=TRUE)
+dbWriteTable(con, name="diagnosi", value=diagnosi_df, row.names=FALSE, append=TRUE)
 
 # Inserimento dei principi attivi
-dbWriteTable(con, name="principio_attivo", value=pr_attivi_df[2], row.names=FALSE, append=TRUE)
+dbWriteTable(con, name="principio_attivo", value=pr_attivi_df, row.names=FALSE, append=TRUE)
 
 # Inserimento dei farmaci
-dbWriteTable(con, name="farmaco", value=farmaci_df[,2:4], row.names=FALSE, append=TRUE)
+dbWriteTable(con, name="farmaco", value=farmaci_df, row.names=FALSE, append=TRUE)
 
 # Inserimento della tabella contiene
-dbWriteTable(con, name="contiene", value=contiene_df[,2:4], row.names=FALSE, append=TRUE)
+dbWriteTable(con, name="contiene", value=contiene_df, row.names=FALSE, append=TRUE)
 
 # Inserimento delle terapie
-dbWriteTable(con, name="terapia", value=terapie_df[,2:5], row.names=FALSE, append=TRUE)
+dbWriteTable(con, name="terapia", value=terapie_df, row.names=FALSE, append=TRUE)
 
 # Inserimento delle terapie prescritte
-dbWriteTable(con, name="terapia_prescritta", value=terapie_pr_df[,2:7], row.names=FALSE, append=TRUE)
+dbWriteTable(con, name="terapia_prescritta", value=terapie_pr_df, row.names=FALSE, append=TRUE)
 
 
 
@@ -862,7 +865,19 @@ dbWriteTable(con, name="terapia_prescritta", value=terapie_pr_df[,2:7], row.name
 
 
 # Query memorizzata in un dataframe (una variabile che contiene il dataframe)
-res <- dbGetQuery(con, "select * from paziente;")
+res <- dbGetQuery(con, "
+
+set search_path to ospedale;
+
+select * from paziente join ricovero on paziente.cf = ricovero.paziente
+                       join diagnosi on ricovero.cod_ric = diagnosi.ricovero
+					   join terapia_prescritta on diagnosi.cod_dia  = terapia_prescritta.diagnosi
+					   join terapia on terapia_prescritta.terapia= terapia.cod_ter
+					   join farmaco on terapia.farmaco = farmaco.nome_comm
+					   join contiene on farmaco.nome_comm = contiene.farmaco
+					   join principio_attivo on contiene.pr_attivo = principio_attivo.nome;
+                       
+                       ")
 
 ######################################################################################
 ######################################################################################
