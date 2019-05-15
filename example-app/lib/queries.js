@@ -119,6 +119,37 @@ const queries = {
     HAVING COUNT (*) > 1
   )
   ORDER BY p.nome, p.cognome
+
+
+      Le coppie A e B di paziente tali che B è sempre stato ricoverato quando A era ricoverato
+
+      SELECT a.cf as a_cf, b.cf as b_cf
+FROM paziente as a
+INNER JOIN paziente
+	as b on a.nome = b.nome 
+	and a.cf <> b.cf
+WHERE EXISTS (
+	SELECT r.cod_ric
+	FROM ricovero as r
+	WHERE r.paziente = a.cf
+	and EXISTS(
+		SELECT r2.cod_ric
+		FROM ricovero as r2
+		WHERE r2.paziente = b.cf
+		and r2.data_i > r.data_i
+		and r2.data_f < r.data_f
+	)
+)
+ORDER BY a_cf;
+
+SET search_path TO 'ospedale';
+
+SELECT ra.cod_ric, ra.paziente as ra_cf, rb.paziente as rb_cf
+FROM ricovero as ra, ricovero as rb
+WHERE ra.paziente = 'DIDROS02K43Z948X'
+	and ra.data_i < rb.data_i
+	and ra.data_f > rb.data_f;
+
   */
 
 };
