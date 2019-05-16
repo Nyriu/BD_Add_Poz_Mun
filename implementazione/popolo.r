@@ -963,6 +963,60 @@ select * from paziente join ricovero on paziente.cf = ricovero.paziente
                        
                        ")
 
+
+
+
+
+
+
+data_1 <- dbGetQuery(con, "
+set search_path to ospedale;
+
+select data_nasc, tot_gg_ric 
+from paziente;
+")
+
+
+
+hist(data_1[,1], 
+     "year", 
+     format = "%Y",
+     ylab = "Totale Giorni",
+     ylim = (c(0,10000)))
+
+hist(data_1[,1], 
+     "year", 
+     format = "%Y",
+     ylab = "Totale Giorni")
+
+
+hist(data_1[,2])
+
+plot(data_1)
+
+
+# Possibili grafici
+
+# Quanti ricoveri in media hanno i pazienti più anziani rispetto a quelli più giovani?
+
+# Quante diagnosi per tumore vengono fatte ai più giovani (max 30 anni)?
+
+# In quale periodo dell'anno ci sono più ricoveri per influenza?
+
+# In quale periodo dell'anno si concentrano le diagnosi di patologie gravi?
+
+# Quanti giorni di ricovero fanno in totale i pazienti a cui viene diagnosticato un tumore?
+
+# Quale diagnosi è più frequente tra i più anziani (oltre 65) 
+
+# Quali farmaci vengono usati per contrastare i disturbi psichici e per quanto tempo in totale vengono somministrati?
+
+
+
+
+
+
+
 ######################################################################################
 ######################################################################################
 ######################################################################################
