@@ -14,12 +14,13 @@
 # Setto la working directory
 # getwd()
 
+if(Sys.info()["sysname"] == "Windows"){
+    path = "\\"
+}
 
-
-
-
-
-
+if(Sys.info()["sysname"] == "Linux"){
+    path = "/"
+}
 
 
 
@@ -79,16 +80,19 @@ megabind <- function(lista_df){
 #######                                #######
 
 # Lettura dei nomi
-v_nomi <- readLines(".\\implementazione\\R\\paziente\\nomi.txt")
+#v_nomi <- readLines(".\\implementazione\\R\\paziente\\nomi.txt")
+v_nomi <- readLines(paste( c( ".","implementazione","R","paziente","nomi.txt"), sep = " ",collapse = path))
 
 # Lettura dei cognomi
-v_cognomi <- readLines(".\\implementazione\\R\\paziente\\cognomi.txt")
+# v_cognomi <- readLines(".\\implementazione\\R\\paziente\\cognomi.txt")
+v_cognomi <- readLines(paste( c( ".","implementazione","R","paziente","cognomi.txt"), sep = " ",collapse = path))
 
 # Lettura dei luoghi
-v_luoghi <- readLines(".\\implementazione\\R\\paziente\\luoghi.txt")
-
+#v_luoghi <- readLines(".\\implementazione\\R\\paziente\\luoghi.txt")
+v_luoghi <- readLines(paste( c( ".","implementazione","R","paziente","luoghi.txt"), sep = " ",collapse = path))
 # Creazione dataframe prov_res,reg_app,ulss
-pru <- read.csv(".\\implementazione\\R\\paziente\\pro-reg-ulss.csv", stringsAsFactors = FALSE)
+#pru <- read.csv(".\\implementazione\\R\\paziente\\pro-reg-ulss.csv", stringsAsFactors = FALSE)
+pru <- read.csv(paste( c( ".","implementazione","R","paziente","pro-reg-ulss.csv"), sep = " ",collapse = path))
 
 # Funzione per la generazione del cf farlocco
 cf_gen <- function(nome, cognome, data) {
@@ -123,21 +127,25 @@ for(i in 1:10000){
     cog = sample(v_cognomi,1,replace=T)
     # Data di nascita in range
     dnasc = sample(seq(as.Date('1910/01/01'), as.Date('2019/04/01'), by="day"), 1, replace = T)
-    # CF basato su nome, cognome, data di nascita e altri caratteri random
+    # CF basato su nome, cognome, data di nascita e a\ltri caratteri random
     cfi = cf_gen(nom, cog, dnasc)
     # Scelto luogo di nascita
     lnasc = sample(v_luoghi,1,replace=T)
     # Estrae una riga dal dataframe pru
     df_line <- pru[sample(1:nrow(pru),1),]
     # Crea un vettore di stringhe di elementi del df
-    prreul <- strsplit(paste(df_line,collapse=" "), " ")
+    #prreul <- strsplit(paste(df_line,collapse=" "), " ")
     # Inizializza tutti i parametri restanti
-    pres = prreul[[1]][1]
-    rapp = prreul[[1]][2]
-    ul = prreul[[1]][3]
+    #pres = prreul[[1]][1]
+    #rapp = prreul[[1]][2]
+    #ul = prreul[[1]][3]
+
+    pres = df_line[1]
+    rapp = df_line[2]
+    ul = df_line[3]
 
     # Nel caso in cui sia residente in regione Friuli annulla i parametri successivi
-    if(prreul[[1]][2] == "Friuli-Venezia-Giulia"){
+    if(df_line[2] == "Friuli-Venezia-Giulia"){
         rapp = NA
         ul = NA
     }
@@ -162,8 +170,7 @@ pazienti_df <- megabind(lista_df_pazienti)
 
 
 # MEMORIZZAZIONE del dataframe pazienti_df nel file csv
-write.csv(pazienti_df, file(".\\implementazione\\popoliCSV\\pazienti.csv"))
-
+write.csv(pazienti_df, file(paste( c( ".","implementazione","popoliCSV","pazienti.csv"), sep = " ",collapse = path)))
 
 
 
@@ -190,14 +197,16 @@ write.csv(pazienti_df, file(".\\implementazione\\popoliCSV\\pazienti.csv"))
 # Serve che ogni paziente abbia in media 3 ricoveri
 
 # Creo il dataframe dei pazienti
-pazienti <- read.csv(".\\implementazione\\popoliCSV\\pazienti.csv", stringsAsFactors = FALSE)
+# pazienti <- read.csv(".\\implementazione\\popoliCSV\\pazienti.csv", stringsAsFactors = FALSE)
+pazienti <- read.csv( paste( c( ".","implementazione","popoliCSV","pazienti.csv"), sep = " ",collapse = path))
 
 # Creo il dataframe delle divisioni ospedaliere
-divosp <- readLines(".\\implementazione\\R\\ricovero\\divisioniOsp.txt")
+# divosp <- readLines(".\\implementazione\\R\\ricovero\\divisioniOsp.txt")
+divosp <- readLines(paste( c( ".","implementazione","R","ricovero","divisioniOsp.txt"), sep = " ",collapse = path))
 
 # Creo il dataframe dei motivi di ricovero
-mot <- readLines(".\\implementazione\\R\\ricovero\\motivi.txt")
-
+# mot <- readLines(".\\implementazione\\R\\ricovero\\motivi.txt")
+mot <- readLines(paste( c( ".","implementazione","R","ricovero","motivi.txt"), sep = " ",collapse = path))
 # Del dataframe dei pazienti mi serve solo il CF e la data di nascita
 utile <- pazienti[,c(2,5)]
 
@@ -289,10 +298,8 @@ ricoveri_df <- megabind(lista_df_ricoveri)
 
 
 # MEMORIZZAZIONE del dataframe ricoveri nel file csv
-write.csv(ricoveri_df, file(".\\implementazione\\popoliCSV\\ricoveri.csv"))
+write.csv(ricoveri_df, file(paste( c( ".","implementazione","popoliCSV","ricoveri.csv"), sep = " ",collapse = path)))
 
-# TODO ricoveri senza fine 
-# TODO uno con 6 ricoveri
 
 
 
@@ -362,10 +369,12 @@ for(i in 1:999){
 }
 
 #Creo il dataframe dei medici
-medici <- readLines(".\\implementazione\\R\\diagnosi\\medico.txt")
+#medici <- readLines(".\\implementazione\\R\\diagnosi\\medico.txt")
+medici <- readLines(paste( c( ".","implementazione","R","diagnosi","medico.txt"), sep = " ",collapse = path))
 
 # Creo il dataframe dei ricoveri
-ricoveri <- read.csv(".\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
+#ricoveri <- read.csv(".\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
+ricoveri <- read.csv(paste( c( ".","implementazione","popoliCSV","ricoveri.csv"), sep = " ",collapse = path))
 
 # Seleziono solo le colonne che mi servono: cf, cod_ric, data_i, data_f
 utile <- ricoveri[,c(2,3,4,7)]
@@ -445,7 +454,8 @@ diagnosi_df <- megabind(lista_df_diagnosi)
 colnames(diagnosi_df) <- c("cod_dia","data_dia","cod_pat","grav_pat","medico","paziente","ricovero")
 
 # Salvo il dataframe in un csv
-write.csv(diagnosi_df, file(".\\implementazione\\popoliCSV\\diagnosi.csv"))
+# write.csv(diagnosi_df, file(".\\implementazione\\popoliCSV\\diagnosi.csv"))
+write.csv(diagnosi_df, file(paste( c( ".","implementazione","popoliCSV","diagnosi.csv"), sep = " ",collapse = path)))
 
 
 
@@ -471,7 +481,8 @@ write.csv(diagnosi_df, file(".\\implementazione\\popoliCSV\\diagnosi.csv"))
 
 
 # Creo il dataframe dei principi attivi
-pr_att <- readLines(".\\implementazione\\R\\farmaco\\pr_attivo.txt")
+# pr_att <- readLines(".\\implementazione\\R\\farmaco\\pr_attivo.txt")
+pr_att <- readLines(paste( c( ".","implementazione","R","farmaco","pr_attivo.txt"), sep = " ",collapse = path))
 
 lista_df_principi <- list()
 
@@ -490,8 +501,8 @@ for(i in 1:length(pr_att)){
 pr_attivi_df <- megabind(lista_df_principi) 
 #names(pr_attivi_df)[names(pr_attivi_df) == 'x'] <- "nome" # sto casino perchè il df ha solo una colonna
 
-write.csv(pr_attivi_df, file(".\\implementazione\\popoliCSV\\pr_attivi.csv"))
-
+# write.csv(pr_attivi_df, file(".\\implementazione\\popoliCSV\\pr_attivi.csv"))
+write.csv(pr_attivi_df, file(paste( c( ".","implementazione","popoliCSV","pr_attivi.csv"), sep = " ",collapse = path)))
 
 
 
@@ -515,10 +526,11 @@ write.csv(pr_attivi_df, file(".\\implementazione\\popoliCSV\\pr_attivi.csv"))
 #######                               #######
 
 # Creo i df per aziende, farmaci
-aziende <- readLines(".\\implementazione\\R\\farmaco\\azienda.txt")
+# aziende <- readLines(".\\implementazione\\R\\farmaco\\azienda.txt")
+aziende <- readLines(paste( c( ".","implementazione","R","farmaco","azienda.txt"), sep = " ",collapse = path))
 
-nome_farmaci <- readLines(".\\implementazione\\R\\farmaco\\farmaco.txt")
-
+# nome_farmaci <- readLines(".\\implementazione\\R\\farmaco\\farmaco.txt")
+nome_farmaci <- readLines(paste( c( ".","implementazione","R","farmaco","farmaco.txt"), sep = " ",collapse = path))
 
 lista_df_farmaci <- list()
 
@@ -536,8 +548,8 @@ for(i in 1:length(nome_farmaci)){
 
 farmaci_df <- megabind(lista_df_farmaci)
 
-write.csv(farmaci_df, file(".\\implementazione\\popoliCSV\\farmaci.csv"))
-
+#write.csv(farmaci_df, file(".\\implementazione\\popoliCSV\\farmaci.csv"))
+write.csv(farmaci_df, file(paste( c( ".","implementazione","popoliCSV","farmaci.csv"), sep = " ",collapse = path)))
 
 
 
@@ -560,9 +572,11 @@ write.csv(farmaci_df, file(".\\implementazione\\popoliCSV\\farmaci.csv"))
 ####### POPOLO PER LA TABELLA CONTIENE #######
 #######                                #######
 
-nome_farmaci <- readLines(".\\implementazione\\R\\farmaco\\farmaco.txt")
+#nome_farmaci <- readLines(".\\implementazione\\R\\farmaco\\farmaco.txt")
+nome_farmaci <- readLines(paste( c( ".","implementazione","R","farmaco","farmaco.txt"), sep = " ",collapse = path))
 
-pr_att <- read.csv(".\\implementazione\\popoliCSV\\pr_attivi.csv", stringsAsFactors = FALSE)
+# pr_att <- read.csv(".\\implementazione\\popoliCSV\\pr_attivi.csv", stringsAsFactors = FALSE)
+pr_att <- read.csv(paste( c( ".","implementazione","popoliCSV","pr_attivi.csv"), sep = " ",collapse = path))
 pr_att <- pr_att[,2]
 
 conta_quant <- function(n){
@@ -612,8 +626,8 @@ for(i in (length(nome_farmaci)+1):(floor( length(nome_farmaci) + (length(nome_fa
 
 contiene_df <- megabind(lista_df_contiene)
 
-write.csv(contiene_df, file(".\\implementazione\\popoliCSV\\contiene.csv"))
-
+#write.csv(contiene_df, file(".\\implementazione\\popoliCSV\\contiene.csv"))
+write.csv(contiene_df, file(paste( c( ".","implementazione","popoliCSV","contiene.csv"), sep = " ",collapse = path)))
 
 
 
@@ -636,9 +650,11 @@ write.csv(contiene_df, file(".\\implementazione\\popoliCSV\\contiene.csv"))
 ####### POPOLO PER LA TABELLA TERAPIA #######
 #######                               #######
 
-farmaci <- read.csv(".\\implementazione\\popoliCSV\\farmaci.csv", stringsAsFactors = FALSE)
+#farmaci <- read.csv(".\\implementazione\\popoliCSV\\farmaci.csv", stringsAsFactors = FALSE)
+farmaci <- read.csv(paste( c( ".","implementazione","popoliCSV","farmaci.csv"), sep = " ",collapse = path))
 
-msomm <- readLines(".\\implementazione\\R\\farmaco\\somministrazione.txt")
+#msomm <- readLines(".\\implementazione\\R\\farmaco\\somministrazione.txt")
+msomm <- readLines(paste( c( ".","implementazione","R","farmaco","somministrazione.txt"), sep = " ",collapse = path))
 
 # Funzione di creazione del codice della terapia
 cter <- function(n){
@@ -669,8 +685,8 @@ for(i in seq( 1 , (length(farmaci[,1])*3) , by=3 )  ){
 
 terapie_df <- megabind(lista_df_terapie)
 
-write.csv(terapie_df,  file(".\\implementazione\\popoliCSV\\terapie.csv") )
-
+#write.csv(terapie_df,  file(".\\implementazione\\popoliCSV\\terapie.csv") )
+write.csv(terapie_df, file(paste( c( ".","implementazione","popoliCSV","terapie.csv"), sep = " ",collapse = path)))
 
 
 
@@ -693,13 +709,14 @@ write.csv(terapie_df,  file(".\\implementazione\\popoliCSV\\terapie.csv") )
 ####### POPOLO PER LA TABELLA TERAPIA PRESCRITTA #######
 #######                                          #######
 
-terapie <- read.csv(".\\implementazione\\popoliCSV\\terapie.csv", stringsAsFactors = FALSE)
-
-diagnosi <- read.csv(".\\implementazione\\popoliCSV\\diagnosi.csv", stringsAsFactors = FALSE)
-
-ricoveri <- read.csv(".\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
-
-medici <- readLines(".\\implementazione\\R\\diagnosi\\medico.txt")
+#terapie <- read.csv(".\\implementazione\\popoliCSV\\terapie.csv", stringsAsFactors = FALSE)
+terapie <- read.csv(paste( c( ".","implementazione","popoliCSV","terapie.csv"), sep = " ",collapse = path))
+#diagnosi <- read.csv(".\\implementazione\\popoliCSV\\diagnosi.csv", stringsAsFactors = FALSE)
+diagnosi <- read.csv(paste( c( ".","implementazione","popoliCSV","diagnosi.csv"), sep = " ",collapse = path))
+#ricoveri <- read.csv(".\\implementazione\\popoliCSV\\ricoveri.csv", stringsAsFactors = FALSE)
+ricoveri <- read.csv(paste( c( ".","implementazione","popoliCSV","ricoveri.csv"), sep = " ",collapse = path))
+#medici <- readLines(".\\implementazione\\R\\diagnosi\\medico.txt")
+medici <- readLines(paste( c( ".","implementazione","R","diagnosi","medico.txt"), sep = " ",collapse = path))
 
 cross <- merge(x=ricoveri, y=diagnosi, by.x="cod_ric", by.y="ricovero")
 
@@ -750,7 +767,7 @@ for(i in 1:(length(pazienti))){
                 }
             
             } else {
-                di = sample(seq(as.Date(date_tutte_diagnosi_per_singolo_paziente[k]), as.Date("2019-04-11"), by="day"), 1, replace=T)
+                di = sample(seq(as.Date(date_tutte_diagnosi_per_singolo_paziente[k]), as.Date(Sys.Date()), by="day"), 1, replace=T)
                 df = sample(seq(di, as.Date(Sys.Date()), by="day"), 1, replace=T)
             }
 
@@ -780,8 +797,8 @@ for(i in 1:(length(pazienti))){
 
 terapie_prescritte_df <- megabind(lista_df_tprescritte)
 
-write.csv(terapie_prescritte_df, file(".\\implementazione\\popoliCSV\\terapie_prescritte.csv"))
-
+#write.csv(terapie_prescritte_df, file(".\\implementazione\\popoliCSV\\terapie_prescritte.csv"))
+write.csv(terapie_prescritte_df, file(paste( c( ".","implementazione","popoliCSV","terapie_prescritte.csv"), sep = " ",collapse = path)))
 
 
 
@@ -942,9 +959,63 @@ select * from paziente join ricovero on paziente.cf = ricovero.paziente
 					   join terapia on terapia_prescritta.terapia= terapia.cod_ter
 					   join farmaco on terapia.farmaco = farmaco.nome_comm
 					   join contiene on farmaco.nome_comm = contiene.farmaco
-					   join principio_attivo on contiene.pr_attivo = principio_attivo.nome;
+					   join principio_attivo on contiene.pr_attivo = principio_attivo.cod_pa;
                        
                        ")
+
+
+
+
+
+
+
+data_1 <- dbGetQuery(con, "
+set search_path to ospedale;
+
+select data_nasc, tot_gg_ric 
+from paziente;
+")
+
+
+
+hist(data_1[,1], 
+     "year", 
+     format = "%Y",
+     ylab = "Totale Giorni",
+     ylim = (c(0,10000)))
+
+hist(data_1[,1], 
+     "year", 
+     format = "%Y",
+     ylab = "Totale Giorni")
+
+
+hist(data_1[,2])
+
+plot(data_1)
+
+
+# Possibili grafici
+
+# Quanti ricoveri in media hanno i pazienti più anziani rispetto a quelli più giovani?
+
+# Quante diagnosi per tumore vengono fatte ai più giovani (max 30 anni)?
+
+# In quale periodo dell'anno ci sono più ricoveri per influenza?
+
+# In quale periodo dell'anno si concentrano le diagnosi di patologie gravi?
+
+# Quanti giorni di ricovero fanno in totale i pazienti a cui viene diagnosticato un tumore?
+
+# Quale diagnosi è più frequente tra i più anziani (oltre 65) 
+
+# Quali farmaci vengono usati per contrastare i disturbi psichici e per quanto tempo in totale vengono somministrati?
+
+
+
+
+
+
 
 ######################################################################################
 ######################################################################################
