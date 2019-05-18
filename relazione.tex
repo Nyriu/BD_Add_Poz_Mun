@@ -257,7 +257,9 @@ Può essere trasformato in due nuovi attributi \textit{Codice Patologia} e \text
 Bisogna prestare più attenzione agli attributi multivalore:
 in FARMACO sono presenti \textit{Nome Principi Attivi} e \textit{Quantità Principi Attivi} entrambi obbligatori e multivalore.
 L'unica semplificazione attuabile è creare una nuova entità chiamata PRINCIPIO-ATTIVO e metterla in relazione Molti-A-Molti con FARMACO attraverso la nuova relazione CONTIENE.
-Poiché i nomi dei principi attivi possono essere molto lunghi e non hanno un formato standard, in PRINCIPIO-ATTIVO verrà creata una chiave numerica sequenziale chiamata \textit{cod\_pa} avrà un solo attributo,   TODO FINIRE!!! scelto anche come chiave primaria, chiamato \textit{Nome}, mentre alla relazione CONTIENE verrà aggiunto l'attributo \textit{Quantità}.
+% TODO FINIRE E RIPORTARE COD_PA OVUNQUE !!!!
+Poiché i nomi dei principi attivi possono essere molto lunghi e non hanno un formato standard, in PRINCIPIO-ATTIVO, sono salvati nella variabile \textit{Nome}, mentre una sequenza numerica chiamata \textit{Codice Principio Attivo} viene usata come chiave primaria.
+Alla relazione CONTIENE è stato aggiunto l'attributo \textit{Quantità}.
  
 In questo modo saranno modellate esattamente le stesse informazioni precedentemente modellate dagli attributi multivalore.
 In realtà ora le informazioni sono salvate in un formato meno equivoco: prima non era chiaro come si mantenessero in relazione il nome del principio attivo e la sua quantità.
@@ -573,7 +575,7 @@ si può vedere una prima modellazione dello schema Relazionale, con le seguenti 
   \item DIAGNOSI(\textit{\underline{cod\_dia}, data\_dia, cod\_pat, medico}) con \textit{cod\_dia} come chiave primaria;
   \item TERAPIA(\textit{\underline{cod\_ter}, dose\_gio, mod\_somm, farmaco}) con \textit{cod\_ter} come chiave primaria;
   \item FARMACO(\textit{\underline{nome\_comm}, azienda\_prod, dose\_gg\_racc}) con \textit{nome\_comm}\\come chiave primaria;
-  \item PRINCIPIO\_ATTIVO(\textit{\underline{nome}}) con \textit{nome} come chiave primaria.
+  \item PRINCIPIO\_ATTIVO(\textit{\underline{cod\_pa}}, \textit{nome}) con \textit{cod\_pa} come chiave primaria.
 \end{itemize}
 Bisogna prestare più attenzione a TERAPIA\_PRESCRITTA perché, in quanto entità debole, la sua chiave primaria dipende dalle relazioni\\VIENE\_CURATA\_DA e VIENE\_PRESCRITTA, o meglio, comprende degli\\identificatori esterni.
 Nel dettaglio un identificatore sarà dato dalla chiave primaria di DIAGNOSI mentre l'altro dalla chiave primaria di TERAPIA.
@@ -771,7 +773,7 @@ In questo caso si è preferito usare quest'ultima perché diagnosi ha già dei c
 L'ultima relazione da analizzare è CONTIENE, del tipo Molti-A-Molti.
 L'unico modo per trasformare queste relazioni è creare una nuova tupla, nello specifico è stata chiamata CONTIENE ed è composta da tre valori: la chiavi esterne \textit{Farmaco} e \textit{Principio\_Attivo} seguite da \textit{Quantità}.
 La chiave primaria della tupla è formata dai primi due valori in modo che un qualsiasi FARMACO possa essere messo in relazione con tutti i principi attivi necessari e, viceversa, che un PRINCIPIO\_ATTIVO possa essere contenuto in più farmaci.
-Notare che è obbligatoria l'introduzione di due vincoli d'integrità, uno deve assicurare che un PRINCIPIO\_ATTIVO compaia in almeno un farmaco, l'altro che un farmaco contenga almeno un PRINCIPIO\_ATTIVO\footnote{f*****o omeopatia}. %TODO REMOVE
+Notare che è obbligatoria l'introduzione di due vincoli d'integrità, uno deve assicurare che un PRINCIPIO\_ATTIVO compaia in almeno un farmaco, l'altro che un farmaco contenga almeno un PRINCIPIO\_ATTIVO.
 
 \begin{tikzpicture} % TODO abbellire
   [relation/.style={
@@ -970,24 +972,31 @@ set search_path to ospedale;
 Prima di iniziare a creare le tabelle bisogna definire alcuni domini:
 \begin{lstlisting}
 create domain dom_cf as varchar
-    check ( value ~ '^[A-Z]{6}[0-9]{2}[A-Z]
-                      [0-9]{2}[A-Z][0-9]{3}[A-Z]$' );
+  check ( value ~ '^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}
+                    [A-Z][0-9]{3}[A-Z]$' );
     
-create domain dom_ric as varchar
-    check ( value ~ ('RIC' || '[0-9]+')); 
+create sequence dom_ric_seq;
+create domain dom_ric as int default
+  nextval('dom_ric_seq');
 
-create domain dom_dia as varchar
-    check ( value ~ ('DIA' || '[0-9]+')); 
+create sequence dom_dia_seq;
+create domain dom_dia as int default
+  nextval('dom_dia_seq');
 
-create domain dom_ter as varchar
-    check ( value ~ ('TER' || '[0-9]+')); 
+create sequence dom_ter_seq;
+create domain dom_ter as int default
+  nextval('dom_ter_seq');
+
+create sequence dom_pa_seq;
+create domain dom_pa as int default
+  nextval('dom_pa_seq');
 
 create domain ICD10 as varchar
-    check ( value ~ ('^[A-Z]([A-Z]|[0-9]){2}
-                    ((\.)([0-9])*)?$')); 
+    check ( value ~ '^[A-Z]([A-Z]|[0-9]){2}
+                    ((\.)([0-9])*)?$' ); 
+
 \end{lstlisting}
-Il primo e l'ultimo rispettano le normali convenzioni mentre il secondo è stato ottenuto dai requisiti.
-Diversamente \textit{dom\_dia} e \textit{dom\_ter} sono stati definiti durante la costruzione della base di dati, per comodità entrambi hanno una struttura simile a quella di \textit{dom\_ric}.
+Il primo e l'ultimo rispettano le normali convenzioni mentre gli altri sono rappresenti da delle sequenze distinte di interi.
 
 Si può ora procedere alla creazione delle tabelle, sotto ne sono riportate tre a titolo d'esempio:
 \clearpage
@@ -1001,17 +1010,16 @@ create table paziente (
     prov_res varchar(2) not null,
     reg_app varchar,
     ulss varchar,
-    tot_gg_ric int default 0
-);
-
+    tot_gg_ric int default 0               
+); 
 create table ricovero (
     cod_ric dom_ric primary key, 
     data_i date not null,
     data_f date,
     motivo varchar not null,
     div_osp varchar not null, 
-    paziente dom_cf not null
-                    references paziente(cf) 
+    paziente dom_cf not null references
+                    paziente(cf) 
                     on update cascade 
                     on delete cascade
 );
@@ -1019,12 +1027,13 @@ create table ricovero (
 create table terapia_prescritta (
     data_i date not null,
     data_f date not null,
-    med_presc varchar(16) not null,
+    med_presc varchar not null,
     diagnosi dom_dia unique references
                     diagnosi(cod_dia)
                     on update cascade 
                     on delete no action, 
-    terapia dom_ter references terapia(cod_ter) 
+    terapia dom_ter references
+                    terapia(cod_ter) 
                     on update cascade 
                     on delete no action,
     coll_dia dom_dia unique references
@@ -1091,15 +1100,15 @@ alter table diagnosi add
 \end{lstlisting}
 Non verrà riportato il blocco per la terza condizione perché è semplicemente una rivisitazione del codice appena illustrato: ottenuta \textit{data\_dia} si verifica che sia minore o uguale alla data della TERAPIA\_PRESCRITTA.
 
-Di seguito sono riportati tutti i vincoli di integrità ancora da implementare:
+Di seguito sono riportati i vincoli di integrità ancora da implementare:
 \begin{enumerate}
   \item \label{vinc:paz_almu_ric} ogni paziente deve essere stato ricoverato almeno una volta;
   \item \label{vinc:dia_ric_paz_uguale} tutte le diagnosi di un dato ricovero devono avere il campo \textit{paziente} uguale a quello del ricovero;
-  \item \label{vinc:dia_alpu_tp} ad ogni diagnosi può corrispondere al più una terapia\_prescritta;
+  \item \label{vinc:dia_alpu_tp} ad ogni diagnosi può corrispondere al più una terapia prescritta;
   \item \label{vinc:dia_effc_alpu_tp} ogni diagnosi può essere effetto collaterale di al più una terapia\_prescritta;
   \item \label{vinc:ter_almu_tp} ogni terapia deve essere stata prescritta almeno una volta;
-  \item \label{vinc:far_almu_pr} ogni farmaco deve contenere almeno un principio\_attivo;
-  \item \label{vinc:pr_almnu_far} ogni principio\_attivo deve essere contenuto in almeno un farmaco;
+  \item \label{vinc:far_almu_pr} ogni farmaco deve contenere almeno un principio attivo;
+  \item \label{vinc:pr_almnu_far} ogni principio attivo deve essere contenuto in almeno un farmaco;
 \end{enumerate}
 
 I vincoli \ref{vinc:dia_alpu_tp} e \ref{vinc:dia_effc_alpu_tp} possono essere assicurati impostando ad unique i campi \textit{diagnosi} e \textit{coll\_dia} in TERAPIA\_PRESCRITTA. % TODO se necessario spiegare perché
@@ -1107,7 +1116,7 @@ I vincoli \ref{vinc:dia_alpu_tp} e \ref{vinc:dia_effc_alpu_tp} possono essere as
 Il vincolo \ref{vinc:dia_ric_paz_uguale} è facile da assicurare.
 Infatti basta sfruttare una funzione (in questo caso \textit{get\_paziente}) che, a partire dal codice di un ricovero, torni il paziente di quel ricovero, tale output sarà il valore del campo \textit{paziente} della diagnosi.
 Sono stati creati due trigger: il primo scatta alla creazione di una nuova diagnosi, mentre il secondo assicura che \textit{paziente} rimanga coerente anche dopo l'aggiornamento del campo \textit{ricovero}.
-In realtà il secondo trigger protegge anche da eventuali aggiornamenti errati del paziente, impostando sempre il valore corretto.
+Il secondo trigger protegge anche da eventuali aggiornamenti errati del paziente, impostando sempre il valore corretto.
 \begin{lstlisting}
 create or replace function init_paziente()
 returns trigger as
@@ -1130,23 +1139,19 @@ create trigger update_paziente_dia before update
   execute procedure init_paziente();
 \end{lstlisting}
 
-Il vincolo \ref{vinc:paz_almu_ric} non può essere modellato né come constraint né come trigger perché introdurrebbe una dipendenza ciclica con la condizione \textit{not null} del campo \textit{paziente} in RICOVERO.
+Il vincolo \ref{vinc:paz_almu_ric} non può essere modellato né come constraint né come trigger perché introdurrebbe una dipendenza ciclica con la condizione \textit{not null} del campo \textit{paziente} in RICOVERO, in quanto non sarebbe accettato un paziente senza un ricovero, ma allo stesso tempo un ricovero non potrebbe essere inserito nella base di dati poiché il suo campo \textit{paziente} sarebbe necessariamente \textit{null}, non esistendo ancora il paziente.
 Il constraint \textit{not null} in RICOVERO è necessario perché deve essere sempre possibile risalire alle informazioni del paziente di un dato ricovero.
 Diversamente la presenza nella base di dati di un PAZIENTE che non è mai stato ricoverato, situazione comunque anomala, non ha effetti disastrosi: in qualsiasi momento si può rimuovere tale paziente oppure gli si può attribuire un ricovero.
 La creazione di un trigger (o di un constraint) impedirebbe l'inserimento di un paziente perché questo, al momento dell'inserimento non sarebbe associato ad alcun ricovero, d'altra parte non sarebbe nemmeno possibile inserire prima il ricovero perché non si avrebbe il valore della chiave esterna.
-Si potrebbe pensare di disabilitare momentaneamente il trigger (o constraint), inserire il paziente, inserire il ricovero e poi riabilitarlo, ma questa soluzione è stata scartata in quanto non-safe.
+Si potrebbe pensare di disabilitare momentaneamente il trigger (o constraint), inserire il paziente, inserire il ricovero per poi riabilitarlo, ma questa soluzione è stata scartata in quanto non-safe.
 
 Uno stesso ragionamento può essere fatto anche per \ref{vinc:ter_almu_tp}.
 Ricordando che una TERAPIA\_PRESCRITTA, essendo un'entità debole, deve necessariamente essere inserita dopo la TERAPIA da cui dipende.
 
 Si può notare che anche i vincoli \ref{vinc:far_almu_pr} e \ref{vinc:pr_almnu_far} creano una dipendenza ciclica.
 A livello intuitivo sarà possibile implementarne soltanto uno.
-Similmente a quanto detto prima è più grave che, dato una farmaco, non si sappiano quali principi attivi lo compongono, piuttosto che aver memorizzato principi attivi che non compaiono in alcun farmaco.
+Similmente a quanto detto prima è più grave che, dato una farmaco, non si sappiano quali principi attivi lo compongano, piuttosto che aver memorizzato principi attivi che non compaiono in alcun farmaco.
 Nel blocco sottostante viene illustrata questa soluzione:
-
-TODO manca l'inserimento di un nuovo farmaco... come fare a creare tupla in CONTIENE? non si può perché non conosco a priori. Sta all'utente
-
-Sotto assicuro che ad un farmaco non vengano mai rimossi tutti i principi attivi
 \begin{lstlisting}
 create or replace function almeno_un_pa_cont()
 returns trigger as
@@ -1177,6 +1182,8 @@ create trigger controlla_almeno_pa_up before update
            new.pr_attivo <> old.pr_attivo)
     execute procedure almeno_un_pa_cont();
 \end{lstlisting}
+Non c'è modo, invece, di assicurare che all'inserimento un farmaco non rimanga senza principi attivi; spetterà all'utente inizializzare correttamente i dati.
+Il trigger assicura che ad un farmaco non vengano mai rimossi tutti i principi attivi.
 
 
 Osservando lo schema in \autoref{fig:ER_finale} si può notare la presenza di un attributo derivato in PAZIENTE.
@@ -1213,15 +1220,9 @@ create trigger aggiornamento_gg_update after update
            new.paziente <> old.paziente )
       execute procedure aggiorna_gg_update();
 \end{lstlisting}
-La funzione \textit{ricalcolo\_gg} calcola la somma totale dei giorni che una paziente ha passato da ricoverato.
+La funzione \textit{ricalcolo\_gg} calcola la somma totale dei giorni che un paziente ha passato da ricoverato.
 
 
-% Attributo derivato
-% Assicurare i vincoli di integrità
-%
-
-TODO trigger per creazione codici di diagnosi e terapia
-TODO dire sopra nella crazione domini aggionrare blocco codice SQL
 \cleardoublepage
 \subsection{Definizione di Query Significative}
 
