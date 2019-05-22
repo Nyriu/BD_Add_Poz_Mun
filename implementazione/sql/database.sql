@@ -135,8 +135,8 @@ create or replace function ricalcolo_gg(cf_paz dom_cf)
 returns int
 language plpgsql as $$
     declare
-        gg int;
-        gg_no_end int;
+        gg int := 0;
+        gg_no_end int:= 0;
     begin
         select sum(ricovero.data_f-ricovero.data_i) into gg
         from paziente
@@ -147,6 +147,14 @@ language plpgsql as $$
         from paziente
           join ricovero on paziente.cf = ricovero.paziente
         where paziente.cf = cf_paz and data_f is null;
+
+        if gg_no_end is null
+          then gg_no_end := 0;
+        end if;
+
+        if gg is null
+          then gg := 0;
+        end if;
 
         return gg + gg_no_end;
     end

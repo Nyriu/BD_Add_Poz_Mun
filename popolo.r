@@ -586,8 +586,11 @@ conta_quant <- function(n){
 lista_df_contiene <- list()
 
 # I principi attivi sono meno dei farmaci 
-for(i in 1:length(pr_att)){
+f = length(nome_farmaci)
+p = length(pr_att)
 
+for(i in 1:p){
+    
     contenuto <- data.frame(
                         farmaco=nome_farmaci[i],
                         pr_attivo=pr_att[i],
@@ -595,15 +598,13 @@ for(i in 1:length(pr_att)){
                         )
     
     lista_df_contiene[[i]] <- contenuto
-
 }
 
-# Aggiungo i farmaci mancanti 
-for(i in (length(pr_att)+1):length(nome_farmaci)){
+for(i in (p+1):f){
 
     contenuto <- data.frame(
                         farmaco=nome_farmaci[i],
-                        pr_attivo=sample(pr_att, 1, replace=T),
+                        pr_attivo=pr_att[(i-p)],
                         quantita=conta_quant(sample(seq(5,40,by=5),1,replace=T))
                         )
 
@@ -611,18 +612,20 @@ for(i in (length(pr_att)+1):length(nome_farmaci)){
 
 }
 
-# Aggiungo un decimo dei farmaci in modo da averne alcuni con doppio principio attivo 
-for(i in (length(nome_farmaci)+1):(floor( length(nome_farmaci) + (length(nome_farmaci)/10) ) ) ){
+for(i in 1:(floor(f/10))){
 
     contenuto <- data.frame(
-                        farmaco=sample(nome_farmaci,1, replace=T),
-                        pr_attivo=sample(pr_att, 1, replace=T),
+                        farmaco=nome_farmaci[i],
+                        pr_attivo=pr_att[(i+1)],
                         quantita=conta_quant(sample(seq(5,40,by=5),1,replace=T))
                         )
 
     lista_df_contiene[[i]] <- contenuto
 
+
 }
+
+
 
 contiene_df <- megabind(lista_df_contiene)
 
@@ -948,60 +951,54 @@ dbGetQuery(con, "select setval('dom_ter_seq', (select max(cod_ter) from terapia)
 
 
 
-# Query memorizzata in un dataframe (una variabile che contiene il dataframe)
-res <- dbGetQuery(con, "
 
-set search_path to ospedale;
 
-select * from paziente join ricovero on paziente.cf = ricovero.paziente
-                       join diagnosi on ricovero.cod_ric = diagnosi.ricovero
-					   join terapia_prescritta on diagnosi.cod_dia  = terapia_prescritta.diagnosi
-					   join terapia on terapia_prescritta.terapia= terapia.cod_ter
-					   join farmaco on terapia.farmaco = farmaco.nome_comm
-					   join contiene on farmaco.nome_comm = contiene.farmaco
-					   join principio_attivo on contiene.pr_attivo = principio_attivo.cod_pa;
-                       
-                       ")
+
+bambini_malati = dbGetQuery(con, "select p.nome, p.cognome, p.data_nasc, r.motivo, r.div_osp 
+                                  from paziente p join ricovero r on p.cf = r.paziente
+                                  where data_nasc > '2017-01-01';")
+
+
+
+d_nascita = dbGetQuery(con, "select data_nasc from paziente;")
+hist(d_nascita[,1], "year", freq = TRUE, breaks = 50)
 
 
 
 
 
 
+paz_gg <- dbGetQuery(con, "set search_path to ospedale; select data_nasc, tot_gg_ric from paziente; ")
 
-data_1 <- dbGetQuery(con, "
-set search_path to ospedale;
-
-select data_nasc, tot_gg_ric 
-from paziente;
-")
+dbGetQuery(con, "select * from paziente p join ricovero r on p.cf = r.paziente where data_nasc > '2019-02-01' AND tot_gg_ric is null; ")
+dbGetQuery(con, "select count(*) from paziente p join ricovero r on p.cf = r.paziente where tot_gg_ric is null; ")
 
 
+dbGetQuery(con,"select * from paziente p join ricovero r on p.cf = r.paziente where p.cf = 'DAVPAO22F03D961J';")
 
-hist(data_1[,1], 
-     "year", 
-     format = "%Y",
-     ylab = "Totale Giorni",
-     ylim = (c(0,10000)))
+hist(paz_gg[,2],breaks=40)
 
-hist(data_1[,1], 
-     "year", 
-     format = "%Y",
-     ylab = "Totale Giorni")
+plot(sort(paz_gg[,2]))
+
+boxplot(paz_gg[,2])
+
+summary(paz_gg)
 
 
-hist(data_1[,2])
 
-plot(data_1)
+
 
 
 # Possibili grafici
 
 # Quanti ricoveri in media hanno i pazienti più anziani rispetto a quelli più giovani?
+# Coppie di barre per anno 
 
 # Quante diagnosi per tumore vengono fatte ai più giovani (max 30 anni)?
+# Anni sulla x frequenza sulla y
 
 # In quale periodo dell'anno ci sono più ricoveri per influenza?
+
 
 # In quale periodo dell'anno si concentrano le diagnosi di patologie gravi?
 
