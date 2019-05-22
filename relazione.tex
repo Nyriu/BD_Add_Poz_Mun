@@ -1225,8 +1225,51 @@ TODO dire sopra nella crazione domini aggionrare blocco codice SQL
 \cleardoublepage
 \subsection{Definizione di Query Significative}
 
+\ifdraft
+  filtri di entità per entità padre
 
+  es. ricoveri del paziente
 
+  SELECT *
+  FROM ospedale.ricovero ricovero
+  LEFT JOIN ospedale.paziente paziente on ricovero.paziente = paziente.cf
+  WHERE paziente.nome = '...' and paziente.cognome = '...'
+
+  es. terapie del paziente
+
+  SELECT *
+  FROM ospedale.terapie_prescritte tp
+  LEFT JOIN ospedale.ricovero r on tp.ricovero = r.cod_ric
+  LEFT JOIN ospedale.paziente p on r.paziente = p.cf
+  WHERE p.nome = '...' and p.cognome = '...'
+
+  una dozzina di queste ...
+
+  es. terapie più utilizzate
+
+  SELECT t.? COUNT(*)
+  FROM ospedale.terapie t
+  LEFT JOIN ospedale.terapia_prescritta tp on t.? = tp.?
+  GROUP BY t.?
+  ORDER BY COUNT(*) DESC
+
+  si può usare anche su numero di ricoveri o diagnosi di un paziente,
+  per calcolare a che diagnosi è arrivato il paziente
+
+  es. paziente recidivi :)
+
+  SELECT *
+  FROM ospedale.paziente p
+  WHERE EXISTS (
+    SELECT COUNT(*)
+    FROM ospedale.ricovero r
+    LEFT JOIN ospedale.paziente p on r.paziente = p.cf
+    WHERE p.nome = '...' and p.cognome = '...'
+    GROUP BY p.cf
+    HAVING COUNT (*) > 1
+  )
+  ORDER BY p.nome, p.cognome
+\fi
 
 \clearpage
 
