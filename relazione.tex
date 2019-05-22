@@ -996,7 +996,7 @@ create domain ICD10 as varchar
                     ((\.)([0-9])*)?$' ); 
 
 \end{lstlisting}
-Il primo e l'ultimo rispettano le normali convenzioni mentre gli altri sono rappresenti da delle sequenze distinte di interi.
+Il primo\footnote{per ragioni di semplicità i primi sei caratteri del codice fiscale possono essere anche consonanti}e l'ultimo rispettano le normali convenzioni mentre gli altri sono rappresenti da delle sequenze distinte di interi.
 
 Si può ora procedere alla creazione delle tabelle, sotto ne sono riportate tre a titolo d'esempio:
 \clearpage
@@ -1233,6 +1233,24 @@ La funzione \textit{ricalcolo\_gg} calcola la somma totale dei giorni che un paz
 
 \section{Analisi Dati}
 \subsection{Popolamento della Base di Dati}
+La base di dati è stata testata su un insieme di dati generato tramite uno script R.
+Nello specifico lo script genera, ispirandosi ai volumi indicati nei requisiti, dati verosimili ipotizzando che l'ospedale sia attivo da circa un decennio:
+\begin{itemize}
+  \item sono presenti diecimila pazienti in totale,
+  \item ciascun paziente in media è stato ricoverato tre volte,
+  \item per ogni paziente esistono in media dodici diagnosi, cioè circa quattro diagnosi per ricovero,
+  \item in totale sono presenti mille farmaci e ciascuno contiene un insieme di principi attivi scelti da un totale di novecento possibili,
+  \item soltanto il dieci percento delle diagnosi non ha una cura,
+  \item il cinque percento delle terapie prescritte causa un effetto collaterale;
+\end{itemize}
+
+Segue una breve descrizione della struttura dello script:
+\begin{itemize}
+  \item 
+\end{itemize}
+
+
+
 \subsection{Analisi Dati in R}
 
 
