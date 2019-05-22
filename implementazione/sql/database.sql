@@ -136,13 +136,19 @@ returns int
 language plpgsql as $$
     declare
         gg int;
+        gg_no_end int;
     begin
-        --TODO 2000/01/01 - 2000/01/01 = 0 ma e' stato in ric un giorno quindi +1?
         select sum(ricovero.data_f-ricovero.data_i) into gg
         from paziente
           join ricovero on paziente.cf = ricovero.paziente
-        where paziente.cf = cf_paz;
-        return gg;
+        where paziente.cf = cf_paz and data_f <> NULL;
+
+        select sum(current_date-ricovero.data_i) into gg_no_end
+        from paziente
+          join ricovero on paziente.cf = ricovero.paziente
+        where paziente.cf = cf_paz and data_f = NULL;
+
+        return gg + gg_no_end;
     end
 $$;
 
