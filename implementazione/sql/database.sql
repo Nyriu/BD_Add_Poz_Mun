@@ -141,12 +141,12 @@ language plpgsql as $$
         select sum(ricovero.data_f-ricovero.data_i) into gg
         from paziente
           join ricovero on paziente.cf = ricovero.paziente
-        where paziente.cf = cf_paz and data_f <> NULL;
+        where paziente.cf = cf_paz and data_f is not null;
 
         select sum(current_date-ricovero.data_i) into gg_no_end
         from paziente
           join ricovero on paziente.cf = ricovero.paziente
-        where paziente.cf = cf_paz and data_f = NULL;
+        where paziente.cf = cf_paz and data_f is null;
 
         return gg + gg_no_end;
     end
