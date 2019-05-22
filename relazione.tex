@@ -1227,6 +1227,28 @@ La funzione \textit{ricalcolo\_gg} calcola la somma totale dei giorni che un paz
 \subsection{Definizione di Query Significative}
 
 \iffalse
+
+  query semplici sulle entità ?
+
+  INSERT INTO paziente (cf, nome, cognome, ...)
+  VALUES ('AAAAAA00A00A000A', 'Mario', 'Rossi', ...)
+
+  SELECT *
+  FROM paziente;
+
+  SELECT *
+  FROM paziente
+  WHERE cf = 'AAAAAA00A00A000A';
+
+  UPDATE paziente
+  SET nome =  'Marco', cognome = 'Bianchi', ...
+  WHERE cf = 'AAAAAA00A00A000A';
+
+  DELETE FROM paziente
+  WHERE cf = 'AAAAAA00A00A000A';
+
+  ****
+
   filtri di entità per entità padre
 
   es. ricoveri del paziente
@@ -1239,19 +1261,19 @@ La funzione \textit{ricalcolo\_gg} calcola la somma totale dei giorni che un paz
   es. terapie del paziente
 
   SELECT *
-  FROM ospedale.terapie_prescritte tp
-  LEFT JOIN ospedale.ricovero r on tp.ricovero = r.cod_ric
-  LEFT JOIN ospedale.paziente p on r.paziente = p.cf
-  WHERE p.nome = '...' and p.cognome = '...'
+  FROM paziente p
+  LEFT JOIN diagnosi d on p.cf = d.paziente
+  LEFT JOIN terapia_prescritta tp on d.cod_dia = tp.diagnosi
+  WHERE p.nome = '...' and p.cognome = '...';
 
-  una dozzina di queste ...
+  ****
 
   es. terapie più utilizzate
 
-  SELECT t.? COUNT(*)
-  FROM ospedale.terapie t
-  LEFT JOIN ospedale.terapia_prescritta tp on t.? = tp.?
-  GROUP BY t.?
+  SELECT t.cod_ter, COUNT(*)
+  FROM terapia t
+  LEFT JOIN terapia_prescritta tp on t.cod_ter = tp.terapia
+  GROUP BY t.cod_ter
   ORDER BY COUNT(*) DESC
 
   si può usare anche su numero di ricoveri o diagnosi di un paziente,
