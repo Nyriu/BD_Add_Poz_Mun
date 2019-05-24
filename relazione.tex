@@ -1226,6 +1226,58 @@ La funzione \textit{ricalcolo\_gg} calcola la somma totale dei giorni che un paz
 \cleardoublepage
 \subsection{Definizione di Query Significative}
 
+Segue un elenco di query significative, ciascuna con un breve commento.
+TODO dopo averle scritte riordinare per difficoltà
+TODO Breve commento sulle difficoltà(?) e sull'output e su possibili alternative soluzioni alternative
+
+\subsubsection{Query 1}
+Si vogliono ottenere tutti i farmaci che hanno causato effetti collaterali, ordinati in ordine decrescente per numero di effetti collaterali.
+\begin{lstlisting}
+select bla bla
+\end{lstlisting}
+
+
+\subsubsection{Query 1}
+Si vogliono ottenere tutte le coppie di pazienti in cui il primo paziente ha contratto le stesse malattie del secondo.
+Si escludano le coppie che hanno avuto la stessa malattia nella stessa fascia d'età, considerando le due fasce d'età: sotto i 50 e sopra i 50.
+\begin{lstlisting}
+select bla bla
+\end{lstlisting}
+
+
+\subsubsection{Query 1}
+Per ogni provincia il paziente con il maggior numero di diagnosi.
+\begin{lstlisting}
+select bla bla
+\end{lstlisting}
+
+
+\subsubsection{Query 1}
+Si vogliono ottenere i pazienti che sono stati curati almeno due volte consecutivamente con lo stesso farmaco.
+\begin{lstlisting}
+select bla bla
+\end{lstlisting}
+
+
+\subsubsection{Query 1}
+Si vuole trovare il mese con il massimo numero di ricoveri.
+Utilizzare una vista.
+\begin{lstlisting}
+select bla bla
+\end{lstlisting}
+
+
+\subsubsection{Query 1}
+Utilizzando una vista, trovare il giorno con il massimo numero di persone ricoverate.
+\begin{lstlisting}
+select bla bla
+\end{lstlisting}
+
+
+
+
+
+
 \iffalse
 
   query semplici sulle entità ?
@@ -1299,7 +1351,7 @@ La funzione \textit{ricalcolo\_gg} calcola la somma totale dei giorni che un paz
 \section{Analisi Dati}
 \subsection{Popolamento della Base di Dati}
 La base di dati è stata testata su un insieme di dati generato tramite uno script R.
-Nello specifico lo script genera, ispirandosi ai volumi indicati nei requisiti, dati verosimili ipotizzando che l'ospedale sia attivo da circa un decennio:
+Nello specifico lo script genera, ispirandosi ai volumi indicati nei requisiti, dei dati verosimili, ipotizzando che l'ospedale sia attivo da circa un decennio:
 \begin{itemize}
   \item sono presenti diecimila pazienti in totale,
   \item ciascun paziente in media è stato ricoverato tre volte,
@@ -1310,13 +1362,50 @@ Nello specifico lo script genera, ispirandosi ai volumi indicati nei requisiti, 
 \end{itemize}
 
 Segue una breve descrizione della struttura dello script:
-\begin{itemize}
-  \item 
-\end{itemize}
+\begin{enumerate}
+  \item i pazienti vengono generati combinando nomi, cognomi, province di residenza, luogo di nascita e ULSS, ciascuno prelevato casualmente dal rispettivo file mentre codice fiscale e la data di nascita vengono creati attraverso funzioni apposite;
+  \item per ogni paziente vengono creati alcuni ricoveri ed alcune diagnosi, assicurando che le date di quest'ultime non precedano mai quelle d'inizio dei ricoveri;
+  \item principi attivi e farmaci vengono caricati dai rispettivi file ed associati tra loro;
+  \item in modo simile vengono create anche le terapie;
+  \item durante la creazione delle terapie prescritte si presta attenzione alla data del ricovero;
+  \item una diagnosi come effetto collaterale viene aggiunta ad una determinata quantità di terapie prescritte;
+\end{enumerate}
+
+Ora che tutti i dati sono stati generati si può procedere con il loro inserimento nella base di dati.
+Nel blocco sottostante sono riportati alcuni dei comandi principali:
+\begin{lstlisting}[language=R]
+require("RPostgreSQL")
+
+drv <- dbDriver("PostgreSQL")
+con <- dbConnect(drv, 
+                 dbname="bd_18_paolo_addis",
+                 host="158.110.145.186",
+                 port="5432",
+                 user="bd_18_paolo_addis",
+                 password="******")
+
+dbWriteTable(con, name="paziente",
+             value=pazienti_df, row.names=FALSE,
+             append=TRUE)
+dbWriteTable(con, name="diagnosi",
+             value=diagnosi_df, row.names=FALSE,
+             append=TRUE)
+
+res <- dbGetQuery(con,
+                  "set search_path to ospedale;
+                   select nome, data_nasc, tot_gg_ric
+                   from paziente; ")
+
+dbDisconnect(con)
+\end{lstlisting}
+Nella prima parte viene creata la connessione con il database.
+Poco sotto viene mostrato come sono stati inseriti oggetti del tipo DataFrame nella base di dati.
+Infine, prima di chiudere la connessione, viene effettuata una semplice query.
 
 
 
 \subsection{Analisi Dati in R}
+
 
 
 
