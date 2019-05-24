@@ -989,29 +989,6 @@ summary(paz_gg)
 
 
 
-# Possibili grafici
-
-# Quanti ricoveri in media hanno i pazienti più anziani rispetto a quelli più giovani?
-# Coppie di barre per anno 
-
-# Quante diagnosi per tumore vengono fatte ai più giovani (max 30 anni)?
-# Anni sulla x frequenza sulla y
-
-# In quale periodo dell'anno ci sono più ricoveri per influenza?
-
-
-# In quale periodo dell'anno si concentrano le diagnosi di patologie gravi?
-
-# Quanti giorni di ricovero fanno in totale i pazienti a cui viene diagnosticato un tumore?
-
-# Quale diagnosi è più frequente tra i più anziani (oltre 65) 
-
-# Quali farmaci vengono usati per contrastare i disturbi psichici e per quanto tempo in totale vengono somministrati?
-
-
-
-
-
 
 
 ######################################################################################
