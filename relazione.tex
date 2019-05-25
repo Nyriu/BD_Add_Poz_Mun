@@ -1363,7 +1363,7 @@ LEFT JOIN diagnosi d ON tp.diagnosi = d.cod_dia
 LEFT JOIN paziente p ON d.paziente = p.cf 
 LEFT JOIN terapia t ON tp.terapia = t.cod_ter;
 
-
+// inner join is fucking useless vedi sotto
 SELECT 
   tp1.cf, tp1.data_i, tp1.diagnosi, tp1.terapia, tp1.farmaco
   , tp2.cf, tp2.data_i, tp2.diagnosi, tp2.terapia, tp2.farmaco
@@ -1380,6 +1380,133 @@ AND NOT EXISTS (
   AND tp3.data_i > tp1.data_i
   AND tp3.data_i < tp2.data_i
 );  
+
+Hash Anti Join  (cost=32733.01..61391.65 rows=465 width=74) (actual time=565.452..823.643 rows=103 loops=1)
+Hash Cond: ((p.cf)::text = (p_2.cf)::text)
+Join Filter: ((tp_2.data_i > tp.data_i) AND (tp_2.data_i < tp_1.data_i))
+Rows Removed by Join Filter: 3532
+->  Nested Loop Left Join  (cost=18527.75..46487.91 rows=523 width=74) (actual time=350.973..596.234 rows=790 loops=1)
+      ->  Nested Loop Left Join  (cost=18527.46..46320.46 rows=523 width=74) (actual time=350.957..592.819 rows=790 loops=1)
+            ->  Hash Join  (cost=18527.18..46153.02 rows=523 width=74) (actual time=350.923..587.059 rows=790 loops=1)
+                  Hash Cond: (((d.paziente)::text = (d_1.paziente)::text) AND ((t.farmaco)::text = (t_1.farmaco)::text))
+                  Join Filter: (((tp.diagnosi)::integer <> (tp_1.diagnosi)::integer) AND (tp.data_i < tp_1.data_i))
+                  Rows Removed by Join Filter: 116040
+                  ->  Hash Join  (cost=4142.40..11755.12 rows=115244 width=37) (actual time=75.979..211.033 rows=115244 loops=1)
+                        Hash Cond: ((tp.terapia)::integer = (t.cod_ter)::integer)
+                        ->  Hash Join  (cost=4054.99..10083.11 rows=115244 width=29) (actual time=74.400..171.582 rows=115244 loops=1)
+                              Hash Cond: ((d.cod_dia)::integer = (tp.diagnosi)::integer)
+                              ->  Seq Scan on diagnosi d  (cost=0.00..2454.22 rows=120122 width=21) (actual time=0.006..22.163 rows=120125 loops=1)
+                              ->  Hash  (cost=2051.44..2051.44 rows=115244 width=12) (actual time=74.286..74.286 rows=115244 loops=1)
+                                    Buckets: 32768  Batches: 4  Memory Usage: 1501kB
+                                    ->  Seq Scan on terapia_prescritta tp  (cost=0.00..2051.44 rows=115244 width=12) (actual time=0.008..34.202 rows=115244 loops=1)
+                        ->  Hash  (cost=51.07..51.07 rows=2907 width=12) (actual time=1.566..1.566 rows=2907 loops=1)
+                              Buckets: 4096  Batches: 1  Memory Usage: 163kB
+                              ->  Seq Scan on terapia t  (cost=0.00..51.07 rows=2907 width=12) (actual time=0.011..0.775 rows=2907 loops=1)
+                  ->  Hash  (cost=11755.12..11755.12 rows=115244 width=37) (actual time=271.895..271.895 rows=115244 loops=1)
+                        Buckets: 32768  Batches: 8  Memory Usage: 1234kB
+                        ->  Hash Join  (cost=4142.40..11755.12 rows=115244 width=37) (actual time=77.909..229.003 rows=115244 loops=1)
+                              Hash Cond: ((tp_1.terapia)::integer = (t_1.cod_ter)::integer)
+                              ->  Hash Join  (cost=4054.99..10083.11 rows=115244 width=29) (actual time=76.338..186.449 rows=115244 loops=1)
+                                    Hash Cond: ((d_1.cod_dia)::integer = (tp_1.diagnosi)::integer)
+                                    ->  Seq Scan on diagnosi d_1  (cost=0.00..2454.22 rows=120122 width=21) (actual time=0.006..28.874 rows=120125 loops=1)
+                                    ->  Hash  (cost=2051.44..2051.44 rows=115244 width=12) (actual time=76.227..76.227 rows=115244 loops=1)
+                                          Buckets: 32768  Batches: 4  Memory Usage: 1501kB
+                                          ->  Seq Scan on terapia_prescritta tp_1  (cost=0.00..2051.44 rows=115244 width=12) (actual time=0.008..34.486 rows=115244 loops=1)
+                              ->  Hash  (cost=51.07..51.07 rows=2907 width=12) (actual time=1.560..1.560 rows=2907 loops=1)
+                                    Buckets: 4096  Batches: 1  Memory Usage: 163kB
+                                    ->  Seq Scan on terapia t_1  (cost=0.00..51.07 rows=2907 width=12) (actual time=0.010..0.773 rows=2907 loops=1)
+            ->  Index Only Scan using paziente_pkey on paziente p  (cost=0.29..0.31 rows=1 width=17) (actual time=0.006..0.006 rows=1 loops=790)
+                  Index Cond: (cf = (d.paziente)::text)
+                  Heap Fetches: 647
+      ->  Index Only Scan using paziente_pkey on paziente p_1  (cost=0.29..0.31 rows=1 width=17) (actual time=0.003..0.004 rows=1 loops=790)
+            Index Cond: (cf = (d_1.paziente)::text)
+            Heap Fetches: 647
+->  Hash  (cost=12088.71..12088.71 rows=115244 width=21) (actual time=214.280..214.280 rows=115244 loops=1)
+      Buckets: 32768  Batches: 8  Memory Usage: 993kB
+      ->  Hash Join  (cost=4475.99..12088.71 rows=115244 width=21) (actual time=47.113..185.471 rows=115244 loops=1)
+            Hash Cond: ((d_2.paziente)::text = (p_2.cf)::text)
+            ->  Hash Join  (cost=4054.99..10083.11 rows=115244 width=21) (actual time=42.927..139.187 rows=115244 loops=1)
+                  Hash Cond: ((d_2.cod_dia)::integer = (tp_2.diagnosi)::integer)
+                  ->  Seq Scan on diagnosi d_2  (cost=0.00..2454.22 rows=120122 width=21) (actual time=0.005..22.258 rows=120125 loops=1)
+                  ->  Hash  (cost=2051.44..2051.44 rows=115244 width=12) (actual time=42.679..42.679 rows=115244 loops=1)
+                        Buckets: 32768  Batches: 4  Memory Usage: 1501kB
+                        ->  Seq Scan on terapia_prescritta tp_2  (cost=0.00..2051.44 rows=115244 width=12) (actual time=0.008..19.618 rows=115244 loops=1)
+            ->  Hash  (cost=296.00..296.00 rows=10000 width=17) (actual time=4.084..4.084 rows=10000 loops=1)
+                  Buckets: 16384  Batches: 1  Memory Usage: 607kB
+                  ->  Seq Scan on paziente p_2  (cost=0.00..296.00 rows=10000 width=17) (actual time=0.007..1.783 rows=10000 loops=1)
+                  Planning time: 9.354 ms
+                  Execution time: 823.884 ms
+                 
+// this is faster
+SELECT 
+  tp1.cf, tp1.data_i, tp1.diagnosi, tp1.terapia, tp1.farmaco
+FROM terapie_prescritte tp1
+WHERE EXISTS (
+  SELECT *
+  FROM terapie_prescritte tp2
+  WHERE tp1.paziente = tp2.paziente
+  AND tp1.diagnosi <> tp2.diagnosi
+  AND tp1.farmaco = tp2.farmaco
+  AND tp1.data_i < tp2.data_i
+  AND NOT EXISTS (
+    SELECT *
+    FROM terapie_prescritte tp3
+    WHERE tp3.cf = tp1.cf
+    AND tp3.data_i > tp1.data_i
+    AND tp3.data_i < tp2.data_i
+  )
+);
+
+Hash Semi Join  (cost=18948.18..31903.54 rows=1 width=37) (actual time=349.927..5732.492 rows=103 loops=1)
+   Hash Cond: (((d.paziente)::text = (d_1.paziente)::text) AND ((t.farmaco)::text = (t_1.farmaco)::text))
+   Join Filter: (((tp.diagnosi)::integer <> (tp_1.diagnosi)::integer) AND (tp.data_i < tp_1.data_i) AND (NOT (SubPlan 1)))
+   Rows Removed by Join Filter: 116685
+   ->  Hash Join  (cost=4563.40..13760.72 rows=115244 width=54) (actual time=83.909..277.310 rows=115244 loops=1)
+         Hash Cond: ((tp.terapia)::integer = (t.cod_ter)::integer)
+         ->  Hash Left Join  (cost=4475.99..12088.71 rows=115244 width=46) (actual time=82.265..236.162 rows=115244 loops=1)
+               Hash Cond: ((d.paziente)::text = (p.cf)::text)
+               ->  Hash Join  (cost=4054.99..10083.11 rows=115244 width=29) (actual time=76.085..182.098 rows=115244 loops=1)
+                     Hash Cond: ((d.cod_dia)::integer = (tp.diagnosi)::integer)
+                     ->  Seq Scan on diagnosi d  (cost=0.00..2454.22 rows=120122 width=21) (actual time=0.005..22.053 rows=120125 loops=1)
+                     ->  Hash  (cost=2051.44..2051.44 rows=115244 width=12) (actual time=75.967..75.967 rows=115244 loops=1)
+                           Buckets: 32768  Batches: 4  Memory Usage: 1501kB
+                           ->  Seq Scan on terapia_prescritta tp  (cost=0.00..2051.44 rows=115244 width=12) (actual time=0.008..34.845 rows=115244 loops=1)
+               ->  Hash  (cost=296.00..296.00 rows=10000 width=17) (actual time=6.136..6.136 rows=10000 loops=1)
+                     Buckets: 16384  Batches: 1  Memory Usage: 607kB
+                     ->  Seq Scan on paziente p  (cost=0.00..296.00 rows=10000 width=17) (actual time=0.015..2.850 rows=10000 loops=1)
+         ->  Hash  (cost=51.07..51.07 rows=2907 width=12) (actual time=1.631..1.631 rows=2907 loops=1)
+               Buckets: 4096  Batches: 1  Memory Usage: 163kB
+               ->  Seq Scan on terapia t  (cost=0.00..51.07 rows=2907 width=12) (actual time=0.012..0.804 rows=2907 loops=1)
+   ->  Hash  (cost=11755.12..11755.12 rows=115244 width=33) (actual time=240.900..240.900 rows=115244 loops=1)
+         Buckets: 32768  Batches: 8  Memory Usage: 1178kB
+         ->  Hash Join  (cost=4142.40..11755.12 rows=115244 width=33) (actual time=67.902..201.648 rows=115244 loops=1)
+               Hash Cond: ((tp_1.terapia)::integer = (t_1.cod_ter)::integer)
+               ->  Hash Join  (cost=4054.99..10083.11 rows=115244 width=29) (actual time=66.265..162.128 rows=115244 loops=1)
+                     Hash Cond: ((d_1.cod_dia)::integer = (tp_1.diagnosi)::integer)
+                     ->  Seq Scan on diagnosi d_1  (cost=0.00..2454.22 rows=120122 width=21) (actual time=0.006..23.079 rows=120125 loops=1)
+                     ->  Hash  (cost=2051.44..2051.44 rows=115244 width=12) (actual time=66.161..66.161 rows=115244 loops=1)
+                           Buckets: 32768  Batches: 4  Memory Usage: 1501kB
+                           ->  Seq Scan on terapia_prescritta tp_1  (cost=0.00..2051.44 rows=115244 width=12) (actual time=0.008..30.551 rows=115244 loops=1)
+               ->  Hash  (cost=51.07..51.07 rows=2907 width=12) (actual time=1.624..1.624 rows=2907 loops=1)
+                     Buckets: 4096  Batches: 1  Memory Usage: 159kB
+                     ->  Seq Scan on terapia t_1  (cost=0.00..51.07 rows=2907 width=12) (actual time=0.011..0.817 rows=2907 loops=1)
+   SubPlan 1
+     ->  Nested Loop  (cost=0.70..2872.69 rows=1 width=0) (actual time=6.446..6.446 rows=1 loops=790)
+           ->  Nested Loop  (cost=0.42..2864.38 rows=1 width=17) (actual time=6.438..6.438 rows=1 loops=790)
+                 ->  Seq Scan on diagnosi d_2  (cost=0.00..2754.53 rows=13 width=21) (actual time=1.214..6.405 rows=5 loops=790)
+                       Filter: ((paziente)::text = (p.cf)::text)
+                       Rows Removed by Filter: 36627
+                 ->  Index Scan using terapia_prescritta_diagnosi_key on terapia_prescritta tp_2  (cost=0.42..8.44 rows=1 width=8) (actual time=0.005..0.005 rows=0 loops=4290)
+                       Index Cond: ((diagnosi)::integer = (d_2.cod_dia)::integer)
+                       Filter: ((data_i > tp.data_i) AND (data_i < tp_1.data_i))
+                       Rows Removed by Filter: 1
+           ->  Index Only Scan using paziente_pkey on paziente p_1  (cost=0.29..8.30 rows=1 width=17) (actual time=0.007..0.007 rows=1 loops=687)
+                 Index Cond: (cf = (p.cf)::text)
+                 Heap Fetches: 565
+ Planning time: 3.092 ms
+ Execution time: 5732.716 ms
+
+ 
 \end{lstlisting}
 
 %  more or less, manca un >= 
