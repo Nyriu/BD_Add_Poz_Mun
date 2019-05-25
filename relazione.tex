@@ -124,11 +124,11 @@ L'attributo \textit{Codice Fiscale} è stato scelto come chiave primaria in quan
 Inoltre, è richiesto di memorizzare informazioni aggiuntive per i pazienti fuori regione. Per far ciò è stata creata una specializzazione PAZIENTE-FUORI-REGIONE di PAZIENTE i cui attributi sono: \textit{Regione di Appartenenza} e \textit{ULSS}. 
 Nei requisiti sul paziente è richiesto, inoltre, di tener traccia del tempo totale trascorso all'interno dell'ospedale durante i ricoveri.
 Quest'informazione è modellata attraverso \textit{Totale Giorni Ricoveri}, un attributo derivato su paziente che è la somma di tutte le durate dei ricoveri riguardanti il paziente.
-La relazione di afferenza tra RICOVERO e PAZIENTE prende il nome VIENE-RICOVERATO.
+La relazione di afferenza tra RICOVERO e PAZIENTE prende il nome di VIENE-RICOVERATO.
 L'informazione memorizzata nell'attributo \textit{Paziente Ricoverato} di RICOVERO viene salvata anche attraverso la nuova relazione, di conseguenza, per evitare ridondanze, è possibile rimuovere l'attributo dall'entità
 % TODO magari nel testo e non come nota \footnote{Si ricorda che è preferibile evitare ridondanze perché inconsistenze bla bla }
 .
-Un nuovo paziente viene inserito nella base di dati la prima volta in cui viene ricoverato, di conseguenza la partecipazione di PAZIENTE alla relazione VIENE-RICOVERATO è totale.
+Un nuovo paziente viene inserito nella base di dati la prima volta in cui viene ricoverato, quindi la partecipazione di PAZIENTE alla relazione VIENE-RICOVERATO è totale.
 Anche RICOVERO partecipa in modo totale alla relazione, in quanto sarebbe insensato inserire i dati di un ricovero senza specificare a chi si riferiscano.
 Ogni paziente può essere ricoverato più volte ma ogni ricovero riguarda un solo paziente, dunque la relazione VIENE-RICOVERATO è della forma Uno-a-Molti.
 \\
@@ -136,7 +136,11 @@ Successivamente è stata modellata l'entità DIAGNOSI che possiede come attribut
 La chiave è composta dall'attributo \textit{Data} e dalla relazione EFFETTUATA-DURANTE.
 Quest'ultima, del tipo Uno-a-Molti, lega l'entità RICOVERO a DIAGNOSI.
 In particolare una diagnosi verrà inserita solo se nella base di dati è già presente il ricovero a cui afferisce, quindi la partecipazione di DIAGNOSI alla relazione è totale.
-È importante introdurre un vincolo di integrità riguardante la data in cui viene effettuata la diagnosi in quanto deve essere compresa tra la data di inizio e quella di fine del ricovero.
+
+Ora è importante introdurre due vincoli di integrità:
+\begin{itemize}
+  \item il primo deve assicurare che nessun ricovero possa iniziare prima della data di nascita del paziente a cui si riferisce;
+  \item il secondo riguardante la data in cui viene effettuata la diagnosi in quanto deve essere compresa tra la data di inizio e quella di fine del ricovero.
 Sarebbe perfettamente lecito, invece, avere un ricovero durante il quale non è stata effettuata alcuna diagnosi, questo stabilisce la partecipazione parziale di RICOVERO in EFFETTUATA-DURANTE.
 Il Risultato della prima fase della progettazione è illustrata in \autoref{fig:paz-ric-dia}.
 
@@ -1229,7 +1233,8 @@ Si vogliono ottenere tutti i farmaci che hanno causato effetti collaterali, ordi
 \begin{lstlisting}
 SELECT t.farmaco, tc.effetti_collaterali
 FROM (
-  SELECT terapia, count(coll_dia) AS effetti_collaterali
+  SELECT terapia, count(coll_dia)
+         AS effetti_collaterali
   FROM terapia_prescritta 
   WHERE coll_dia IS NOT NULL
   GROUP BY terapia) tc
@@ -1242,12 +1247,14 @@ ORDER BY effetti_collaterali DESC;
 Si vogliono ottenere tutte le coppie di pazienti in cui il primo paziente ha contratto le stesse malattie del secondo.
 Si escludano le coppie che hanno avuto la stessa malattia nella stessa fascia d'età, considerando le due fasce d'età: sotto i 50 e sopra i 50.
 \begin{lstlisting}
-CREATE INDEX idx_patologie ON diagnosi (paziente, cod_pat);
+CREATE INDEX idx_patologie
+ON diagnosi (paziente, cod_pat);
 
 SELECT p1.cf, p2.cf
 FROM paziente p1, paziente p2
 WHERE p1.cf <> p2.cf 
-  AND (((date_part('year', age(p1.data_nasc)) - 50) * (date_part('year', age(p2.data_nasc)) - 50)) < 0)
+  AND (((date_part('year', age(p1.data_nasc)) - 50) *
+  (date_part('year', age(p2.data_nasc)) - 50)) < 0)
   AND NOT EXISTS (
     SELECT d1.paziente, d1.cod_pat
     FROM diagnosi d1
@@ -1265,7 +1272,8 @@ WHERE p1.cf <> p2.cf
 Per ogni provincia il paziente con il maggior numero di diagnosi.
 \begin{lstlisting}
 CREATE OR REPLACE VIEW count_patologie AS
-SELECT p.cf, p.nome, p.cognome, p.prov_res, count(d.cod_pat) as num_pat
+SELECT p.cf, p.nome, p.cognome,
+       p.prov_res, count(d.cod_pat) as num_pat
 FROM paziente p
 LEFT JOIN diagnosi d on p.cf = d.paziente
 GROUP BY p.cf;
@@ -1292,7 +1300,8 @@ LEFT JOIN paziente p ON d.paziente = p.cf
 LEFT JOIN terapia t ON tp.terapia = t.cod_ter;
 
 SELECT 
-  tp1.cf, tp1.data_i, tp1.diagnosi, tp1.terapia, tp1.farmaco
+  tp1.cf, tp1.data_i, tp1.diagnosi,
+  tp1.terapia, tp1.farmaco
 FROM terapie_prescritte tp1
 WHERE EXISTS (
   SELECT *
@@ -1319,7 +1328,12 @@ Si vuole trovare il mese con il massimo numero di ricoveri.
 Utilizzare una vista. 
 %  l'esempio di vista che si intendeva qui è stato utilizzato nella 3 credo
 \begin{lstlisting}
-  CREATE OR REPLACE VIEW months_list AS SELECT GENERATE_SERIES( '2008-01-01'::date, now()::date, '1 month' ) as month;
+  CREATE OR REPLACE VIEW months_list
+  AS SELECT GENERATE_SERIES(
+          '2008-01-01'::date,
+          now()::date,
+          '1 month'
+          ) as month;
 
   SELECT month, count(*)
   FROM months_list
@@ -1337,7 +1351,12 @@ Utilizzare una vista.
 Utilizzando una vista, trovare il giorno con il massimo numero di persone ricoverate.
 %  questa è uguale a quella sopra ma per giorni invece che per mesi
 \begin{lstlisting}
-  CREATE OR REPLACE VIEW days_list AS SELECT GENERATE_SERIES( '2008-01-01'::date, now()::date, '1 day' ) as day;
+  CREATE OR REPLACE VIEW days_list
+  AS SELECT GENERATE_SERIES(
+           '2008-01-01'::date,
+           now()::date,
+           '1 day'
+           ) as day;
 
 \end{lstlisting}
 
