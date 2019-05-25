@@ -76,14 +76,12 @@
 
 \subsection{Raccolta ed Analisi dei Requisiti}
 
-Si vuole modellare il seguente insieme di informazioni riguardanti un sistema
-per la gestione delle diagnosi e delle terapie dei pazienti ricoverati in un
-dato ospedale.
+Si vuole modellare il seguente insieme di informazioni riguardanti un sistema per la gestione delle diagnosi e delle terapie dei pazienti ricoverati in un ospedale.
 \begin{itemize}
 	\item Di ogni ricovero, il sistema deve memorizzare il codice univoco, il
 	      nome della divisione ospedaliera (Cardiologia, Reumatologia, Ortopedia,
 	      \dots ), il paziente ricoverato, le date di inizio e fine del ricovero
-	      e il motivo principale del ricovero.
+	      ed il motivo principale del ricovero.
 
 	\item Di ogni paziente, il sistema deve memorizzare il codice sanitario
 	      (univoco), il cognome, il nome, la data di nascita, il luogo di nascita
@@ -92,11 +90,7 @@ dato ospedale.
 	      Inoltre, per ogni paziente, è necessario memorizzare il totale delle
 	      durate dei ricoveri.
 
-	\item Di ogni diagnosi effettuata durante il ricovero del paziente, sono
-	      memorizzati la patologia diagnosticata, col suo codice ICD10
-	      (classificazione internazionale delle patologie) e l’indicazione della
-	      sua gravità (grave: si/no), la data e il nome e cognome del medico che
-	      ha effettuato la diagnosi.
+	\item Di ogni diagnosi effettuata durante il ricovero, sono memorizzati la patologia diagnosticata, col suo codice ICD10 (classificazione internazionale delle patologie) e l’indicazione della sua gravità (grave: si/no), la data ed il nome ed il cognome del medico che ha effettuato la diagnosi.
 
 	\item Nella base di dati si tiene traccia delle terapie prescritte ai pazienti
 	      durante il ricovero. Di ogni terapia, si memorizzano il farmaco prescritto,
@@ -116,8 +110,7 @@ dato ospedale.
 \end{itemize}
 Tramite un portale web dovrà essere possibile accedere a tale base di dati ed
 aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farmaci.
-% TODO aggiungere esempio di Codice Ricovero (tipo RIC302) così poi nella fase logica si può dire Codice Diagnosi è stato creato ispirandosi a quello già presente (es RIC302DIA1), Codice Terapia es TER123
-% TODO aggiungere numeri/necessità dell'ospedale 
+TODO aggiungere numeri/necessità dell'ospedale 
 
 
 \clearpage
@@ -126,7 +119,8 @@ aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farma
 La progettazione dello schema Entità-Relazioni è avvenuto in tre fasi. 
 Nella prima fase, la prima entità modellata è stata RICOVERO che memorizza tutte le informazioni relative a un ricovero e possiede come attributi: \textit{Codice Ricovero}, \textit{Divisione Ospedaliera}, \textit{Paziente Ricoverato}, \textit{Data Inizio}, \textit{Data Fine}, \textit{Motivo}. 
 In particolare, l'attributo \textit{Codice Ricovero} è stato scelto come chiave primaria a causa della sua proprietà di unicità. 
-Successivamente è stata modellata l'entità PAZIENTE che possiede i seguenti attributi: \textit{Codice Fiscale}, \textit{Cognome}, \textit{Nome}, \textit{Data di Nascita}, \textit{Luogo di Nascita} e \textit{Provincia di residenza} del paziente. L'attributo \textit{Codice Fiscale} è stato scelto come chiave primaria in quanto unico per ogni paziente.
+Successivamente è stata modellata l'entità PAZIENTE che possiede i seguenti attributi: \textit{Codice Fiscale}, \textit{Cognome}, \textit{Nome}, \textit{Data di Nascita}, \textit{Luogo di Nascita} e \textit{Provincia di residenza}.
+L'attributo \textit{Codice Fiscale} è stato scelto come chiave primaria in quanto unico per ogni paziente.
 Inoltre, è richiesto di memorizzare informazioni aggiuntive per i pazienti fuori regione. Per far ciò è stata creata una specializzazione PAZIENTE-FUORI-REGIONE di PAZIENTE i cui attributi sono: \textit{Regione di Appartenenza} e \textit{ULSS}. 
 Nei requisiti sul paziente è richiesto, inoltre, di tener traccia del tempo totale trascorso all'interno dell'ospedale durante i ricoveri.
 Quest'informazione è modellata attraverso \textit{Totale Giorni Ricoveri}, un attributo derivato su paziente che è la somma di tutte le durate dei ricoveri riguardanti il paziente.
