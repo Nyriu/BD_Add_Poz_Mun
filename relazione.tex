@@ -1260,7 +1260,6 @@ WHERE p1.cf <> p2.cf
 AND ((p1.age < 50 AND p2.age > 50) OR (p1.age > 50 AND p2.age < 50));
 \end{lstlisting}
 
-% this query doesn't work, lovely timeout
 \subsubsection{Query 3}
 Per ogni provincia il paziente con il maggior numero di diagnosi.
 \begin{lstlisting}
@@ -1270,13 +1269,88 @@ FROM paziente p
 LEFT JOIN diagnosi d on p.cf = d.paziente
 GROUP BY p.cf;
 
+// senza nomi
+SELECT prov_res, max(num_pat)
+FROM count_patologie
+GROUP BY prov_res;
+
+// chiaramente la soluzione ...
+explain analyze SELECT *
+FROM count_patologie cp1
+INNER JOIN (
+  SELECT cp2.prov_res, max(cp2.num_pat)
+  FROM count_patologie cp2
+  GROUP BY cp2.prov_res
+) tmp 
+  ON cp1.prov_res = tmp.prov_res
+  AND cp1.num_pat = max
+ORDER BY cp1.prov_res;
+
+Sort  (cost=11263.93..11264.05 rows=50 width=59) (actual time=286.493..286.500 rows=144 loops=1)
+   Sort Key: p.prov_res
+   Sort Method: quicksort  Memory: 45kB
+   ->  Hash Join  (cost=10512.02..11262.52 rows=50 width=59) (actual time=282.501..286.337 rows=144 loops=1)
+         Hash Cond: (((p.prov_res)::text = (p_1.prov_res)::text) AND ((count(d.cod_pat)) = (max((count(d_1.cod_pat))))))
+         ->  HashAggregate  (cost=5127.51..5227.51 rows=10000 width=44) (actual time=181.632..184.288 rows=10000 loops=1)
+               Group Key: p.cf
+               ->  Hash Right Join  (cost=421.00..4526.90 rows=120122 width=44) (actual time=7.965..119.793 rows=120125 loops=1)
+                     Hash Cond: ((d.paziente)::text = (p.cf)::text)
+                     ->  Seq Scan on diagnosi d  (cost=0.00..2454.22 rows=120122 width=21) (actual time=0.010..22.873 rows=120125 loops=1)
+                     ->  Hash  (cost=296.00..296.00 rows=10000 width=40) (actual time=7.925..7.925 rows=10000 loops=1)
+                           Buckets: 16384  Batches: 1  Memory Usage: 849kB
+                           ->  Seq Scan on paziente p  (cost=0.00..296.00 rows=10000 width=40) (actual time=0.012..3.791 rows=10000 loops=1)
+         ->  Hash  (cost=5381.51..5381.51 rows=200 width=11) (actual time=100.781..100.781 rows=110 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 14kB
+               ->  HashAggregate  (cost=5377.51..5379.51 rows=200 width=11) (actual time=100.738..100.753 rows=110 loops=1)
+                     Group Key: p_1.prov_res
+                     ->  HashAggregate  (cost=5127.51..5227.51 rows=10000 width=24) (actual time=96.160..98.325 rows=10000 loops=1)
+                           Group Key: p_1.cf
+                           ->  Hash Right Join  (cost=421.00..4526.90 rows=120122 width=24) (actual time=3.868..62.530 rows=120125 loops=1)
+                                 Hash Cond: ((d_1.paziente)::text = (p_1.cf)::text)
+                                 ->  Seq Scan on diagnosi d_1  (cost=0.00..2454.22 rows=120122 width=21) (actual time=0.004..12.808 rows=120125 loops=1)
+                                 ->  Hash  (cost=296.00..296.00 rows=10000 width=20) (actual time=3.842..3.842 rows=10000 loops=1)
+                                       Buckets: 16384  Batches: 1  Memory Usage: 636kB
+                                       ->  Seq Scan on paziente p_1  (cost=0.00..296.00 rows=10000 width=20) (actual time=0.006..1.980 rows=10000 loops=1)
+ Planning time: 0.928 ms
+ Execution time: 286.738 ms
+
+// this is faster cause I'm stupid
 SELECT *
 FROM count_patologie cp1
-WHERE cp1.num_pat = (
-  SELECT max(cp2.num_pat)
+WHERE NOT EXISTS (
+  SELECT *
   FROM count_patologie cp2
   WHERE cp1.prov_res = cp2.prov_res
+  AND cp2.num_pat > cp1.num_pat
 );
+
+Hash Anti Join  (cost=10580.02..10951.89 rows=8333 width=48) (actual time=257.341..273.240 rows=144 loops=1)
+   Hash Cond: ((p.prov_res)::text = (cp2.prov_res)::text)
+   Join Filter: (cp2.num_pat > (count(d.cod_pat)))
+   Rows Removed by Join Filter: 48759
+   ->  HashAggregate  (cost=5127.51..5227.51 rows=10000 width=44) (actual time=155.647..158.476 rows=10000 loops=1)
+         Group Key: p.cf
+         ->  Hash Right Join  (cost=421.00..4526.90 rows=120122 width=44) (actual time=7.754..101.733 rows=120125 loops=1)
+               Hash Cond: ((d.paziente)::text = (p.cf)::text)
+               ->  Seq Scan on diagnosi d  (cost=0.00..2454.22 rows=120122 width=21) (actual time=0.007..18.525 rows=120125 loops=1)
+               ->  Hash  (cost=296.00..296.00 rows=10000 width=40) (actual time=7.718..7.718 rows=10000 loops=1)
+                     Buckets: 16384  Batches: 1  Memory Usage: 849kB
+                     ->  Seq Scan on paziente p  (cost=0.00..296.00 rows=10000 width=40) (actual time=0.012..3.567 rows=10000 loops=1)
+   ->  Hash  (cost=5327.51..5327.51 rows=10000 width=11) (actual time=101.452..101.452 rows=10000 loops=1)
+         Buckets: 16384  Batches: 1  Memory Usage: 597kB
+         ->  Subquery Scan on cp2  (cost=5127.51..5327.51 rows=10000 width=11) (actual time=96.567..99.866 rows=10000 loops=1)
+               ->  HashAggregate  (cost=5127.51..5227.51 rows=10000 width=24) (actual time=96.566..98.738 rows=10000 loops=1)
+                     Group Key: p_1.cf
+                     ->  Hash Right Join  (cost=421.00..4526.90 rows=120122 width=24) (actual time=3.847..62.511 rows=120125 loops=1)
+                           Hash Cond: ((d_1.paziente)::text = (p_1.cf)::text)
+                           ->  Seq Scan on diagnosi d_1  (cost=0.00..2454.22 rows=120122 width=21) (actual time=0.004..12.660 rows=120125 loops=1)
+                           ->  Hash  (cost=296.00..296.00 rows=10000 width=20) (actual time=3.820..3.820 rows=10000 loops=1)
+                                 Buckets: 16384  Batches: 1  Memory Usage: 636kB
+                                 ->  Seq Scan on paziente p_1  (cost=0.00..296.00 rows=10000 width=20) (actual time=0.006..2.067 rows=10000 loops=1)
+ Planning time: 0.843 ms
+ Execution time: 273.448 ms
+
+
 \end{lstlisting}
 
 \subsubsection{Query 4}
@@ -1289,6 +1363,7 @@ LEFT JOIN diagnosi d ON tp.diagnosi = d.cod_dia
 LEFT JOIN paziente p ON d.paziente = p.cf 
 LEFT JOIN terapia t ON tp.terapia = t.cod_ter;
 
+
 SELECT 
   tp1.cf, tp1.data_i, tp1.diagnosi, tp1.terapia, tp1.farmaco
   , tp2.cf, tp2.data_i, tp2.diagnosi, tp2.terapia, tp2.farmaco
@@ -1296,31 +1371,15 @@ FROM terapie_prescritte tp1
 INNER JOIN terapie_prescritte tp2
   ON tp1.paziente = tp2.paziente
   AND tp1.diagnosi <> tp2.diagnosi
-  AND tp2.data_i > tp1.data_i
-WHERE tp1.cf = 'MIASOR20G71P162Y'
-ORDER BY tp1.data_i DESC, tp2.data_i DESC;
-
-SELECT *
-FROM terapie_prescritte tp1
-WHERE EXISTS ( 
-  SELECT *
-  FROM terapie_prescritte tp2
-  WHERE tp1.diagnosi <> tp2.diagnosi
-  AND tp1.paziente = tp2.paziente
   AND tp1.farmaco = tp2.farmaco
-  AND tp2.data_i > tp1.data_i
-  AND NOT EXISTS (
-    SELECT *
-    FROM terapie_prescritte tp3
-    WHERE tp3.diagnosi <> tp2.diagnosi
-    AND tp3.diagnosi <> tp1.diagnosi
-    AND tp3.paziente = tp2.paziente
-    AND tp3.farmaco = tp2.farmaco
-    AND tp3.data_i > tp1.data_i
-    AND tp3.data_i < tp2.data_i
-  )
-);
-
+  AND tp1.data_i < tp2.data_i
+AND NOT EXISTS (
+  SELECT *
+  FROM terapie_prescritte tp3
+  WHERE tp3.cf = tp1.cf
+  AND tp3.data_i > tp1.data_i
+  AND tp3.data_i < tp2.data_i
+);  
 \end{lstlisting}
 
 %  more or less, manca un >= 
