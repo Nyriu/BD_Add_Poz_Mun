@@ -1271,7 +1271,8 @@ WHERE p1.cf <> p2.cf
 );
 
 
-// out of space
+// per la modica tempistica di 5 minuti
+explain analyze
 SELECT p1.cf, p2.cf
 FROM paziente p1, paziente p2
 WHERE p1.cf <> p2.cf 
@@ -1287,6 +1288,27 @@ WHERE p1.cf <> p2.cf
           AND d2.cod_pat = d1.cod_pat
       )
 );
+
+Hash Anti Join  (cost=4659.81..158324614.84 rows=17998200 width=34) (actual time=6898.189..574676.471 rows=22160 loops=1)
+Hash Cond: ((p1.cf)::text = (d1.paziente)::text)
+Join Filter: (NOT (SubPlan 1))
+Rows Removed by Join Filter: 805088
+->  Nested Loop  (cost=0.00..5500617.00 rows=33330000 width=34) (actual time=0.103..292916.041 rows=48779276 loops=1)
+      Join Filter: (((p1.cf)::text <> (p2.cf)::text) AND (((date_part('year'::text, age((('now'::cstring)::date)::timestamp with time zone, (p1.data_nasc)::timestamp with time zone)) - '50'::double precision) * (date_part('year'::text, age((('now'::cstring)::date)::timestamp with time zone, (p2.data_nasc)::timestamp with time zone)) - '50'::double precision)) < '0'::double precision))
+      Rows Removed by Join Filter: 51220724
+      ->  Seq Scan on paziente p1  (cost=0.00..296.00 rows=10000 width=21) (actual time=0.016..7.360 rows=10000 loops=1)
+      ->  Materialize  (cost=0.00..346.00 rows=10000 width=21) (actual time=0.000..0.752 rows=10000 loops=10000)
+            ->  Seq Scan on paziente p2  (cost=0.00..296.00 rows=10000 width=21) (actual time=0.005..4.144 rows=10000 loops=1)
+->  Hash  (cost=2454.25..2454.25 rows=120125 width=21) (actual time=91.112..91.112 rows=120125 loops=1)
+      Buckets: 32768  Batches: 8  Memory Usage: 1025kB
+      ->  Seq Scan on diagnosi d1  (cost=0.00..2454.25 rows=120125 width=21) (actual time=0.015..40.146 rows=120125 loops=1)
+SubPlan 1
+  ->  Index Only Scan using idx_patologie on diagnosi d2  (cost=0.42..8.44 rows=1 width=0) (actual time=0.005..0.005 rows=0 loops=49562204)
+        Index Cond: ((paziente = (p2.cf)::text) AND (cod_pat = (d1.cod_pat)::text))
+        Heap Fetches: 805088
+Planning time: 1.002 ms
+Execution time: 574679.350 ms
+
 
 // ~un paio di minuti, ma è sbagliata credo
 SELECT p1.cf, p2.cf
