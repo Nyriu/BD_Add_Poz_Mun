@@ -1234,50 +1234,83 @@ TODO Breve commento sulle difficoltà(?) e sull'output e su possibili alternativ
 Si vogliono ottenere tutti i farmaci che hanno causato effetti collaterali, ordinati in ordine decrescente per numero di effetti collaterali.
 \begin{lstlisting}
 SELECT t.farmaco, tc.effetti_collaterali
-FROM
-(SELECT terapia, count(coll_dia) AS effetti_collaterali
-FROM terapia_prescritta 
-WHERE coll_dia IS NOT NULL
-GROUP BY terapia) tc
+FROM (
+  SELECT terapia, count(coll_dia) AS effetti_collaterali
+  FROM terapia_prescritta 
+  WHERE coll_dia IS NOT NULL
+  GROUP BY terapia) tc
 LEFT JOIN terapia t ON t.cod_ter = tc.terapia
 ORDER BY effetti_collaterali DESC;
 \end{lstlisting}
 
-
-\subsubsection{Query 1}
+% this query doesn't work, lovely timeout
+\subsubsection{Query 2}
 Si vogliono ottenere tutte le coppie di pazienti in cui il primo paziente ha contratto le stesse malattie del secondo.
 Si escludano le coppie che hanno avuto la stessa malattia nella stessa fascia d'età, considerando le due fasce d'età: sotto i 50 e sopra i 50.
 \begin{lstlisting}
-select bla bla
+CREATE OR REPLACE VIEW patologie AS
+SELECT p.cf, p.nome, p.cognome, p.data_nasc, d.cod_pat, d.data_dia, (d.data_dia - p.data_nasc)/365 as age
+FROM paziente p
+LEFT JOIN diagnosi d on p.cf = d.paziente;
+
+SELECT *
+FROM patologie p1
+INNER JOIN patologie p2 ON p1.cod_pat = p2.cod_pat
+WHERE p1.cf <> p2.cf 
+AND ((p1.age < 50 AND p2.age > 50) OR (p1.age > 50 AND p2.age < 50));
 \end{lstlisting}
 
-
-\subsubsection{Query 1}
+% this query doesn't work, lovely timeout
+\subsubsection{Query 3}
 Per ogni provincia il paziente con il maggior numero di diagnosi.
 \begin{lstlisting}
-select bla bla
+CREATE OR REPLACE VIEW count_patologie AS
+SELECT p.cf, p.nome, p.cognome, p.data_nasc, p.prov_res, count(d.cod_pat) as num_pat
+FROM paziente p
+LEFT JOIN diagnosi d on p.cf = d.paziente
+GROUP BY p.cf;
+
+SELECT *
+FROM count_patologie cp1
+WHERE cp1.num_pat = (
+  SELECT max(cp2.num_pat)
+  FROM count_patologie cp2
+  WHERE cp1.prov_res = cp2.prov_res
+);
 \end{lstlisting}
 
-
-\subsubsection{Query 1}
+\subsubsection{Query 4}
 Si vogliono ottenere i pazienti che sono stati curati almeno due volte consecutivamente con lo stesso farmaco.
 \begin{lstlisting}
-select bla bla
+
 \end{lstlisting}
 
-
-\subsubsection{Query 1}
+%  more or less, manca un >= 
+\subsubsection{Query 5}
 Si vuole trovare il mese con il massimo numero di ricoveri.
-Utilizzare una vista.
+Utilizzare una vista. 
+%  l'esempio di vista che si intendeva qui è stato utilizzato nella 3 credo
 \begin{lstlisting}
-select bla bla
+  CREATE OR REPLACE VIEW months_list AS SELECT GENERATE_SERIES( '2008-01-01'::date, now()::date, '1 month' ) as month;
+
+  SELECT month, count(*) as num
+  FROM months_list
+  LEFT JOIN ricovero
+  ON data_i < month::date 
+  AND data_f > month::date
+  GROUP BY month
+  ORDER BY num DESC
+  LIMIT 1;
+
 \end{lstlisting}
 
 
-\subsubsection{Query 1}
+\subsubsection{Query 6}
 Utilizzando una vista, trovare il giorno con il massimo numero di persone ricoverate.
+%  questa è uguale a quella sopra ma per giorni invece che per mesi
 \begin{lstlisting}
-select bla bla
+  CREATE OR REPLACE VIEW days_list AS SELECT GENERATE_SERIES( '2008-01-01'::date, now()::date, '1 day' ) as day;
+
 \end{lstlisting}
 
 
