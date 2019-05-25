@@ -228,7 +228,7 @@ indice_ricovero = 1
 for(n_paziente in 1: nrow(utile)){
     
     # Prendo la data attuale e quella di apertura del db per creare la data di inizio e fine del ricovero
-    d_apertura_db = as.Date("2008-01-01")
+    d_apertura_db = max(c(as.Date("2008-01-01"),utile[n_paziente,2]))
     datt <- as.Date("2019-04-11")
     # Prendo il numero di ricoveri random per questo paziente
     nricoveri <- nric[n_paziente]
@@ -299,6 +299,10 @@ ricoveri_df <- megabind(lista_df_ricoveri)
 
 # MEMORIZZAZIONE del dataframe ricoveri nel file csv
 write.csv(ricoveri_df, file(paste( c( ".","implementazione","popoliCSV","ricoveri.csv"), sep = " ",collapse = path)))
+
+
+
+
 
 
 
