@@ -36,7 +36,7 @@ library("zoo")
 library("ggplot2")
 library("ggmosaic")
 library("plotly")
-
+library("scales")
 
 
 
@@ -76,6 +76,14 @@ megabind <- function(lista_df){
 #################################### AREA 51 #########################################
 ######################################################################################
 
+
+
+t = dbGetQuery(con, "set search_path to ospedale; 
+select nome, cognome, data_dia, data_nasc
+from paziente p join ricovero r on p.cf = r.paziente 
+                join diagnosi d on d.ricovero = r.cod_ric 
+where p.data_nasc > d.data_dia and cognome = 'rotella';
+") #NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
 
 
@@ -387,26 +395,25 @@ mosaicplot(table(anni, mesi),
            ylab = "Mesi"
            )
 
-# table(ricoveri[,1], ricoveri[,2], ricoveri[,3])
 
-# anni = c("2008":"2019")
-# mesi = c("1":"12")
 
-# tab = matrix(nrow = 12, ncol = 12)
-# k = 1
-# for(i in 1:12){
-#     for(j in 1:12){
-#         tab[i,j] = ricoveri[k,3]
-#         k = k+1
-#     }
-# }
+anni = c("2008":"2019")
+mesi = c("1":"12")
 
-# colnames(tab) = mesi
-# rownames(tab) = anni
-# tab = as.table(tab)
+tab = matrix(nrow = 12, ncol = 12)
+k = 1
+for(i in 1:12){
+    for(j in 1:12){
+        tab[i,j] = ricoveri[k,3]
+        k = k+1
+    }
+}
 
-# as.data.frame(tab)
-# plot(tab)
+colnames(tab) = mesi
+rownames(tab) = anni
+tab = as.table(tab)
+
+image(2008:2019, 1:12,tab, xlab="Anni",ylab="Mesi")
 
 
 
@@ -422,6 +429,32 @@ mosaicplot(table(anni, mesi),
 # Quanti giorni di ricovero fanno in totale i pazienti a cui viene diagnosticato un tumore, rispetto alla media dei ricoveri?
 # MultiBoxplot (1 per ricoveri solo tumore, 1 per tutti ricoveri)
 
+ric_tumore <- dbGetQuery(con,
+"
+set search_path to ospedale;
+
+select (r.data_f-r.data_i) as tot_gg
+from ricovero r join diagnosi d on d.ricovero = r.cod_ric
+where d.cod_pat similar to 'T0[0-9]'
+")
+
+ric_totali <- dbGetQuery(con,
+"
+set search_path to ospedale;
+
+select (r.data_f-r.data_i) as tot_gg
+from ricovero r 
+")
+
+
+boxplot(ric_tumore$tot_gg, ric_totali$tot_gg, pch=16, cex=0.2, 
+        xlab="Tumori                                                   Tutti")
+
+
+
+
+
+
 
 
 
@@ -433,22 +466,100 @@ mosaicplot(table(anni, mesi),
 # La trasparenza è data dagli usi giornalieri del farmaco che si contano sapendo data inizio e fine terapia prescritta
 # scatterplot con trasparenza                           
 
+# Voglio prendere i 10 farmaci più usati e i 10 meno usati e avere per ognuno di questi, in ogni giorno dell'anno
+# quante somministrazioni sono state effettuate di quel farmaco 
 
 
 
 
 
 
+farm <- dbGetQuery(con,
+"
+set search_path to ospedale;
+
+select f.nome_comm, to_char(tp.data_i, 'YYYY-MM') as periodo, sum(tp.data_f-tp.data_i) as tot_gg
+from farmaco f join terapia t on f.nome_comm = t.farmaco
+               join terapia_prescritta tp on tp.terapia = t.cod_ter
+group by 1,2
+having sum(tp.data_f-tp.data_i) > 0
+order by 2,3 desc;
+")
+
+farmaci_max <- dbGetQuery(con,
+"
+set search_path to ospedale;
+
+select f.nome_comm, sum(tp.data_f-tp.data_i) as tot_gg
+from farmaco f join terapia t on f.nome_comm = t.farmaco
+               join terapia_prescritta tp on tp.terapia = t.cod_ter
+group by 1
+order by 2 desc;
+")
+
+farmaci <- dbGetQuery(con,
+"
+set search_path to ospedale;
+
+select f.nome_comm, tp.data_i, tp.data_f
+from farmaco f join terapia t on f.nome_comm = t.farmaco
+               join terapia_prescritta tp on tp.terapia = t.cod_ter
+order by 1;
+
+"
+)
+
+f_top <- farmaci_max[1:10,]
+f_bot <- farmaci_max[(length(farmaci_max[,1])-9):length(farmaci_max[,1]),] 
+
+f_tot <- rbind(f_top, f_bot)
+
+frm <- merge(farmaci, f_tot, by="nome_comm",all.y =FALSE)
+frm <- frm[,1:3]
+
+giorni <- seq(min(frm[,2]), max(frm[,2]), by="day")
+mesi <- seq(min(frm[,2]), max(frm[,2]), by="month")
+
+f_tot <- f_tot[,sort(f_tot[,2])]
+giusti <- f_tot[,1]
+
+
+mat <- matrix(0L, nrow=length(giorni), ncol=length(f_tot[,1]))
+
+
+for(giorno in 1:length(giorni)){
+    
+    for(farmaco in 1:length(giusti)){
+
+        for(index in 1:length(frm[,1])){
+
+            if(giusti[farmaco] == frm[index,1] && giorni[giorno] >= frm[index,2] && giorni[giorno] <= frm[index,3]){
+                mat[giorno, farmaco] = mat[giorno, farmaco] +1
+            }           
+        }
+    }
+}
+
+
+mat <- matrix(0L, nrow=length(mesi), ncol=length(f_tot[,1]))
+
+
+for(mese in 1:length(mesi)){
+    
+    for(farmaco in 1:length(giusti)){
+
+        for(index in 1:length(frm[,1])){
+
+            if(giusti[farmaco] == frm[index,1] && mesi[mese] >= frm[index,2] && mesi[mese] <= frm[index,3]){
+                mat[mese, farmaco] = mat[mese, farmaco] +1
+            }           
+        }
+    }
+}
 
 
 
-
-
-
-
-
-
-
+image(1:length(mesi),1:20,mat)
 
 
 
