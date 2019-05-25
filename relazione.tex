@@ -1233,7 +1233,14 @@ TODO Breve commento sulle difficoltà(?) e sull'output e su possibili alternativ
 \subsubsection{Query 1}
 Si vogliono ottenere tutti i farmaci che hanno causato effetti collaterali, ordinati in ordine decrescente per numero di effetti collaterali.
 \begin{lstlisting}
-select bla bla
+SELECT t.farmaco, tc.effetti_collaterali
+FROM
+(SELECT terapia, count(coll_dia) AS effetti_collaterali
+FROM terapia_prescritta 
+WHERE coll_dia IS NOT NULL
+GROUP BY terapia) tc
+LEFT JOIN terapia t ON t.cod_ter = tc.terapia
+ORDER BY effetti_collaterali DESC;
 \end{lstlisting}
 
 
@@ -1277,85 +1284,6 @@ select bla bla
 
 
 
-
-\iffalse
-
-  query semplici sulle entità ?
-
-  INSERT INTO paziente (cf, nome, cognome, ...)
-  VALUES ('AAAAAA00A00A000A', 'Mario', 'Rossi', ...)
-
-  SELECT *
-  FROM paziente;
-
-  SELECT *
-  FROM paziente
-  WHERE cf = 'AAAAAA00A00A000A';
-
-  UPDATE paziente
-  SET nome =  'Marco', cognome = 'Bianchi', ...
-  WHERE cf = 'AAAAAA00A00A000A';
-
-  DELETE FROM paziente
-  WHERE cf = 'AAAAAA00A00A000A';
-
-  ****
-
-  filtri di entità per entità padre
-
-  es. ricoveri del paziente
-
-  SELECT *
-  FROM ospedale.ricovero ricovero
-  LEFT JOIN ospedale.paziente paziente on ricovero.paziente = paziente.cf
-  WHERE paziente.nome = '...' and paziente.cognome = '...'
-
-  es. terapie del paziente
-
-  SELECT *
-  FROM paziente p
-  LEFT JOIN diagnosi d on p.cf = d.paziente
-  LEFT JOIN terapia_prescritta tp on d.cod_dia = tp.diagnosi
-  WHERE p.nome = '...' and p.cognome = '...';
-
-  ****
-
-  es. terapie più utilizzate
-
-  SELECT t.cod_ter, COUNT(*)
-  FROM terapia t
-  LEFT JOIN terapia_prescritta tp on t.cod_ter = tp.terapia
-  GROUP BY t.cod_ter
-  ORDER BY COUNT(*) DESC
-
-  si può usare anche su numero di ricoveri o diagnosi di un paziente,
-  per calcolare a che diagnosi è arrivato il paziente
-
-  es. paziente recidivi :)
-
-  SELECT *
-  FROM ospedale.paziente p
-  WHERE EXISTS (
-    SELECT COUNT(*)
-    FROM ospedale.ricovero r
-    LEFT JOIN ospedale.paziente p on r.paziente = p.cf
-    WHERE p.nome = '...' and p.cognome = '...'
-    GROUP BY p.cf
-    HAVING COUNT (*) > 1
-  )
-  ORDER BY p.nome, p.cognome
-
-
-  
-
-
-
-
-
-
-
-
-\fi
 
 \clearpage
 
