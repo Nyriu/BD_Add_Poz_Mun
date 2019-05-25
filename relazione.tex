@@ -1265,7 +1265,7 @@ AND ((p1.age < 50 AND p2.age > 50) OR (p1.age > 50 AND p2.age < 50));
 Per ogni provincia il paziente con il maggior numero di diagnosi.
 \begin{lstlisting}
 CREATE OR REPLACE VIEW count_patologie AS
-SELECT p.cf, p.nome, p.cognome, p.data_nasc, p.prov_res, count(d.cod_pat) as num_pat
+SELECT p.cf, p.nome, p.cognome, p.prov_res, count(d.cod_pat) as num_pat
 FROM paziente p
 LEFT JOIN diagnosi d on p.cf = d.paziente
 GROUP BY p.cf;
@@ -1282,6 +1282,44 @@ WHERE cp1.num_pat = (
 \subsubsection{Query 4}
 Si vogliono ottenere i pazienti che sono stati curati almeno due volte consecutivamente con lo stesso farmaco.
 \begin{lstlisting}
+CREATE OR REPLACE VIEW terapie_prescritte AS
+SELECT *
+FROM terapia_prescritta tp
+LEFT JOIN diagnosi d ON tp.diagnosi = d.cod_dia
+LEFT JOIN paziente p ON d.paziente = p.cf 
+LEFT JOIN terapia t ON tp.terapia = t.cod_ter;
+
+SELECT 
+  tp1.cf, tp1.data_i, tp1.diagnosi, tp1.terapia, tp1.farmaco
+  , tp2.cf, tp2.data_i, tp2.diagnosi, tp2.terapia, tp2.farmaco
+FROM terapie_prescritte tp1
+INNER JOIN terapie_prescritte tp2
+  ON tp1.paziente = tp2.paziente
+  AND tp1.diagnosi <> tp2.diagnosi
+  AND tp2.data_i > tp1.data_i
+WHERE tp1.cf = 'MIASOR20G71P162Y'
+ORDER BY tp1.data_i DESC, tp2.data_i DESC;
+
+SELECT *
+FROM terapie_prescritte tp1
+WHERE EXISTS ( 
+  SELECT *
+  FROM terapie_prescritte tp2
+  WHERE tp1.diagnosi <> tp2.diagnosi
+  AND tp1.paziente = tp2.paziente
+  AND tp1.farmaco = tp2.farmaco
+  AND tp2.data_i > tp1.data_i
+  AND NOT EXISTS (
+    SELECT *
+    FROM terapie_prescritte tp3
+    WHERE tp3.diagnosi <> tp2.diagnosi
+    AND tp3.diagnosi <> tp1.diagnosi
+    AND tp3.paziente = tp2.paziente
+    AND tp3.farmaco = tp2.farmaco
+    AND tp3.data_i > tp1.data_i
+    AND tp3.data_i < tp2.data_i
+  )
+);
 
 \end{lstlisting}
 
@@ -1293,13 +1331,13 @@ Utilizzare una vista.
 \begin{lstlisting}
   CREATE OR REPLACE VIEW months_list AS SELECT GENERATE_SERIES( '2008-01-01'::date, now()::date, '1 month' ) as month;
 
-  SELECT month, count(*) as num
+  SELECT month, count(*)
   FROM months_list
   LEFT JOIN ricovero
   ON data_i < month::date 
   AND data_f > month::date
   GROUP BY month
-  ORDER BY num DESC
+  ORDER BY count DESC
   LIMIT 1;
 
 \end{lstlisting}
