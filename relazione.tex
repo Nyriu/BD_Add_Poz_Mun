@@ -1253,17 +1253,59 @@ SELECT p.cf, p.nome, p.cognome, p.data_nasc, d.cod_pat, d.data_dia, (d.data_dia 
 FROM paziente p
 LEFT JOIN diagnosi d on p.cf = d.paziente;
 
-//garbage per copia incolla
+
+
+// timeout
 SELECT *
 FROM paziente p1, paziente p2
-WHERE NOT EXISTS (
-  SELECT *
-  FROM patologie pt1
-  INNER JOIN patologie pt2
-    ON pt1.cod_pat = pt2.cod_pat
-    AND pt1.cf <> pt1.cf 
-    AND (pt1.age - 50) * (pt2.age - 50) < 0
-)
+WHERE p1.cf <> p2.cf 
+  AND NOT EXISTS (
+    SELECT *
+    FROM diagnosi d1
+    WHERE d1.paziente = p1.cf 
+      AND d1.cod_pat NOT IN (
+        SELECT d2.cod_pat
+        FROM diagnosi d2
+        WHERE d2.paziente = p2.cf
+      )
+);
+
+
+// out of space
+SELECT p1.cf, p2.cf
+FROM paziente p1, paziente p2
+WHERE p1.cf <> p2.cf 
+  AND ((date_part('year', age(p1.data_nasc)) - 50 * date_part('year', age(p2.data_nasc))) < 0)
+  AND NOT EXISTS (
+    SELECT d1.paziente, d1.cod_pat
+    FROM diagnosi d1
+    WHERE d1.paziente = p1.cf 
+      AND NOT EXISTS (
+        SELECT d2.paziente, d2.cod_pat
+        FROM diagnosi d2
+        WHERE d2.paziente = p2.cf
+          AND d2.cod_pat = d1.cod_pat
+      )
+);
+
+// ~un paio di minuti, ma è sbagliata credo
+SELECT p1.cf, p2.cf
+FROM paziente p1, paziente p2
+WHERE p1.cf <> p2.cf 
+  AND ((p1.data_nasc - p2.data_nasc) > (50 * 365))
+  AND NOT EXISTS (
+    SELECT d1.paziente, d1.cod_pat
+    FROM diagnosi d1
+    WHERE d1.paziente = p1.cf 
+      AND NOT EXISTS (
+        SELECT d2.paziente, d2.cod_pat
+        FROM diagnosi d2
+        WHERE d2.paziente = p2.cf
+          AND d2.cod_pat = d1.cod_pat
+      )
+);
+
+
 \end{lstlisting}
 
 \subsubsection{Query 3}
