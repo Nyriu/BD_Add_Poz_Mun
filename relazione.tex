@@ -1253,7 +1253,7 @@ SELECT p.cf, p.nome, p.cognome, p.data_nasc, d.cod_pat, d.data_dia, (d.data_dia 
 FROM paziente p
 LEFT JOIN diagnosi d on p.cf = d.paziente;
 
-
+CREATE INDEX idx_patologie ON diagnosi (paziente, cod_pat);
 
 // timeout
 SELECT *
@@ -1275,7 +1275,7 @@ WHERE p1.cf <> p2.cf
 SELECT p1.cf, p2.cf
 FROM paziente p1, paziente p2
 WHERE p1.cf <> p2.cf 
-  AND ((date_part('year', age(p1.data_nasc)) - 50 * date_part('year', age(p2.data_nasc))) < 0)
+  AND (((date_part('year', age(p1.data_nasc)) - 50) * (date_part('year', age(p2.data_nasc)) - 50)) < 0)
   AND NOT EXISTS (
     SELECT d1.paziente, d1.cod_pat
     FROM diagnosi d1
