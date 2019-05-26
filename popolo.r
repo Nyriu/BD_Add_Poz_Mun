@@ -11,7 +11,7 @@
 
 
 
-# Setto la working directory
+
 # getwd()
 
 if(Sys.info()["sysname"] == "Windows"){
@@ -842,21 +842,23 @@ library("RPostgreSQL")
 # Caricamento del driver
 drv <- dbDriver("PostgreSQL")
 
- Connessione al db 
-con <- dbConnect(drv, 
-                 dbname="bd_18_paolo_addis",
-                 host="158.110.145.186",
-                 port="5432",
-                 user="bd_18_paolo_addis",
-                 password="corso_bd_2018")
-#
+# Connessione al db 
+
 #con <- dbConnect(drv, 
-#                 dbname="bd_18_tristano_munini",
+#                 dbname="bd_18_paolo_addis",
 #                 host="158.110.145.186",
 #                 port="5432",
-#                 user="bd_18_tristano_munini",
-#                 password="fdjbkl1546as")
-#
+#                 user="bd_18_paolo_addis",
+#                 password="corso_bd_2018")
+
+
+con <- dbConnect(drv, 
+                 dbname="bd_18_tristano_munini",
+                 host="158.110.145.186",
+                 port="5432",
+                 user="bd_18_tristano_munini",
+                 password="fdjbkl1546as")
+
 
 ######################################################################################
 #################################### AREA 51 #########################################

@@ -136,12 +136,13 @@ Successivamente è stata modellata l'entità DIAGNOSI che possiede come attribut
 La chiave è composta dall'attributo \textit{Data} e dalla relazione EFFETTUATA-DURANTE.
 Quest'ultima, del tipo Uno-a-Molti, lega l'entità RICOVERO a DIAGNOSI.
 In particolare una diagnosi verrà inserita solo se nella base di dati è già presente il ricovero a cui afferisce, quindi la partecipazione di DIAGNOSI alla relazione è totale.
-
+Sarebbe perfettamente lecito, invece, avere un ricovero durante il quale non è stata effettuata alcuna diagnosi, questo stabilisce la partecipazione parziale di RICOVERO in EFFETTUATA-DURANTE.
+\\
 Ora è importante introdurre due vincoli di integrità:
 \begin{itemize}
   \item il primo deve assicurare che nessun ricovero possa iniziare prima della data di nascita del paziente a cui si riferisce;
-  \item il secondo riguardante la data in cui viene effettuata la diagnosi in quanto deve essere compresa tra la data di inizio e quella di fine del ricovero.
-Sarebbe perfettamente lecito, invece, avere un ricovero durante il quale non è stata effettuata alcuna diagnosi, questo stabilisce la partecipazione parziale di RICOVERO in EFFETTUATA-DURANTE.
+  \item il secondo riguarda la data in cui viene effettuata la diagnosi, in quanto deve essere compresa tra la data di inizio e quella di fine del ricovero.
+\end{itemize}
 Il Risultato della prima fase della progettazione è illustrata in \autoref{fig:paz-ric-dia}.
 
 \begin{figure}[!ht] % TODO abbellire
@@ -151,12 +152,20 @@ Il Risultato della prima fase della progettazione è illustrata in \autoref{fig:
 	\label{fig:paz-ric-dia}
 \end{figure}
 
-La seconda fase considera il terzo ed il quarto punto dell'analisi dei requisiti in cui si chiede di tener traccia delle terapie e dei farmaci utilizzati.
+La seconda fase considera il quarto, il quinto e parte del sesto punto dell'analisi dei requisiti, nei quali si chiede di tener traccia delle terapie e dei farmaci utilizzati.
 Per questi ultimi è stata creata l'entità FARMACO con attributi: \textit{Dose Giornaliera Raccomandata}, \textit{Nome Commerciale}, \textit{Azienda Produttrice} e due attributi multivalore \textit{Nome Principi Attivi} e \textit{Quantità Principi Attivi}.
 La chiave primaria è data dall'attributo \textit{Nome Commerciale} in quanto univoco.
-Un farmaco può possedere uno o più principi attivi e deve necessariamente non esserne privo.
-Per modellare l'entità TERAPIA si fa intuitivamente riferimento alla terapia come metodo astratto per curare più patologie, di conseguenza per quest'entità sono stati creati gli attributi: \textit{Dose Giornaliera} e \textit{Modalità Somministrazione}. Le richieste dei requisiti quali data di inizio e fine e medico prescrivente della terapia verrano trattate nella terza fase di progettazione. La chiave di TERAPIA è composta dagli attributi \textit{Dose Giornaliera} e \textit{Modalità Somministrazione} e dalla relazione SOMMINISTRATO-DURANTE che lega FARMACO a TERAPIA.
-Questa relazione è della forma Uno-a-Molti in quanto in ogni terapia si somministra un solo farmaco mentre un farmaco può essere somministrato in più terapie. E' importate considerare il fatto che una terapia non può esistere senza un farmaco da somministrare, quindi la partecipazione di TERAPIA alla relazione SOMMINISTRATO-DURANTE è totale. D'altro canto un farmaco può essere memorizzato nella base di dati pur non essendo associato ad una particolare terapia, quindi la partecipazione di FARMACO alla precedente relazione è parziale. Questa seconda fase di progettazione è illustrata nella \autoref{fig:far-ter}
+Un farmaco deve contenere uno o più principi attivi.
+\\
+I requisiti richiedono che una terapia possa curare più patologie, di conseguenza una terapia deve rappresentare un metodo standard con cui si affronta una data patologia.
+Quindi l'entità TERAPIA non può contenere informazioni come data di inizio, data di fine oppure medico prescrivente, altrimenti non sarebbe più generale.
+Per questi motivi all'entità sono stati attribuiti i campi: \textit{Dose Giornaliera} e \textit{Modalità Somministrazione}.
+Le richieste dei requisiti quali data di inizio e fine e medico prescrivente della terapia verrano trattate nella terza fase di progettazione.
+La chiave di TERAPIA è composta dagli attributi \textit{Dose Giornaliera} e \textit{Modalità Somministrazione} e dalla relazione SOMMINISTRATO-DURANTE che lega FARMACO a TERAPIA.
+Questa relazione è della forma Uno-a-Molti in quanto in ogni terapia si somministra un solo farmaco mentre un farmaco può essere somministrato in più terapie.
+È importate considerare il fatto che una terapia non può esistere senza un farmaco da somministrare, quindi la partecipazione di TERAPIA alla relazione SOMMINISTRATO-DURANTE è totale.
+D'altro canto un farmaco può essere memorizzato nella base di dati pur non essendo associato ad una particolare terapia, quindi la partecipazione di FARMACO alla precedente relazione è parziale.
+Il risultato della seconda fase di progettazione è illustrata nella \autoref{fig:far-ter}
 
 \begin{figure}[!ht] % TODO abbellire
   \centering
@@ -165,12 +174,20 @@ Questa relazione è della forma Uno-a-Molti in quanto in ogni terapia si sommini
 	\label{fig:far-ter}
 \end{figure}
 
-Nella terza fase della progettazione è stato modellato nello schema E-R l'ultimo punto dell'analisi dei requisiti attraverso la relazione MOTIVA-TERAPIA. Particolare attenzione è stata fatta alla parte in cui si specifica che una terapia può essere associata ad una diagnosi in due modi differenti: quello che la definisce come cura per una patologia e quello che la definisce come causa di una nuova patologia.  Va sottolineato che in entrambi i casi, nella base di dati, la patologia è salvata attraverso DIAGNOSI.
+Nella terza fase della progettazione è stato modellato nello schema E-R l'ultimo punto dell'analisi dei requisiti attraverso la relazione MOTIVA-TERAPIA.
+Particolare attenzione è stata fatta alla parte in cui si specifica che una terapia può essere associata ad una diagnosi in due modi differenti: quello che la definisce come cura per una patologia e quello che la definisce come causa di una nuova patologia.
+Va sottolineato che in entrambi i casi, nella base di dati, la patologia è salvata attraverso DIAGNOSI.
 
-In un primo momento è stato modellato il sottoschema illustrato in \autoref{fig:piccolo1}.  Il modo in cui è stata definita l'entità TERAPIA permetterà di modellare il requisito \textit{ogni terapia può curare più patologie}.  Un'informazione come data di inizio, o data di fine, o medico prescrivente, non può essere memorizzata in TERAPIA perché, altrimenti, non sarebbe possibile applicare questa stessa terapia in uno spazio temporale differente, pena la perdita delle informazioni precedenti. D'altra parte non è nemmeno accettabile includere nella chiave primaria le informazioni relative alle date ed al medico, perché così facendo si differenzierebbero le entità, andando contro il requisito che si vuole modellare.  
-Da qui la necessità di omettere attributi data inizio, data fine e medico prescrivente in TERAPIA, assegnandoli alla relazione MOTIVA-TERAPIA.  Intuitivamente questi attributi riguardano contemporaneamente la diagnosi, quindi la patologia che si vuole curare, e la terapia applicata, quindi il modo in cui si vuole affrontare la patologia, definendone il periodo in cui la terapia viene applicata e chi ha definito questo periodo.  
-Nei requisiti è specificato che per alcune patologie manchino le cure, per questo motivo la partecipazione a MOTIVA-TERAPIA di DIAGNOSI è parziale.  Invece è sensato pensare che se una terapia esiste possa curare almeno una patologia, la partecipazione di TERAPIA quindi è totale.  
-Nel complesso MOTIVA-TERAPIA, per ora, risulta essere una relazione Uno-A-Molti: nel testo è specificato che ad ogni diagnosi possa essere associata al più una terapia; mentre TERAPIA è stata definita appositamente per poter esser associata a più DIAGNOSI. 
+In un primo momento è stato modellato il sottoschema illustrato in \autoref{fig:piccolo1}.
+Il modo in cui è stata definita l'entità TERAPIA permette di modellare il requisito \textit{"ogni terapia può curare più patologie"}.
+Un'informazione come data di inizio, o data di fine, o medico prescrivente, non può essere memorizzata in TERAPIA perché, altrimenti, non sarebbe possibile applicare questa stessa terapia in uno spazio temporale differente, pena la perdita delle informazioni precedenti.
+D'altra parte non è nemmeno accettabile includere nella chiave primaria le informazioni relative alle date ed al medico, perché così facendo si differenzierebbero le entità, andando contro il requisito che si vuole modellare.
+Da qui la necessità di omettere attributi data inizio, data fine e medico prescrivente in TERAPIA, assegnandoli alla relazione MOTIVA-TERAPIA.
+Intuitivamente questi attributi riguardano contemporaneamente la diagnosi, quindi la patologia che si vuole curare, e la terapia applicata, quindi il modo in cui si vuole affrontare la patologia, indicando il periodo in cui la terapia viene applicata e chi ha definito questo periodo.
+Nei requisiti è specificato che per alcune patologie mancano le cure, per questo motivo la partecipazione a MOTIVA-TERAPIA di DIAGNOSI è parziale.
+Invece è sensato pensare che, se una terapia esiste, può curare almeno una patologia, quindi la partecipazione di TERAPIA alla relazione è totale.
+Nel complesso MOTIVA-TERAPIA, per ora, risulta essere una relazione Uno-A-Molti: nel testo è specificato che ad ogni diagnosi può essere associata al più una terapia.
+Mentre TERAPIA è stata definita appositamente per poter esser associata a più DIAGNOSI. 
 
 \begin{figure}[!ht] % TODO abbellire
   \centering 
@@ -419,9 +436,8 @@ Risulta conveniente mantenere l'attributo \textit{Totale Giorni Ricoveri}.
 
 Lo schema Entità-Relazioni in \autoref{fig:ER_ristrutturato} non presenta ulteriori ridondanze, infatti, il ciclo DIAGNOSI TERAPIA-PRESCRITTA DIAGNOSI non è ridondante. Tuttavia visto il requisito di stampa delle diagnosi effettuate da un singolo paziente consideriamo l'inserimento della relazione:
 \begin{itemize}
-	\item EFFETTUATA A: una relazione Uno-A-Molti tra PAZIENTE
-	      e DIAGNOSI. La partecipazione di PAZIENTE è parziale mentre quella
-	      di DIAGNOSI è totale.
+	\item EFFETTUATA A: una relazione Uno-A-Molti tra PAZIENTE e DIAGNOSI.
+    La partecipazione di PAZIENTE è parziale mentre quella di DIAGNOSI è totale.
 \end{itemize}
 
 Viene creato quindi il ciclo in \autoref{fig:ciclo-ridondanza} PAZIENTE, RICOVERO, DIAGNOSI dato dalle relazioni VIENE RICOVERATO, EFFETTUATA DURANTE, EFFETTUATA A.

@@ -165,6 +165,22 @@ $$;
 -----------------------------------------------------------------------
 -- CONSTRAIN --
 -----------------------------------------------------------------------
+-- ricovero NON puo' iniziare prima che il paziente sia nato
+create or replace function check_data_valida_ric(data_i date, in_cf dom_cf)
+returns bool as
+$$
+  begin
+    perform *
+    from paziente p
+    where p.cf = in_cf and
+          p.data_nasc <= data_i;
+    return found;
+  end;
+$$ language plpgsql;
+
+alter table ricovero add
+  constraint check_data_i_valida_ric
+    check(check_data_valida_ric(data_i, paziente));
 
 -- CONSTRAINTS sulle date
   -- RICOVERO e TERAPIA_PRESCRITTA data_i < data_f
@@ -189,7 +205,7 @@ alter table terapia_prescritta add
 
 
 -- data diagnosi compresa in data_i data_f ricovero
-create or replace function check_data_valida(data_dia date, ric dom_ric)
+create or replace function check_data_valida_dia(data_dia date, ric dom_ric)
 returns bool as
 $$
   begin
@@ -205,7 +221,7 @@ $$ language plpgsql;
 
 alter table diagnosi add
   constraint check_data_valida_dia
-    check(check_data_valida(data_dia, ricovero));
+    check(check_data_valida_dia(data_dia, ricovero));
 
 
 -- data_i terapia_prescritta uguale o successiva data_dia diagnosi
