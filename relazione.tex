@@ -212,14 +212,15 @@ Ricordando che non tutte le applicazioni di una terapia causano un effetto colla
 
 Al termine di questa terza fase di progettazione è necessario introdurre dei vincoli d'integrità per la relazione ternaria:
 \begin{itemize}
-  \item in ogni tripletta di MOTIVA-TERAPIA non può comparire due volte la     stessa DIAGNOSI;
-  \item la DIAGNOSI che partecipa come effetto collaterale deve avere una data     successiva alla data della prima diagnosi.
+  \item in nessuna tripletta di MOTIVA-TERAPIA può comparire due volte la     stessa DIAGNOSI;
+  \item la DIAGNOSI che partecipa come effetto collaterale deve avere una data     successiva alla data della prima diagnosi, ma comunque precedente alla data di fine ricovero.
 \end{itemize}
-%TODO ho dimenticato qualcosa?? 
-Nella fase logica verrà mostrato che questa relazione può essere trasformata, senza perdita d'informazione, e con l'aggiunta di una nuova entità, in tre relazioni binarie. 
+Nella fase logica verrà mostrato che questa relazione può essere trasformata, senza perdita d'informazione, con l'aggiunta di una nuova entità, in tre relazioni binarie. 
 
-Dai requisiti è richiesto di memorizzare il medico che ha effettuato la diagnosi e il medico che ha prescritto la terapia. Ciò è stato fatto memorizzando le due informazioni attraverso l'introduzione dell'attributo \textit{Medico} in DIAGNOSI e \textit{Medico Prescrivente} in MOTIVA-TERAPIA. Non è stata introdotta un'entità rappresentativa del medico perché scarna di informazione, di conseguenza il medico verrà rappresentato soltanto attraverso il proprio codice tramite gli attributi precedentemente specificati. 
-% TODO Medico?
+Nei requisiti è richiesto di memorizzare il medico che ha effettuato la diagnosi ed il medico che ha prescritto la terapia.
+Ciò è stato fatto riportando rispettivamente le due informazioni nell'attributo \textit{Medico} in DIAGNOSI e nell'attributo \textit{Medico Prescrivente} in MOTIVA-TERAPIA.
+Non è stata introdotta un'entità MEDICO perché avrebbe contenuto soltanto l'informazione riguardante il codice del medico.
+Inoltre non è richiesto di tener traccia dello storico delle prescrizioni o delle diagnosi rispetto ai medici.
 In conclusione lo schema Entità-Relazioni si presenta come in \autoref{fig:ER_progettazione_modello}.
 
 \begin{figure}[H] % TODO abbellire
@@ -230,45 +231,29 @@ In conclusione lo schema Entità-Relazioni si presenta come in \autoref{fig:ER_p
 \end{figure}
 
 
-%\begin{figure}[h] % TODO abbellire
-%\caption{Entità PAZIENTE con specializzazione e, a destra, RICOVERO}
-%\includegraphics[width=0.4\textwidth]{galaxy}
-%\includegraphics[width=0.4\textwidth]{galaxy}
-%\end{figure}
-
-
 
 
 \clearpage
 \section{Progettazione Logica}
 
-%TODO
-%Cose che si potrebbero aggiungere:
-% - Partizionamento di una relazione (si può fare con MEDICO collegato a PAZIENTE e DIAGNOSI)
-%   (secondo Tri 'fare solo se non abbiamo abbastanza materiale')
-
 \subsection{Ristrutturazione del Modello E-R}
 \subsubsection{Semplificazione dei Concetti}
-%% logical design steps
-% ristrutturazione semplificare ER
-% schema ristrutturato
-% ottimizzazione analisi ridondanze
-% schema con ridondanza
-% elenco tabelle
-% vincoli d'integrità
 
 È utile semplificare strutture come specializzazioni, attributi composti e attributi multivalore perché renderà più facile la traduzione del modello Entità-Relazioni in quello Relazionale.
 
 Ricordando che quest'ultimo non permette di rappresentare generalizzazioni sarà necessario rimuovere tutte le specializzazioni dal nostro schema E-R.
 Si può notare che la specializzazione PAZIENTE-FUORI-REGIONE può essere facilmente rappresentata aggiungendo due attributi all'entità PAZIENTE.
 I nuovi attributi, \textit{ULSS} e \textit{Regione di Appartenenza}, in PAZIENTE saranno facoltativi poiché la specializzazione è parziale.
-La rimozione delle generalizzazioni non è sempre così immediata: se PAZIENTE-FUORI-REGIONE avesse avuto una relazione in più rispetto al genitore si sarebbero dovute valutare varie opzioni.
-Per esempio la creazione di una nuova relazione per simboleggiare il legame tra genitore e figlio, lasciando invariati gli attributi.
+La rimozione delle generalizzazioni non è sempre così immediata: se PAZIENTE-FUORI-REGIONE avesse avuto una relazione aggiuntiva rispetto al genitore si sarebbero dovute valutare varie opzioni.
+Per esempio la creazione di una nuova relazione tra genitore e figlio per mantenere il legame con gli attributi facoltativi.
 Oppure la duplicazione nel figlio di tutti gli attributi e di tutte le relazioni del genitore.
 
 Anche nel caso degli attributi composti la semplificazione è intuitiva, infatti nello schema l'unico attributo composto è \textit{Patologia} in DIAGNOSI.
-Può essere trasformato in due nuovi attributi \textit{Codice Patologia} e \textit{Gravità Patologia} che contengono esattamente la stessa informazione.
+L'attributo \textit{Patologia} può essere trasformato in due nuovi attributi \textit{Codice Patologia} e \textit{Gravità Patologia} contenenti esattamente la stessa informazione.
 
+
+
+% TRIS ha riletto fino qua
 Bisogna prestare più attenzione agli attributi multivalore:
 in FARMACO sono presenti \textit{Nome Principi Attivi} e \textit{Quantità Principi Attivi} entrambi obbligatori e multivalore.
 L'unica semplificazione attuabile è creare una nuova entità chiamata PRINCIPIO-ATTIVO e metterla in relazione Molti-A-Molti con FARMACO attraverso la nuova relazione CONTIENE.
