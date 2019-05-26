@@ -228,7 +228,8 @@ indice_ricovero = 1
 for(n_paziente in 1: nrow(utile)){
     
     # Prendo la data attuale e quella di apertura del db per creare la data di inizio e fine del ricovero
-    d_apertura_db = max(c(as.Date("2008-01-01"),utile[n_paziente,2]))
+    data_paz = utile[n_paziente,2]
+    d_apertura_db = max(c(as.Date("2008-01-01"),as.Date(data_paz)))
     datt <- as.Date("2019-04-11")
     # Prendo il numero di ricoveri random per questo paziente
     nricoveri <- nric[n_paziente]
@@ -419,9 +420,9 @@ for(indice_tupla in 1 : n_tuple){
     dfine <- as.Date(tupla[,3])
 
     # Inserisco nel vettore di date finali la data odierna se in quella cella è null
-    if(is.na(dfine[length(dfine)]) ){
+    if(is.na(dfine) ){
         datafittizia = Sys.Date()
-        dfine[length(dfine)] = datafittizia
+        dfine = datafittizia
     }
 
 
@@ -934,6 +935,21 @@ for(i in seq(1,length(ricoveri_df[,1]),by = 3000)){
         dbWriteTable(con, name="ricovero", value=ricoveri_df[i:(length(ricoveri_df[,1])),], row.names=FALSE, append=TRUE)
     }
 }
+
+
+ris <- dbGetQuery(con, "set search_path to ospedale; 
+
+select p.cf, r.cod_ric, d.cod_dia, r.data_i, d.data_dia
+from paziente p join ricovero r on p.cf = r.paziente 
+                join diagnosi d on r.cod_ric = d.ricovero
+where p.data_nasc < r.data_i;
+
+ ")
+
+
+
+
+
 
 # Inserimento delle diagnosi
 dbWriteTable(con, name="diagnosi", value=diagnosi_df, row.names=FALSE, append=TRUE)
