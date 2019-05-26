@@ -110,7 +110,7 @@ Si vuole modellare il seguente insieme di informazioni riguardanti un sistema pe
 \end{itemize}
 Tramite un portale web dovrà essere possibile accedere a tale base di dati ed
 aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farmaci.
-TODO aggiungere numeri/necessità dell'ospedale 
+{\Large TODO aggiungere numeri/necessità dell'ospedale}
 
 
 \clearpage
@@ -125,9 +125,7 @@ Inoltre, è richiesto di memorizzare informazioni aggiuntive per i pazienti fuor
 Nei requisiti sul paziente è richiesto, inoltre, di tener traccia del tempo totale trascorso all'interno dell'ospedale durante i ricoveri.
 Quest'informazione è modellata attraverso \textit{Totale Giorni Ricoveri}, un attributo derivato su paziente che è la somma di tutte le durate dei ricoveri riguardanti il paziente.
 La relazione di afferenza tra RICOVERO e PAZIENTE prende il nome di VIENE-RICOVERATO.
-L'informazione memorizzata nell'attributo \textit{Paziente Ricoverato} di RICOVERO viene salvata anche attraverso la nuova relazione, di conseguenza, per evitare ridondanze, è possibile rimuovere l'attributo dall'entità
-% TODO magari nel testo e non come nota \footnote{Si ricorda che è preferibile evitare ridondanze perché inconsistenze bla bla }
-.
+L'informazione memorizzata nell'attributo \textit{Paziente Ricoverato} di RICOVERO viene salvata anche attraverso la nuova relazione, di conseguenza, per evitare ridondanze, è possibile rimuovere l'attributo dall'entità.
 Un nuovo paziente viene inserito nella base di dati la prima volta in cui viene ricoverato, quindi la partecipazione di PAZIENTE alla relazione VIENE-RICOVERATO è totale.
 Anche RICOVERO partecipa in modo totale alla relazione, in quanto sarebbe insensato inserire i dati di un ricovero senza specificare a chi si riferiscano.
 Ogni paziente può essere ricoverato più volte ma ogni ricovero riguarda un solo paziente, dunque la relazione VIENE-RICOVERATO è della forma Uno-a-Molti.
@@ -253,14 +251,11 @@ L'attributo \textit{Patologia} può essere trasformato in due nuovi attributi \t
 
 
 
-% TRIS ha riletto fino qua
 Bisogna prestare più attenzione agli attributi multivalore:
 in FARMACO sono presenti \textit{Nome Principi Attivi} e \textit{Quantità Principi Attivi} entrambi obbligatori e multivalore.
 L'unica semplificazione attuabile è creare una nuova entità chiamata PRINCIPIO-ATTIVO e metterla in relazione Molti-A-Molti con FARMACO attraverso la nuova relazione CONTIENE.
-% TODO FINIRE E RIPORTARE COD_PA OVUNQUE !!!!
 Poiché i nomi dei principi attivi possono essere molto lunghi e non hanno un formato standard, in PRINCIPIO-ATTIVO, sono salvati nella variabile \textit{Nome}, mentre una sequenza numerica chiamata \textit{Codice Principio Attivo} viene usata come chiave primaria.
 Alla relazione CONTIENE è stato aggiunto l'attributo \textit{Quantità}.
- 
 In questo modo saranno modellate esattamente le stesse informazioni precedentemente modellate dagli attributi multivalore.
 In realtà ora le informazioni sono salvate in un formato meno equivoco: prima non era chiaro come si mantenessero in relazione il nome del principio attivo e la sua quantità.
 
@@ -284,10 +279,12 @@ La chiave primaria è composta dalle nuove relazioni binare VIENE-CURATA-DA e VI
 DIAGNOSI e TERAPIA interagiscono con le nuove relazioni, rispettivamente, nello stesso modo con cui interagivano con la relazione ternaria.
 Per quanto riguarda \textit{È Effetto Collaterale} si può dire che rappresenti perfettamente la possibilità che una terapia prescritta possa causare una nuova patologia.
 Notare che le partecipazioni sono appunto parziali.
-Ovviamente anche il vincolo d'integrità precedentemente definito, dovrà essere modificato:
+Bisognerà modificare oppure aggiungere alcuni vincoli d'integrità:
 \begin{itemize}
   \item TERAPIA-PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con la DIAGNOSI con cui definisce la sua chiave primaria;
-  \item TERAPIA-PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con una DIAGNOSI che ha una data precedente alla data della DIAGNOSI con cui definisce la sua chiave primaria;
+  \item TERAPIA-PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con una DIAGNOSI avente una data che precede la data della DIAGNOSI con cui definisce la sua chiave primaria;
+  \item la data d'inizio della TERAPIA-PRESCRITTA deve essere compresa tra la data della DIAGNOSI che la definisce e la data della DIAGNOSI che identifica l'effetto collaterale;
+  \item la data di fine della TERAPIA-PRESCRITTA non può precedere la data di inizio.
 \end{itemize}
 A questo punto, osservando nuovamente i sottoschemi in Figura \autoref{fig:piccolo2} ed in Figura \autoref{fig:piccolo3}, è chiaro che modellino ogni possibile situazione:
 \begin{itemize}
@@ -302,16 +299,15 @@ Durante la fase di semplificazione dei concetti vengono analizzate anche le chia
 Quando una chiave è troppo complessa, cioè composta da molti elementi, è bene sostituirla, così facendo si faciliteranno tutte le operazioni sulla base di dati.
 Si ricorda che un'entità può disporre di chiavi candidate, cioè insiemi di attributi che, per loro natura, rispettano la proprietà di chiave primaria ma che, per qualche motivo, non sono stati scelti come tale.
 Ora è naturale verificare se tra queste chiavi opzionali ce n'è una che, dopo tutte le semplificazioni effettuate allo schema E-R, è migliore della chiave primaria.
-Purtroppo questa soluzione non è sempre possibile, infatti non è raro che le entità siano tra loro distinguibili soltanto per mezzo di un preciso insieme di attributi.
+Purtroppo questa strada non è sempre percorribile, infatti non è raro che le entità siano tra loro distinguibili soltanto per mezzo di un preciso insieme di attributi.
 Nello schema E-R considerato fino ad ora non sono presenti chiavi candidate migliori delle chiavi primarie attuali, infatti la chiave primaria della maggior parte delle entità è composta da un solo attributo.
 
 Rimangono da analizzare DIAGNOSI, TERAPIA e la nuova TERAPIA-PRESCRITTA.
 La chiave primaria di quest'ultima, per il modo in cui l'entità è stata costruita, non può essere modificata a meno di introdurre pesanti vincoli di integrità.
 Ora sorge un problema: TERAPIA-PRESCRITTA è un'entità debole che dipende da due entità a loro volta deboli.
-Ciò significa che per identificare una terapia prescritta si deve risalire al ricovero da una parte ed al farmaco dall'altra, nel mentre si deve anche ricordare \textit{Data} in DIAGNOSI, \textit{Dose Giornaliera} e \textit{Modalità Somministrazione} in TERAPIA.
+Ciò significa che per identificare una terapia prescritta si deve risalire al ricovero da una parte ed al farmaco dall'altra, nel mentre si deve anche ricordare \textit{Data} in DIAGNOSI e \textit{Dose Giornaliera} e \textit{Modalità Somministrazione} in TERAPIA.
 Intuitivamente questo equivale ad avere una chiave primaria in TERAPIA-PRESCRITTA composta da 5 elementi.
-Quindi si propone di creare sia in DIAGNOSI che in TERAPIA un nuovo attributo chiamato, rispettivamente, \textit{Codice Diagnosi} e \textit{Codice Terapia} che conterrà un valore alfa numerico simile a quello contenuto in \textit{Codice Ricovero}.
-%TODO servono vincoli integrità nuovi? Non mi pare
+Quindi si propone di creare sia in DIAGNOSI che in TERAPIA un nuovo attributo chiamato, rispettivamente, \textit{Codice Diagnosi} e \textit{Codice Terapia} che conterrà un valore numerico simile a quello contenuto in \textit{Codice Ricovero}.
 
 Applicando tutte le semplificazioni sopra descritte si ottiene lo schema E-R illustrato In \autoref{fig:ER_ristrutturato}.
 
@@ -322,17 +318,18 @@ Applicando tutte le semplificazioni sopra descritte si ottiene lo schema E-R ill
   \label{fig:ER_ristrutturato}
 \end{figure}
 
+
+
+
 \clearpage
-
-
-% TODO NELLA FASE LOGICA
-% - verrà aggiunta relazione tra PAZIENTE DIAGNOSI (es EFFETTUATA A) per verificare la differenza di prestazioni
-% - l'unica ridondanza è data da EFFETTUATA A, la ricorsione DIAGNOSI->DIAGNOSI (o ISTANZA DI TERAPIA -> DIAGNOSI) NON è ridondanza (esprime informazioni differenti)
-
 \subsubsection{Analisi delle Ridondanze}
 
-Ai fini di ottimizzare le prestazioni, è stato studiato se risultasse conveniente mantenere l'attributo derivato \textit{Totale Giorni Ricoveri} dell'entità PAZIENTE.
+Gli attributi derivati, come può suggerire il nome, conservano dati già presenti nella base di dati, quindi introducono ridondanza.
+Ricordiamo che quest'ultima, quando si progetta una basi di dati, è da evitare, non tanto perché l'informazione ripetuta occupa spazio doppio, ma piuttosto perché si rischia di introdurre pericolose inconsistenze.
+Detto ciò, gli attributi derivati sono utili se mantengono informazione che altrimenti sarebbe dispendioso ottenere, oppure informazione richiesta molto spesso.
+In entrambi i casi un attributo derivato velocizza il recupero del dato, introducendo però del carico aggiuntivo in fase di inserimento od aggiornamento dello stesso.
 
+Sfruttando i volumi stimati durante l'analisi dei requisiti si valuterà se conviene o meno mantenere l'attributo derivato \textit{Totale Giorni Ricoveri} dell'entità PAZIENTE.
 \begin{figure}[H] % TODO abbellire
 	\centering
 	\includegraphics[width=\linewidth]{totalegiorni}
@@ -341,7 +338,8 @@ Ai fini di ottimizzare le prestazioni, è stato studiato se risultasse convenien
 \end{figure}
 
 I volumi stimati sono riportati in \autoref{tab:volumi-attributo-ridondante} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-attributo-ridondante}.
-% TODO aggiungere operazione di modifica date dei ricoveri
+
+{\Large TODO aggiungere operazione di modifica date dei ricoveri}
 
 \begin{table}[H]
 	\centering
@@ -368,7 +366,7 @@ I volumi stimati sono riportati in \autoref{tab:volumi-attributo-ridondante} e l
 	\label{tab:operazioni-attributo-ridondante}
 \end{table}
 
-In presenza dell'attributo derivato, per l'operazione di registrazione di un nuovo ricovero è necessario 1 accesso in scrittura per l'entità RICOVERO, 1 accesso in scrittura per la relazione VIENE-RICOVERATO, 1 accesso in lettura e 1 accesso in scrittura per l'entità PAZIENTE per leggere e aggiornare l'attributo \textit{Totale Giorni Ricoveri}.
+In presenza dell'attributo derivato, per l'operazione di registrazione di un nuovo ricovero è necessario 1 accesso in scrittura per l'entità RICOVERO, 1 accesso in scrittura per la relazione VIENE-RICOVERATO, 1 accesso in lettura ed 1 accesso in scrittura per l'entità PAZIENTE per leggere e aggiornare l'attributo \textit{Totale Giorni Ricoveri}.
 Per l'operazione di verifica del totale dei giorni di ricoveri è sufficiente 1 accesso in lettura all'entità PAZIENTE.
 
 \begin{table}[H]
@@ -419,13 +417,17 @@ Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calco
 
 Risulta conveniente mantenere l'attributo \textit{Totale Giorni Ricoveri}.
 
-Lo schema Entità-Relazioni in \autoref{fig:ER_ristrutturato} non presenta ulteriori ridondanze, infatti, il ciclo DIAGNOSI TERAPIA-PRESCRITTA DIAGNOSI non è ridondante. Tuttavia visto il requisito di stampa delle diagnosi effettuate da un singolo paziente consideriamo l'inserimento della relazione:
+Lo schema Entità-Relazioni in \autoref{fig:ER_ristrutturato} non presenta ulteriori ridondanze.
+Il ciclo formato dalle entità DIAGNOSI, TERAPIA-PRESCRITTA e DIAGNOSI non crea ridondanze perché ogni elemento fornisce un'informazione unica: la prima diagnosi giustifica la cura, la terapia prescritta spiega quando tale cura è stata applicata, mentre la seconda diagnosi riporta eventuali effetti collaterali.
+
+Nei requisiti è specificato che l'ospedale visualizza molto spesso le diagnosi dei pazienti, senza richiedere necessariamente i dati relativi ai ricoveri.
+Per questo motivo si è considerata la possibilità di aggiungere una nuova relazione:
 \begin{itemize}
-	\item EFFETTUATA A: una relazione Uno-A-Molti tra PAZIENTE e DIAGNOSI.
+	\item EFFETTUATA-A: una relazione Uno-A-Molti tra PAZIENTE e DIAGNOSI.
     La partecipazione di PAZIENTE è parziale mentre quella di DIAGNOSI è totale.
 \end{itemize}
 
-Viene creato quindi il ciclo in \autoref{fig:ciclo-ridondanza} PAZIENTE, RICOVERO, DIAGNOSI dato dalle relazioni VIENE RICOVERATO, EFFETTUATA DURANTE, EFFETTUATA A.
+Viene creato quindi il ciclo in \autoref{fig:ciclo-ridondanza} PAZIENTE, RICOVERO, DIAGNOSI dato dalle relazioni VIENE-RICOVERATO, EFFETTUATA-DURANTE, EFFETTUATA-A.
 
 \begin{figure}[H] % TODO abbellire
 	\centering
@@ -433,9 +435,13 @@ Viene creato quindi il ciclo in \autoref{fig:ciclo-ridondanza} PAZIENTE, RICOVER
 	\caption{Ciclo con ridondanza}
 	\label{fig:ciclo-ridondanza}
 \end{figure}
-Si procede con il valutare se è conveniente mantenere la relazione EFFETTUATA A tra PAZIENTE e DIAGNOSI in funzione della frequenza delle operazioni di inserimento nuove diagnosi e stampa dello storico diagnosi di un paziente.
+
+%TODO latex non sa dividere le parole tipo parola-parola
+Si procede con il valutare se è conveniente mantenere la relazione EFFET-
+TUATA-A tra PAZIENTE e DIAGNOSI in funzione della frequenza delle operazioni di inserimento nuove diagnosi e stampa dello storico diagnosi di un paziente.
 
 % TODO REQUISITO specificare nei requisiti le operazioni richieste e i volumi
+% TODO per questione estetica spostare una tabella o del testo qua, cosi' non rimane un buco a fine pagina
 
 I volumi stimati sono riportati in \autoref{tab:volumi-ciclo} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-ciclo}
 
@@ -493,8 +499,8 @@ I volumi stimati sono riportati in \autoref{tab:volumi-ciclo} e la frequenza del
 	\label{tab:operazioni-ciclo}
 \end{table}
 
-Nel caso con ridondanza per l'operazione di inserimento di una nuova diagnosi sono necessari 1 accesso in scrittura per l'entità DIAGNOSI e 1 accesso in scrittura per entrambe le relazioni EFFETTUATA DURANTE e EFFETTUATA A.
-Per l'operazione di stampa delle diagnosi di un paziente sono necessari 12 accessi in lettura per la relazione EFFETTUATA A e 12 accessi in lettura per l'entità DIAGNOSI.
+Nel caso con ridondanza per l'operazione di inserimento di una nuova diagnosi sono necessari 1 accesso in scrittura per l'entità DIAGNOSI e 1 accesso in scrittura per entrambe le relazioni EFFETTUATA-DURANTE e EFFETTUATA-A.
+Per l'operazione di stampa delle diagnosi di un paziente sono necessari 12 accessi in lettura per la relazione EFFETTUATA-A e 12 accessi in lettura per l'entità DIAGNOSI.
 
 Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso con ridondanza:
 \begin{equation}
@@ -518,8 +524,8 @@ Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calco
 	\caption{Tabella dei costi, caso con ridondanza}
 \end{table}
 
-Nel caso senza ridondanza per l'operazione di inserimento di una nuova diagnosi sono necessari 1 accesso in scrittura per l'entità DIAGNOSI e 1 accesso in scrittura per la relazione EFFETTUATA DURANTE.
-Per l'operazione di stampa delle diagnosi di un paziente sono necessari 3 accessi in lettura per la relazione VIENE RICOVERATO, 12 accessi in lettura per la relazione EFFETTUATA DURANTE e 12 accessi in lettura per l'entità DIAGNOSI.
+Nel caso senza ridondanza per l'operazione di inserimento di una nuova diagnosi sono necessari 1 accesso in scrittura per l'entità DIAGNOSI e 1 accesso in scrittura per la relazione EFFETTUATA-DURANTE.
+Per l'operazione di stampa delle diagnosi di un paziente sono necessari 3 accessi in lettura per la relazione VIENE-RICOVERATO, 12 accessi in lettura per la relazione EFFETTUATA-DURANTE e 12 accessi in lettura per l'entità DIAGNOSI.
 
 Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso senza ridondanza:
 \begin{equation}
@@ -556,6 +562,8 @@ Concludiamo che è conveniente mantenere la ridondanza visto il costo minore del
 
 \clearpage
 \subsection{Traduzione da ER a Relazionale}
+
+% TRIS ha riletto fino qua
 
 % TODO leggere capitolo 14 Elmasri
 % TODO leggere capitolo 9 Atzeni
