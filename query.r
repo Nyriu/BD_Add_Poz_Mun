@@ -520,25 +520,29 @@ frm <- frm[,1:3]
 giorni <- seq(min(frm[,2]), max(frm[,2]), by="day")
 mesi <- seq(min(frm[,2]), max(frm[,2]), by="month")
 
-f_tot <- f_tot[,sort(f_tot[,2])]
+#f_tot <- f_tot[,sort(f_tot[,2])]
+
 giusti <- f_tot[,1]
 
+f_tot <- f_tot[,2]
 
-mat <- matrix(0L, nrow=length(giorni), ncol=length(f_tot[,1]))
 
 
-for(giorno in 1:length(giorni)){
+# mat <- matrix(0L, nrow=length(giorni), ncol=length(f_tot[,1]))
+
+
+# for(giorno in 1:length(giorni)){
     
-    for(farmaco in 1:length(giusti)){
+#     for(farmaco in 1:length(giusti)){
 
-        for(index in 1:length(frm[,1])){
+#         for(index in 1:length(frm[,1])){
 
-            if(giusti[farmaco] == frm[index,1] && giorni[giorno] >= frm[index,2] && giorni[giorno] <= frm[index,3]){
-                mat[giorno, farmaco] = mat[giorno, farmaco] +1
-            }           
-        }
-    }
-}
+#             if(giusti[farmaco] == frm[index,1] && giorni[giorno] >= frm[index,2] && giorni[giorno] <= frm[index,3]){
+#                 mat[giorno, farmaco] = mat[giorno, farmaco] +1
+#             }           
+#         }
+#     }
+# }
 
 
 mat <- matrix(0L, nrow=length(mesi), ncol=length(f_tot[,1]))

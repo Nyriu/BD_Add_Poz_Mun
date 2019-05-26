@@ -844,20 +844,24 @@ drv <- dbDriver("PostgreSQL")
 
 # Connessione al db 
 
-#con <- dbConnect(drv, 
-#                 dbname="bd_18_paolo_addis",
-#                 host="158.110.145.186",
-#                 port="5432",
-#                 user="bd_18_paolo_addis",
-#                 password="corso_bd_2018")
+if(Sys.info()["sysname"] == "Windows"){
+    con <- dbConnect(drv, 
+                 dbname="bd_18_paolo_addis",
+                 host="158.110.145.186",
+                 port="5432",
+                 user="bd_18_paolo_addis",
+                 password="corso_bd_2018")
+}
 
-
-con <- dbConnect(drv, 
+if(Sys.info()["sysname"] == "Linux"){
+    con <- dbConnect(drv, 
                  dbname="bd_18_tristano_munini",
                  host="158.110.145.186",
                  port="5432",
                  user="bd_18_tristano_munini",
                  password="fdjbkl1546as")
+}
+
 
 
 ######################################################################################
