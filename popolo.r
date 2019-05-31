@@ -936,21 +936,6 @@ for(i in seq(1,length(ricoveri_df[,1]),by = 3000)){
     }
 }
 
-
-ris <- dbGetQuery(con, "set search_path to ospedale; 
-
-select p.cf, r.cod_ric, d.cod_dia, r.data_i, d.data_dia
-from paziente p join ricovero r on p.cf = r.paziente 
-                join diagnosi d on r.cod_ric = d.ricovero
-where p.data_nasc < r.data_i;
-
- ")
-
-
-
-
-
-
 # Inserimento delle diagnosi
 dbWriteTable(con, name="diagnosi", value=diagnosi_df, row.names=FALSE, append=TRUE)
 
