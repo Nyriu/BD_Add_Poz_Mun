@@ -325,7 +325,7 @@ Applicando tutte le semplificazioni sopra descritte si ottiene lo schema E-R ill
 \subsubsection{Analisi delle Ridondanze}
 
 Gli attributi derivati, come può suggerire il nome, conservano dati già presenti nella base di dati, quindi introducono ridondanza.
-Ricordiamo che quest'ultima, quando si progetta una basi di dati, è da evitare, non tanto perché l'informazione ripetuta occupa spazio doppio, ma piuttosto perché si rischia di introdurre pericolose inconsistenze.
+Si ricorda che quest'ultima, quando si progetta una base di dati, è da evitare, non tanto perché l'informazione ripetuta occupa spazio doppio, ma piuttosto perché si rischia di introdurre pericolose inconsistenze.
 Detto ciò, gli attributi derivati sono utili se mantengono informazione che altrimenti sarebbe dispendioso ottenere, oppure informazione richiesta molto spesso.
 In entrambi i casi un attributo derivato velocizza il recupero del dato, introducendo però del carico aggiuntivo in fase di inserimento od aggiornamento dello stesso.
 
@@ -386,7 +386,7 @@ Per l'operazione di verifica del totale dei giorni di ricoveri è sufficiente 1 
 	\label{tab:costi-attributo-ridondante}
 \end{table}
 
-Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso con ridondanza:
+Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, si calcola il numero di accessi complessivo giornaliero per le 2 operazioni nel caso con ridondanza:
 \begin{equation}
 	(3W + 1R) \times 175 + 1R \times 175 \approx 1400R
 \end{equation}
@@ -410,7 +410,7 @@ Per l'operazione di verifica del totale dei giorni di ricoveri, considerando la 
 	\label{tab:costi-no-attributo-ridondante}
 \end{table}
 
-Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso senza ridondanza:
+Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, si calcola il numero di accessi complessivo giornaliero per le 2 operazioni nel caso senza ridondanza:
 \begin{equation}
 	2W \times 175 + 6R \times 175 \approx 1750R
 \end{equation}
@@ -502,7 +502,7 @@ I volumi stimati sono riportati in \autoref{tab:volumi-ciclo} e la frequenza del
 Nel caso con ridondanza per l'operazione di inserimento di una nuova diagnosi sono necessari 1 accesso in scrittura per l'entità DIAGNOSI e 1 accesso in scrittura per entrambe le relazioni EFFETTUATA\_DURANTE e EFFETTUATA\_A.
 Per l'operazione di stampa delle diagnosi di un paziente sono necessari 12 accessi in lettura per la relazione EFFETTUATA\_A e 12 accessi in lettura per l'entità DIAGNOSI.
 
-Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso con ridondanza:
+Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, si calcola il numero di accessi complessivo giornaliero per le 2 operazioni nel caso con ridondanza:
 \begin{equation}
 	3W \times 700 + 24R \times 1400 \approx	37800R
 \end{equation}
@@ -527,7 +527,7 @@ Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calco
 Nel caso senza ridondanza per l'operazione di inserimento di una nuova diagnosi sono necessari 1 accesso in scrittura per l'entità DIAGNOSI e 1 accesso in scrittura per la relazione EFFETTUATA\_DURANTE.
 Per l'operazione di stampa delle diagnosi di un paziente sono necessari 3 accessi in lettura per la relazione VIENE\_RICOVERATO, 12 accessi in lettura per la relazione EFFETTUATA\_DURANTE e 12 accessi in lettura per l'entità DIAGNOSI.
 
-Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, calcoliamo il numero di accessi complessivo giornaliero per le 2 operazioni nel caso senza ridondanza:
+Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, si calcola il numero di accessi complessivo giornaliero per le 2 operazioni nel caso senza ridondanza:
 \begin{equation}
 	2W \times 700 + 27R \times 1400 \approx	40600R
 \end{equation}
@@ -582,6 +582,7 @@ In \autoref{fig:relazionale_iniziale} si può vedere una prima modellazione dell
   \item FARMACO(\textit{\underline{nome\_comm}, azienda\_prod, dose\_gg\_racc}) con \textit{nome\_comm}\\come chiave primaria;
   \item PRINCIPIO\_ATTIVO(\textit{\underline{cod\_pa}}, \textit{nome}) con \textit{cod\_pa} come chiave primaria.
 \end{itemize}
+% TODO c'è bisogno di dire qual è la chiave primaria anche se è sottolineata?
 Bisogna prestare più attenzione a TERAPIA\_PRESCRITTA perché, in quanto entità debole, la sua chiave primaria dipende dalle relazioni\\VIENE\_CURATA\_DA e VIENE\_PRESCRITTA, o meglio, comprende degli\\identificatori esterni.
 Nel dettaglio un identificatore sarà dato dalla chiave primaria di DIAGNOSI mentre l'altro dalla chiave primaria di TERAPIA.
 Si ricorda che le entità identificate esternamente partecipano alle associazioni identificanti sempre con una cardinalità minima e massima pari a uno.
@@ -1024,6 +1025,7 @@ create table paziente (
     ulss varchar,
     tot_gg_ric int default 0               
 ); 
+
 create table ricovero (
     cod_ric dom_ric primary key, 
     data_i date not null,

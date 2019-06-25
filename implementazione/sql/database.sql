@@ -54,6 +54,7 @@ create table paziente (
     ulss varchar,
     tot_gg_ric int default 0               
 ); 
+
 create table ricovero (
     cod_ric dom_ric primary key, 
     data_i date not null,
