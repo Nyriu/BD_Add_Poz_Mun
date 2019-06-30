@@ -120,11 +120,13 @@ Si vuole modellare il seguente insieme di informazioni riguardanti un sistema pe
 	      patologie diagnosticate. Può capitare anche che una nuova patologia
 	      (registrata come nuova diagnosi) sia causata, come effetto collaterale,
 	      da una terapia precedentemente prescritta. Tale legame causa-effetto va
-	      registrato nella base di dati.
+        registrato nella base di dati.
 \end{itemize}
+{\Large TODO aggiungere numeri/necessità dell'ospedale}
+% L'ospedale, in una previsione di 10 anni, intende gestire un volume di 10000 pazienti, 30000 ricoveri, 120000 diagnosi, 30000 terapia e 110000 prescrizioni. Inoltre, l'esigenza dell'ospedale è effettuare efficacemente l'accesso alle diagnosi dei pazienti per revisione e/o modifica.
+
 Tramite un portale web dovrà essere possibile accedere a tale base di dati ed
 aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farmaci.
-{\Large TODO aggiungere numeri/necessità dell'ospedale}
 
 
 \clearpage
@@ -469,21 +471,19 @@ I volumi stimati sono riportati in \autoref{tab:volumi-ciclo} e la frequenza del
 		Ricovero              & E             & 300000          \\ \hline
 		Diagnosi              & E             & 1200000         \\ \hline
 		Terapia               & E             & 30000           \\ \hline
-		Istanza di Terapia    & E             & 1200000         \\ \hline %% TODO ridurre a 1100000
+		Istanza di Terapia    & E             & 1100000         \\ \hline
 		Farmaco               & E             & 10000           \\ \hline
 		Viene Ricoverato      & R             & 300000          \\ \hline
 		Effettuata Durante    & R             & 1200000         \\ \hline
 		Effettuta A           & R             & 1200000         \\ \hline
-		Curata Da             & R             & 1200000         \\ \hline %% TODO ridurre a 1100000 
-		Istanza Di            & R             & 1200000         \\ \hline %% TODO ridurre a 1100000
+		Curata Da             & R             & 1100000         \\ \hline
+		Istanza Di            & R             & 1100000         \\ \hline
 		Effetto Collaterale   & R             & 50000           \\ \hline
 		Somministrato Durante & R             & 10000           \\ \hline
 	\end{tabular}
 	\caption{Tabella dei volumi}
 	\label{tab:volumi}
 \end{table}
-
-%% TODO Istanza di terapia a 1100000 per contare il ~10% di diagnosi senza cura
 
 \begin{table}[H]
 	\centering
@@ -1080,6 +1080,7 @@ Questa tripletta è stata scelta in quanto illustra ogni possibile casistica:
 \end{itemize}
 Le rimanenti tabelle sono di complessità minore od uguale a quelle mostrate.
 {\Large TODO piccola parentesi sulle scelte di 'on update' e 'on delete'?}
+% Si è deciso di gestire gli aggiornamenti e le cancellazioni in questo modo: se l'informazione relativa ad un paziente dovesse essere aggiornata o rimossa dalla base di dati è facile pensare che anche le informazioni relative ai suoi ricoveri e alle diagnosi effettuate durante gli stessi dovrebbero subire lo stesso trattamento. Di conseguenza, l'implementazione esegue, sia in aggiornamento che in cancellazione, modifiche a cascata su tutte le informazioni coinvolte direttamente (tramite relazione) con il paziente. Stesso ragionamento è stato applicato alle operazioni eseguite sui farmaci. Esse andranno a influire direttamente sulle terapie, di conseguenza è necessario un aggiornamento e ....continua
 
 A questo punto si può procedere con la creazione dei constraints.
 Questi possono essere sfruttati per assicurare i vincoli tra le varie date di inizio e fine presenti nella base di dati, nello specifico:
