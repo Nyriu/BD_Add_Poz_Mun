@@ -1066,6 +1066,7 @@ Questa tripletta è stata scelta in quanto illustra ogni possibile casistica:
 \end{itemize}
 Le rimanenti tabelle sono di complessità minore od uguale a quelle mostrate.
 {\Large TODO piccola parentesi sulle scelte di 'on update' e 'on delete'?}
+% Si è deciso di gestire gli aggiornamenti e le cancellazioni in questo modo: se l'informazione relativa ad un paziente dovesse essere aggiornata o rimossa dalla base di dati è facile pensare che anche le informazioni relative ai suoi ricoveri e alle diagnosi effettuate durante gli stessi dovrebbero subire lo stesso trattamento. Di conseguenza, l'implementazione esegue, sia in aggiornamento che in cancellazione, modifiche a cascata su tutte le informazioni coinvolte direttamente (tramite relazione) con il paziente. Stesso ragionamento è stato applicato alle operazioni eseguite sui farmaci. Esse andranno a influire direttamente sulle terapie, di conseguenza è necessario un aggiornamento e ....continua
 
 A questo punto si può procedere con la creazione dei constraints.
 Questi possono essere sfruttati per assicurare i vincoli tra le varie date di inizio e fine presenti nella base di dati, nello specifico:
