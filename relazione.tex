@@ -1446,7 +1446,7 @@ Infine, prima di chiudere la connessione, viene effettuata una semplice query.
 Seguono una serie di grafici con breve descrizione.
 
 Richiesta:
-Si vuole osservare come siano cambiate, col passare degli anni, la quantità di nuovi pazienti inseriti mensilmente rispetto al numero di nuovi ricoveri registrai mensilmente.
+Si vuole osservare come siano cambiate, col passare degli anni, la quantità di nuovi pazienti inseriti mensilmente rispetto al numero di nuovi ricoveri registrati mensilmente.
 
 %Si vuole osservare quale sia l'andamento mensile del numero di nuovi pazienti ricoverati rispetto al numero totale di ricoveri.
 
@@ -1494,6 +1494,7 @@ Annualmente a quanti giovani viene diagnosticato un tumore? A quanti anziani? A 
   \caption{Ricoveri per tumore annui al variare delle età}
   \label{fig:grafico_3}
 \end{figure}
+
 Il grafico mostra chiaramente come i ricoveri per tumore sono sempre più frequenti per i giovani.
 Anche la fascia d'età sopra i 60 segue un andamento simile.
 Invece la fascia intermedia sembra avere una tendenza calante.
@@ -1504,26 +1505,32 @@ Richiesta:
 In quale periodo dell'anno ci sono più ricoveri per influenza? 
 \begin{figure}[!ht] % TODO abbellire
   \centering
-  \includegraphics[width=.9\linewidth]{grafico_4}
-  \caption{Ricoveri per influenza mensili al variare gli anni}
+  \includegraphics[width=.8\linewidth]{grafico_4}
+  \caption{Ricoveri per influenza mensili al variare degli anni}
   \label{fig:grafico_4}
 
-  \includegraphics[width=.85\linewidth]{grafico_4-2}
-  \caption{Ricoveri per influenza mensili al variare gli anni}
+  \includegraphics[width=.75\linewidth]{grafico_4-2}
+  \caption{Ricoveri per influenza mensili al variare degli anni}
   \label{fig:grafico_4-2}
 \end{figure}
+
+% TODO dire in un italiano migliore
+I due grafici rappresentano la stessa informazione.
+Dal grafico a mosaico risulta più facile osservare l'andamento mensile di uno specifico anno, mentre il grafico \textit{heatmap} facilita il confronto di un mese al variare degli anni.
+Ad esempio nel mese di dicembre del 2012 ci sono stati molti più ricoveri per influenza rispetto agli anni tra il 2014 ed il 2017.
+
 
 \cleardoublepage
 
 
- TODO 
-Richiesta: MODIFICARE PESANTEMENTE !! 
+Richiesta:
+Si vogliono raccogliere informazioni riguardo alla durata in giorni dei ricoveri per tumore rispetto agli altri tipi di ricovero
 
-Rispetto alla durata media in giorni di un ricovero, per quanti giorni rimangono ricoverati i pazienti a cui è stato diagnosticato un tumore? 
+%Rispetto alla durata media in giorni di un ricovero, per quanti giorni rimangono ricoverati i pazienti a cui è stato diagnosticato un tumore? 
 \begin{figure}[!ht] % TODO abbellire
   \centering
   \includegraphics[width=\linewidth]{grafico_5}
-  \caption{grafico\_5}
+  \caption{Confronto tra la durata dei ricoveri per tumore e i gli altri tipi di ricovero}
   \label{fig:grafico_5}
 \end{figure}
 \cleardoublepage
