@@ -30,7 +30,6 @@ con <- dbConnect(drv,
                  password="corso_bd_2018")
 
 
-
 # Pacchetto per gestire le date
 library("zoo")
 library("ggplot2")
@@ -424,8 +423,6 @@ image(2008:2019, 1:12,tab, xlab="Anni",ylab="Mesi")
 
 
 
-
-
 # Quanti giorni di ricovero fanno in totale i pazienti a cui viene diagnosticato un tumore, rispetto alla media dei ricoveri?
 # MultiBoxplot (1 per ricoveri solo tumore, 1 per tutti ricoveri)
 
@@ -449,7 +446,6 @@ from ricovero r
 
 boxplot(ric_tumore$tot_gg, ric_totali$tot_gg, pch=16, cex=0.2, 
         xlab="Tumori                                                   Tutti")
-
 
 
 
