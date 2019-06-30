@@ -430,7 +430,7 @@ ric_tumore <- dbGetQuery(con,
 "
 set search_path to ospedale;
 
-select (r.data_f-r.data_i) as tot_gg
+select d.cod_pat,(r.data_f-r.data_i) as tot_gg
 from ricovero r join diagnosi d on d.ricovero = r.cod_ric
 where d.cod_pat similar to 'T0[0-9]'
 ")
@@ -560,6 +560,114 @@ for(mese in 1:length(mesi)){
 
 
 image(1:length(mesi),1:20,mat)
+
+
+
+
+
+# Quanti giorni fanno in media le persone che soffrono delle 5 malattie più frequenti 
+
+frequenza_malattie <- dbGetQuery(con,
+"
+set search_path to ospedale;
+
+select cod_pat, count(cod_pat) as patologie
+from diagnosi
+group by cod_pat
+order by 2 desc
+")
+
+cinque_frequenti <- frequenza_malattie[1:5,]
+
+giorni_ric_per_patologia <- dbGetQuery(con,
+"
+set search_path to ospedale;
+
+select  d.cod_pat, r.data_f-r.data_i as tot_gg
+from ricovero r join diagnosi d on r.cod_ric = d.ricovero
+where not exists( select *
+                  from ricovero r2 join 
+                       diagnosi d2 on r2.cod_ric = d2.ricovero          
+                  where r.cod_ric = r2.cod_ric and
+                        d.cod_pat = d2.cod_pat and
+                        d.data_dia <> d2.data_dia)
+
+
+union
+
+select  d.cod_pat, r.data_f-r.data_i as tot_gg
+from ricovero r join diagnosi d on r.cod_ric = d.ricovero
+where exists( select *
+              from ricovero r2 join 
+                   diagnosi d2 on r2.cod_ric = d2.ricovero          
+              where r.cod_ric = r2.cod_ric and
+                   d.cod_pat = d2.cod_pat and
+                   d.data_dia <> d2.data_dia)
+")
+
+giorni_ric_per_tumore <- dbGetQuery(con,
+"
+set search_path to ospedale;
+
+select  d.cod_pat, r.data_f-r.data_i as tot_gg
+from ricovero r join diagnosi d on r.cod_ric = d.ricovero
+where not exists( select *
+                  from ricovero r2 join 
+                       diagnosi d2 on r2.cod_ric = d2.ricovero          
+                  where r.cod_ric = r2.cod_ric and
+                        d.cod_pat = d2.cod_pat and
+                        d.data_dia <> d2.data_dia)
+      and d.cod_pat similar to 'T0[0-9]'
+
+union
+
+select  d.cod_pat, r.data_f-r.data_i as tot_gg
+from ricovero r join diagnosi d on r.cod_ric = d.ricovero
+where exists( select *
+              from ricovero r2 join 
+                   diagnosi d2 on r2.cod_ric = d2.ricovero          
+              where r.cod_ric = r2.cod_ric and
+                   d.cod_pat = d2.cod_pat and
+                   d.data_dia <> d2.data_dia)
+      and d.cod_pat similar to 'T0[0-9]'
+")
+
+
+uno <- cinque_frequenti[1,]
+due <- cinque_frequenti[2,]
+tre <- cinque_frequenti[3,]
+qua <- cinque_frequenti[4,]
+cin <- cinque_frequenti[5,]
+
+mat1 <- merge(giorni_ric_per_patologia, uno[1,])
+mat2 <- merge(giorni_ric_per_patologia, due[1,])
+mat3 <- merge(giorni_ric_per_patologia, tre[1,])
+mat4 <- merge(giorni_ric_per_patologia, qua[1,])
+mat5 <- merge(giorni_ric_per_patologia, cin[1,])
+
+        
+boxplot(giorni_ric_per_tumore$tot_gg,
+        mat1$tot_gg,
+        mat2$tot_gg,
+        mat3$tot_gg,
+        mat4$tot_gg,
+        mat5$tot_gg,
+        pch=16, cex=0.2,
+        names=c("Tumori",
+                uno[,1],
+                due[,1],
+                tre[,1],
+                qua[,1],
+                cin[,1]),
+        ylim=c(0,1300),
+        xlab="Codice ICD10 delle patologie",
+        ylab="Durate dei ricoveri (in giorni)"
+        )
+
+
+
+
+
 
 
 
