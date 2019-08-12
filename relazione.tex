@@ -127,12 +127,12 @@ aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farma
 \clearpage
 \subsection{Progettazione del Modello E-R}
 
-La progettazione dello schema Entità-Relazioni è avvenuto in tre fasi. 
-Nella prima fase, la prima entità modellata è stata RICOVERO che memorizza tutte le informazioni relative a un ricovero e possiede come attributi: \textit{Codice Ricovero}, \textit{Divisione Ospedaliera}, \textit{Paziente Ricoverato}, \textit{Data Inizio}, \textit{Data Fine}, \textit{Motivo}. 
+La progettazione dello schema Entità-Relazioni è avvenuta in tre fasi. 
+Nella prima fase, la prima entità modellata è stata RICOVERO che memorizza tutte le informazioni relative ad un ricovero e possiede come attributi: \textit{Codice Ricovero}, \textit{Divisione Ospedaliera}, \textit{Paziente Ricoverato}, \textit{Data Inizio}, \textit{Data Fine}, \textit{Motivo}. 
 In particolare, l'attributo \textit{Codice Ricovero} è stato scelto come chiave primaria a causa della sua proprietà di unicità. 
 Successivamente è stata modellata l'entità PAZIENTE che possiede i seguenti attributi: \textit{Codice Fiscale}, \textit{Cognome}, \textit{Nome}, \textit{Data di Nascita}, \textit{Luogo di Nascita} e \textit{Provincia di residenza}.
 L'attributo \textit{Codice Fiscale} è stato scelto come chiave primaria in quanto unico per ogni paziente.
-Inoltre, è richiesto di memorizzare informazioni aggiuntive per i pazienti fuori regione. Per far ciò è stata creata una specializzazione PAZIENTE\_FUORI-REGIONE di PAZIENTE i cui attributi sono: \textit{Regione di Appartenenza} e \textit{ULSS}. 
+Inoltre, è richiesto di memorizzare informazioni aggiuntive per i pazienti fuori regione. Per far ciò è stata creata una specializzazione PAZIENTE\_FUORI\_REGIONE di PAZIENTE i cui attributi sono: \textit{Regione di Appartenenza} e \textit{ULSS}. 
 Nei requisiti sul paziente è richiesto, inoltre, di tener traccia del tempo totale trascorso all'interno dell'ospedale durante i ricoveri.
 Quest'informazione è modellata attraverso \textit{Totale Giorni Ricoveri}, un attributo derivato su paziente che è la somma di tutte le durate dei ricoveri riguardanti il paziente.
 La relazione di afferenza tra RICOVERO e PAZIENTE prende il nome di VIENE\_RICOVERATO.
@@ -142,7 +142,7 @@ Anche RICOVERO partecipa in modo totale alla relazione, in quanto sarebbe insens
 Ogni paziente può essere ricoverato più volte ma ogni ricovero riguarda un solo paziente, dunque la relazione VIENE\_RICOVERATO è della forma Uno-a-Molti.
 \\
 Successivamente è stata modellata l'entità DIAGNOSI che possiede come attributi: \textit{Data}, \textit{Medico} e \textit{Patologia}, un attributo composto formato da \textit{Codice} e \textit{Gravità}.
-La chiave è composta dall'attributo \textit{Data} e dalla relazione EFFETTUATA\_DURANTE.
+La chiave primaria è composta dall'attributo \textit{Data} e dalla relazione EFFETTUATA\_DURANTE.
 Quest'ultima, del tipo Uno-a-Molti, lega l'entità RICOVERO a DIAGNOSI.
 In particolare una diagnosi verrà inserita solo se nella base di dati è già presente il ricovero a cui afferisce, quindi la partecipazione di DIAGNOSI alla relazione è totale.
 Sarebbe perfettamente lecito, invece, avere un ricovero durante il quale non è stata effettuata alcuna diagnosi, questo stabilisce la partecipazione parziale di RICOVERO in EFFETTUATA\_DURANTE.
@@ -166,15 +166,15 @@ Per questi ultimi è stata creata l'entità FARMACO con attributi: \textit{Dose 
 La chiave primaria è data dall'attributo \textit{Nome Commerciale} in quanto univoco.
 Un farmaco deve contenere uno o più principi attivi.
 \\
-I requisiti richiedono che una terapia possa curare più patologie, di conseguenza una terapia deve rappresentare un metodo standard con cui si affronta una data patologia.
+I requisiti richiedono che una terapia possa curare più patologie, di conseguenza una terapia deve rappresentare un metodo standard con cui affrontare varie patologie.
 Quindi l'entità TERAPIA non può contenere informazioni come data di inizio, data di fine oppure medico prescrivente, altrimenti non sarebbe più generale.
 Per questi motivi all'entità sono stati attribuiti i campi: \textit{Dose Giornaliera} e \textit{Modalità Somministrazione}.
-Le richieste dei requisiti quali data di inizio e fine e medico prescrivente della terapia verrano trattate nella terza fase di progettazione.
+Le richieste dei requisiti quali data di inizio e di fine e medico prescrivente della terapia verrano trattate nella terza fase di progettazione.
 La chiave di TERAPIA è composta dagli attributi \textit{Dose Giornaliera} e \textit{Modalità Somministrazione} e dalla relazione SOMMINISTRATO\_DURANTE che lega FARMACO a TERAPIA.
 Questa relazione è della forma Uno-a-Molti in quanto in ogni terapia si somministra un solo farmaco mentre un farmaco può essere somministrato in più terapie.
 È importate considerare il fatto che una terapia non può esistere senza un farmaco da somministrare, quindi la partecipazione di TERAPIA alla relazione SOMMINISTRATO\_DURANTE è totale.
 D'altro canto un farmaco può essere memorizzato nella base di dati pur non essendo associato ad una particolare terapia, quindi la partecipazione di FARMACO alla precedente relazione è parziale.
-Il risultato della seconda fase di progettazione è illustrata nella \autoref{fig:far-ter}
+Il risultato della seconda fase di progettazione è illustrata nella \autoref{fig:far-ter}.
 
 \begin{figure}[!ht] % TODO abbellire
   \centering
@@ -183,7 +183,7 @@ Il risultato della seconda fase di progettazione è illustrata nella \autoref{fi
 	\label{fig:far-ter}
 \end{figure}
 
-Nella terza fase della progettazione è stato modellato nello schema E-R l'ultimo punto dell'analisi dei requisiti attraverso la relazione MOTIVA\_TERAPIA.
+Nella terza fase della progettazione è stato modellato l'ultimo punto dell'analisi dei requisiti attraverso la relazione MOTIVA\_TERAPIA.
 Particolare attenzione è stata fatta alla parte in cui si specifica che una terapia può essere associata ad una diagnosi in due modi differenti: quello che la definisce come cura per una patologia e quello che la definisce come causa di una nuova patologia.
 Va sottolineato che in entrambi i casi, nella base di dati, la patologia è salvata attraverso DIAGNOSI.
 
@@ -221,14 +221,15 @@ Ricordando che non tutte le applicazioni di una terapia causano un effetto colla
 
 Al termine di questa terza fase di progettazione è necessario introdurre dei vincoli d'integrità per la relazione ternaria:
 \begin{itemize}
-  \item in nessuna tripletta di MOTIVA\_TERAPIA può comparire due volte la     stessa DIAGNOSI;
-  \item la DIAGNOSI che partecipa come effetto collaterale deve avere una data     successiva alla data della prima diagnosi, ma comunque precedente alla data di fine ricovero.
+  \item in nessuna tripletta di MOTIVA\_TERAPIA può comparire due volte la stessa DIAGNOSI;
+  \item le DIAGNOSI devono essere state effettuate durante lo stesso ricovero;
+  \item la DIAGNOSI che partecipa come effetto collaterale deve avere una data successiva alla data della prima diagnosi, ma comunque precedente alla data di fine ricovero.
 \end{itemize}
 Nella fase logica verrà mostrato che questa relazione può essere trasformata, senza perdita d'informazione, con l'aggiunta di una nuova entità, in tre relazioni binarie. 
 
 Nei requisiti è richiesto di memorizzare il medico che ha effettuato la diagnosi ed il medico che ha prescritto la terapia.
 Ciò è stato fatto riportando rispettivamente le due informazioni nell'attributo \textit{Medico} in DIAGNOSI e nell'attributo \textit{Medico Prescrivente} in MOTIVA\_TERAPIA.
-Non è stata introdotta un'entità MEDICO perché avrebbe contenuto soltanto l'informazione riguardante il codice del medico.
+Non è stata introdotta un'entità MEDICO perché avrebbe contenuto soltanto l'informazione riguardante nome e cognome del medico.
 Inoltre non è richiesto di tener traccia dello storico delle prescrizioni o delle diagnosi rispetto ai medici.
 In conclusione lo schema Entità-Relazioni si presenta come in \autoref{fig:ER_progettazione_modello}.
 
@@ -246,11 +247,12 @@ In conclusione lo schema Entità-Relazioni si presenta come in \autoref{fig:ER_p
 \section{Progettazione Logica}
 
 \subsection{Ristrutturazione del Modello E-R}
-\subsubsection{Semplificazione dei Concetti}
 
 È utile semplificare strutture come specializzazioni, attributi composti e attributi multivalore perché renderà più facile la traduzione del modello Entità-Relazioni in quello Relazionale.
 
-Ricordando che quest'ultimo non permette di rappresentare generalizzazioni sarà necessario rimuovere tutte le specializzazioni dal nostro schema E-R.
+\subsubsection{Semplificazione dei Concetti}
+
+Il modello Relazione non permette di rappresentare generalizzazioni sarà necessario rimuovere tutte le specializzazioni dal nostro schema E-R.
 Si può notare che la specializzazione PAZIENTE\_FUORI\_REGIONE può essere facilmente rappresentata aggiungendo due attributi all'entità PAZIENTE.
 I nuovi attributi, \textit{ULSS} e \textit{Regione di Appartenenza}, in PAZIENTE saranno facoltativi poiché la specializzazione è parziale.
 La rimozione delle generalizzazioni non è sempre così immediata: se PAZIENTE\_FUORI\_REGIONE avesse avuto una relazione aggiuntiva rispetto al genitore si sarebbero dovute valutare varie opzioni.
@@ -279,7 +281,7 @@ In realtà ora le informazioni sono salvate in un formato meno equivoco: prima n
 
 Un'ulteriore trasformazione da effettuare riguarda la relazione ternaria.
 Infatti MOTIVA\_TERAPIA, come è stato accennato in precedenza, può essere espressa tramite relazioni binarie.
-In Figura \autoref{fig:piccolo3} si può vedere il risultato di tale trasformazione.
+In \autoref{fig:piccolo3} si può vedere il risultato di tale trasformazione.
 Si nota subito la nuova entità TERAPIA\_PRESCRITTA, creata proprio per rappresentare una particolare applicazione di una terapia al fine di curare una patologia di una specifica diagnosi.
 La nuova entità, quindi, è caratterizzata da:
 \textit{Data Inizio} che indica il giorno in cui il paziente dovrà iniziare la terapia;
@@ -288,20 +290,20 @@ La nuova entità, quindi, è caratterizzata da:
 Osservando che la relazione MOTIVA\_TERAPIA non può esistere senza la partecipazione simultanea di DIAGNOSI (come \textit{Viene Curata da}) e di TERAPIA si è deciso di rendere TERAPIA\_PRESCRITTA un'entità debole.
 La chiave primaria è composta dalle nuove relazioni binare VIENE\_CURATA\_DA e VIENE\_PRESCRITTA, per entrambe la partecipazione di TERAPIA\_PRESCRITTA è totale, mentre la cardinalità è al massimo uno.
 DIAGNOSI e TERAPIA interagiscono con le nuove relazioni, rispettivamente, nello stesso modo con cui interagivano con la relazione ternaria.
-Per quanto riguarda \textit{È Effetto Collaterale} si può dire che rappresenti perfettamente la possibilità che una terapia prescritta possa causare una nuova patologia.
+Per quanto riguarda È\_EFFETTO\_COLLATERALE si può dire che cattura la possibilità che una terapia prescritta possa causare una nuova patologia.
 Notare che le partecipazioni sono appunto parziali.
 Bisognerà modificare oppure aggiungere alcuni vincoli d'integrità:
 \begin{itemize}
-  \item TERAPIA\_PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con la DIAGNOSI con cui definisce la sua chiave primaria;
-  \item TERAPIA\_PRESCRITTA non può essere in relazione \textit{È Effetto Collaterale} con una DIAGNOSI avente una data che precede la data della DIAGNOSI con cui definisce la sua chiave primaria;
+  \item TERAPIA\_PRESCRITTA non può essere in relazione È\_EFFETTO\_COL-LATERALE con la DIAGNOSI con cui definisce la sua chiave primaria;
+  \item TERAPIA\_PRESCRITTA non può essere in relazione È\_EFFETTO\_COL-LATERALE con una DIAGNOSI avente una data che precede la data della DIAGNOSI con cui definisce la sua chiave primaria;
   \item la data d'inizio della TERAPIA\_PRESCRITTA deve essere compresa tra la data della DIAGNOSI che la definisce e la data della DIAGNOSI che identifica l'effetto collaterale;
-  \item la data di fine della TERAPIA\_PRESCRITTA non può precedere la data di inizio.
+  \item la data di fine della TERAPIA\_PRESCRITTA non può precedere la sua data di inizio.
 \end{itemize}
-A questo punto, osservando nuovamente i sottoschemi in Figura \autoref{fig:piccolo2} ed in Figura \autoref{fig:piccolo3}, è chiaro che modellino ogni possibile situazione:
+A questo punto, osservando nuovamente i sottoschemi in \autoref{fig:piccolo2} ed in \autoref{fig:piccolo3}, è chiaro che modellino ogni possibile situazione:
 \begin{itemize}
   \item una DIAGNOSI a cui non è ancora stata assegnata una terapia;
   \item la prescrizione di una specifica terapia;
-  \item la scoperta di una nuova patologia, attraverso una nuova diagnosi, causata dall'applicazione di una terapia;
+  \item la scoperta di una nuova patologia (attraverso una nuova diagnosi) causata dall'applicazione di una terapia;
   \item la possibilità che una TERAPIA possa curare più patologie (registrate attraverso DIAGNOSI differenti).
 %TODO ci sono tutte?
 \end{itemize}
@@ -341,6 +343,7 @@ Detto ciò, gli attributi derivati sono utili se mantengono informazione che alt
 In entrambi i casi un attributo derivato velocizza il recupero del dato, introducendo però del carico aggiuntivo in fase di inserimento od aggiornamento dello stesso.
 
 Sfruttando i volumi stimati durante l'analisi dei requisiti si valuterà se conviene o meno mantenere l'attributo derivato \textit{Totale Giorni Ricoveri} dell'entità PAZIENTE.
+In \autoref{fig:attributo-ridondante} è stata riportata una sezione dello schema relazionale.
 \begin{figure}[H] % TODO abbellire
 	\centering
 	\includegraphics[width=\linewidth]{totalegiorni}
@@ -349,8 +352,6 @@ Sfruttando i volumi stimati durante l'analisi dei requisiti si valuterà se conv
 \end{figure}
 
 I volumi stimati sono riportati in \autoref{tab:volumi-attributo-ridondante} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-attributo-ridondante}.
-
-{\Large TODO aggiungere operazione di modifica date dei ricoveri}
 
 \begin{table}[H]
 	\centering
@@ -380,6 +381,8 @@ I volumi stimati sono riportati in \autoref{tab:volumi-attributo-ridondante} e l
 In presenza dell'attributo derivato, per l'operazione di registrazione di un nuovo ricovero è necessario 1 accesso in scrittura per l'entità RICOVERO, 1 accesso in scrittura per la relazione VIENE\_RICOVERATO, 1 accesso in lettura ed 1 accesso in scrittura per l'entità PAZIENTE per leggere e aggiornare l'attributo \textit{Totale Giorni Ricoveri}.
 Per l'operazione di verifica del totale dei giorni di ricoveri è sufficiente 1 accesso in lettura all'entità PAZIENTE.
 
+\cleardoublepage
+
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|l|c|c|c|}
@@ -396,6 +399,7 @@ Per l'operazione di verifica del totale dei giorni di ricoveri è sufficiente 1 
 	\caption{Tabella dei costi, caso con ridondanza}
 	\label{tab:costi-attributo-ridondante}
 \end{table}
+
 
 Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, si calcola il numero di accessi complessivo giornaliero per le 2 operazioni nel caso con ridondanza:
 \begin{equation}
@@ -577,10 +581,8 @@ Concludiamo che è conveniente mantenere la ridondanza visto il costo minore del
 % TODO leggere capitolo 9 Atzeni
 
 In questa fase della progettazione logica è possibile iniziare la traduzione del modello E-R in quello Relazionale.
-Come prima cosa, in quanto immediato, ogni entità verrà rappresentata sotto forma di tupla. %TODO verifica correttezza 
+Come prima cosa, in quanto immediato, ogni entità verrà rappresentata sotto forma di tupla.
 Queste tuple verranno poi modificate per poter mantenere anche le informazioni relative alle relazioni, può capitare che ad una relazione venga associata un nuova tupla.
-%TODO idea generale di modello relazionale
-%Si ricorda che le tuple saranno raccolte in varie tabelle in cui ogni riga
 
 In \autoref{fig:relazionale_iniziale} si può vedere una prima modellazione dello schema Relazionale, con le seguenti tuple:
 \begin{itemize}
@@ -591,7 +593,6 @@ In \autoref{fig:relazionale_iniziale} si può vedere una prima modellazione dell
   \item FARMACO(\textit{\underline{nome\_comm}, azienda\_prod, dose\_gg\_racc}) con \textit{nome\_comm}\\come chiave primaria;
   \item PRINCIPIO\_ATTIVO(\textit{\underline{cod\_pa}}, \textit{nome}) con \textit{cod\_pa} come chiave primaria.
 \end{itemize}
-% TODO c'è bisogno di dire qual è la chiave primaria anche se è sottolineata?
 Bisogna prestare più attenzione a TERAPIA\_PRESCRITTA perché, in quanto entità debole, la sua chiave primaria dipende dalle relazioni\\VIENE\_CURATA\_DA e VIENE\_PRESCRITTA, o meglio, comprende degli\\identificatori esterni.
 Nel dettaglio un identificatore sarà dato dalla chiave primaria di DIAGNOSI mentre l'altro dalla chiave primaria di TERAPIA.
 Si ricorda che le entità identificate esternamente partecipano alle associazioni identificanti sempre con una cardinalità minima e massima pari a uno.
@@ -611,13 +612,6 @@ La tupla risultante è la seguente:
 \\
 la chiave primaria è composta dalla coppia (\textit{diagnosi, terapia}).
 
-In questi passaggi, in realtà, è stato fatto qualcosa di più di una semplice traduzione di una entità dal modello E-R a quello Relazione, infatti sono state tradotte anche due relazioni.
-
-La prima è VIENE\_CURATA\_DA che fornisce l'informazione: una patologia, trovata per mezzo di una diagnosi, può essere curata con l'applicazione di una particolare terapia.
-Quest'informazione, nel modello relazionale, può essere trovata cercando, tra tutte le tuple per le terapie prescritte, una che abbia il campo \textit{diagnosi} uguale al campo \textit{cod\_dia} della DIAGNOSI.
-Notare che non esiste nessuna certezza che tale tupla esista.
-Questa possibilità è consistente con quanto modellato nello schema E-R (la partecipazione di DIAGNOSI è parziale).
-Bisogna, invece, introdurre un vincolo che vieti che due tuple del tipo TERAPIA\_PRESCRITTA referenzino la stessa diagnosi, in altre parole bisogna assicurare la proprietà di chiave al campo \textit{diagnosi}.
 
 \begin{figure}
 \begin{tikzpicture}
@@ -653,7 +647,7 @@ Bisogna, invece, introdurre un vincolo che vieti che due tuple del tipo TERAPIA\
      \nodepart{six}    prov\_res
      \nodepart{seven}  reg\_app
      \nodepart{eight}  ulss
-     %\nodepart{nine}   tot\_gg\_ric % TODO è commentato così non esce warning
+     \nodepart{nine}   tot\_gg\_ric
     };
   
   \node [below=1.3cm of paziente.west, anchor=west] (ricoverotitle) {\textbf{RICOVERO}};
@@ -766,6 +760,14 @@ Bisogna, invece, introdurre un vincolo che vieti che due tuple del tipo TERAPIA\
 \end{figure}
 
 
+In questi passaggi, in realtà, è stato fatto qualcosa di più di una semplice traduzione di una entità dal modello E-R a quello Relazione, infatti sono state tradotte anche due relazioni.
+
+La prima è VIENE\_CURATA\_DA che fornisce l'informazione: una patologia, trovata per mezzo di una diagnosi, può essere curata con l'applicazione di una particolare terapia.
+Quest'informazione, nel modello relazionale, può essere trovata cercando, tra tutte le tuple per le terapie prescritte, una che abbia il campo \textit{diagnosi} uguale al campo \textit{cod\_dia} della DIAGNOSI.
+Notare che non esiste nessuna certezza che tale tupla esista.
+Questa possibilità è consistente con quanto modellato nello schema E-R (la partecipazione di DIAGNOSI è parziale).
+Bisogna, invece, introdurre un vincolo che vieti che due tuple del tipo TERAPIA\_PRESCRITTA referenzino la stessa diagnosi, in altre parole bisogna assicurare la proprietà di chiave al campo \textit{diagnosi}.
+
 La seconda relazione è VIENE\_PRESCRITTA.
 Anche in questo caso il campo \textit{Terapia} permette di trovare tutte le particolari applicazioni di una data terapia.
 In questo caso, poiché la relazione è del tipo Uno-A-Molti, la possibilità che lo stesso \textit{Codice\_Terapia} venga referenziato da tuple differenti non è un problema.
@@ -786,10 +788,10 @@ A TERAPIA verrà aggiunta una chiave esterna contenente l'identificatore di FARM
 È\_EFFETTO\_COLLATERALE si differenzia dai casi precedenti non solo perché è del tipo Uno-A-Uno ma soprattutto perché non necessita di vincoli esterni, in quanto le due entità partecipano in modo parziale.
 Data la simmetria della relazione, si può scegliere se modificare la tupla relativa a DIAGNOSI o quella di TERAPIA\_PRESCRITTA.
 \\
-In questo caso si è preferito usare quest'ultima perché le terapie prescritte sono in numero minore e ciò significa che ci saranno anche meno spazi vuoti nella base di dati.
+Si è preferito usare quest'ultima perché le terapie prescritte sono in numero minore e ciò significa che ci saranno meno campi vuoti nella base di dati.
 
 L'ultima relazione da analizzare è CONTIENE, del tipo Molti-A-Molti.
-L'unico modo per trasformare queste relazioni è creare una nuova tupla, nello specifico è stata chiamata CONTIENE ed è composta da tre valori: la chiavi esterne \textit{Farmaco} e \textit{Principio\_Attivo} seguite da \textit{Quantità}.
+L'unico modo per trasformare questa relazione è creare una nuova tupla, che è stata chiamata CONTIENE ed è composta da tre valori: le chiavi esterne \textit{Farmaco} e \textit{Principio\_Attivo} seguite da \textit{Quantità}.
 La chiave primaria della tupla è formata dai primi due valori in modo che un qualsiasi FARMACO possa essere messo in relazione con tutti i principi attivi necessari e, viceversa, che un PRINCIPIO\_ATTIVO possa essere contenuto in più farmaci.
 Notare che è obbligatoria l'introduzione di due vincoli d'integrità, uno deve assicurare che un PRINCIPIO\_ATTIVO compaia in almeno un farmaco, l'altro che un farmaco contenga almeno un PRINCIPIO\_ATTIVO.
 
@@ -827,7 +829,7 @@ Notare che è obbligatoria l'introduzione di due vincoli d'integrità, uno deve 
      \nodepart{six}    prov\_res
      \nodepart{seven}  reg\_app
      \nodepart{eight}  ulss
-     %\nodepart{nine}   tot\_gg\_ric % TODO è commentato così non esce warning
+     \nodepart{nine}   tot\_gg\_ric
     };
   
   \node [below=1.3cm of paziente.west, anchor=west] (ricoverotitle) {\textbf{RICOVERO}};
@@ -973,16 +975,9 @@ Notare che è obbligatoria l'introduzione di due vincoli d'integrità, uno deve 
 
 
 \clearpage
-\section{Progettazione Fisica}
-\subsection{Nuovi Indici}
-% Indice possibile è provincia 
-
-
-
-\clearpage
 \section{Definizione della Base di Dati in SQL}
 Il risultato della sezione precedente è lo schema Relazionale che verrà effettivamente usato per creare la base di dati.
-Per prima cosa dovrà essere definita una tabella per ogni tupla dello schema poi si procederà alla creazione di funzioni, constraints e triggers per assicurare tutti i vincoli d'integrità.
+Per prima cosa dovrà essere definita una tabella per ogni tupla dello schema poi si procederà alla creazione di funzioni, constraint e trigger per assicurare tutti i vincoli d'integrità.
 Si suppone che ciascuno dei seguenti comandi SQL venga eseguito all'interno dello schema \textit{ospedale}, cioè dopo l'esecuzione del seguente blocco:
 \begin{lstlisting}
 create schema ospedale;
@@ -1074,10 +1069,10 @@ Questa tripletta è stata scelta in quanto illustra ogni possibile casistica:
   \item ed infine una tabella che rappresenta un'entità debole, con una coppia di valori come chiave primaria;
 \end{itemize}
 Le rimanenti tabelle sono di complessità minore od uguale a quelle mostrate.
-{\Large TODO piccola parentesi sulle scelte di 'on update' e 'on delete'?}
+% TODO piccola parentesi sulle scelte di 'on update' e 'on delete'?
 % Si è deciso di gestire gli aggiornamenti e le cancellazioni in questo modo: se l'informazione relativa ad un paziente dovesse essere aggiornata o rimossa dalla base di dati è facile pensare che anche le informazioni relative ai suoi ricoveri e alle diagnosi effettuate durante gli stessi dovrebbero subire lo stesso trattamento. Di conseguenza, l'implementazione esegue, sia in aggiornamento che in cancellazione, modifiche a cascata su tutte le informazioni coinvolte direttamente (tramite relazione) con il paziente. Stesso ragionamento è stato applicato alle operazioni eseguite sui farmaci. Esse andranno a influire direttamente sulle terapie, di conseguenza è necessario un aggiornamento e ....continua
 
-A questo punto si può procedere con la creazione dei constraints.
+A questo punto si può procedere con la creazione dei constraint.
 Questi possono essere sfruttati per assicurare i vincoli tra le varie date di inizio e fine presenti nella base di dati, nello specifico:
 \begin{itemize}
   \item in generale una tabella con dei campi che indicano una data d'inizio ed una di fine deve rispettare la condizione \textit{data\_i} $\leq$ \textit{data\_f};
@@ -1167,9 +1162,6 @@ create trigger update_paziente_dia before update
 Il vincolo \ref{vinc:paz_almu_ric} non può essere modellato né come constraint né come trigger perché introdurrebbe una dipendenza ciclica con la condizione \textit{not null} del campo \textit{paziente} in RICOVERO, in quanto non sarebbe accettato un paziente senza un ricovero, ma allo stesso tempo un ricovero non potrebbe essere inserito nella base di dati poiché il suo campo \textit{paziente} sarebbe necessariamente \textit{null}, non esistendo ancora il paziente.
 Il constraint \textit{not null} in RICOVERO è necessario perché deve essere sempre possibile risalire alle informazioni del paziente di un dato ricovero.
 Diversamente la presenza nella base di dati di un PAZIENTE che non è mai stato ricoverato, situazione comunque anomala, non ha effetti disastrosi: in qualsiasi momento si può rimuovere tale paziente oppure gli si può attribuire un ricovero.
-La creazione di un trigger (o di un constraint) impedirebbe l'inserimento di un paziente perché questo, al momento dell'inserimento non sarebbe associato ad alcun ricovero, d'altra parte non sarebbe nemmeno possibile inserire prima il ricovero perché non si avrebbe il valore della chiave esterna.
-Si potrebbe pensare di disabilitare momentaneamente il trigger (o constraint), inserire il paziente, inserire il ricovero per poi riabilitarlo, ma questa soluzione è stata scartata in quanto non-safe.
-
 Uno stesso ragionamento può essere fatto anche per \ref{vinc:ter_almu_tp}.
 Ricordando che una TERAPIA\_PRESCRITTA, essendo un'entità debole, deve necessariamente essere inserita dopo la TERAPIA da cui dipende.
 
@@ -1266,10 +1258,11 @@ FROM (
   WHERE coll_dia IS NOT NULL
   GROUP BY terapia) tc
 LEFT JOIN terapia t ON t.cod_ter = tc.terapia
-ORDER BY effetti_collaterali DESC;
+ORDER BY tc.effetti_collaterali DESC;
 \end{lstlisting}
 
 % this query doesn't work, lovely timeout
+% SET statement_timeout = 9999999999;
 \subsubsection{Query 2}
 Si vogliono ottenere tutte le coppie di pazienti in cui il primo paziente ha contratto le stesse malattie del secondo.
 Si escludano le coppie che hanno avuto la stessa malattia nella stessa fascia d'età, considerando le due fasce d'età: sotto i 50 e sopra i 50.
@@ -1277,7 +1270,7 @@ Si escludano le coppie che hanno avuto la stessa malattia nella stessa fascia d'
 CREATE INDEX idx_patologie
 ON diagnosi (paziente, cod_pat);
 
-SELECT p1.cf, p2.cf
+SELECT p2.cf, p2.cf
 FROM paziente p1, paziente p2
 WHERE p1.cf <> p2.cf 
   AND (((date_part('year', age(p1.data_nasc)) - 50) *
@@ -1288,6 +1281,32 @@ WHERE p1.cf <> p2.cf
     WHERE d1.paziente = p1.cf 
       AND NOT EXISTS (
         SELECT d2.paziente, d2.cod_pat
+        FROM diagnosi d2
+        WHERE d2.paziente = p2.cf
+          AND d2.cod_pat = d1.cod_pat
+      )
+);
+
+\end{lstlisting}
+
+% questo sotto funziona
+% output da 23997 righe
+% ci mette un sacco a dare il risultato
+\begin{lstlisting}
+CREATE INDEX idx_patologie
+ON diagnosi (paziente, cod_pat);
+
+SET statement_timeout = 9999999999;
+
+SELECT p1.cf, p2.cf
+FROM paziente p1
+JOIN paziente p2 ON p1.cf < p2.cf 
+  AND NOT EXISTS (
+    SELECT *
+    FROM diagnosi d1
+    WHERE d1.paziente = p1.cf 
+      AND NOT EXISTS (
+        SELECT *
         FROM diagnosi d2
         WHERE d2.paziente = p2.cf
           AND d2.cod_pat = d1.cod_pat
@@ -1344,7 +1363,7 @@ WHERE EXISTS (
     AND tp3.data_i > tp1.data_i
     AND tp3.data_i < tp2.data_i
   )
-);
+) order by tp1.cf;
 
  
 \end{lstlisting}
@@ -1352,8 +1371,6 @@ WHERE EXISTS (
 %  more or less, manca un >= 
 \subsubsection{Query 5}
 Si vuole trovare il mese con il massimo numero di ricoveri.
-Utilizzare una vista. 
-%  l'esempio di vista che si intendeva qui è stato utilizzato nella 3 credo
 \begin{lstlisting}
   CREATE OR REPLACE VIEW months_list
   AS SELECT GENERATE_SERIES(
@@ -1363,6 +1380,7 @@ Utilizzare una vista.
           ) as month;
 
   SELECT month, count(*)
+  
   FROM months_list
   LEFT JOIN ricovero
   ON data_i < month::date 
@@ -1370,6 +1388,21 @@ Utilizzare una vista.
   GROUP BY month
   ORDER BY count DESC
   LIMIT 1;
+
+CREATE OR REPLACE VIEW months_list
+AS SELECT GENERATE_SERIES(
+        '2008-01-01'::date,
+        now()::date,
+        '1 month'
+        ) as month;
+        
+select *
+from ( select date_part
+('month', to_date(data_i, 'YYYY-MM-DD')) as data, 
+count(month(data))
+        from ricovero
+        group by month(data)) m
+;
 
 \end{lstlisting}
 
@@ -1469,12 +1502,13 @@ Si vuole osservare come siano cambiate, col passare degli anni, la quantità di 
 
 Dal grafico si può intuire che
 \begin{itemize}
-  \item il numero di ricoveri inseriti mensilmente è soggetto ad una lenta crescita, per l'ospedale potrebbe essere una buona notizia perché indice di afflusso di persone;
+  \item il numero di ricoveri inseriti mensilmente è soggetto ad una lenta crescita;
   \item il numero di nuove registrazioni, invece, sta calando notevolmente.
 \end{itemize}
 Se si mettono assieme le due informazioni si conclude che, in generale, un paziente che è già stato ricoverato almeno una volta, ha una probabilità maggiore, rispetto a qualche anno fa, di essere ricoverato nuovamente.
 
-Notare che i dati relativi all'ultimo mese nel grafico sono dati incompleti, poiché il mese deve ancora finire, quindi è perfettamente lecito che si trovino così in basso rispetto alla media.
+% TODO RIFARE GRAFICI TOGLIENDO ULTIMO MESE PERCHE INCOMPLETO
+% Notare che i dati relativi all'ultimo mese nel grafico sono dati incompleti, poiché il mese deve ancora finire, quindi è perfettamente lecito che si trovino così in basso rispetto alla media.
 
 \cleardoublepage
 
@@ -1544,19 +1578,17 @@ Rispetto alle durate dei ricoveri in cui è stata diagnosticata una o più patol
 \end{figure}
 
 Il grafico mostra come la tendenza delle durate dei ricoveri per incidenze tumorali sia leggermente inferiore rispetto a quella dei ricoveri legati alle 5 patologie più frequenti. La distribuzione è asimmetrica in tutti i boxplot con una evidente variazione della distanza interquartilica rispetto alla mediana. 
-Grazie a questa asimmetria è possibile notare come la durata dei ricoveri legati ai tumori sia leggermente meno variabile rispetto alle altre patologie considerate. In particolare, se la durata del ricovero supera i 200 giorni, potrebbe, statisticamente, proseguire per svariati giorni, in quanto un intervallo interquartilico maggiore implica una distribuzione più ampia. E' interessante notare che alcuni valori outliers indicano che per tutte le patologie considerate vi sono stati dei ricoveri che hanno avuto una durata di quasi 4 anni.
+Grazie a questa asimmetria è possibile notare come la durata dei ricoveri legati ai tumori sia leggermente meno variabile rispetto alle altre patologie considerate. In particolare, se la durata del ricovero supera i 200 giorni, potrebbe, statisticamente, proseguire per svariati giorni, in quanto un intervallo interquartilico maggiore implica una distribuzione più ampia. È interessante notare che alcuni valori anomali (outlier) indicano che per tutte le patologie considerate vi sono stati dei ricoveri che hanno avuto una durata di quasi 4 anni.
 
 \cleardoublepage
 
 
 
-
 \clearpage
-\section{Portale Web}
-\subsection{Interfaccia Grafica}
-\subsection{Comunicare con pgAdmin}
-Consiglio spassionato... NON usate l'interfaccia web.
-Usate la shell, possibilmente con vim-like key bindings.
+\section{Progettazione Fisica}
+\subsection{Nuovi Indici}
+% Indice possibile è provincia 
+
 
 
 
