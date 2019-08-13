@@ -230,7 +230,7 @@ for(n_paziente in 1: nrow(utile)){
     # Prendo la data attuale e quella di apertura del db per creare la data di inizio e fine del ricovero
     data_paz = utile[n_paziente,2]
     d_apertura_db = max(c(as.Date("2008-01-01"),as.Date(data_paz)))
-    datt <- as.Date("2019-04-11")
+    datt <- as.Date("2019-07-31")
     # Prendo il numero di ricoveri random per questo paziente
     nricoveri <- nric[n_paziente]
     # Conto il numero di giorni tra un intervallo netto e l'altro 
@@ -895,11 +895,23 @@ getSQL <- function(filepath){
 }
 
 
+# getwd()
+
+if(Sys.info()["sysname"] == "Windows"){
+    path = "\\"
+}
+
+if(Sys.info()["sysname"] == "Linux"){
+    path = "/"
+}
+
+
+
 # Setta il path sullo schema "ospedale"
 dbGetQuery(con, "set search_path to ospedale;")
 
 # Eseguo tutte le query del file contenente il database
-dbGetQuery(con, getSQL(paste(c(".", "implementazione", "sql", "database.sql"), sep="", collapse=path)))
+dbGetQuery(con, getSQL( paste(c(".", "implementazione", "sql", "database.sql"), sep="", collapse=path) ) )
 
 
 
@@ -914,13 +926,13 @@ contiene_df   <- read.csv(paste(c(".", "implementazione", "popoliCSV", "contiene
 terapie_df    <- read.csv(paste(c(".", "implementazione", "popoliCSV", "terapie.csv"           ), sep="", collapse=path), stringsAsFactors = FALSE)
 terapie_pr_df <- read.csv(paste(c(".", "implementazione", "popoliCSV", "terapie_prescritte.csv"), sep="", collapse=path), stringsAsFactors = FALSE)
 
-pazienti_df <- pazienti_df[,2:10]
-ricoveri_df <- ricoveri_df[,2:7]
-diagnosi_df <- diagnosi_df[,2:8]
-pr_attivi_df <- pr_attivi_df[,2:3]
-farmaci_df <- farmaci_df[,2:4]
-contiene_df <- contiene_df[,2:4]
-terapie_df <- terapie_df[,2:5]
+pazienti_df   <- pazienti_df[,2:10]
+ricoveri_df   <- ricoveri_df[,2:7]
+diagnosi_df   <- diagnosi_df[,2:8]
+pr_attivi_df  <- pr_attivi_df[,2:3]
+farmaci_df    <- farmaci_df[,2:4]
+contiene_df   <- contiene_df[,2:4]
+terapie_df    <- terapie_df[,2:5]
 terapie_pr_df <- terapie_pr_df[,2:7]
 
 
@@ -979,7 +991,7 @@ bambini_malati = dbGetQuery(con, "select p.nome, p.cognome, p.data_nasc, r.motiv
 
 
 d_nascita = dbGetQuery(con, "select data_nasc from paziente;")
-hist(d_nascita[,1], "year", freq = TRUE, breaks = 50)
+#hist(d_nascita[,1], "year", freq = TRUE, breaks = 50)
 
 
 
@@ -994,13 +1006,13 @@ dbGetQuery(con, "select count(*) from paziente p join ricovero r on p.cf = r.paz
 
 dbGetQuery(con,"select * from paziente p join ricovero r on p.cf = r.paziente where p.cf = 'DAVPAO22F03D961J';")
 
-hist(paz_gg[,2],breaks=40)
+#hist(paz_gg[,2],breaks=40)
 
-plot(sort(paz_gg[,2]))
+#plot(sort(paz_gg[,2]))
 
-boxplot(paz_gg[,2])
+#boxplot(paz_gg[,2])
 
-summary(paz_gg)
+#summary(paz_gg)
 
 
 

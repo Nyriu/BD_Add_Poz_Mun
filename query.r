@@ -33,7 +33,7 @@ con <- dbConnect(drv,
 # Pacchetto per gestire le date
 library("zoo")
 library("ggplot2")
-library("ggmosaic")
+#library("ggmosaic")
 library("plotly")
 library("scales")
 

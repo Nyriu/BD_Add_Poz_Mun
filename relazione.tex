@@ -116,9 +116,9 @@ Si vuole modellare il seguente insieme di informazioni riguardanti un sistema pe
 	      (registrata come nuova diagnosi) sia causata, come effetto collaterale,
 	      da una terapia precedentemente prescritta. Tale legame causa-effetto va
         registrato nella base di dati.
+\item  L'ospedale, in una previsione di 10 anni, prevede di gestire un volume pari a 10000 pazienti, 30000 ricoveri, 120000 diagnosi, 30000 terapia e 110000 prescrizioni. Inoltre, l'esigenza dell'ospedale è effettuare efficacemente l'accesso alle diagnosi dei pazienti per revisione e/o modifica.
+
 \end{itemize}
-{\Large TODO aggiungere numeri/necessità dell'ospedale}
-% L'ospedale, in una previsione di 10 anni, intende gestire un volume di 10000 pazienti, 30000 ricoveri, 120000 diagnosi, 30000 terapia e 110000 prescrizioni. Inoltre, l'esigenza dell'ospedale è effettuare efficacemente l'accesso alle diagnosi dei pazienti per revisione e/o modifica.
 
 Tramite un portale web dovrà essere possibile accedere a tale base di dati ed
 aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farmaci.
@@ -126,7 +126,7 @@ aggiungere o rimuovere pazienti, ricoveri, diagnosi con relative terapie e farma
 
 \clearpage
 \subsection{Progettazione del Modello E-R}
-
+ 
 La progettazione dello schema Entità-Relazioni è avvenuta in tre fasi. 
 Nella prima fase, la prima entità modellata è stata RICOVERO che memorizza tutte le informazioni relative ad un ricovero e possiede come attributi: \textit{Codice Ricovero}, \textit{Divisione Ospedaliera}, \textit{Paziente Ricoverato}, \textit{Data Inizio}, \textit{Data Fine}, \textit{Motivo}. 
 In particolare, l'attributo \textit{Codice Ricovero} è stato scelto come chiave primaria a causa della sua proprietà di unicità. 
@@ -153,6 +153,7 @@ Ora è importante introdurre due vincoli di integrità:
   \item il secondo riguarda la data in cui viene effettuata la diagnosi, in quanto deve essere compresa tra la data di inizio e quella di fine del ricovero.
 \end{itemize}
 Il Risultato della prima fase della progettazione è illustrata in \autoref{fig:paz-ric-dia}.
+
 
 \begin{figure}[!ht] % TODO abbellire
   \centering
@@ -252,7 +253,7 @@ In conclusione lo schema Entità-Relazioni si presenta come in \autoref{fig:ER_p
 
 \subsubsection{Semplificazione dei Concetti}
 
-Il modello Relazione non permette di rappresentare generalizzazioni sarà necessario rimuovere tutte le specializzazioni dal nostro schema E-R.
+Il modello relazionale non permette di rappresentare generalizzazioni dunque sarà necessario rimuovere tutte le specializzazioni dal nostro schema E-R.
 Si può notare che la specializzazione PAZIENTE\_FUORI\_REGIONE può essere facilmente rappresentata aggiungendo due attributi all'entità PAZIENTE.
 I nuovi attributi, \textit{ULSS} e \textit{Regione di Appartenenza}, in PAZIENTE saranno facoltativi poiché la specializzazione è parziale.
 La rimozione delle generalizzazioni non è sempre così immediata: se PAZIENTE\_FUORI\_REGIONE avesse avuto una relazione aggiuntiva rispetto al genitore si sarebbero dovute valutare varie opzioni.
@@ -430,7 +431,7 @@ Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, si ca
 	2W \times 175 + 6R \times 175 \approx 1750R
 \end{equation}
 
-Risulta conveniente mantenere l'attributo \textit{Totale Giorni Ricoveri}.
+In conclusione, risulta conveniente mantenere l'attributo \textit{Totale Giorni Ricoveri}.
 
 Lo schema Entità-Relazioni in \autoref{fig:ER_ristrutturato} non presenta ulteriori ridondanze.
 Il ciclo formato dalle entità DIAGNOSI, TERAPIA\_PRESCRITTA e DIAGNOSI non crea ridondanze perché ogni elemento fornisce un'informazione unica: la prima diagnosi giustifica la cura, la terapia prescritta spiega quando tale cura è stata applicata, mentre la seconda diagnosi riporta eventuali effetti collaterali.
@@ -1561,7 +1562,7 @@ In quale periodo dell'anno ci sono più ricoveri per influenza?
 % TODO dire in un italiano migliore
 I due grafici rappresentano la stessa informazione.
 Dal grafico a mosaico risulta più facile osservare l'andamento mensile di uno specifico anno, mentre il grafico \textit{heatmap} facilita il confronto di un mese al variare degli anni.
-Ad esempio nel mese di dicembre del 2012 ci sono stati molti più ricoveri per influenza rispetto agli anni tra il 2014 ed il 2017.
+Ad esempio nel mese di dicembre del 2010 ci sono stati molti più ricoveri per influenza rispetto agli anni tra il 2011 ed il 2018.
 
 
 \cleardoublepage
