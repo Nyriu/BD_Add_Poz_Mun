@@ -41,13 +41,13 @@ WHERE
      NOT EXISTS
      (SELECT *
       FROM DIAGNOSI pat1
-      WHERE pat1.paziente = p2.cf
+      WHERE pat1.paziente = p1.cf
         AND pat1.cod_pat = pat2.cod_pat))
   AND
   NOT EXISTS
   (SELECT *
    FROM DIAGNOSI pat1
-   WHERE pat1.paziente = p2.cf
+   WHERE pat1.paziente = p1.cf
      AND
      NOT EXISTS
      (SELECT *
