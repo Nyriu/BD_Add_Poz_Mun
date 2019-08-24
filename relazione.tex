@@ -69,7 +69,6 @@
 % REGOLE DI STILE
 % - scrivere in modo impersonale no "abbiamo deciso di"
 % - nelle immagini H o !ht ????
-% NUOVO ATTENZIONE!!! TERAPIA-PRESCRITTA o TERAPIA_PRESCRITTA? Perché in fase Relazionale si usa _
 
 % COSE DA RICORDARE
 % NEI REQUISITI
@@ -1265,8 +1264,11 @@ WHERE
    WHERE cd2.prov_res = cd1.prov_res
      AND cd2.num_dia > cd1.num_dia);
 \end{lstlisting}
-\cleardoublepage
+La creazione della vista risulta molto utile per due motivi: la query è più leggibile; il JOIN ed il COUNT vengono eseguiti una sola volta, quindi il risultato sarà fornito prima.
+Va fatto notare che il numero di righe nella tabella risultato può essere maggiore del numero di province presenti nel database.
+Infatti, considerando solo i pazienti di una data provincia, è possibile che una coppia di pazienti abbia lo stesso numero di diagnosi e che non esista nessun paziente che ne abbia in maggior numero: è corretto che entrambi i pazienti compaiano.
 
+\cleardoublepage
 \subsubsection{Query 2}
 Si vogliono trovare tutti i pazienti che sono stati ricoverati esattamente due volte.
 \begin{lstlisting}
@@ -1288,8 +1290,9 @@ WHERE
             r3.cod_ric <> r1.cod_ric AND
             r3.cod_ric <> r2.cod_ric));
 \end{lstlisting}
-\cleardoublepage
+I due EXISTS annidiati permettono, prima di rimuovere tutti i pazienti che non sono stati ricoverati almeno due volte, poi di considerare soltanto quelli per cui non esiste un terzo ricovero.
 
+\cleardoublepage
 \subsubsection{Query 3}
 Si vuole trovare il mese nel quale sono iniziati il maggior numero di ricoveri.
 \begin{lstlisting}
@@ -1308,6 +1311,7 @@ WHERE
    FROM MONTH_COUNT
    WHERE mc.c < c);
 \end{lstlisting}
+Come si è visto nelle query precedenti, la vista permette di non ricostruire tabelle durante l'esecuzione della query, favorendo la rapida esecuzione della stessa.
 
 \subsubsection{Query 4}
 Si vogliono ottenere tutti i farmaci che hanno causato effetti collaterali, ordinati in ordine decrescente per numero di effetti collaterali.
@@ -1321,8 +1325,10 @@ FROM
   JOIN TERAPIA ON cod_ter = tc.terapia
 ORDER BY tc.n DESC;
 \end{lstlisting}
-\cleardoublepage
+Il JOIN è stato usato perché l'informazione riguardo gli effetti collaterali risiede nella tabella
+TERAPIA\_PRESCRITTA mentre quella riguardo al farmaco nella tabella TERAPIA.
 
+\cleardoublepage
 \subsubsection{Query 5}
 Si vogliono ottenere i pazienti che sono stati curati almeno due volte consecutivamente con lo stesso farmaco.
 \begin{lstlisting}
@@ -1330,7 +1336,7 @@ CREATE OR REPLACE VIEW PAZ_TER AS
 SELECT cf, nome, cognome, cod_ter, data_i, farmaco
 FROM PAZIENTE
   JOIN DIAGNOSI ON paziente = cf
-  JOIN TERAPIA_PRESCRITTA ON coll_diagnosi = cod_dia
+  JOIN TERAPIA_PRESCRITTA ON coll_dia = cod_dia
   JOIN TERAPIA ON cod_ter = terapia;
 
 SELECT DISTINCT pt1.cf, pt1.nome,
@@ -1343,19 +1349,20 @@ WHERE
    WHERE pt2.cf = pt1.cf
      AND pt2.cod_ter = pt1.cod_ter
      AND pt2.farmaco = pt1.farmaco
-AND
-  NOT EXISTS
-  (SELECT *
-   FROM PAZ_TER pt3
-   WHERE pt3.cf = pt1.cf
-     AND pt1.data_i < pt3.data_i
-     AND pt3.data_i < pt2.data_i
-     AND pt3.farmaco <> pt1.farmaco
-     );
+     AND
+     NOT EXISTS
+     (SELECT *
+      FROM PAZ_TER pt3
+      WHERE pt3.cf = pt1.cf
+        AND pt1.data_i < pt3.data_i
+        AND pt3.data_i < pt2.data_i
+        AND pt3.farmaco <> pt1.farmaco
+        ));
 \end{lstlisting}
+Lo EXISTS permette di verficiare che il paziente abbia assunto almeno due volte lo stesso farmaco.
+Con il NOT EXISTS vengono rimossi tutti quei pazienti che, durante il periodo tra le due assunzioni del farmaco sopra, hanno assunto un altro farmaco.
+
 \cleardoublepage
-
-
 \subsubsection{Query 6}
 Si vogliono ottenere tutte le coppie di pazienti in cui il primo paziente ha contratto le stesse (tutte e sole) malattie del secondo.
 \begin{lstlisting}
@@ -1385,11 +1392,13 @@ WHERE
       WHERE pat2.paziente = p2.cf
         AND pat2.cod_pat = pat1.cod_pat));
 \end{lstlisting}
+La prima parte della query verifica che il paziente p1 abbia contratto almeno tutte le malattie del paziente p2.
+Viene sfruttata l'implicazione logica: se p2 ha contratto la malattia allora anche p1 deve averla contratta
+In altre parole non è possibile che p1 non abbia contratto una malattia contratta da p2.
+Nella seconda parte si verifica che p1 non abbia mai contratto malattie che p2 non ha mai contratto, cioè: se p2 non ha mai contratto la malattia allora anche p1 non l'ha mai contratta.
+Che può essere tradotto in: osservando l'elenco di malattia di p1 non ne compare nessuna che non sia stata contratta anche da p2.
+
 \cleardoublepage
-
-
-
-
 \section{Progettazione Fisica}
 \subsection{Nuovi Indici}
 % Indice possibile è provincia 
