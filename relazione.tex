@@ -1245,189 +1245,160 @@ La funzione \textit{ricalcolo\_gg} calcola la somma totale dei giorni che un paz
 \subsection{Definizione di Query Significative}
 
 Segue un elenco di query significative, ciascuna con un breve commento.
-TODO dopo averle scritte riordinare per difficoltà
-TODO Breve commento sulle difficoltà(?) e sull'output e su possibili alternative soluzioni alternative
 
 \subsubsection{Query 1}
-Si vogliono ottenere tutti i farmaci che hanno causato effetti collaterali, ordinati in ordine decrescente per numero di effetti collaterali.
-\begin{lstlisting}
-SELECT t.farmaco, tc.effetti_collaterali
-FROM (
-  SELECT terapia, count(coll_dia)
-         AS effetti_collaterali
-  FROM terapia_prescritta 
-  WHERE coll_dia IS NOT NULL
-  GROUP BY terapia) tc
-LEFT JOIN terapia t ON t.cod_ter = tc.terapia
-ORDER BY tc.effetti_collaterali DESC;
-\end{lstlisting}
-
-% this query doesn't work, lovely timeout
-% SET statement_timeout = 9999999999;
-\subsubsection{Query 2}
-Si vogliono ottenere tutte le coppie di pazienti in cui il primo paziente ha contratto le stesse malattie del secondo.
-Si escludano le coppie che hanno avuto la stessa malattia nella stessa fascia d'età, considerando le due fasce d'età: sotto i 50 e sopra i 50.
-\begin{lstlisting}
-CREATE INDEX idx_patologie
-ON diagnosi (paziente, cod_pat);
-
-SELECT p2.cf, p2.cf
-FROM paziente p1, paziente p2
-WHERE p1.cf <> p2.cf 
-  AND (((date_part('year', age(p1.data_nasc)) - 50) *
-  (date_part('year', age(p2.data_nasc)) - 50)) < 0)
-  AND NOT EXISTS (
-    SELECT d1.paziente, d1.cod_pat
-    FROM diagnosi d1
-    WHERE d1.paziente = p1.cf 
-      AND NOT EXISTS (
-        SELECT d2.paziente, d2.cod_pat
-        FROM diagnosi d2
-        WHERE d2.paziente = p2.cf
-          AND d2.cod_pat = d1.cod_pat
-      )
-);
-
-\end{lstlisting}
-
-% questo sotto funziona
-% output da 23997 righe
-% ci mette un sacco a dare il risultato
-\begin{lstlisting}
-CREATE INDEX idx_patologie
-ON diagnosi (paziente, cod_pat);
-
-SET statement_timeout = 9999999999;
-
-SELECT p1.cf, p2.cf
-FROM paziente p1
-JOIN paziente p2 ON p1.cf < p2.cf 
-  AND NOT EXISTS (
-    SELECT *
-    FROM diagnosi d1
-    WHERE d1.paziente = p1.cf 
-      AND NOT EXISTS (
-        SELECT *
-        FROM diagnosi d2
-        WHERE d2.paziente = p2.cf
-          AND d2.cod_pat = d1.cod_pat
-      )
-);
-\end{lstlisting}
-
-\subsubsection{Query 3}
 Per ogni provincia il paziente con il maggior numero di diagnosi.
 \begin{lstlisting}
-CREATE OR REPLACE VIEW count_patologie AS
-SELECT p.cf, p.nome, p.cognome,
-       p.prov_res, count(d.cod_pat) as num_pat
-FROM paziente p
-LEFT JOIN diagnosi d on p.cf = d.paziente
-GROUP BY p.cf;
+CREATE OR REPLACE VIEW COUNT_DIA AS
+SELECT cf, nome, cognome, prov_res,
+       count(cod_dia) AS num_dia
+FROM PAZIENTE
+  JOIN DIAGNOSI ON paziente = cf
+GROUP BY cf;
 
 SELECT *
-FROM count_patologie cp1
-WHERE NOT EXISTS (
-  SELECT *
-  FROM count_patologie cp2
-  WHERE cp1.prov_res = cp2.prov_res
-  AND cp2.num_pat > cp1.num_pat
-);
+FROM COUNT_DIA cd1
+WHERE
+  NOT EXISTS
+  (SELECT *
+   FROM COUNT_DIA cd2
+   WHERE cd2.prov_res = cd1.prov_res
+     AND cd2.num_dia > cd1.num_dia);
+\end{lstlisting}
+\cleardoublepage
 
+\subsubsection{Query 2}
+Si vogliono trovare tutti i pazienti che sono stati ricoverati esattamente due volte.
+\begin{lstlisting}
+SELECT p.cf, p.nome, p.cognome
+FROM PAZIENTE p
+WHERE
+  EXISTS
+  (SELECT *
+   FROM RICOVERO r1
+   JOIN RICOVERO r2 ON
+     r1.cod_ric < r2.cod_ric AND
+     r1.paziente = r2.paziente 
+   WHERE r1.paziente = p.cf
+     AND
+     NOT EXISTS
+     (SELECT *
+      FROM RICOVERO r3
+      WHERE r3.paziente = r1.paziente AND
+            r3.cod_ric <> r1.cod_ric AND
+            r3.cod_ric <> r2.cod_ric));
+\end{lstlisting}
+\cleardoublepage
+
+\subsubsection{Query 3}
+Si vuole trovare il mese nel quale sono iniziati il maggior numero di ricoveri.
+\begin{lstlisting}
+CREATE OR REPLACE VIEW MONTH_COUNT AS
+SELECT month, COUNT(*) AS c
+FROM (SELECT cod_ric,
+             date_part('month', data_i) AS month
+      FROM RICOVERO) AS ric_month
+GROUP BY month;
+
+SELECT month, c
+FROM MONTH_COUNT mc
+WHERE
+  NOT EXISTS
+  (SELECT *
+   FROM MONTH_COUNT
+   WHERE mc.c < c);
 \end{lstlisting}
 
 \subsubsection{Query 4}
+Si vogliono ottenere tutti i farmaci che hanno causato effetti collaterali, ordinati in ordine decrescente per numero di effetti collaterali.
+\begin{lstlisting}
+SELECT farmaco, tc.n 
+FROM
+  (SELECT terapia, COUNT(*) AS n
+   FROM TERAPIA_PRESCRITTA
+   WHERE coll_dia IS NOT NULL
+   GROUP BY terapia) AS tc
+  JOIN TERAPIA ON cod_ter = tc.terapia
+ORDER BY tc.n DESC;
+\end{lstlisting}
+\cleardoublepage
+
+\subsubsection{Query 5}
 Si vogliono ottenere i pazienti che sono stati curati almeno due volte consecutivamente con lo stesso farmaco.
 \begin{lstlisting}
-CREATE OR REPLACE VIEW terapie_prescritte AS
-SELECT *
-FROM terapia_prescritta tp
-LEFT JOIN diagnosi d ON tp.diagnosi = d.cod_dia
-LEFT JOIN paziente p ON d.paziente = p.cf 
-LEFT JOIN terapia t ON tp.terapia = t.cod_ter;
+CREATE OR REPLACE VIEW PAZ_TER AS
+SELECT cf, nome, cognome, cod_ter, data_i, farmaco
+FROM PAZIENTE
+  JOIN DIAGNOSI ON paziente = cf
+  JOIN TERAPIA_PRESCRITTA ON coll_diagnosi = cod_dia
+  JOIN TERAPIA ON cod_ter = terapia;
 
-SELECT 
-  tp1.cf, tp1.data_i, tp1.diagnosi,
-  tp1.terapia, tp1.farmaco
-FROM terapie_prescritte tp1
-WHERE EXISTS (
-  SELECT *
-  FROM terapie_prescritte tp2
-  WHERE tp1.paziente = tp2.paziente
-  AND tp1.diagnosi <> tp2.diagnosi
-  AND tp1.farmaco = tp2.farmaco
-  AND tp1.data_i < tp2.data_i
-  AND NOT EXISTS (
-    SELECT *
-    FROM terapie_prescritte tp3
-    WHERE tp3.cf = tp1.cf
-    AND tp3.data_i > tp1.data_i
-    AND tp3.data_i < tp2.data_i
-  )
-) order by tp1.cf;
-
- 
+SELECT DISTINCT pt1.cf, pt1.nome,
+                pt1.cognome, pt1.farmaco
+FROM PAZ_TER pt1
+WHERE
+  EXISTS
+  (SELECT *
+   FROM PAZ_TER pt2
+   WHERE pt2.cf = pt1.cf
+     AND pt2.cod_ter = pt1.cod_ter
+     AND pt2.farmaco = pt1.farmaco
+AND
+  NOT EXISTS
+  (SELECT *
+   FROM PAZ_TER pt3
+   WHERE pt3.cf = pt1.cf
+     AND pt1.data_i < pt3.data_i
+     AND pt3.data_i < pt2.data_i
+     AND pt3.farmaco <> pt1.farmaco
+     );
 \end{lstlisting}
-
-%  more or less, manca un >= 
-\subsubsection{Query 5}
-Si vuole trovare il mese con il massimo numero di ricoveri.
-\begin{lstlisting}
-  CREATE OR REPLACE VIEW months_list
-  AS SELECT GENERATE_SERIES(
-          '2008-01-01'::date,
-          now()::date,
-          '1 month'
-          ) as month;
-
-  SELECT month, count(*)
-  
-  FROM months_list
-  LEFT JOIN ricovero
-  ON data_i < month::date 
-  AND data_f > month::date
-  GROUP BY month
-  ORDER BY count DESC
-  LIMIT 1;
-
-CREATE OR REPLACE VIEW months_list
-AS SELECT GENERATE_SERIES(
-        '2008-01-01'::date,
-        now()::date,
-        '1 month'
-        ) as month;
-        
-select *
-from ( select date_part
-('month', to_date(data_i, 'YYYY-MM-DD')) as data, 
-count(month(data))
-        from ricovero
-        group by month(data)) m
-;
-
-\end{lstlisting}
+\cleardoublepage
 
 
 \subsubsection{Query 6}
-Utilizzando una vista, trovare il giorno con il massimo numero di persone ricoverate.
-%  questa è uguale a quella sopra ma per giorni invece che per mesi
+Si vogliono ottenere tutte le coppie di pazienti in cui il primo paziente ha contratto le stesse (tutte e sole) malattie del secondo.
 \begin{lstlisting}
-  CREATE OR REPLACE VIEW days_list
-  AS SELECT GENERATE_SERIES(
-           '2008-01-01'::date,
-           now()::date,
-           '1 day'
-           ) as day;
-
+SELECT p1.cf, p2.cf
+FROM PAZIENTE p1
+  JOIN PAZIENTE p2 ON p1.cf < p2.cf
+WHERE
+  NOT EXISTS
+  (SELECT *
+   FROM DIAGNOSI pat2
+   WHERE pat2.paziente = p2.cf
+     AND
+     NOT EXISTS
+     (SELECT *
+      FROM DIAGNOSI pat1
+      WHERE pat1.paziente = p1.cf
+        AND pat1.cod_pat = pat2.cod_pat))
+  AND
+  NOT EXISTS
+  (SELECT *
+   FROM DIAGNOSI pat1
+   WHERE pat1.paziente = p1.cf
+     AND
+     NOT EXISTS
+     (SELECT *
+      FROM DIAGNOSI pat2
+      WHERE pat2.paziente = p2.cf
+        AND pat2.cod_pat = pat1.cod_pat));
 \end{lstlisting}
+\cleardoublepage
+
+
+
+
+\section{Progettazione Fisica}
+\subsection{Nuovi Indici}
+% Indice possibile è provincia 
 
 
 
 
 
-
-\clearpage
-
+\cleardoublepage
 \section{Analisi Dati}
 \subsection{Popolamento della Base di Dati}
 La base di dati è stata testata su un insieme di dati generato tramite uno script R.
@@ -1498,7 +1469,7 @@ Si vuole osservare come siano cambiate, col passare degli anni, la quantità di 
   \centering
   \includegraphics[width=\linewidth]{grafico_1}
   \caption{Andamento mensile inserimenti di Pazienti e di Ricoveri}
-  \label{fig:grafico_1}
+  \label{fig:grafico_1} %TODO rifare bello, piu qualita e rettangolare
 \end{figure}
 
 Dal grafico si può intuire che
@@ -1580,16 +1551,6 @@ Rispetto alle durate dei ricoveri in cui è stata diagnosticata una o più patol
 
 Il grafico mostra come la tendenza delle durate dei ricoveri per incidenze tumorali sia leggermente inferiore rispetto a quella dei ricoveri legati alle 5 patologie più frequenti. La distribuzione è asimmetrica in tutti i boxplot con una evidente variazione della distanza interquartilica rispetto alla mediana. 
 Grazie a questa asimmetria è possibile notare come la durata dei ricoveri legati ai tumori sia leggermente meno variabile rispetto alle altre patologie considerate. In particolare, se la durata del ricovero supera i 200 giorni, potrebbe, statisticamente, proseguire per svariati giorni, in quanto un intervallo interquartilico maggiore implica una distribuzione più ampia. È interessante notare che alcuni valori anomali (outlier) indicano che per tutte le patologie considerate vi sono stati dei ricoveri che hanno avuto una durata di quasi 4 anni.
-
-\cleardoublepage
-
-
-
-\clearpage
-\section{Progettazione Fisica}
-\subsection{Nuovi Indici}
-% Indice possibile è provincia 
-
 
 
 
