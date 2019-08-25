@@ -984,13 +984,13 @@ dbGetQuery(con, "select setval('dom_ter_seq', (select max(cod_ter) from terapia)
 
 
 
-bambini_malati = dbGetQuery(con, "select p.nome, p.cognome, p.data_nasc, r.motivo, r.div_osp 
-                                  from paziente p join ricovero r on p.cf = r.paziente
-                                  where data_nasc > '2017-01-01';")
+#bambini_malati = dbGetQuery(con, "select p.nome, p.cognome, p.data_nasc, r.motivo, r.div_osp 
+#                                  from paziente p join ricovero r on p.cf = r.paziente
+#                                  where data_nasc > '2017-01-01';")
 
 
 
-d_nascita = dbGetQuery(con, "select data_nasc from paziente;")
+#d_nascita = dbGetQuery(con, "select data_nasc from paziente;")
 #hist(d_nascita[,1], "year", freq = TRUE, breaks = 50)
 
 
@@ -998,13 +998,13 @@ d_nascita = dbGetQuery(con, "select data_nasc from paziente;")
 
 
 
-paz_gg <- dbGetQuery(con, "set search_path to ospedale; select data_nasc, tot_gg_ric from paziente; ")
+#paz_gg <- dbGetQuery(con, "set search_path to ospedale; select data_nasc, tot_gg_ric from paziente; ")
 
-dbGetQuery(con, "select * from paziente p join ricovero r on p.cf = r.paziente where data_nasc > '2019-02-01' AND tot_gg_ric is null; ")
-dbGetQuery(con, "select count(*) from paziente p join ricovero r on p.cf = r.paziente where tot_gg_ric is null; ")
+#dbGetQuery(con, "select * from paziente p join ricovero r on p.cf = r.paziente where data_nasc > '2019-02-01' AND tot_gg_ric is null; ")
+#dbGetQuery(con, "select count(*) from paziente p join ricovero r on p.cf = r.paziente where tot_gg_ric is null; ")
 
 
-dbGetQuery(con,"select * from paziente p join ricovero r on p.cf = r.paziente where p.cf = 'DAVPAO22F03D961J';")
+#dbGetQuery(con,"select * from paziente p join ricovero r on p.cf = r.paziente where p.cf = 'DAVPAO22F03D961J';")
 
 #hist(paz_gg[,2],breaks=40)
 
@@ -1014,6 +1014,47 @@ dbGetQuery(con,"select * from paziente p join ricovero r on p.cf = r.paziente wh
 
 #summary(paz_gg)
 
+
+
+
+pt <- dbGetQuery(con, "
+set search_path to ospedale;
+
+--DROP INDEX IF EXISTS ind_paz;
+--DROP INDEX IF EXISTS ind_pat;
+--DROP INDEX IF EXISTS ind_paz_dia;
+
+--CREATE INDEX ind_paz ON PAZIENTE USING btree(cf);
+--CREATE INDEX ind_pat ON DIAGNOSI USING hash(cod_pat);
+--CREATE INDEX ind_paz_dia ON DIAGNOSI USING hash(paziente);
+
+--EXPLAIN
+SELECT p1.cf, p2.cf
+FROM PAZIENTE p1
+  JOIN PAZIENTE p2 ON p1.cf < p2.cf
+WHERE
+  NOT EXISTS
+  (SELECT *
+   FROM DIAGNOSI pat2
+   WHERE pat2.paziente = p2.cf
+     AND
+     NOT EXISTS
+     (SELECT *
+      FROM DIAGNOSI pat1
+      WHERE pat1.paziente = p1.cf
+        AND pat1.cod_pat = pat2.cod_pat))
+  AND
+  NOT EXISTS
+  (SELECT *
+   FROM DIAGNOSI pat1
+   WHERE pat1.paziente = p1.cf
+     AND
+     NOT EXISTS
+     (SELECT *
+      FROM DIAGNOSI pat2
+      WHERE pat2.paziente = p2.cf
+        AND pat2.cod_pat = pat1.cod_pat));
+")
 
 
 

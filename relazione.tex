@@ -1381,10 +1381,30 @@ Che può essere tradotto in: osservando l'elenco di malattia di p1 non ne compar
 \cleardoublepage
 \section{Progettazione Fisica}
 \subsection{Nuovi Indici}
-La creazioni di strutture ausiliarie, quali gli indici, possono migliorare le performance di un database.
-Le chiavi primarie 
+La creazione di strutture ausiliarie, quali gli indici, possono migliorare le performance di un database.
 
-https://www.postgresql.org/docs/9.1/sql-createindex.html
+In particolare gli indici vengono sfruttati per rendere più efficiente la ricerca di record in una determinata tabella.
+
+Per le chiavi primarie o attributi che devono soddisfare i vincoli di unicità viene creato automaticamente un indice dal gestore del db (TODO che non mi ricordo come si chiama), di conseguenza la creazione manuale di indici fa riferimento, generalmente, solo a colonne che non rispettano queste condizioni. 
+
+Svantaggio : modifica di un record. ogni volta che succede bisogna modificare l'indice. Su db statico usato solo per report si possono gestire più indici, su uno dinamico, con molte transazioni di modifica, non conviene. Gli indici usano anche diverso spazio sul disco che a seconda dei casi può diventare oneroso.
+
+La costruzione di un indice ottimale richiede: un indice non molto lungo con chiavi corte, poco ripetute, più colonne come valore.
+
+Un indice lungo comporta più letture sul disco, inoltre, i record degli indici vengono spesso utilizzati nei confronti quindi entry più corte migliorano l'efficenza. Ad esempio una colonna di interi è la scelta migliore per un indice mentre il confronto tra stringhe implica l'esecuzione del test carattere per carattere. 
+
+Avere tante entry ripetute vanifica il lavoro dell'indice in quanto, in esecuzione della ricerca si fa riferimento a più valori procedendo sequenzialmente.
+
+Se l'indice contiene solo il valore della colonna e la tabella a cui fa riferimento questo implica la necessità di leggere dalla tabella i valori della tupla corrispondente. Se, invece, l'indice viene costrito su più colonne (quelle necessarie) della tabella non è richiesta una ulteriore lettura. Questo comporta però un incremento nell'utilizzo dello spazio.
+
+Gli indici possono essere costruiti sfruttando strutture dati differenti a seconda di come verrà sfruttato nelle query. Ad esempio se una colonna viene spesso utilizzara in test di uguaglianza una struttura con tabella di hash risulta più efficente di un btree che può essere utilizzato per ottimizzare i confronti.
+
+Inoltre la caratteristica intrinseca degli indici di ordinare i record contensente di ottimizzare quelle query in cui si richiede tramite l'istruzione ORDER BY di ordinare attraverso una determinata colonna. Con un indice il lavoro è già fatto e non viene svolto in tempo d'esecuzione.
+
+Nel nostro caso abbiamo considerato che ...... quindi abbiamo testato un indice per la colonna .... e abbiamo visto che durante gli inserimenti e le modifiche risulta ....... avere l'indice. 
+
+
+% https://www.postgresql.org/docs/9.1/sql-createindex.html
 
 % Indice possibile è provincia 
 
