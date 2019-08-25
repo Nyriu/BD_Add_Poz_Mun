@@ -1381,27 +1381,45 @@ Che può essere tradotto in: osservando l'elenco di malattia di p1 non ne compar
 \cleardoublepage
 \section{Progettazione Fisica}
 \subsection{Nuovi Indici}
-La creazione di strutture ausiliarie, quali gli indici, possono migliorare le performance di un database.
+La creazione di strutture ausiliarie, quali gli indici, permette di migliorare le performance di un database. In particolare, gli indici vengono sfruttati per rendere più efficiente la ricerca di record in una determinata tabella. Per le chiavi primarie o attributi che devono soddisfare i vincoli di unicità viene creato automaticamente un indice dal gestore del database, di conseguenza la creazione manuale di indici fa riferimento, generalmente, solo a colonne che non rispettano queste condizioni. Non sempre un indice risulta utile ai fini del miglioramento delle performance, infatti, se esso viene creato su una colonna sulla quale si effettuano frequenti operazioni di aggiornamento allora anche l'indice deve essere frequentemente manipolato per rispettare le modifiche. Viceversa, se il database viene utilizzato staticamente, solo per scopi di report, si possono sfruttare anche più indici. 
+Un indice ottimale possiede alcune caratteristiche peculiari:
+\begin{itemize}
+  \item Non è troppo lungo in quanto, in caso contrario, questo comportebbe un maggior numero di operazioni di lettura sul disco.
+  
+  \item I record dell'indice vengono spesso utilizzati nei confronti quindi entry più corte migliorano l'efficenza. Ad esempio, una colonna di interi è la scelta migliore per un indice mentre il confronto tra stringhe implica l'esecuzione del test di uguaglianza carattere per carattere.
+  
+  \item Ha pochi valori duplicati in quanto avere tante entry ripetute vanifica il lavoro dell'indice perchè in esecuzione della ricerca si fa riferimento a più valori procedendo sequenzialmente.
+  
+  \item Se l'indice contiene solo il valore della colonna e la tabella a cui fa riferimento allora vi è la necessità di leggere dalla tabella i valori della tupla corrispondente. Se, invece, l'indice viene costrito su più colonne (quelle necessarie) della tabella non è richiesta una ulteriore lettura. Questa implementazione è possibile al costo dell'utilizzo di maggior spazio.
+\end{itemize}
+Gli indici possono essere costruiti basandosi su strutture dati differenti a seconda di come verrà sfruttato nelle query. Ad esempio se una colonna viene spesso utilizzata in test di uguaglianza una struttura con tabella di hash risulta più efficente di un btree che può essere utilizzato per ottimizzare i generici confronti. Inoltre, la caratteristica intrinseca degli indici di ordinare i record consente di ottimizzare quelle query in cui si richiede, tramite l'istruzione ORDER BY, di ordinare attraverso una determinata colonna. Con un indice il lavoro è già fatto e non viene svolto in tempo d'esecuzione. 
 
-In particolare gli indici vengono sfruttati per rendere più efficiente la ricerca di record in una determinata tabella.
+Per la valutazione sull'inserimento o meno di alcuni indici nel caso specifico del progetto è stata utilizzata l'istruzione EXPLAIN ANALYZE che, invece di restituire il risultato della query, restisce il piano dettagliato con cui il database procede nell'esecuzione dei comandi dell'interrogazione. In particolare consente di analizzare i costi, forniti tramite un valore numerico, di una specifica sequenza di operazioni nonchè il tempo impiegato nella stessa. E' interessante notare come nell'output dell'analisi si faccia riferimento al tempo di pianificazione della query oltre al tempo della sua esecuzione.
 
-Per le chiavi primarie o attributi che devono soddisfare i vincoli di unicità viene creato automaticamente un indice dal gestore del db (TODO che non mi ricordo come si chiama), di conseguenza la creazione manuale di indici fa riferimento, generalmente, solo a colonne che non rispettano queste condizioni. 
+Per l'implementazione di un indice si è considerato il fatto che spesso si utilizzano il nome e/o il cognome del paziente per ricavare alcune informazioni dal database senza l'inserimento del codice fiscale. 
 
-Svantaggio : modifica di un record. ogni volta che succede bisogna modificare l'indice. Su db statico usato solo per report si possono gestire più indici, su uno dinamico, con molte transazioni di modifica, non conviene. Gli indici usano anche diverso spazio sul disco che a seconda dei casi può diventare oneroso.
+L'esecuzione di una semplice query di ricerca per l'ottenimento dei dati tramite l'inserimento del nome di un paziente risulta molto più efficente se supportata da un indice sul nome mentre non risulta essere influente durante le operazioni di inserimento e cancellazione.
 
-La costruzione di un indice ottimale richiede: un indice non molto lungo con chiavi corte, poco ripetute, più colonne come valore.
+L'esecuzione di una query con lo scopo di fornire tutte le coppie di pazienti con stesso nome e cognome, invece, non subisce miglioramenti delle performance quando si implementa un indice su (nome,cognome) e ciò è deducibile tramite  l'operazione di analisi che non mostra variazioni nel costo calcolato e nel tempo di esecuzione dell'interrogazione.
 
-Un indice lungo comporta più letture sul disco, inoltre, i record degli indici vengono spesso utilizzati nei confronti quindi entry più corte migliorano l'efficenza. Ad esempio una colonna di interi è la scelta migliore per un indice mentre il confronto tra stringhe implica l'esecuzione del test carattere per carattere. 
+L'esecuzione di una query con l'obbiettivo di fornire tutti i dati relativi ai ricoveri di un determinato paziente 
 
-Avere tante entry ripetute vanifica il lavoro dell'indice in quanto, in esecuzione della ricerca si fa riferimento a più valori procedendo sequenzialmente.
+\begin{lstlisting}
+  SET search_path TO ospedale;
 
-Se l'indice contiene solo il valore della colonna e la tabella a cui fa riferimento questo implica la necessità di leggere dalla tabella i valori della tupla corrispondente. Se, invece, l'indice viene costrito su più colonne (quelle necessarie) della tabella non è richiesta una ulteriore lettura. Questo comporta però un incremento nell'utilizzo dello spazio.
-
-Gli indici possono essere costruiti sfruttando strutture dati differenti a seconda di come verrà sfruttato nelle query. Ad esempio se una colonna viene spesso utilizzara in test di uguaglianza una struttura con tabella di hash risulta più efficente di un btree che può essere utilizzato per ottimizzare i confronti.
-
-Inoltre la caratteristica intrinseca degli indici di ordinare i record contensente di ottimizzare quelle query in cui si richiede tramite l'istruzione ORDER BY di ordinare attraverso una determinata colonna. Con un indice il lavoro è già fatto e non viene svolto in tempo d'esecuzione.
-
-Nel nostro caso abbiamo considerato che ...... quindi abbiamo testato un indice per la colonna .... e abbiamo visto che durante gli inserimenti e le modifiche risulta ....... avere l'indice. 
+  EXPLAIN ANALYZE
+  SELECT cod_ric FROM paziente 
+  JOIN ricovero ON paziente = cf
+  WHERE nome = 'tino'AND cognome = 'labella';
+  
+  CREATE INDEX nome_idx ON paziente (nome,cognome);
+  
+  EXPLAIN ANALYZE
+  SELECT cod_ric FROM paziente 
+  JOIN ricovero ON paziente = cf
+  WHERE nome = 'tino'AND cognome = 'labella';
+\end{lstlisting}
+viene resa più efficiente tramite la creazione di un indice su (nome,cognome). E' interessante notare come il tempo di pianificazione aumenta in presenza dell'indice mentre le effettive operazioni risultano più efficenti e veloci in termini di costo e tempo. 
 
 
 % https://www.postgresql.org/docs/9.1/sql-createindex.html
