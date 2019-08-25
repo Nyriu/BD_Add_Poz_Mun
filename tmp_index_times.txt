@@ -201,7 +201,7 @@ join paziente p2 on
 group by p1.nome, p1.cognome;
 
 
-CREATE index nome_cognome_idx on paziente (nome);
+CREATE index nome_cognome_idx on paziente (nome, cognome);
 
 explain analyze select p1.nome, p1.cognome, count(*)
 from paziente p1
@@ -219,6 +219,8 @@ FINE # QUERY USATE #############################################################
 
 RISULTATI QUERY SOPRA ##########################################################
 bd_18_paolo_addis=> set search_path to ospedale;
+dex nome_cognome_idx;
+
 SET
 bd_18_paolo_addis=> DROP index nome_cognome_idx;
 ERROR:  index "nome_cognome_idx" does not exist
@@ -232,23 +234,23 @@ bd_18_paolo_addis->   p1.cognome = p2.cognome
 bd_18_paolo_addis-> group by p1.nome, p1.cognome;
                                                             QUERY PLAN                                                            
 ----------------------------------------------------------------------------------------------------------------------------------
- HashAggregate  (cost=932.33..932.40 rows=7 width=16) (actual time=21.818..21.820 rows=6 loops=1)
+ HashAggregate  (cost=932.33..932.40 rows=7 width=16) (actual time=22.160..22.162 rows=6 loops=1)
    Group Key: p1.nome, p1.cognome
-   ->  Hash Join  (cost=441.00..932.27 rows=7 width=16) (actual time=10.599..21.801 rows=6 loops=1)
+   ->  Hash Join  (cost=441.00..932.27 rows=7 width=16) (actual time=10.797..22.141 rows=6 loops=1)
          Hash Cond: (((p1.nome)::text = (p2.nome)::text) AND ((p1.cognome)::text = (p2.cognome)::text))
          Join Filter: ((p1.cf)::text < (p2.cf)::text)
          Rows Removed by Join Filter: 10006
-         ->  Seq Scan on paziente p1  (cost=0.00..291.00 rows=10000 width=33) (actual time=0.014..1.935 rows=10000 loops=1)
-         ->  Hash  (cost=291.00..291.00 rows=10000 width=33) (actual time=10.088..10.088 rows=10000 loops=1)
+         ->  Seq Scan on paziente p1  (cost=0.00..291.00 rows=10000 width=33) (actual time=0.011..1.853 rows=10000 loops=1)
+         ->  Hash  (cost=291.00..291.00 rows=10000 width=33) (actual time=10.210..10.210 rows=10000 loops=1)
                Buckets: 16384  Batches: 1  Memory Usage: 766kB
-               ->  Seq Scan on paziente p2  (cost=0.00..291.00 rows=10000 width=33) (actual time=0.010..3.944 rows=10000 loops=1)
- Planning time: 1.003 ms
- Execution time: 21.909 ms
+               ->  Seq Scan on paziente p2  (cost=0.00..291.00 rows=10000 width=33) (actual time=0.009..3.933 rows=10000 loops=1)
+ Planning time: 1.089 ms
+ Execution time: 22.400 ms
 (12 rows)
 
 bd_18_paolo_addis=> 
 bd_18_paolo_addis=> 
-bd_18_paolo_addis=> CREATE index nome_cognome_idx on paziente (nome);
+bd_18_paolo_addis=> CREATE index nome_cognome_idx on paziente (nome, cognome);
 CREATE INDEX
 bd_18_paolo_addis=> 
 bd_18_paolo_addis=> explain analyze select p1.nome, p1.cognome, count(*)
@@ -260,24 +262,24 @@ bd_18_paolo_addis->   p1.cognome = p2.cognome
 bd_18_paolo_addis-> group by p1.nome, p1.cognome;
                                                             QUERY PLAN                                                            
 ----------------------------------------------------------------------------------------------------------------------------------
- HashAggregate  (cost=932.33..932.40 rows=7 width=16) (actual time=28.210..28.212 rows=6 loops=1)
+ HashAggregate  (cost=932.33..932.40 rows=7 width=16) (actual time=21.755..21.757 rows=6 loops=1)
    Group Key: p1.nome, p1.cognome
-   ->  Hash Join  (cost=441.00..932.27 rows=7 width=16) (actual time=12.685..28.190 rows=6 loops=1)
+   ->  Hash Join  (cost=441.00..932.27 rows=7 width=16) (actual time=10.280..21.741 rows=6 loops=1)
          Hash Cond: (((p1.nome)::text = (p2.nome)::text) AND ((p1.cognome)::text = (p2.cognome)::text))
          Join Filter: ((p1.cf)::text < (p2.cf)::text)
          Rows Removed by Join Filter: 10006
-         ->  Seq Scan on paziente p1  (cost=0.00..291.00 rows=10000 width=33) (actual time=0.009..1.956 rows=10000 loops=1)
-         ->  Hash  (cost=291.00..291.00 rows=10000 width=33) (actual time=12.087..12.087 rows=10000 loops=1)
+         ->  Seq Scan on paziente p1  (cost=0.00..291.00 rows=10000 width=33) (actual time=0.008..2.080 rows=10000 loops=1)
+         ->  Hash  (cost=291.00..291.00 rows=10000 width=33) (actual time=9.739..9.739 rows=10000 loops=1)
                Buckets: 16384  Batches: 1  Memory Usage: 766kB
-               ->  Seq Scan on paziente p2  (cost=0.00..291.00 rows=10000 width=33) (actual time=0.009..3.732 rows=10000 loops=1)
- Planning time: 1.518 ms
- Execution time: 28.295 ms
+               ->  Seq Scan on paziente p2  (cost=0.00..291.00 rows=10000 width=33) (actual time=0.008..3.605 rows=10000 loops=1)
+ Planning time: 1.433 ms
+ Execution time: 21.857 ms
 (12 rows)
 
 bd_18_paolo_addis=> 
 bd_18_paolo_addis=> DROP index nome_cognome_idx;
 DROP INDEX
-bd_18_paolo_addis=> 
+
 FINE # RISULTATI QUERY SOPRA ###################################################
 
 
@@ -305,7 +307,7 @@ select cod_ric from paziente
 join ricovero on paziente = cf
 where nome = 'tino' and cognome = 'labella';
 
-CREATE index nome_idx on paziente (nome);
+CREATE index nome_cognome_idx on paziente (nome, cognome);
 
 explain analyze 
 select cod_ric from paziente 
@@ -313,7 +315,7 @@ join ricovero on paziente = cf
 where nome = 'tino' and cognome = 'labella';
 
 
-DROP index nome_idx;
+DROP index nome_cognome_idx;
 
 FINE # QUERY USATE #############################################################
 
@@ -322,6 +324,7 @@ FINE # QUERY USATE #############################################################
 
 
 RISULTATI QUERY SOPRA ##########################################################
+
 bd_18_paolo_addis=> set search_path to ospedale;
 SET
 bd_18_paolo_addis=> 
@@ -331,48 +334,44 @@ bd_18_paolo_addis-> join ricovero on paziente = cf
 bd_18_paolo_addis-> where nome = 'tino' and cognome = 'labella';
                                                     QUERY PLAN                                                     
 -------------------------------------------------------------------------------------------------------------------
- Hash Join  (cost=341.01..1102.93 rows=3 width=4) (actual time=4.572..15.313 rows=10 loops=1)
+ Hash Join  (cost=341.01..1102.93 rows=3 width=4) (actual time=5.665..17.443 rows=10 loops=1)
    Hash Cond: ((ricovero.paziente)::text = (paziente.cf)::text)
-   ->  Seq Scan on ricovero  (cost=0.00..649.28 rows=30028 width=21) (actual time=0.012..5.106 rows=30028 loops=1)
-   ->  Hash  (cost=341.00..341.00 rows=1 width=17) (actual time=2.962..2.962 rows=2 loops=1)
+   ->  Seq Scan on ricovero  (cost=0.00..649.28 rows=30028 width=21) (actual time=0.041..6.522 rows=30028 loops=1)
+   ->  Hash  (cost=341.00..341.00 rows=1 width=17) (actual time=3.867..3.867 rows=2 loops=1)
          Buckets: 1024  Batches: 1  Memory Usage: 9kB
-         ->  Seq Scan on paziente  (cost=0.00..341.00 rows=1 width=17) (actual time=0.763..2.956 rows=2 loops=1)
+         ->  Seq Scan on paziente  (cost=0.00..341.00 rows=1 width=17) (actual time=0.969..3.850 rows=2 loops=1)
                Filter: (((nome)::text = 'tino'::text) AND ((cognome)::text = 'labella'::text))
                Rows Removed by Filter: 9998
- Planning time: 0.470 ms
- Execution time: 15.365 ms
+ Planning time: 1.975 ms
+ Execution time: 17.527 ms
 (10 rows)
 
 bd_18_paolo_addis=> 
-bd_18_paolo_addis=> CREATE index nome_idx on paziente (nome);
+bd_18_paolo_addis=> CREATE index nome_cognome_idx on paziente (nome, cognome);
 CREATE INDEX
 bd_18_paolo_addis=> 
 bd_18_paolo_addis=> explain analyze 
 bd_18_paolo_addis-> select cod_ric from paziente 
 bd_18_paolo_addis-> join ricovero on paziente = cf
 bd_18_paolo_addis-> where nome = 'tino' and cognome = 'labella';
-                                                         QUERY PLAN                                                          
------------------------------------------------------------------------------------------------------------------------------
- Hash Join  (cost=11.73..773.64 rows=3 width=4) (actual time=1.593..12.320 rows=10 loops=1)
+                                                               QUERY PLAN                                                               
+----------------------------------------------------------------------------------------------------------------------------------------
+ Hash Join  (cost=8.32..770.23 rows=3 width=4) (actual time=1.681..12.997 rows=10 loops=1)
    Hash Cond: ((ricovero.paziente)::text = (paziente.cf)::text)
-   ->  Seq Scan on ricovero  (cost=0.00..649.28 rows=30028 width=21) (actual time=0.009..5.171 rows=30028 loops=1)
-   ->  Hash  (cost=11.72..11.72 rows=1 width=17) (actual time=0.073..0.073 rows=2 loops=1)
+   ->  Seq Scan on ricovero  (cost=0.00..649.28 rows=30028 width=21) (actual time=0.010..5.554 rows=30028 loops=1)
+   ->  Hash  (cost=8.30..8.30 rows=1 width=17) (actual time=0.121..0.121 rows=2 loops=1)
          Buckets: 1024  Batches: 1  Memory Usage: 9kB
-         ->  Bitmap Heap Scan on paziente  (cost=4.30..11.72 rows=1 width=17) (actual time=0.062..0.069 rows=2 loops=1)
-               Recheck Cond: ((nome)::text = 'tino'::text)
-               Filter: ((cognome)::text = 'labella'::text)
-               Rows Removed by Filter: 2
-               Heap Blocks: exact=4
-               ->  Bitmap Index Scan on nome_idx  (cost=0.00..4.30 rows=2 width=0) (actual time=0.049..0.049 rows=4 loops=1)
-                     Index Cond: ((nome)::text = 'tino'::text)
- Planning time: 0.668 ms
- Execution time: 12.382 ms
-(14 rows)
+         ->  Index Scan using nome_cognome_idx on paziente  (cost=0.29..8.30 rows=1 width=17) (actual time=0.113..0.116 rows=2 loops=1)
+               Index Cond: (((nome)::text = 'tino'::text) AND ((cognome)::text = 'labella'::text))
+ Planning time: 0.736 ms
+ Execution time: 13.063 ms
+(9 rows)
 
 bd_18_paolo_addis=> 
 bd_18_paolo_addis=> 
-bd_18_paolo_addis=> DROP index nome_idx;
+bd_18_paolo_addis=> DROP index nome_cognome_idx;
 DROP INDEX
+bd_18_paolo_addis=> 
 
 FINE # RISULTATI QUERY SOPRA ###################################################
 
