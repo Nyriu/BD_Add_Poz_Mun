@@ -68,17 +68,6 @@
 
 % REGOLE DI STILE
 % - scrivere in modo impersonale no "abbiamo deciso di"
-% - nelle immagini H o !ht ????
-
-% COSE DA RICORDARE
-% NEI REQUISITI
-% - aggiungere numero di accessi effettuati e numero di Pazienti, Ricovero, ecc
-% - Evidenziare la necessità dell'ospedale di accedere spesso alle diagnosi di un dato paziente
-
-%TODO -- FACOLTATIVO
-% - NUOVO VINCOLO INTEGRITÀ:
-%   - due ricoveri distinti di uno stesso paziente non possono avere intersezioni nei periodi [D.Inizio, D.Fine]
-
 
 \section{Progettazione Concettuale}\label{sec:prog_conc}
 
@@ -451,16 +440,13 @@ Viene creato quindi il ciclo in \autoref{fig:ciclo-ridondanza} PAZIENTE, RICOVER
 	\label{fig:ciclo-ridondanza}
 \end{figure}
 
-%TODO latex non sa dividere le parole tipo parola-parola
+%latex non sa dividere le parole tipo parola-parola
 Si procede con il valutare se è conveniente mantenere la relazione EFFET-
 TUATA\_A tra PAZIENTE e DIAGNOSI in funzione della frequenza delle operazioni di inserimento nuove diagnosi e stampa dello storico diagnosi di un paziente.
 
-% TODO REQUISITO specificare nei requisiti le operazioni richieste e i volumi
-% TODO per questione estetica spostare una tabella o del testo qua, cosi' non rimane un buco a fine pagina
 
 I volumi stimati sono riportati in \autoref{tab:volumi-ciclo} e la frequenza delle operazioni interessate in \autoref{tab:operazioni-ciclo}
 
-% TODO REQUISITO spostare table:volumi nei requisiti, no non si può non tutti esistono nei requisiti
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|l|c|r|}
@@ -575,10 +561,6 @@ Concludiamo che è conveniente mantenere la ridondanza visto il costo minore del
 
 \clearpage
 \subsection{Traduzione da ER a Relazionale}
-
-
-% TODO leggere capitolo 14 Elmasri
-% TODO leggere capitolo 9 Atzeni
 
 In questa fase della progettazione logica è possibile iniziare la traduzione del modello E-R in quello Relazionale.
 Come prima cosa, in quanto immediato, ogni entità verrà rappresentata sotto forma di tupla.
@@ -1118,8 +1100,6 @@ alter table diagnosi add
 \end{lstlisting}
 Non verrà riportati i blocchi per la seconda e per la terza condizione perché sono semplicemente una rivisitazione del codice appena illustrato, ad esempio: ottenuta \textit{data\_dia} si verifica che sia minore o uguale alla data della TERAPIA\_PRESCRITTA.
 
-% TRIS LETTO E CORRETTO FINO QUA
-% TODO manca constraint su diagnosi.data_dia <= tp.data_i <= coll_dia.data_dia TEORICAMENTE il database e' OK ma da controllare meglio
 Di seguito sono riportati i vincoli di integrità ancora da implementare:
 \begin{enumerate}
   \item \label{vinc:paz_almu_ric} ogni paziente deve essere stato ricoverato almeno una volta;
@@ -1401,6 +1381,11 @@ Che può essere tradotto in: osservando l'elenco di malattia di p1 non ne compar
 \cleardoublepage
 \section{Progettazione Fisica}
 \subsection{Nuovi Indici}
+La creazioni di strutture ausiliarie, quali gli indici, possono migliorare le performance di un database.
+Le chiavi primarie 
+
+https://www.postgresql.org/docs/9.1/sql-createindex.html
+
 % Indice possibile è provincia 
 
 
@@ -1488,9 +1473,6 @@ Dal grafico si può intuire che
 \end{itemize}
 Se si mettono assieme le due informazioni si conclude che, in generale, un paziente che è già stato ricoverato almeno una volta, ha una probabilità maggiore, rispetto a qualche anno fa, di essere ricoverato nuovamente.
 
-% TODO RIFARE GRAFICI TOGLIENDO ULTIMO MESE PERCHE INCOMPLETO
-% Notare che i dati relativi all'ultimo mese nel grafico sono dati incompleti, poiché il mese deve ancora finire, quindi è perfettamente lecito che si trovino così in basso rispetto alla media.
-
 \cleardoublepage
 
 
@@ -1539,7 +1521,6 @@ In quale periodo dell'anno ci sono più ricoveri per influenza?
   \label{fig:grafico_4-2}
 \end{figure}
 
-% TODO dire in un italiano migliore
 I due grafici rappresentano la stessa informazione.
 Dal grafico a mosaico risulta più facile osservare l'andamento mensile di uno specifico anno, mentre il grafico \textit{heatmap} facilita il confronto di un mese al variare degli anni.
 Ad esempio nel mese di dicembre del 2010 ci sono stati molti più ricoveri per influenza rispetto agli anni tra il 2011 ed il 2018.

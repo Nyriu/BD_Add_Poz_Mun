@@ -1,0 +1,79 @@
+ATTENZIONE!!
+\timing NON e' affidabile
+
+
+
+
+explain select cf, nome, cognome, data_nasc
+from paziente where nome = 'tino';
+
+#################################################################################
+TEST RICERCA PRIMA E DOPO INDEX
+#################################################################################
+bd_18_paolo_addis=> explain analyze select cf, nome, cognome, data_nasc
+from paziente where nome = 'tino';
+                                             QUERY PLAN                                              
+-----------------------------------------------------------------------------------------------------
+ Seq Scan on paziente  (cost=0.00..380.00 rows=2 width=37) (actual time=1.196..2.718 rows=4 loops=1)
+   Filter: ((nome)::text = 'tino'::text)
+   Rows Removed by Filter: 9996
+ Planning time: 0.125 ms
+ Execution time: 2.753 ms
+(5 rows)
+
+bd_18_paolo_addis=> CREATE index nome_idx on paziente (nome);
+CREATE INDEX
+bd_18_paolo_addis=> explain analyze select cf, nome, cognome, data_nasc
+from paziente where nome = 'tino';
+                                                   QUERY PLAN                                                    
+-----------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on paziente  (cost=4.30..11.79 rows=2 width=37) (actual time=0.064..0.073 rows=4 loops=1)
+   Recheck Cond: ((nome)::text = 'tino'::text)
+   Heap Blocks: exact=4
+   ->  Bitmap Index Scan on nome_idx  (cost=0.00..4.30 rows=2 width=0) (actual time=0.053..0.053 rows=4 loops=1)
+         Index Cond: ((nome)::text = 'tino'::text)
+ Planning time: 0.397 ms
+ Execution time: 0.118 ms
+(7 rows)
+#################################################################################
+TEST INSERIMENTO PRIMA E DOPO INDEX
+#################################################################################
+Paziente che verra' inserito
+        cf        | cognome |  nome  | data_nasc  | luogo_nasc | prov_res |    reg_app     | ulss  | tot_gg_ric 
+------------------+---------+--------+------------+------------+----------+----------------+-------+------------
+ SARFOT06M19S167S | fortini | sarino | 1958-05-06 | Aosta      | BO       | Emilia-Romagna | AUSL9 |        972
+
+
+explain analyze insert into paziente values(
+'SARFOT06M19S167S' , 'fortini' , 'sarino' , '1958-05-06' , 'Aosta'      , 'BO'       , 'Emilia-Romagna' , 'AUSL9' ,  '972'
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+explain select p1.nome, p1.cognome, count(*)
+from paziente p1
+join paziente p2 on
+  p1.cf < p2.cf and
+  p1.nome = p2.nome and
+  p1.cognome = p2.cognome
+group by p1.nome, p1.cognome;
+
+in ms oscilla da un massimo di 160 a un minimo di 95
