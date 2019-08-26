@@ -1,6 +1,4 @@
-\documentclass
-%[draft] %TODO rimuovere draft dopo aver localizzato overfull warning
-{article}
+\documentclass{article}
 
 \usepackage[italian]{babel}
 \usepackage[utf8]{inputenc}
@@ -1381,52 +1379,57 @@ Che può essere tradotto in: osservando l'elenco di malattia di p1 non ne compar
 \cleardoublepage
 \section{Progettazione Fisica}
 \subsection{Nuovi Indici}
-La creazione di strutture ausiliarie, quali gli indici, permette di migliorare le performance di un database. In particolare, gli indici vengono sfruttati per rendere più efficiente la ricerca di record in una determinata tabella. Per le chiavi primarie o attributi che devono soddisfare i vincoli di unicità viene creato automaticamente un indice dal gestore del database, di conseguenza la creazione manuale di indici fa riferimento, generalmente, solo a colonne che non rispettano queste condizioni. Non sempre un indice risulta utile ai fini del miglioramento delle performance, infatti, se esso viene creato su una colonna sulla quale si effettuano frequenti operazioni di aggiornamento allora anche l'indice deve essere frequentemente manipolato per rispettare le modifiche. Viceversa, se il database viene utilizzato staticamente, solo per scopi di report, si possono sfruttare anche più indici. 
+La creazione di strutture ausiliarie, quali gli indici, permette di migliorare le performance di un database. In particolare, gli indici vengono sfruttati per rendere più efficiente la ricerca di record in una determinata tabella. Per le chiavi primarie o attributi che devono soddisfare i vincoli di unicità viene creato automaticamente un indice dal gestore del database, di conseguenza la creazione manuale di indici fa riferimento, generalmente, solo a colonne che non rispettano queste condizioni.
+Non sempre un indice risulta utile ai fini del miglioramento delle performance, infatti, se esso viene creato su una colonna sulla quale si effettuano frequenti operazioni di aggiornamento, allora anche l'indice deve essere manipolato frequentemente per rispettare le modifiche.
+Viceversa, se il database viene utilizzato staticamente, solo per scopi di report, si possono sfruttare anche più indici. 
 Un indice ottimale possiede alcune caratteristiche peculiari:
 \begin{itemize}
   \item Non è troppo lungo in quanto, in caso contrario, questo comportebbe un maggior numero di operazioni di lettura sul disco.
   
   \item I record dell'indice vengono spesso utilizzati nei confronti quindi entry più corte migliorano l'efficenza. Ad esempio, una colonna di interi è la scelta migliore per un indice mentre il confronto tra stringhe implica l'esecuzione del test di uguaglianza carattere per carattere.
   
-  \item Ha pochi valori duplicati in quanto avere tante entry ripetute vanifica il lavoro dell'indice perchè in esecuzione della ricerca si fa riferimento a più valori procedendo sequenzialmente.
-  
-  \item Se l'indice contiene solo il valore della colonna e la tabella a cui fa riferimento allora vi è la necessità di leggere dalla tabella i valori della tupla corrispondente. Se, invece, l'indice viene costrito su più colonne (quelle necessarie) della tabella non è richiesta una ulteriore lettura. Questa implementazione è possibile al costo dell'utilizzo di maggior spazio.
+  \item Ha pochi valori duplicati in quanto avere tante entry ripetute vanifica il lavoro dell'indice, perché nell'esecuzione di una ricerca bisogna procedere in modo sequenziale sui valori ripetuti.
+
 \end{itemize}
-Gli indici possono essere costruiti basandosi su strutture dati differenti a seconda di come verrà sfruttato nelle query. Ad esempio se una colonna viene spesso utilizzata in test di uguaglianza una struttura con tabella di hash risulta più efficente di un btree che può essere utilizzato per ottimizzare i generici confronti. Inoltre, la caratteristica intrinseca degli indici di ordinare i record consente di ottimizzare quelle query in cui si richiede, tramite l'istruzione ORDER BY, di ordinare attraverso una determinata colonna. Con un indice il lavoro è già fatto e non viene svolto in tempo d'esecuzione. 
 
-Per la valutazione sull'inserimento o meno di alcuni indici nel caso specifico del progetto è stata utilizzata l'istruzione EXPLAIN ANALYZE che, invece di restituire il risultato della query, restisce il piano dettagliato con cui il database procede nell'esecuzione dei comandi dell'interrogazione. In particolare consente di analizzare i costi, forniti tramite un valore numerico, di una specifica sequenza di operazioni nonchè il tempo impiegato nella stessa. E' interessante notare come nell'output dell'analisi si faccia riferimento al tempo di pianificazione della query oltre al tempo della sua esecuzione.
+Gli indici possono essere costruiti basandosi su strutture dati differenti a seconda di come verranno sfruttati nelle query.
+Ad esempio, se una colonna viene utilizzata spesso in test di uguaglianza, allora una struttura con tabella di hash risulta più efficiente di un btree che invece può essere utilizzato per ottimizzare i confronti generici.
+Inoltre, la caratteristica intrinseca degli indici di ordinare i record consente di ottimizzare quelle query in cui si richiede, tramite l'istruzione ORDER BY, di ordinare il risultato secondo una determinata colonna.
+Con un indice, in tempo di esecuzione, non dovrebbe esser svolto alcun lavoro, infatti i dati risiedono in memoria già ordinati.
 
-Per l'implementazione di un indice si è considerato il fatto che spesso si utilizzano il nome e/o il cognome del paziente per ricavare alcune informazioni dal database senza l'inserimento del codice fiscale. 
+Per la valutazione sull'inserimento o meno di alcuni indici nel caso specifico del progetto è stata utilizzata l'istruzione EXPLAIN ANALYZE che, invece di restituire il risultato della query, gestisce il piano dettagliato con cui il database procede nell'esecuzione dei comandi dell'interrogazione. In particolare consente di analizzare i costi, forniti tramite un valore numerico, di una specifica sequenza di operazioni nonché il tempo impiegato nella stessa. È interessante notare come nell'output dell'analisi si faccia riferimento al tempo di pianificazione della query oltre al tempo della sua esecuzione.
 
-L'esecuzione di una semplice query di ricerca per l'ottenimento dei dati tramite l'inserimento del nome di un paziente risulta molto più efficente se supportata da un indice sul nome mentre non risulta essere influente durante le operazioni di inserimento e cancellazione.
-
-L'esecuzione di una query con lo scopo di fornire tutte le coppie di pazienti con stesso nome e cognome, invece, non subisce miglioramenti delle performance quando si implementa un indice su (nome,cognome) e ciò è deducibile tramite  l'operazione di analisi che non mostra variazioni nel costo calcolato e nel tempo di esecuzione dell'interrogazione.
-
-L'esecuzione di una query con l'obbiettivo di fornire tutti i dati relativi ai ricoveri di un determinato paziente 
-
+Nel blocco di codice SQL sottostante viene mostrato il comando per creare un indice, seguito da una delle query su cui sono stati effettuati i calcoli sui tempi.
 \begin{lstlisting}
-  SET search_path TO ospedale;
+CREATE INDEX nome_idx ON paziente (nome,cognome);
 
-  EXPLAIN ANALYZE
-  SELECT cod_ric FROM paziente 
-  JOIN ricovero ON paziente = cf
-  WHERE nome = 'tino'AND cognome = 'labella';
-  
-  CREATE INDEX nome_idx ON paziente (nome,cognome);
-  
-  EXPLAIN ANALYZE
-  SELECT cod_ric FROM paziente 
-  JOIN ricovero ON paziente = cf
-  WHERE nome = 'tino'AND cognome = 'labella';
+EXPLAIN ANALYZE
+SELECT cf, data_nasc,
+       cod_ric, data_i, data_f,
+       motivo, div_osp
+FROM paziente 
+JOIN ricovero ON paziente = cf
+WHERE nome = 'tino'AND cognome = 'labella';
 \end{lstlisting}
-viene resa più efficiente tramite la creazione di un indice su (nome,cognome). E' interessante notare come il tempo di pianificazione aumenta in presenza dell'indice mentre le effettive operazioni risultano più efficenti e veloci in termini di costo e tempo. 
 
+Si è considerato il fatto che spesso si utilizzano il nome e il cognome del paziente per ricavare alcune informazioni dal database senza l'inserimento del codice fiscale. 
+La query sopra, che fornisce i dati dei ricoveri di tutti i pazienti con nome e cognome inseriti, riesce a sfruttare l'indice creato ottenendo così un notevole miglioramento nei tempi di risposta.
+È stato interessante notare come il tempo di pianificazione aumenta in presenza dell'indice mentre le effettive operazioni risultano più efficienti e veloci in termini di costo e tempo. 
 
-% https://www.postgresql.org/docs/9.1/sql-createindex.html
+Bisogna però verificare che l'aggiornamento dell'indice non causi rallentamenti in fase di inserimento\footnote{i casi DELETE ed UPDATE non sono stati citati in quanto si suppone che i pazienti non vengano eliminati dalla base di dati e che vengano aggiornati raramente. È stato comunque verificato che il loro comportamento non cambia significativamente in presenza dell'indice.} di un nuovo paziente.
+Osservando i tempi ed i costi di alcuni inserimenti prima e dopo la creazione dell'indice ci si accorge che questo non influenza negativamente i tempi di risposta delle query.
 
-% Indice possibile è provincia 
-
-
+Sono state considerate anche altre query, ad esempio la query nel blocco sottostante, che permette di ottenere tutte le coppie di pazienti con lo stesso nome e cognome.
+Queste però non vengono influenzate, né positivamente né negativamente, dall'indice.
+Si suppone sia dovuto alla creazione di ulteriori strutture ausiliare in supporto alle operazioni di JOIN.
+\begin{lstlisting}
+explain analyze select p1.nome, p1.cognome, count(*)
+from paziente p1
+join paziente p2 on p1.cf < p2.cf and
+              p1.nome = p2.nome and
+              p1.cognome = p2.cognome
+group by p1.nome, p1.cognome;
+\end{lstlisting}
 
 
 
