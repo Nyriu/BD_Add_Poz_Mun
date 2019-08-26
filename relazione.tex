@@ -458,8 +458,8 @@ I volumi stimati sono riportati in \autoref{tab:volumi-ciclo} e la frequenza del
 		Farmaco               & E             & 10000           \\ \hline
 		Viene Ricoverato      & R             & 300000          \\ \hline
 		Effettuata Durante    & R             & 1200000         \\ \hline
-		Effettuta A           & R             & 1200000         \\ \hline
-		Curata Da             & R             & 1100000         \\ \hline
+    Effettuata A           & R             & 1200000         \\ \hline
+    Curata Da             & R             & 1100000         \\ \hline
 		Istanza Di            & R             & 1100000         \\ \hline
 		Effetto Collaterale   & R             & 50000           \\ \hline
 		Somministrato Durante & R             & 10000           \\ \hline
@@ -512,7 +512,7 @@ Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, si ca
 		\textbf{Concept}    & \textbf{Type} & \textbf{Access} & \textbf{Type} \\ \hline
 		\multicolumn{4}{|c|}{Inserimento Diagnosi}                            \\ \hline
 		Diagnosi            & E             & 1               & W             \\ \hline
-		Effettutata Durante & R             & 1               & W             \\ \hline
+		Effettuata Durante & R             & 1               & W             \\ \hline
 		Effettuata A        & R             & 1               & W             \\ \hline
 		\multicolumn{4}{|c|}{Stampa Storico Diagnosi}                         \\ \hline
 		Effettuata A        & R             & 12              & R             \\ \hline
@@ -537,10 +537,10 @@ Considerando il costo di 1 accesso in scrittura come 2 accessi in lettura, si ca
 		\textbf{Concept}    & \textbf{Type} & \textbf{Access} & \textbf{Type} \\ \hline
 		\multicolumn{4}{|c|}{Inserimento Diagnosi}                            \\ \hline
 		Diagnosi            & E             & 1               & W             \\ \hline
-		Effettutata Durante & R             & 1               & W             \\ \hline
+		Effettuata Durante & R             & 1               & W             \\ \hline
 		\multicolumn{4}{|c|}{Stampa Storico Diagnosi}                         \\ \hline
 		Viene Ricoverato    & R             & 3               & R             \\ \hline
-		Effettutata Durante & R             & 12              & R             \\ \hline
+		Effettuata Durante & R             & 12              & R             \\ \hline
 		Diagnosi            & E             & 12              & R             \\ \hline
 	\end{tabular}
 	\caption{Tabella dei costi, caso senza ridondanza}
@@ -1337,7 +1337,7 @@ WHERE
         AND pt3.farmaco <> pt1.farmaco
         ));
 \end{lstlisting}
-Lo EXISTS permette di verficiare che il paziente abbia assunto almeno due volte lo stesso farmaco.
+Lo EXISTS permette di verificare che il paziente abbia assunto almeno due volte lo stesso farmaco.
 Con il NOT EXISTS vengono rimossi tutti quei pazienti che, durante il periodo tra le due assunzioni del farmaco sopra, hanno assunto un altro farmaco.
 
 \cleardoublepage
@@ -1384,7 +1384,7 @@ Non sempre un indice risulta utile ai fini del miglioramento delle performance, 
 Viceversa, se il database viene utilizzato staticamente, solo per scopi di report, si possono sfruttare anche più indici. 
 Un indice ottimale possiede alcune caratteristiche peculiari:
 \begin{itemize}
-  \item Non è troppo lungo in quanto, in caso contrario, questo comportebbe un maggior numero di operazioni di lettura sul disco.
+  \item Non è troppo lungo in quanto, in caso contrario, questo comporterebbe un maggior numero di operazioni di lettura sul disco.
   
   \item I record dell'indice vengono spesso utilizzati nei confronti quindi entry più corte migliorano l'efficenza. Ad esempio, una colonna di interi è la scelta migliore per un indice mentre il confronto tra stringhe implica l'esecuzione del test di uguaglianza carattere per carattere.
   
@@ -1502,7 +1502,7 @@ Si vuole osservare come siano cambiate, col passare degli anni, la quantità di 
   \centering
   \includegraphics[width=\linewidth]{grafico_1}
   \caption{Andamento mensile inserimenti di Pazienti e di Ricoveri}
-  \label{fig:grafico_1} %TODO rifare bello, piu qualita e rettangolare
+  \label{fig:grafico_1}
 \end{figure}
 
 Dal grafico si può intuire che: il numero di ricoveri inseriti mensilmente è soggetto ad una lenta crescita;
