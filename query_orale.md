@@ -1,13 +1,18 @@
 # ELENCO DI QUERY PER ESAME ORALE
 
-## Query 1
 
+## Query 1
 Cercare un paziente per nome.
 
 ```SQL
-select cf, nome, cognome, data_nasc
-from paziente
-where nome = 'tino';
+SELECT cf, nome, cognome, data_nasc
+FROM paziente
+WHERE nome = 'tino';
 ```
 
 ## Query 2
+Testo
+
+```SQL
+SELECT
+```
