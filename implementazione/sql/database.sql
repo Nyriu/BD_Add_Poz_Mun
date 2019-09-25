@@ -76,7 +76,7 @@ create table diagnosi (
     ricovero dom_ric not null
                      references ricovero(cod_ric) 
                      on update cascade 
-                     on delete no action,
+                     on delete cascade,
     -- viene inserito in automatico sfruttando ricovero
     paziente dom_cf references paziente(cf)
                     on update cascade 
@@ -121,13 +121,13 @@ create table terapia_prescritta (
     med_presc varchar not null,
     diagnosi dom_dia unique references diagnosi(cod_dia)
                     on update cascade 
-                    on delete no action, 
+                    on delete cascade, 
     terapia dom_ter references terapia(cod_ter) 
                     on update cascade 
-                    on delete no action,
+                    on delete cascade,
     coll_dia dom_dia unique references diagnosi(cod_dia)
                     on update cascade 
-                    on delete no action, 
+                    on delete set null, 
     primary key (diagnosi, terapia)
 );
 
