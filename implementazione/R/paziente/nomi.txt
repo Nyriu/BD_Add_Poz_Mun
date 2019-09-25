@@ -2983,7 +2983,7 @@ fasano
 fasma
 fata
 fatima
-fatima  ap.
+fatima ap
 fatimo
 fatina
 fatma
@@ -3072,7 +3072,7 @@ felicio
 feliciola
 felicissima
 felicissimo
-felicitâ€¡
+felicita
 felicita
 felicitas
 felida
@@ -3563,7 +3563,7 @@ florestina
 floretta
 flori
 floria
-florian, franck
+florian franck
 floriana
 florianna
 floriano
@@ -5371,7 +5371,7 @@ margarida antonia
 margarita
 margherita
 margherito
-mariË˜
+marie
 maria
 maria grazia
 maria laura
@@ -5662,7 +5662,7 @@ micol
 micuccia
 micuccio
 midio
-mieke t.h.
+mieke 
 mietta
 migliore
 migliorina
